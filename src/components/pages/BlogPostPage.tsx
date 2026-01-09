@@ -126,7 +126,7 @@ export default function BlogPostPage() {
             Ready to Apply What You've Learned?
           </h2>
           <p className="font-paragraph text-lg text-soft-white mb-8">
-            Get personalized coaching and support to achieve your goals.
+            Get personalised coaching and support to achieve your goals.
           </p>
           <Link
             to="/store"

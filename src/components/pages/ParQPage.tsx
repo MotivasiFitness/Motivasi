@@ -266,7 +266,7 @@ Additional Information: ${formData.additionalInfo}
             Women's Personal Training<br />PAR-Q & Health Questionnaire
           </h1>
           <p className="font-paragraph text-lg text-charcoal-black max-w-3xl mx-auto">
-            Before starting your personal training journey, we need to understand your health background. This questionnaire helps us create a safe, personalized program tailored to your needs.
+            Before starting your personal training journey, we need to understand your health background. This questionnaire helps us create a safe, personalised programme tailored to your needs.
           </p>
         </div>
       </section>
@@ -282,7 +282,7 @@ Additional Information: ${formData.additionalInfo}
                   Thank You!
                 </h3>
                 <p className="font-paragraph text-green-800">
-                  Your questionnaire has been submitted successfully. We'll review your responses and contact you shortly to discuss your personalized training program.
+                  Your questionnaire has been submitted successfully. We'll review your responses and contact you shortly to discuss your personalised training programme.
                 </p>
               </div>
             </div>
@@ -456,7 +456,7 @@ Additional Information: ${formData.additionalInfo}
             {/* Female-Specific Considerations */}
             <FormSection 
               title="Female-Specific Considerations" 
-              description="Optional but helpful information to personalize your program."
+              description="Optional but helpful information to personalise your programme."
             >
               <FormField label="Menstrual Cycle Status" name="menstrualCycle">
                 <select
@@ -590,7 +590,7 @@ Additional Information: ${formData.additionalInfo}
                 Personalization
               </h3>
               <p className="font-paragraph text-base text-warm-grey">
-                Your responses help us create a truly personalized program that accounts for your unique circumstances, goals, and any special considerations.
+                Your responses help us create a truly personalised programme that accounts for your unique circumstances, goals, and any special considerations.
               </p>
             </div>
             <div className="bg-soft-white rounded-2xl p-8 border border-warm-sand-beige">
@@ -598,7 +598,7 @@ Additional Information: ${formData.additionalInfo}
                 Better Results
               </h3>
               <p className="font-paragraph text-base text-warm-grey">
-                The more we know about your lifestyle, stress levels, and recovery habits, the better we can optimize your training for maximum results.
+                The more we know about your lifestyle, stress levels, and recovery habits, the better we can optimise your training for maximum results.
               </p>
             </div>
             <div className="bg-soft-white rounded-2xl p-8 border border-warm-sand-beige">
@@ -620,7 +620,7 @@ Additional Information: ${formData.additionalInfo}
             Ready to Get Started?
           </h2>
           <p className="font-paragraph text-lg text-warm-grey mb-8">
-            Complete this questionnaire and we'll be in touch within 24 hours to discuss your personalized training program.
+            Complete this questionnaire and we'll be in touch within 24 hours to discuss your personalised training programme.
           </p>
           <Link
             to="/store"
