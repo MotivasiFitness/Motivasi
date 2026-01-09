@@ -151,7 +151,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center p-8">
               <h3 className="font-heading text-3xl font-bold text-soft-bronze mb-4">
-                Personalized
+                Personalised
               </h3>
               <p className="font-paragraph text-base text-warm-grey">
                 Every program is tailored to your unique needs, schedule, and fitness level. No cookie-cutter plans.
