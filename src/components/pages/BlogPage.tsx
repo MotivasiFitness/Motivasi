@@ -131,6 +131,40 @@ export default function FaceToFaceTrainingPage() {
         </div>
       </section>
 
+      {/* Locations Section */}
+      <section className="py-24 px-8 lg:px-20 bg-charcoal-black">
+        <div className="max-w-[100rem] mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="font-heading text-5xl font-bold text-soft-white mb-6">
+              Service Areas
+            </h2>
+            <p className="font-paragraph text-xl text-warm-grey max-w-3xl mx-auto">
+              I provide face-to-face personal training across the following locations.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+            {['Harpenden', 'Berkhamsted', 'Redbourn', 'Tring', 'Studham', 'Wheathampstead'].map((location) => (
+              <div
+                key={location}
+                className="bg-soft-white/10 border border-soft-bronze/30 rounded-xl p-6 text-center hover:bg-soft-bronze/10 transition-colors duration-300"
+              >
+                <MapPin className="w-8 h-8 text-soft-bronze mx-auto mb-3" />
+                <h3 className="font-heading text-xl font-bold text-soft-white">
+                  {location}
+                </h3>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-16 text-center">
+            <p className="font-paragraph text-lg text-warm-grey max-w-2xl mx-auto">
+              Can't find your location? Get in touch to discuss whether I can accommodate your area.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Why Face-to-Face Section */}
       <section className="py-24 px-8 lg:px-20 bg-warm-sand-beige/30">
         <div className="max-w-[100rem] mx-auto">
@@ -241,10 +275,10 @@ export default function FaceToFaceTrainingPage() {
                   </div>
                   <div>
                     <h3 className="font-heading text-lg font-bold text-soft-white mb-1">
-                      Location
+                      Locations
                     </h3>
                     <p className="font-paragraph text-warm-grey">
-                      Available for sessions across London and surrounding areas
+                      Harpenden, Berkhamsted, Redbourn, Tring, Studham, Wheathampstead
                     </p>
                   </div>
                 </div>
