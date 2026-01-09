@@ -53,46 +53,31 @@ export default function FaceToFaceTrainingPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             {[
               {
-                title: "Single Session",
-                price: "£60",
-                duration: "60 minutes",
-                description: "Perfect for trying out personal training or a one-off boost.",
+                title: "8-Week Package",
+                price: "£640",
+                duration: "16 sessions",
+                description: "Build momentum with consistent training over 8 weeks.",
                 features: [
-                  "Full body assessment",
-                  "Customised workout",
-                  "Form correction & guidance",
-                  "Nutrition tips"
-                ]
-              },
-              {
-                title: "4-Week Package",
-                price: "£200",
-                duration: "4 sessions",
-                description: "Build momentum with weekly sessions over a month.",
-                features: [
-                  "Weekly progressive training",
-                  "Nutrition plan included",
+                  "Progressive training programme",
+                  "Nutrition Guidance",
                   "Form analysis & adjustments",
-                  "Weekly check-ins",
                   "Priority scheduling"
                 ],
                 featured: true
               },
               {
-                title: "12-Week Transformation",
-                price: "£500",
-                duration: "12 sessions",
+                title: "24-Week Transformation",
+                price: "£960",
+                duration: "24 sessions",
                 description: "Complete transformation programme with comprehensive support.",
                 features: [
-                  "Weekly personalised sessions",
-                  "Custom nutrition guidance",
+                  "Personalised training sessions",
+                  "Nutrition Guidance",
                   "Progress tracking & photos",
-                  "Bi-weekly strategy calls",
-                  "Flexible scheduling",
-                  "Lifetime form video access"
+                  "Flexible scheduling"
                 ]
               }
             ].map((package_, idx) => (
