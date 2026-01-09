@@ -285,6 +285,9 @@ export default function HomePage() {
             <h2 className="font-heading text-5xl md:text-7xl text-soft-white font-bold mb-8 leading-tight">
               "Strength is not just physical.<br/>It's a state of mind."
             </h2>
+            <p className="font-paragraph text-xl md:text-2xl text-warm-grey">
+              Head Coach Natalie
+            </p>
           </AnimatedElement>
         </div>
       </section>
