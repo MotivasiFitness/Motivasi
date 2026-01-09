@@ -65,7 +65,7 @@ export default function AboutPage() {
               My Mission
             </h2>
             <p className="font-paragraph text-xl text-charcoal-black leading-relaxed">
-              To empower busy women aged 30–45 to achieve sustainable fat loss and build real strength without extreme diets or feeling intimidated. I believe every woman deserves to feel confident, capable, and strong in her own body.
+              To empower busy women 35+ to achieve sustainable fat loss and build real strength without extreme diets or feeling intimidated. I believe every woman deserves to feel confident, capable, and strong in her own body.
             </p>
           </div>
         </div>
