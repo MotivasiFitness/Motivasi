@@ -114,7 +114,7 @@ export default function HomePage() {
           <div className="max-w-2xl">
             <AnimatedElement className="mb-6">
               <span className="inline-block py-1 px-3 border border-soft-bronze rounded-full text-soft-bronze text-sm tracking-widest uppercase font-medium">
-                Motivasi - Online Coaching for Women 30-45
+                Motivasi - Online Coaching for Women 35+
               </span>
             </AnimatedElement>
             
