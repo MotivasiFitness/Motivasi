@@ -114,7 +114,7 @@ export default function HomePage() {
           <div className="max-w-2xl">
             <AnimatedElement className="mb-6">
               <span className="inline-block py-1 px-3 border border-soft-bronze rounded-full text-soft-bronze text-sm tracking-widest uppercase font-medium">
-                Online Coaching for Women 30-45
+                Motivasi - Online Coaching for Women 30-45
               </span>
             </AnimatedElement>
             
@@ -176,7 +176,7 @@ export default function HomePage() {
             style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]) }}
           >
             <Image
-              src="https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.png?id=hero-main-visual"
+              src="https://static.wixstatic.com/media/93e866_0c32b146b6f94ee985fbf7c231d824b1~mv2.png?originWidth=1152&originHeight=640"
               alt="Woman performing a confident strength training movement"
               className="w-full h-full object-cover"
               width={1200}
@@ -273,7 +273,7 @@ export default function HomePage() {
       <section className="relative h-[80vh] w-full overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.png?id=breather-image-calm"
+            src="https://static.wixstatic.com/media/93e866_fbf7abc4f3c0487f9fd5df715654d232~mv2.png?originWidth=1600&originHeight=768"
             alt="Serene training environment"
             className="w-full h-full object-cover"
             width={1600}
@@ -313,17 +313,17 @@ export default function HomePage() {
                   {
                     title: "4 Personalised Programs",
                     desc: "Tailored strength training plans that evolve with you. Whether you train at home or the gym, your program fits your schedule.",
-                    image: "https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.png?id=feature-program"
+                    image: "https://static.wixstatic.com/media/93e866_7d48abe991484564b3dbdd6baf6b5d8a~mv2.png?originWidth=768&originHeight=448"
                   },
                   {
                     title: "Weekly Check-ins",
                     desc: "We review your progress every single week. I'll adjust your plan, answer questions, and keep you accountable.",
-                    image: "https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.png?id=feature-checkin"
+                    image: "https://static.wixstatic.com/media/93e866_cabe766402e14ec98f048ee9b1a0a4eb~mv2.png?originWidth=768&originHeight=448"
                   },
                   {
                     title: "Nutrition Guidance",
                     desc: "No meal plans that leave you hungry. Learn how to fuel your body with sustainable eating strategies that include the foods you love.",
-                    image: "https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.png?id=feature-nutrition"
+                    image: "https://static.wixstatic.com/media/93e866_29519bae313f4a8aa77d31574d6fa866~mv2.png?originWidth=768&originHeight=448"
                   }
                 ].map((feature, i) => (
                   <AnimatedElement key={i} className="group">
@@ -478,7 +478,7 @@ export default function HomePage() {
       <section className="relative py-32 px-8 lg:px-20 bg-charcoal-black overflow-hidden">
         <div className="absolute inset-0 opacity-20">
            <Image
-              src="https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.png?id=cta-bg-texture"
+              src="https://static.wixstatic.com/media/93e866_2d4f518df7c941ac89afe5c8f996af14~mv2.png?originWidth=1600&originHeight=768"
               alt="Texture"
               className="w-full h-full object-cover grayscale"
               width={1600}

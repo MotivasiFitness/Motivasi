@@ -19,7 +19,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Brand Section */}
           <div>
-            <h3 className="font-heading text-3xl font-bold mb-4">Sculpted Silhouette</h3>
+            <h3 className="font-heading text-3xl font-bold mb-4">Motivasi</h3>
             <p className="font-paragraph text-base text-warm-grey mb-6">
               Empowering busy women to achieve fat loss and strength without extreme diets or intimidation.
             </p>
@@ -89,7 +89,7 @@ export default function Footer() {
 
         <div className="border-t border-warm-grey mt-12 pt-8 text-center">
           <p className="font-paragraph text-sm text-warm-grey">
-            © {new Date().getFullYear()} Sculpted Silhouette. All rights reserved.
+            © {new Date().getFullYear()} Motivasi. All rights reserved.
           </p>
         </div>
       </div>
