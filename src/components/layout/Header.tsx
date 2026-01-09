@@ -36,6 +36,12 @@ export default function Header() {
               Face-to-Face Training
             </Link>
             <Link 
+              to="/parq" 
+              className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+            >
+              PAR-Q Form
+            </Link>
+            <Link 
               to="/store" 
               className="font-paragraph text-base bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors"
             >
@@ -81,6 +87,13 @@ export default function Header() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Face-to-Face Training
+              </Link>
+              <Link 
+                to="/parq" 
+                className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                PAR-Q Form
               </Link>
               <Link 
                 to="/store" 

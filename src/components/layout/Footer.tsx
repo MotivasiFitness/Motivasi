@@ -56,6 +56,9 @@ export default function Footer() {
               <Link to="/blog" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
                 Face-to-Face Training
               </Link>
+              <Link to="/parq" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
+                PAR-Q Form
+              </Link>
               <Link to="/store" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
                 Book Now
               </Link>

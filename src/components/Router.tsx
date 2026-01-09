@@ -14,6 +14,7 @@ import HomePage from '@/components/pages/HomePage';
 import AboutPage from '@/components/pages/AboutPage';
 import BlogPage from '@/components/pages/BlogPage';
 import BlogPostPage from '@/components/pages/BlogPostPage';
+import ParQPage from '@/components/pages/ParQPage';
 
 // Main Layout with Header and Footer
 function SiteLayout() {
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: "blog/:slug",
         element: <BlogPostPage />,
+      },
+      {
+        path: "parq",
+        element: <ParQPage />,
       },
       {
         path: "store",
