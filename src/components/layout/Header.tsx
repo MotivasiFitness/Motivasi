@@ -33,7 +33,7 @@ export default function Header() {
               to="/blog" 
               className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
             >
-              Blog
+              Face-to-Face Training
             </Link>
             <Link 
               to="/store" 
@@ -80,7 +80,7 @@ export default function Header() {
                 className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Blog
+                Face-to-Face Training
               </Link>
               <Link 
                 to="/store" 
