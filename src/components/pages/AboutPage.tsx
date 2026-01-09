@@ -93,13 +93,18 @@ export default function AboutPage() {
                 className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 hover:border-soft-bronze transition-colors"
               >
                 {qual.certificateImage && (
-                  <div className="aspect-video w-full rounded-xl overflow-hidden mb-6">
+                  <div className="aspect-video w-full rounded-xl overflow-hidden mb-6 relative">
                     <Image
                       src={qual.certificateImage}
                       alt={`${qual.qualificationName} certificate`}
                       className="w-full h-full object-cover"
                       width={600}
                     />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                      <p className="font-heading text-3xl font-bold text-soft-white text-center px-4">
+                        Natalie Leonard
+                      </p>
+                    </div>
                   </div>
                 )}
                 <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-2">
