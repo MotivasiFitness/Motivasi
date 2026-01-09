@@ -222,7 +222,7 @@ export default function HomePage() {
               <AnimatedElement className="delay-200">
                 <div className="w-24 h-1 bg-soft-bronze mb-8" />
                 <p className="text-lg text-warm-grey mb-6">
-                  You've tried the crash diets. You've done the endless cardio. It's time for a sustainable approach that honors your body and your busy life.
+                  You've tried the crash diets. You've done the endless cardio. It's time for a sustainable approach that honours your body and your busy life.
                 </p>
                 <Link to="/about" className="text-charcoal-black font-medium border-b border-soft-bronze pb-1 hover:text-soft-bronze transition-colors inline-flex items-center gap-2">
                   Read full bio <ArrowRight size={16} />
