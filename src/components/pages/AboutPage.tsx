@@ -33,7 +33,7 @@ export default function AboutPage() {
                 I'm passionate about helping busy women discover their strength and transform their relationship with fitness and nutrition.
               </p>
               <p className="font-paragraph text-lg text-warm-grey mb-6 leading-relaxed">
-                With specialized training in pre/postnatal fitness, advanced nutrition, and menopause support, I understand the unique challenges women face at different life stages.
+                With specialised training in pre/postnatal fitness, advanced nutrition, and menopause support, I understand the unique challenges women face at different life stages.
               </p>
               <p className="font-paragraph text-lg text-warm-grey leading-relaxed">
                 My approach is simple: sustainable strength training and nutrition guidance that fits your busy lifestyle—no extreme diets, no intimidation, just real results.
@@ -82,7 +82,7 @@ export default function AboutPage() {
               Qualifications & Expertise
             </h2>
             <p className="font-paragraph text-xl text-charcoal-black max-w-3xl mx-auto">
-              Certified and specialized to support you through every stage of your fitness journey.
+              Certified and specialised to support you through every stage of your fitness journey.
             </p>
           </div>
 
