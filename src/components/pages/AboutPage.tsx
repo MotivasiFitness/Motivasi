@@ -105,7 +105,9 @@ export default function AboutPage() {
                   </div>
                 )}
                 <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-2">
-                  {qual.qualificationName}
+                  {qual.qualificationName?.toLowerCase().includes('pre') && qual.qualificationName?.toLowerCase().includes('post') && qual.qualificationName?.toLowerCase().includes('natal')
+                    ? `LEVEL 3 ${qual.qualificationName}`
+                    : qual.qualificationName}
                 </h3>
                 {qual.issuingBody && (
                   <p className="font-paragraph text-base text-soft-bronze mb-4">
