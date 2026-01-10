@@ -154,6 +154,7 @@ export default function FaceToFaceTrainingPage() {
                   ))}
                 </ul>
                 <button
+                  onClick={scrollToForm}
                   className={`w-full py-3 rounded-lg font-medium text-lg transition-all duration-300 ${
                     package_.featured
                       ? 'bg-soft-bronze text-soft-white hover:bg-soft-white hover:text-charcoal-black'
