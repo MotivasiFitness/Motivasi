@@ -2,10 +2,12 @@ import { Link } from 'react-router-dom';
 import { Instagram, Mail } from 'lucide-react';
 import { useState } from 'react';
 import { Image } from '@/components/ui/image';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const { t } = useLanguage();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +32,7 @@ export default function Footer() {
               <span className="font-heading text-lg font-bold text-soft-white">Motivasi</span>
             </Link>
             <p className="font-paragraph text-base text-warm-grey mb-6">
-              Empowering busy women to achieve fat loss and strength without extreme diets or intimidation.
+              {t.footer.empoweringBusy}
             </p>
             <div className="flex gap-4">
               <a 
@@ -76,9 +78,9 @@ export default function Footer() {
 
           {/* Newsletter */}
           <div>
-            <h4 className="font-heading text-xl font-bold mb-4">Stay Connected</h4>
+            <h4 className="font-heading text-xl font-bold mb-4">{t.footer.stayConnected}</h4>
             <p className="font-paragraph text-base text-warm-grey mb-4">
-              Get weekly tips on strength training and nutrition.
+              {t.footer.getWeeklyTips}
             </p>
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
               <input
@@ -93,7 +95,7 @@ export default function Footer() {
                 type="submit"
                 className="px-6 py-3 bg-soft-bronze text-soft-white rounded-lg font-paragraph text-base hover:bg-opacity-90 transition-colors"
               >
-                {isSubmitted ? 'Subscribed!' : 'Subscribe'}
+                {isSubmitted ? t.footer.subscribed : t.footer.subscribe}
               </button>
             </form>
           </div>
@@ -101,7 +103,7 @@ export default function Footer() {
 
         <div className="border-t border-warm-grey mt-12 pt-8 text-center">
           <p className="font-paragraph text-sm text-warm-grey">
-            © {new Date().getFullYear()} Motivasi. All rights reserved.
+            © {new Date().getFullYear()} Motivasi. {t.footer.allRightsReserved}
           </p>
         </div>
       </div>

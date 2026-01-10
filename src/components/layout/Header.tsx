@@ -3,9 +3,12 @@ import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { Image } from '@/components/ui/image';
 import { MiniCart } from '@/wix-verticals/react-pages/react-router/routes/root';
+import { useLanguage } from '@/i18n/LanguageContext';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { t } = useLanguage();
 
   return (
     <header className="bg-soft-white border-b border-warm-sand-beige sticky top-0 z-40">
@@ -28,32 +31,33 @@ export default function Header() {
               to="/" 
               className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
             >
-              Home
+              {t.nav.home}
             </Link>
             <Link 
               to="/about" 
               className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
             >
-              About
+              {t.nav.about}
             </Link>
             <Link 
               to="/blog" 
               className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
             >
-              Face-to-Face Training
+              {t.nav.faceToFaceTraining}
             </Link>
             <Link 
               to="/parq" 
               className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
             >
-              PAR-Q Form
+              {t.nav.parqForm}
             </Link>
             <Link 
               to="/store" 
               className="font-paragraph text-base bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors"
             >
-              Book Now
+              {t.nav.bookNow}
             </Link>
+            <LanguageSwitcher />
             <MiniCart cartIconClassName="ml-2" />
           </nav>
 
@@ -79,35 +83,35 @@ export default function Header() {
                 className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Home
+                {t.nav.home}
               </Link>
               <Link 
                 to="/about" 
                 className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                About
+                {t.nav.about}
               </Link>
               <Link 
                 to="/blog" 
                 className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Face-to-Face Training
+                {t.nav.faceToFaceTraining}
               </Link>
               <Link 
                 to="/parq" 
                 className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                PAR-Q Form
+                {t.nav.parqForm}
               </Link>
               <Link 
                 to="/store" 
                 className="font-paragraph text-base bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors text-center"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Book Now
+                {t.nav.bookNow}
               </Link>
             </div>
           </nav>
