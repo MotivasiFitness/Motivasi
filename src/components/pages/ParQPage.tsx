@@ -587,7 +587,7 @@ Additional Information: ${formData.additionalInfo}
             </div>
             <div className="bg-soft-white rounded-2xl p-8 border border-warm-sand-beige">
               <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
-                Personalization
+                Personalisation
               </h3>
               <p className="font-paragraph text-base text-warm-grey">
                 Your responses help us create a truly personalised programme that accounts for your unique circumstances, goals, and any special considerations.
