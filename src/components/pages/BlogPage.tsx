@@ -193,7 +193,7 @@ export default function FaceToFaceTrainingPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            {['Harpenden', 'Berkhamsted', 'Redbourn', 'Tring', 'Studham', 'Wheathampstead'].map((location) => (
+            {['Harpenden', 'Berkhamsted', 'Redbourn', 'Tring', 'Wheathampstead'].map((location) => (
               <div
                 key={location}
                 className="bg-soft-white/10 border border-soft-bronze/30 rounded-xl p-6 text-center hover:bg-soft-bronze/10 transition-colors duration-300"
@@ -313,7 +313,7 @@ export default function FaceToFaceTrainingPage() {
                       Locations
                     </h3>
                     <p className="font-paragraph text-warm-grey">
-                      Harpenden, Berkhamsted, Redbourn, Tring, Studham, Wheathampstead
+                      Harpenden, Berkhamsted, Redbourn, Tring, Wheathampstead
                     </p>
                   </div>
                 </div>
