@@ -15,6 +15,7 @@ import AboutPage from '@/components/pages/AboutPage';
 import BlogPage from '@/components/pages/BlogPage';
 import BlogPostPage from '@/components/pages/BlogPostPage';
 import ParQPage from '@/components/pages/ParQPage';
+import CoachingPackages from '@/components/store/CoachingPackages';
 
 // Main Layout with Header and Footer
 function SiteLayout() {
@@ -80,10 +81,10 @@ const router = createBrowserRouter([
         element: (
           <div className="bg-soft-white py-12 px-8 lg:px-20">
             <div className="max-w-[100rem] mx-auto">
-              <h1 className="font-heading text-5xl font-bold text-charcoal-black mb-8">
+              <h1 className="font-heading text-5xl font-bold text-charcoal-black mb-12">
                 Book Your Coaching Package
               </h1>
-              <StoreCollectionRoute productPageRoute="/products" />
+              <CoachingPackages />
             </div>
           </div>
         ),
