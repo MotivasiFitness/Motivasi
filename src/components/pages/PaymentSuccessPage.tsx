@@ -143,10 +143,10 @@ export default function PaymentSuccessPage() {
                 <div>
                   <h3 className="font-heading text-lg font-bold mb-2">Email Support</h3>
                   <a
-                    href="mailto:hello@motivasi.com"
+                    href="mailto:hello@motivasi.co.uk"
                     className="font-paragraph text-warm-grey hover:text-soft-bronze transition-colors"
                   >
-                    hello@motivasi.com
+                    hello@motivasi.co.uk
                   </a>
                 </div>
               </div>
@@ -197,7 +197,7 @@ export default function PaymentSuccessPage() {
                   Can I cancel my subscription?
                 </h3>
                 <p className="font-paragraph text-warm-grey">
-                  Yes, you can cancel anytime with no penalties. Just email us at hello@motivasi.com and we'll process your cancellation within 24 hours.
+                  Yes, you can cancel anytime with no penalties. Just email us at hello@motivasi.co.uk and we'll process your cancellation within 24 hours.
                 </p>
               </div>
               <div>
@@ -205,7 +205,7 @@ export default function PaymentSuccessPage() {
                   What if I have questions about my package?
                 </h3>
                 <p className="font-paragraph text-warm-grey">
-                  Our support team is here to help! Email hello@motivasi.com or call +44 (0) 7700 000 000 and we'll get back to you within 24 hours.
+                  Our support team is here to help! Email hello@motivasi.co.uk or call +44 (0) 7700 000 000 and we'll get back to you within 24 hours.
                 </p>
               </div>
               <div>

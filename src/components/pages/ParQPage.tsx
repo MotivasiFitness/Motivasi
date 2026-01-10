@@ -171,10 +171,10 @@ Additional Information: ${formData.additionalInfo}
         });
         setTimeout(() => setIsSubmitted(false), 5000);
       } else {
-        setSubmitError('Failed to submit form. Please try again or contact us directly at hello@motivasi.com');
+        setSubmitError('Failed to submit form. Please try again or contact us directly at hello@motivasi.co.uk');
       }
     } catch (error) {
-      setSubmitError('An error occurred while submitting the form. Please contact us directly at hello@motivasi.com');
+      setSubmitError('An error occurred while submitting the form. Please contact us directly at hello@motivasi.co.uk');
       console.error('Form submission error:', error);
     } finally {
       setIsSubmitting(false);

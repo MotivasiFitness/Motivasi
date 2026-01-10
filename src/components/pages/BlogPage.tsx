@@ -56,10 +56,10 @@ export default function FaceToFaceTrainingPage() {
         setFormData({ name: '', email: '', phone: '', message: '' });
         setTimeout(() => setIsSubmitted(false), 5000);
       } else {
-        setSubmitError('Failed to send message. Please try again or contact us directly at hello@motivasi.com');
+        setSubmitError('Failed to send message. Please try again or contact us directly at hello@motivasi.co.uk');
       }
     } catch (error) {
-      setSubmitError('An error occurred. Please contact us directly at hello@motivasi.com');
+      setSubmitError('An error occurred. Please contact us directly at hello@motivasi.co.uk');
       console.error('Form submission error:', error);
     } finally {
       setIsSubmitting(false);
@@ -300,8 +300,8 @@ export default function FaceToFaceTrainingPage() {
                     <h3 className="font-heading text-lg font-bold text-soft-white mb-1">
                       Email
                     </h3>
-                    <a href="mailto:hello@motivasi.com" className="font-paragraph text-warm-grey hover:text-soft-bronze transition-colors">
-                      hello@motivasi.com
+                    <a href="mailto:hello@motivasi.co.uk" className="font-paragraph text-warm-grey hover:text-soft-bronze transition-colors">
+                      hello@motivasi.co.uk
                     </a>
                   </div>
                 </div>
