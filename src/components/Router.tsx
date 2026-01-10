@@ -23,6 +23,8 @@ import PaymentSuccessPage from '@/components/pages/PaymentSuccessPage';
 import OnlineTrainingPage from '@/components/pages/OnlineTrainingPage';
 import PrivacyPage from '@/components/pages/PrivacyPage';
 import TermsPage from '@/components/pages/TermsPage';
+import DisclaimerPage from '@/components/pages/DisclaimerPage';
+import AccessibilityPage from '@/components/pages/AccessibilityPage';
 import CoachingPackages from '@/components/store/CoachingPackages';
 
 // Client Portal Pages
@@ -100,6 +102,14 @@ const router = createBrowserRouter([
       {
         path: "terms",
         element: <TermsPage />,
+      },
+      {
+        path: "disclaimer",
+        element: <DisclaimerPage />,
+      },
+      {
+        path: "accessibility",
+        element: <AccessibilityPage />,
       },
       {
         path: "checkout",

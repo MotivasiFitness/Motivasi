@@ -35,6 +35,8 @@ export default function CheckoutPage() {
     city: '',
     postcode: '',
     country: 'United Kingdom',
+    // Compliance
+    termsAccepted: false,
   });
 
   useEffect(() => {
@@ -117,6 +119,11 @@ export default function CheckoutPage() {
 
     if (!formData.address || !formData.city || !formData.postcode) {
       setPaymentError('Please fill in all billing address details');
+      return false;
+    }
+
+    if (!formData.termsAccepted) {
+      setPaymentError('You must accept the Terms & Conditions to proceed');
       return false;
     }
 
@@ -429,6 +436,32 @@ export default function CheckoutPage() {
                         placeholder="123"
                       />
                     </div>
+                  </div>
+                </div>
+
+                {/* Terms & Conditions & Refund Notice */}
+                <div className="space-y-6">
+                  {/* Refund Notice */}
+                  <div className="bg-soft-bronze/10 border border-soft-bronze/30 rounded-2xl p-6">
+                    <p className="font-paragraph text-sm text-charcoal-black leading-relaxed">
+                      <span className="font-bold">Important:</span> This is a digital training programme. You have a 7-day refund period provided the programme has not been accessed.
+                    </p>
+                  </div>
+
+                  {/* Terms Checkbox */}
+                  <div className="flex items-start gap-3 p-4 bg-soft-white border border-warm-sand-beige rounded-lg">
+                    <input
+                      type="checkbox"
+                      id="termsAccepted"
+                      name="termsAccepted"
+                      checked={formData.termsAccepted}
+                      onChange={handleInputChange}
+                      required
+                      className="w-5 h-5 accent-soft-bronze mt-0.5 flex-shrink-0 cursor-pointer"
+                    />
+                    <label htmlFor="termsAccepted" className="font-paragraph text-sm text-charcoal-black cursor-pointer flex-1">
+                      <span className="text-soft-bronze font-bold">*</span> I accept the <Link to="/terms" className="text-soft-bronze hover:underline">Terms & Conditions</Link> and have read the <Link to="/disclaimer" className="text-soft-bronze hover:underline">Disclaimer</Link>.
+                    </label>
                   </div>
                 </div>
 
