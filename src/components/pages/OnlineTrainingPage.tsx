@@ -122,9 +122,12 @@ export default function OnlineTrainingPage() {
       <section className="py-24 px-8 lg:px-20 bg-charcoal-black">
         <div className="max-w-[100rem] mx-auto">
           <div className="text-center mb-16">
-            <h2 className="font-heading text-5xl font-bold text-soft-white mb-6">
+            <h2 className="font-heading text-5xl font-bold text-soft-white mb-4">
               How It Works
             </h2>
+            <p className="font-paragraph text-xl text-soft-bronze font-medium mb-4">
+              Option A: Clean & Professional (Recommended)
+            </p>
             <p className="font-paragraph text-xl text-warm-grey max-w-3xl mx-auto">
               A simple, proven process to get you results.
             </p>
@@ -134,23 +137,23 @@ export default function OnlineTrainingPage() {
             {[
               {
                 step: "1",
-                title: "Complete Your Assessment",
-                desc: "Fill out the PAR-Q questionnaire and tell me about your goals, lifestyle, and any special considerations."
+                title: "Complete the PAR-Q Questionnaire",
+                desc: "Fill out our health questionnaire to ensure we understand your medical history, fitness level, and any special considerations."
               },
               {
                 step: "2",
-                title: "Initial Consultation",
-                desc: "We'll have a 30-minute call to discuss your needs, answer questions, and create your personalised plan."
+                title: "Book a Free 15-Minute Consultation Call",
+                desc: "Schedule a brief call with us to discuss your goals, answer any questions, and confirm we're the right fit for your needs."
               },
               {
                 step: "3",
-                title: "Start Your Program",
-                desc: "Access your custom workouts and nutrition guidance in the app. Begin training on your schedule."
+                title: "Choose Your Coaching Plan & Complete Onboarding",
+                desc: "Select the plan that works for you (Starter, Signature, or VIP) and complete your account setup to access the coaching app."
               },
               {
                 step: "4",
-                title: "Weekly Check-Ins",
-                desc: "Regular calls to track progress, adjust your program, and celebrate your wins together."
+                title: "Start Your Personalised Online Coaching Programme",
+                desc: "Begin your custom workouts, nutrition guidance, and weekly check-ins. Train on your schedule and achieve real results."
               }
             ].map((item, idx) => (
               <div key={idx} className="relative">
