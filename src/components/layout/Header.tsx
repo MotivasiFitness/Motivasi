@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import { Image } from '@/components/ui/image';
 import { MiniCart } from '@/wix-verticals/react-pages/react-router/routes/root';
 
 export default function Header() {
@@ -11,8 +12,13 @@ export default function Header() {
       <div className="max-w-[100rem] mx-auto px-8 lg:px-20">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="font-heading text-2xl font-bold text-charcoal-black">
-            Motivasi
+          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <Image
+              src="https://static.wixstatic.com/media/93e866_35278b477cff4684894dddf2229dd4f2~mv2.png?originWidth=768&originHeight=192"
+              alt="Motivasi Logo"
+              className="h-12 md:h-14 w-auto"
+              width={160}
+            />
           </Link>
 
           {/* Desktop Navigation */}

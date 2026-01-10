@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Instagram, Mail } from 'lucide-react';
 import { useState } from 'react';
+import { Image } from '@/components/ui/image';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -19,7 +20,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Brand Section */}
           <div>
-            <h3 className="font-heading text-3xl font-bold mb-4">Motivasi</h3>
+            <Link to="/" className="inline-block mb-4 hover:opacity-80 transition-opacity">
+              <Image
+                src="https://static.wixstatic.com/media/93e866_c83bedb44e494ce2ba17bf388750069b~mv2.png?originWidth=512&originHeight=512"
+                alt="Motivasi Logo"
+                className="h-10 w-10"
+                width={40}
+              />
+            </Link>
             <p className="font-paragraph text-base text-warm-grey mb-6">
               Empowering busy women to achieve fat loss and strength without extreme diets or intimidation.
             </p>
