@@ -37,6 +37,7 @@ export default function CheckoutPage() {
     country: 'United Kingdom',
     // Compliance
     termsAccepted: false,
+    disclaimerAcknowledged: false,
   });
 
   useEffect(() => {
@@ -51,11 +52,19 @@ export default function CheckoutPage() {
   }, [navigate]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    const { name, value, type } = e.target;
+    if (type === 'checkbox') {
+      const checked = (e.target as HTMLInputElement).checked;
+      setFormData(prev => ({
+        ...prev,
+        [name]: checked
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   const formatCardNumber = (value: string) => {
@@ -124,6 +133,11 @@ export default function CheckoutPage() {
 
     if (!formData.termsAccepted) {
       setPaymentError('You must accept the Terms & Conditions to proceed');
+      return false;
+    }
+
+    if (!formData.disclaimerAcknowledged) {
+      setPaymentError('You must acknowledge that you have read the Disclaimer to proceed');
       return false;
     }
 
@@ -461,6 +475,22 @@ export default function CheckoutPage() {
                     />
                     <label htmlFor="termsAccepted" className="font-paragraph text-sm text-charcoal-black cursor-pointer flex-1">
                       <span className="text-soft-bronze font-bold">*</span> I accept the <Link to="/terms" className="text-soft-bronze hover:underline">Terms & Conditions</Link> and have read the <Link to="/disclaimer" className="text-soft-bronze hover:underline">Disclaimer</Link>.
+                    </label>
+                  </div>
+
+                  {/* Disclaimer Acknowledgement Checkbox */}
+                  <div className="flex items-start gap-3 p-4 bg-soft-white border border-warm-sand-beige rounded-lg">
+                    <input
+                      type="checkbox"
+                      id="disclaimerAcknowledged"
+                      name="disclaimerAcknowledged"
+                      checked={formData.disclaimerAcknowledged}
+                      onChange={handleInputChange}
+                      required
+                      className="w-5 h-5 accent-soft-bronze mt-0.5 flex-shrink-0 cursor-pointer"
+                    />
+                    <label htmlFor="disclaimerAcknowledged" className="font-paragraph text-sm text-charcoal-black cursor-pointer flex-1">
+                      <span className="text-soft-bronze font-bold">*</span> I acknowledge that I have read and understood the <Link to="/disclaimer" className="text-soft-bronze hover:underline">Disclaimer</Link>.
                     </label>
                   </div>
                 </div>

@@ -182,11 +182,11 @@ export default function TermsPage() {
 
                 <div>
                   <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
-                    Health Monitoring
+                    Disclaimer
                   </h3>
                   <div className="space-y-4 font-paragraph text-base text-warm-grey leading-relaxed">
                     <p>
-                      You are responsible for monitoring your own health and stopping exercise immediately if you experience chest pain, severe shortness of breath, dizziness, or any other concerning symptoms. Seek immediate medical attention if you experience any of these symptoms.
+                      Please read our <Link to="/disclaimer" className="text-soft-bronze hover:underline">Disclaimer</Link> carefully. It contains important information about the limitations of our services, assumption of risk, and your responsibilities. By using Motivasi's services, you acknowledge that you have read and understood the Disclaimer.
                     </p>
                   </div>
                 </div>
