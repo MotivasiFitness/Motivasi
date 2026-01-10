@@ -77,7 +77,7 @@ export default function Header() {
               </>
             ) : (
               <Link 
-                to="/store" 
+                to="/portal" 
                 className="font-paragraph text-base bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors"
               >
                 Client Portal
@@ -161,7 +161,7 @@ export default function Header() {
                 </>
               ) : (
                 <Link 
-                  to="/store" 
+                  to="/portal" 
                   className="font-paragraph text-base bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors text-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
