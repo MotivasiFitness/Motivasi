@@ -21,6 +21,7 @@ import ParQPage from '@/components/pages/ParQPage';
 import CheckoutPage from '@/components/pages/CheckoutPage';
 import PaymentSuccessPage from '@/components/pages/PaymentSuccessPage';
 import OnlineTrainingPage from '@/components/pages/OnlineTrainingPage';
+import PrivacyPage from '@/components/pages/PrivacyPage';
 import CoachingPackages from '@/components/store/CoachingPackages';
 
 // Client Portal Pages
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
       {
         path: "online-training",
         element: <OnlineTrainingPage />,
+      },
+      {
+        path: "privacy",
+        element: <PrivacyPage />,
       },
       {
         path: "checkout",
