@@ -273,8 +273,8 @@ export default function HomePage() {
       <section className="relative h-[80vh] w-full overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://static.wixstatic.com/media/93e866_29d3db1e57074d5c8363f791b0e65775~mv2.png"
-            alt="Modern home gym setup with equipment"
+            src="https://static.wixstatic.com/media/93e866_6e3c159e55534317b0b18c64fe452474~mv2.png"
+            alt="Professional home gym setup with strength training equipment"
             className="w-full h-full object-cover"
             width={1600}
           />
