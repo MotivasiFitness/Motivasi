@@ -1,14 +1,16 @@
 import { Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogOut } from 'lucide-react';
 import { useState } from 'react';
 import { Image } from '@/components/ui/image';
 import { MiniCart } from '@/wix-verticals/react-pages/react-router/routes/root';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { useMember } from '@/integrations';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { t } = useLanguage();
+  const { member, isAuthenticated, actions } = useMember();
 
   return (
     <header className="bg-soft-white border-b border-warm-sand-beige sticky top-0 z-40">
@@ -63,12 +65,30 @@ export default function Header() {
             >
               {t.nav.contact}
             </a>
-            <Link 
-              to="/store" 
-              className="font-paragraph text-base bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors"
-            >
-              {t.nav.bookNow}
-            </Link>
+            {isAuthenticated ? (
+              <>
+                <Link 
+                  to="/portal" 
+                  className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+                >
+                  My Portal
+                </Link>
+                <button
+                  onClick={actions.logout}
+                  className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors flex items-center gap-2"
+                >
+                  <LogOut size={16} />
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <Link 
+                to="/store" 
+                className="font-paragraph text-base bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors"
+              >
+                {t.nav.bookNow}
+              </Link>
+            )}
             <LanguageSwitcher />
             <MiniCart cartIconClassName="ml-2" />
           </nav>
@@ -132,13 +152,35 @@ export default function Header() {
               >
                 {t.nav.contact}
               </a>
-              <Link 
-                to="/store" 
-                className="font-paragraph text-base bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors text-center"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {t.nav.bookNow}
-              </Link>
+              {isAuthenticated ? (
+                <>
+                  <Link 
+                    to="/portal" 
+                    className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    My Portal
+                  </Link>
+                  <button
+                    onClick={() => {
+                      actions.logout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors flex items-center gap-2"
+                  >
+                    <LogOut size={16} />
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <Link 
+                  to="/store" 
+                  className="font-paragraph text-base bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors text-center"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {t.nav.bookNow}
+                </Link>
+              )}
             </div>
           </nav>
         )}

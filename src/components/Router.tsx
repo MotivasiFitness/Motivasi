@@ -8,6 +8,7 @@ import { ProductDetailsRoute, productRouteLoader } from '@/wix-verticals/react-p
 import { StoreCollectionRoute, storeCollectionRouteLoader } from '@/wix-verticals/react-pages/react-router/routes/store-collection';
 import { defaultStoreCollectionRouteRedirectLoader } from '@/wix-verticals/react-pages/react-router/routes/store-redirect';
 import { Cart } from '@/wix-verticals/react-pages/react-router/routes/cart';
+import { MemberProtectedRoute } from '@/components/ui/member-protected-route';
 
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -20,6 +21,16 @@ import CheckoutPage from '@/components/pages/CheckoutPage';
 import PaymentSuccessPage from '@/components/pages/PaymentSuccessPage';
 import OnlineTrainingPage from '@/components/pages/OnlineTrainingPage';
 import CoachingPackages from '@/components/store/CoachingPackages';
+
+// Client Portal Pages
+import ClientPortalLayout from '@/components/pages/ClientPortal/ClientPortalLayout';
+import DashboardPage from '@/components/pages/ClientPortal/DashboardPage';
+import MyProgramPage from '@/components/pages/ClientPortal/MyProgramPage';
+import NutritionPage from '@/components/pages/ClientPortal/NutritionPage';
+import ProgressPage from '@/components/pages/ClientPortal/ProgressPage';
+import BookingsPage from '@/components/pages/ClientPortal/BookingsPage';
+import MessagesPage from '@/components/pages/ClientPortal/MessagesPage';
+import VideoLibraryPage from '@/components/pages/ClientPortal/VideoLibraryPage';
 
 // Main Layout with Header and Footer
 function SiteLayout() {
@@ -143,6 +154,44 @@ const router = createBrowserRouter([
             </div>
           </div>
         ),
+      },
+      {
+        path: "portal",
+        element: (
+          <MemberProtectedRoute>
+            <ClientPortalLayout />
+          </MemberProtectedRoute>
+        ),
+        children: [
+          {
+            index: true,
+            element: <DashboardPage />,
+          },
+          {
+            path: "program",
+            element: <MyProgramPage />,
+          },
+          {
+            path: "nutrition",
+            element: <NutritionPage />,
+          },
+          {
+            path: "progress",
+            element: <ProgressPage />,
+          },
+          {
+            path: "bookings",
+            element: <BookingsPage />,
+          },
+          {
+            path: "messages",
+            element: <MessagesPage />,
+          },
+          {
+            path: "video-library",
+            element: <VideoLibraryPage />,
+          },
+        ],
       },
       {
         path: "*",
