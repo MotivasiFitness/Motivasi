@@ -76,9 +76,9 @@ export default function Footer() {
               <Link to="/privacy" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
                 {t.nav.privacyPolicy}
               </Link>
-              <a href="#terms" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
+              <Link to="/terms" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
                 {t.nav.terms}
-              </a>
+              </Link>
             </nav>
           </div>
 

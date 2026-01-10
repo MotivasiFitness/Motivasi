@@ -22,6 +22,7 @@ import CheckoutPage from '@/components/pages/CheckoutPage';
 import PaymentSuccessPage from '@/components/pages/PaymentSuccessPage';
 import OnlineTrainingPage from '@/components/pages/OnlineTrainingPage';
 import PrivacyPage from '@/components/pages/PrivacyPage';
+import TermsPage from '@/components/pages/TermsPage';
 import CoachingPackages from '@/components/store/CoachingPackages';
 
 // Client Portal Pages
@@ -95,6 +96,10 @@ const router = createBrowserRouter([
       {
         path: "privacy",
         element: <PrivacyPage />,
+      },
+      {
+        path: "terms",
+        element: <TermsPage />,
       },
       {
         path: "checkout",
