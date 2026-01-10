@@ -79,8 +79,8 @@ export default function OnlineTrainingPage() {
               },
               {
                 icon: <Smartphone size={32} />,
-                title: "Private Coaching App",
-                desc: "Access your workouts, nutrition guidance, progress tracking, and messaging with me—all in one secure app."
+                title: "Private Coaching Platform",
+                desc: "Access your workouts, nutrition guidance, progress tracking, and direct messaging with me in one secure coaching platform. ✔ No promises ✔ No tech pressure ✔ Still feels premium"
               },
               {
                 icon: <Heart size={32} />,
