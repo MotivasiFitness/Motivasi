@@ -80,7 +80,7 @@ export default function OnlineTrainingPage() {
               {
                 icon: <Smartphone size={32} />,
                 title: "Private Coaching Platform",
-                desc: "Access your workouts, nutrition guidance, progress tracking, and direct messaging with me in one secure coaching platform. ✔ No promises ✔ No tech pressure ✔ Still feels premium"
+                desc: "Access your workouts, nutrition guidance, progress tracking, and direct messaging with me in one secure coaching platform."
               },
               {
                 icon: <Heart size={32} />,
@@ -90,7 +90,7 @@ export default function OnlineTrainingPage() {
               {
                 icon: <Clock size={32} />,
                 title: "Flexible Scheduling",
-                desc: "Train on your schedule. Workouts range from 20-60 minutes, so you can fit fitness into your busy life."
+                desc: "Train on your schedule. Workouts range from 30-60 minutes, so you can fit fitness into your busy life."
               },
               {
                 icon: <Zap size={32} />,
@@ -276,7 +276,7 @@ export default function OnlineTrainingPage() {
                   "2 custom workouts per week",
                   "Bi-weekly check-in calls",
                   "Nutrition guidance",
-                  "App access",
+                  "Platform access",
                   "Email support"
                 ],
                 cta: "Get Started"
@@ -290,7 +290,7 @@ export default function OnlineTrainingPage() {
                   "4 custom workouts per week",
                   "Weekly check-in calls",
                   "Detailed nutrition guidance",
-                  "App access",
+                  "Platform access",
                   "Priority support",
                   "Form video reviews"
                 ],
@@ -306,7 +306,7 @@ export default function OnlineTrainingPage() {
                   "5-6 custom workouts per week",
                   "Twice-weekly check-in calls",
                   "Meal planning & recipes",
-                  "App access",
+                  "Platform access",
                   "24/7 priority support",
                   "Form video reviews",
                   "Accountability texts"
