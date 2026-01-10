@@ -2,8 +2,10 @@ import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Clock, Users, CheckCircle, ArrowRight, Mail, Phone, AlertCircle } from 'lucide-react';
 import { Image } from '@/components/ui/image';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 export default function FaceToFaceTrainingPage() {
+  const { t } = useLanguage();
   const contactFormRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({
     name: '',
@@ -70,10 +72,10 @@ export default function FaceToFaceTrainingPage() {
       <section className="py-24 px-8 lg:px-20 bg-warm-sand-beige">
         <div className="max-w-[100rem] mx-auto text-center">
           <h1 className="font-heading text-6xl font-bold text-charcoal-black mb-6">
-            Face-to-Face Personal Training
+            {t.blog.faceToFacePersonalTraining}
           </h1>
           <p className="font-paragraph text-xl text-charcoal-black max-w-3xl mx-auto">
-            Personalised one-on-one coaching in a supportive environment. Transform your strength and confidence with direct guidance from a certified trainer.
+            {t.blog.personalisedOneOnOne}
           </p>
         </div>
       </section>
@@ -83,38 +85,38 @@ export default function FaceToFaceTrainingPage() {
         <div className="max-w-[100rem] mx-auto">
           <div className="text-center mb-16">
             <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-6">
-              Training Options
+              {t.blog.trainingOptions}
             </h2>
             <p className="font-paragraph text-xl text-charcoal-black max-w-3xl mx-auto">
-              Choose the package that fits your goals and schedule.
+              {t.blog.choosePackage}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
             {[
               {
-                title: "8-Week Package",
+                title: t.blog.eightWeekPackage,
                 price: "£640",
-                duration: "16 sessions",
-                description: "Build momentum with consistent training over 8 weeks.",
+                duration: t.blog.sixteenSessions,
+                description: t.blog.buildMomentum,
                 features: [
-                  "Progressive training programme",
-                  "Nutrition Guidance",
-                  "Form analysis & adjustments",
-                  "Priority scheduling"
+                  t.blog.progressiveTraining,
+                  t.blog.nutritionGuidance,
+                  t.blog.formAnalysisAdjustments,
+                  t.blog.priorityScheduling
                 ],
                 featured: true
               },
               {
-                title: "12-Week Transformation",
+                title: t.blog.twelveWeekTransformation,
                 price: "£960",
-                duration: "24 sessions",
-                description: "Complete transformation programme with comprehensive support.",
+                duration: t.blog.twentyFourSessions,
+                description: t.blog.completeTransformation,
                 features: [
-                  "Personalised training sessions",
-                  "Nutrition Guidance",
-                  "Progress tracking & photos",
-                  "Flexible scheduling"
+                  t.blog.personalisedTrainingSessions,
+                  t.blog.nutritionGuidance,
+                  t.blog.progressTracking,
+                  t.blog.flexibleScheduling
                 ]
               }
             ].map((package_, idx) => (
@@ -128,7 +130,7 @@ export default function FaceToFaceTrainingPage() {
               >
                 {package_.featured && (
                   <div className="inline-block bg-soft-bronze text-soft-white px-4 py-1 rounded-full text-sm font-medium mb-4">
-                    Most Popular
+                    {t.blog.mostPopular}
                   </div>
                 )}
                 <h3 className={`font-heading text-3xl font-bold mb-2 ${package_.featured ? 'text-soft-white' : 'text-charcoal-black'}`}>
@@ -161,7 +163,7 @@ export default function FaceToFaceTrainingPage() {
                       : 'bg-charcoal-black text-soft-white hover:bg-soft-bronze'
                   }`}
                 >
-                  Get Started
+                  {t.blog.getStarted}
                 </button>
               </div>
             ))}
@@ -174,10 +176,10 @@ export default function FaceToFaceTrainingPage() {
         <div className="max-w-[100rem] mx-auto">
           <div className="text-center mb-16">
             <h2 className="font-heading text-5xl font-bold text-soft-white mb-6">
-              Service Areas
+              {t.blog.serviceAreas}
             </h2>
             <p className="font-paragraph text-xl text-warm-grey max-w-3xl mx-auto">
-              I provide face-to-face personal training across the following locations.
+              {t.blog.providesFaceToFace}
             </p>
           </div>
 
@@ -197,7 +199,7 @@ export default function FaceToFaceTrainingPage() {
 
           <div className="mt-16 text-center">
             <p className="font-paragraph text-lg text-warm-grey max-w-2xl mx-auto">
-              Can't find your location? Get in touch to discuss whether I can accommodate your area.
+              {t.blog.cantFindLocation}
             </p>
           </div>
         </div>
@@ -209,29 +211,29 @@ export default function FaceToFaceTrainingPage() {
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
               <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-8">
-                Why Choose Face-to-Face Training?
+                {t.blog.whyChooseFaceToFace}
               </h2>
               <div className="space-y-6">
                 {[
                   {
                     icon: <Users size={24} />,
-                    title: "Real-Time Feedback",
-                    desc: "Immediate form corrections and adjustments to maximise results and prevent injury."
+                    title: t.blog.realTimeFeedback,
+                    desc: t.blog.realTimeFeedbackDesc
                   },
                   {
                     icon: <Clock size={24} />,
-                    title: "Accountability & Motivation",
-                    desc: "Direct support and encouragement to keep you committed to your goals."
+                    title: t.blog.accountabilityMotivation,
+                    desc: t.blog.accountabilityMotivationDesc
                   },
                   {
                     icon: <MapPin size={24} />,
-                    title: "Flexible Locations",
-                    desc: "Train at your preferred location—home, gym, or outdoor space."
+                    title: t.blog.flexibleLocations,
+                    desc: t.blog.flexibleLocationsDesc
                   },
                   {
                     icon: <CheckCircle size={24} />,
-                    title: "Personalised Progression",
-                    desc: "Your trainer adapts your programme based on real-time performance and feedback."
+                    title: t.blog.personalisedProgression,
+                    desc: t.blog.personalisedProgressionDesc
                   }
                 ].map((item, idx) => (
                   <div key={idx} className="flex gap-4">
@@ -272,10 +274,10 @@ export default function FaceToFaceTrainingPage() {
             {/* Contact Info */}
             <div>
               <h2 className="font-heading text-5xl font-bold text-soft-white mb-8">
-                Get in Touch
+                {t.blog.getInTouch}
               </h2>
               <p className="font-paragraph text-lg text-warm-grey mb-12">
-                Ready to start your face-to-face training journey? Reach out to discuss your goals and find the perfect package for you.
+                {t.blog.readyToStart}
               </p>
 
               <div className="space-y-8">
@@ -326,7 +328,7 @@ export default function FaceToFaceTrainingPage() {
             {/* Contact Form */}
             <div ref={contactFormRef} className="bg-soft-white rounded-2xl p-8 md:p-12">
               <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
-                Send a Message
+                {t.blog.sendMessage}
               </h3>
               {isSubmitted && (
                 <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex gap-3">
@@ -351,7 +353,7 @@ export default function FaceToFaceTrainingPage() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="name" className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
-                    Full Name
+                    {t.blog.fullName}
                   </label>
                   <input
                     type="text"
@@ -367,7 +369,7 @@ export default function FaceToFaceTrainingPage() {
 
                 <div>
                   <label htmlFor="email" className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
-                    Email Address
+                    {t.blog.emailAddress}
                   </label>
                   <input
                     type="email"
@@ -383,7 +385,7 @@ export default function FaceToFaceTrainingPage() {
 
                 <div>
                   <label htmlFor="phone" className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
-                    Phone Number
+                    {t.blog.phoneNumber}
                   </label>
                   <input
                     type="tel"
@@ -398,7 +400,7 @@ export default function FaceToFaceTrainingPage() {
 
                 <div>
                   <label htmlFor="message" className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
-                    Message
+                    {t.blog.message}
                   </label>
                   <textarea
                     id="message"
@@ -417,7 +419,7 @@ export default function FaceToFaceTrainingPage() {
                   disabled={isSubmitting}
                   className="w-full bg-charcoal-black text-soft-white py-3 rounded-lg font-medium text-lg hover:bg-soft-bronze transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                  {isSubmitting ? t.blog.sending : t.blog.sendBtn}
                 </button>
               </form>
             </div>
@@ -429,23 +431,23 @@ export default function FaceToFaceTrainingPage() {
       <section className="py-24 px-8 lg:px-20 bg-soft-bronze">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="font-heading text-5xl font-bold text-soft-white mb-6">
-            Ready to Transform?
+            {t.blog.readyToTransform}
           </h2>
           <p className="font-paragraph text-lg text-soft-white mb-8">
-            Start your face-to-face training journey today. Limited spaces available for new clients.
+            {t.blog.startYourJourney}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
               onClick={scrollToForm}
               className="bg-soft-white text-soft-bronze px-8 py-4 rounded-lg font-medium text-lg hover:bg-opacity-90 transition-colors"
             >
-              Book a Consultation
+              {t.blog.bookConsultation}
             </button>
             <Link
               to="/"
               className="border-2 border-soft-white text-soft-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-white/10 transition-colors inline-flex items-center justify-center gap-2"
             >
-              Back to Home
+              {t.blog.backToHome}
               <ArrowRight size={20} />
             </Link>
           </div>

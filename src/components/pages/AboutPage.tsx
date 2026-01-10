@@ -3,8 +3,10 @@ import { Award, Heart } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { BaseCrudService } from '@/integrations';
 import { TrainerQualifications } from '@/entities';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 export default function AboutPage() {
+  const { t } = useLanguage();
   const [qualifications, setQualifications] = useState<TrainerQualifications[]>([]);
 
   useEffect(() => {
@@ -27,16 +29,16 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="font-heading text-6xl font-bold text-charcoal-black mb-6">
-                Meet Your Coach
+                {t.about.meetYourCoach}
               </h1>
               <p className="font-paragraph text-xl text-charcoal-black mb-6 leading-relaxed">
-                I'm passionate about helping busy women discover their strength and transform their relationship with fitness and nutrition.
+                {t.about.passionateAbout}
               </p>
               <p className="font-paragraph text-lg text-warm-grey mb-6 leading-relaxed">
-                With specialised training in pre/postnatal fitness, advanced nutrition, and menopause support, I understand the unique challenges women face at different life stages.
+                {t.about.specialisedTraining}
               </p>
               <p className="font-paragraph text-lg text-warm-grey leading-relaxed">
-                My approach is simple: sustainable strength training and nutrition guidance that fits your busy lifestyle—no extreme diets, no intimidation, just real results.
+                {t.about.approachSimple}
               </p>
             </div>
 
@@ -62,10 +64,10 @@ export default function AboutPage() {
               <Heart className="text-soft-white" size={32} />
             </div>
             <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-6">
-              My Mission
+              {t.about.myMission}
             </h2>
             <p className="font-paragraph text-xl text-charcoal-black leading-relaxed">
-              To empower busy women 35+ to achieve sustainable fat loss and build real strength without extreme diets or feeling intimidated. I believe every woman deserves to feel confident, capable, and strong in her own body.
+              {t.about.missionDesc}
             </p>
           </div>
         </div>
@@ -79,10 +81,10 @@ export default function AboutPage() {
               <Award className="text-soft-white" size={32} />
             </div>
             <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-6">
-              Qualifications & Expertise
+              {t.about.qualificationsExpertise}
             </h2>
             <p className="font-paragraph text-xl text-charcoal-black max-w-3xl mx-auto">
-              Certified and specialised to support you through every stage of your fitness journey.
+              {t.about.certifiedAndSpecialised}
             </p>
           </div>
 
@@ -141,38 +143,38 @@ export default function AboutPage() {
         <div className="max-w-[100rem] mx-auto">
           <div className="text-center mb-16">
             <h2 className="font-heading text-5xl font-bold text-soft-white mb-6">
-              My Coaching Approach
+              {t.about.myCoachingApproach}
             </h2>
             <p className="font-paragraph text-xl text-warm-grey max-w-3xl mx-auto">
-              A holistic, sustainable method that respects your time, your body, and your goals.
+              {t.about.holisticSustainable}
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center p-8">
               <h3 className="font-heading text-3xl font-bold text-soft-bronze mb-4">
-                Personalised
+                {t.about.personalised}
               </h3>
               <p className="font-paragraph text-base text-warm-grey">
-                Every program is tailored to your unique needs, schedule, and fitness level. No cookie-cutter plans.
+                {t.about.personalisedDesc}
               </p>
             </div>
 
             <div className="text-center p-8">
               <h3 className="font-heading text-3xl font-bold text-soft-bronze mb-4">
-                Evidence-Based
+                {t.about.evidenceBased}
               </h3>
               <p className="font-paragraph text-base text-warm-grey">
-                Training and nutrition strategies backed by science and proven through years of client success.
+                {t.about.evidenceBasedDesc}
               </p>
             </div>
 
             <div className="text-center p-8">
               <h3 className="font-heading text-3xl font-bold text-soft-bronze mb-4">
-                Supportive
+                {t.about.supportive}
               </h3>
               <p className="font-paragraph text-base text-warm-grey">
-                Weekly check-ins and ongoing support to keep you accountable and motivated throughout your journey.
+                {t.about.supportiveDesc}
               </p>
             </div>
           </div>

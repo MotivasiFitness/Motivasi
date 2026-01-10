@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 export default function ParQPage() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     // Basic Information
     firstName: '',
@@ -263,10 +265,10 @@ Additional Information: ${formData.additionalInfo}
       <section className="py-20 px-8 lg:px-20 bg-warm-sand-beige">
         <div className="max-w-[100rem] mx-auto text-center">
           <h1 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-6">
-            Women's Personal Training<br />PAR-Q & Health Questionnaire
+            {t.parq.parqTitle}
           </h1>
           <p className="font-paragraph text-lg text-charcoal-black max-w-3xl mx-auto">
-            Before starting your personal training journey, we need to understand your health background. This questionnaire helps us create a safe, personalised programme tailored to your needs.
+            {t.parq.parqSubtitle}
           </p>
         </div>
       </section>

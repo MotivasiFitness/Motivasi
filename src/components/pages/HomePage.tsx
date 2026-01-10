@@ -6,6 +6,7 @@ import { CheckCircle, ArrowRight, Star, Activity, Heart, Zap, ShieldCheck } from
 import { Image } from '@/components/ui/image';
 import { BaseCrudService } from '@/integrations';
 import { ClientTestimonials } from '@/entities';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 // --- Utility Components ---
 
@@ -80,6 +81,7 @@ import { useAnimation } from 'framer-motion';
 
 export default function HomePage() {
   // --- Data Fidelity Protocol: Identify, Canonize, Preserve ---
+  const { t } = useLanguage();
   const [testimonials, setTestimonials] = useState<ClientTestimonials[]>([]);
 
   useEffect(() => {
@@ -114,7 +116,7 @@ export default function HomePage() {
           <div className="max-w-2xl">
             <AnimatedElement className="mb-6">
               <span className="inline-block py-1 px-3 border border-soft-bronze rounded-full text-soft-bronze text-sm tracking-widest uppercase font-medium">
-                Motivasi - Online Coaching for Women 35+
+                {t.home.tagline}
               </span>
             </AnimatedElement>
             
@@ -127,7 +129,7 @@ export default function HomePage() {
                     transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
                     className="block"
                   >
-                    Sculpt Your
+                    {t.home.heroTitle}
                   </motion.span>
                 </span>
                 <span className="block overflow-hidden text-soft-bronze">
@@ -137,7 +139,7 @@ export default function HomePage() {
                     transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
                     className="block"
                   >
-                    Strength.
+                    {t.home.heroSubtitle}
                   </motion.span>
                 </span>
               </h1>
@@ -145,7 +147,7 @@ export default function HomePage() {
 
             <AnimatedElement className="mb-10 delay-300">
               <p className="text-xl md:text-2xl text-warm-grey leading-relaxed max-w-lg">
-                I help busy women achieve fat loss and strength without extreme diets, intimidation, or hours in the gym.
+                {t.home.readyToFeelDesc}
               </p>
             </AnimatedElement>
 
@@ -155,7 +157,7 @@ export default function HomePage() {
                 className="group relative overflow-hidden bg-charcoal-black text-soft-white px-10 py-5 rounded-full font-medium text-lg transition-all hover:shadow-xl hover:shadow-soft-bronze/20"
               >
                 <span className="relative z-10 flex items-center gap-2">
-                  Start Your Journey <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  {t.home.startJourney} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
                 <div className="absolute inset-0 bg-soft-bronze transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 ease-out" />
               </Link>
@@ -163,7 +165,7 @@ export default function HomePage() {
                 to="/about"
                 className="group flex items-center gap-2 px-10 py-5 rounded-full border border-charcoal-black/20 text-charcoal-black font-medium text-lg hover:bg-warm-sand-beige/30 transition-colors"
               >
-                My Philosophy
+                {t.home.myPhilosophy}
               </Link>
             </AnimatedElement>
           </div>
@@ -195,13 +197,13 @@ export default function HomePage() {
         >
           {[...Array(4)].map((_, i) => (
             <React.Fragment key={i}>
-              <span className="text-4xl md:text-5xl font-heading text-soft-white/90">Strength</span>
+              <span className="text-4xl md:text-5xl font-heading text-soft-white/90">{t.home.marqueeStrength}</span>
               <span className="text-2xl text-soft-bronze">✦</span>
-              <span className="text-4xl md:text-5xl font-heading text-soft-white/90">Confidence</span>
+              <span className="text-4xl md:text-5xl font-heading text-soft-white/90">{t.home.marqueeConfidence}</span>
               <span className="text-2xl text-soft-bronze">✦</span>
-              <span className="text-4xl md:text-5xl font-heading text-soft-white/90">Balance</span>
+              <span className="text-4xl md:text-5xl font-heading text-soft-white/90">{t.home.marqueeBalance}</span>
               <span className="text-2xl text-soft-bronze">✦</span>
-              <span className="text-4xl md:text-5xl font-heading text-soft-white/90">Nutrition</span>
+              <span className="text-4xl md:text-5xl font-heading text-soft-white/90">{t.home.marqueeNutrition}</span>
               <span className="text-2xl text-soft-bronze">✦</span>
             </React.Fragment>
           ))}
@@ -215,8 +217,8 @@ export default function HomePage() {
             <div className="sticky top-32">
               <AnimatedElement>
                 <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-8 leading-tight">
-                  The Transformation <br/>
-                  <span className="text-soft-bronze italic">You Deserve.</span>
+                  {t.home.transformationTitle} <br/>
+                  <span className="text-soft-bronze italic">{t.home.transformationSubtitle}</span>
                 </h2>
               </AnimatedElement>
               <AnimatedElement className="delay-200">
@@ -225,7 +227,7 @@ export default function HomePage() {
                   You've tried the crash diets. You've done the endless cardio. It's time for a sustainable approach that honours your body and your busy life.
                 </p>
                 <Link to="/about" className="text-charcoal-black font-medium border-b border-soft-bronze pb-1 hover:text-soft-bronze transition-colors inline-flex items-center gap-2">
-                  Read full bio <ArrowRight size={16} />
+                  {t.home.readFullBio} <ArrowRight size={16} />
                 </Link>
               </AnimatedElement>
             </div>
@@ -235,18 +237,18 @@ export default function HomePage() {
             {[
               {
                 icon: <ShieldCheck className="w-8 h-8 text-soft-white" />,
-                title: "No Extreme Diets",
-                desc: "Sustainable nutrition strategies that fit your busy lifestyle without deprivation. We focus on fueling your body, not starving it."
+                title: t.home.noExtremeDiets,
+                desc: t.home.noExtremeDietsDesc
               },
               {
                 icon: <Zap className="w-8 h-8 text-soft-white" />,
-                title: "Build Real Strength",
-                desc: "Progressive training programs designed to build confidence and capability. Feel stronger carrying groceries, playing with kids, and living life."
+                title: t.home.buildRealStrength,
+                desc: t.home.buildRealStrengthDesc
               },
               {
                 icon: <Activity className="w-8 h-8 text-soft-white" />,
-                title: "Sustainable Results",
-                desc: "We build habits that last a lifetime. This isn't a 6-week fix; it's a blueprint for a healthier, stronger future you."
+                title: t.home.sustainableResults,
+                desc: t.home.sustainableResultsDesc
               }
             ].map((item, idx) => (
               <AnimatedElement key={idx} className="group bg-soft-white p-10 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-500 border border-warm-sand-beige/50">
@@ -283,10 +285,10 @@ export default function HomePage() {
         <div className="relative z-10 text-center max-w-4xl px-8">
           <AnimatedElement>
             <h2 className="font-heading text-5xl md:text-7xl text-soft-white font-bold mb-8 leading-tight">
-              "Strength is not just physical.<br/>It's a state of mind."
+              {t.home.quote}
             </h2>
             <p className="font-paragraph text-xl md:text-2xl text-warm-grey">
-              Head Coach Natalie
+              {t.home.quoteAuthor}
             </p>
           </AnimatedElement>
         </div>
@@ -303,10 +305,10 @@ export default function HomePage() {
                 <AnimatedElement>
                   <span className="text-soft-bronze font-medium tracking-widest uppercase mb-4 block">The Signature Package</span>
                   <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-8">
-                    Everything You Need to Succeed
+                    {t.home.everythingYouNeed}
                   </h2>
                   <p className="text-xl text-warm-grey leading-relaxed">
-                    My signature online coaching package is designed specifically for the busy woman. No guesswork, just a clear path to your goals.
+                    {t.home.everythingYouNeedDesc}
                   </p>
                 </AnimatedElement>
               </div>
@@ -314,18 +316,18 @@ export default function HomePage() {
               <div className="space-y-16">
                 {[
                   {
-                    title: "4 Personalised Programs a week",
-                    desc: "Tailored strength training plans that evolve with you. Whether you train at home or the gym, your program fits your schedule.",
+                    title: t.home.fourPersonalised,
+                    desc: t.home.fourPersonalisedDesc,
                     image: "https://static.wixstatic.com/media/93e866_7d48abe991484564b3dbdd6baf6b5d8a~mv2.png?originWidth=768&originHeight=448"
                   },
                   {
-                    title: "Weekly Check-ins",
-                    desc: "We review your progress every single week. I'll adjust your plan, answer questions, and keep you accountable.",
+                    title: t.home.weeklyCheckIns,
+                    desc: t.home.weeklyCheckInsDesc,
                     image: "https://static.wixstatic.com/media/93e866_cabe766402e14ec98f048ee9b1a0a4eb~mv2.png?originWidth=768&originHeight=448"
                   },
                   {
-                    title: "Nutrition Guidance",
-                    desc: "No meal plans that leave you hungry. Learn how to fuel your body with sustainable eating strategies that include the foods you love.",
+                    title: t.home.nutritionGuidance,
+                    desc: t.home.nutritionGuidanceDesc,
                     image: "https://static.wixstatic.com/media/93e866_29519bae313f4a8aa77d31574d6fa866~mv2.png?originWidth=768&originHeight=448"
                   }
                 ].map((feature, i) => (
@@ -354,8 +356,8 @@ export default function HomePage() {
                   <div className="absolute top-0 right-0 w-64 h-64 bg-soft-bronze/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
                   
                   <div className="relative z-10">
-                    <h3 className="font-heading text-4xl font-bold mb-2">Monthly Coaching</h3>
-                    <p className="text-warm-grey mb-10">Cancel anytime. No hidden fees.</p>
+                    <h3 className="font-heading text-4xl font-bold mb-2">{t.home.monthlyCoaching}</h3>
+                    <p className="text-warm-grey mb-10">{t.home.cancelAnytime}</p>
                     
                     <div className="flex items-baseline gap-2 mb-10">
                       <span className="font-heading text-7xl font-bold text-soft-bronze">£150</span>
@@ -364,11 +366,11 @@ export default function HomePage() {
 
                     <div className="space-y-4 mb-12">
                       {[
-                        "Custom Training App Access",
-                        "Form Analysis & Feedback",
-                        "Habit Tracking & Lifestyle Coaching",
-                        "Priority Support via WhatsApp",
-                        "Monthly Strategy Calls"
+                        t.home.customTrainingApp,
+                        t.home.formAnalysis,
+                        t.home.habitTracking,
+                        t.home.prioritySupport,
+                        t.home.monthlyStrategyCalls
                       ].map((item, i) => (
                         <div key={i} className="flex items-center gap-4">
                           <div className="w-6 h-6 rounded-full bg-soft-bronze/20 flex items-center justify-center flex-shrink-0">
@@ -383,9 +385,9 @@ export default function HomePage() {
                       to="/store"
                       className="block w-full bg-soft-bronze text-soft-white text-center py-5 rounded-xl font-medium text-lg hover:bg-soft-white hover:text-charcoal-black transition-all duration-300"
                     >
-                      Secure Your Spot
+                      {t.home.secureYourSpot}
                     </Link>
-                    <p className="text-center text-sm text-warm-grey mt-4">Limited spaces available for new clients.</p>
+                    <p className="text-center text-sm text-warm-grey mt-4">{t.home.limitedSpaces}</p>
                   </div>
                 </div>
               </div>
@@ -402,17 +404,17 @@ export default function HomePage() {
             <div className="max-w-2xl">
               <AnimatedElement>
                 <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-6">
-                  Real Women.<br/>Real Results.
+                  {t.home.realWomen}
                 </h2>
                 <p className="text-xl text-charcoal-black/70">
-                  Join a community of women redefining what strong looks and feels like.
+                  {t.home.realWomenDesc}
                 </p>
               </AnimatedElement>
             </div>
             <div className="hidden md:flex gap-4">
               {/* Visual decoration for scroll hint */}
               <div className="flex items-center gap-2 text-charcoal-black/50 text-sm uppercase tracking-widest">
-                Scroll to explore <ArrowRight size={16} />
+                {t.home.scrollToExplore} <ArrowRight size={16} />
               </div>
             </div>
           </div>
@@ -491,10 +493,10 @@ export default function HomePage() {
         <div className="relative z-10 max-w-5xl mx-auto text-center">
           <AnimatedElement>
             <h2 className="font-heading text-6xl md:text-8xl font-bold text-soft-white mb-10 tracking-tight">
-              Ready to feel <span className="text-soft-bronze">stronger?</span>
+              {t.home.readyToFeel} <span className="text-soft-bronze">stronger?</span>
             </h2>
             <p className="text-xl md:text-2xl text-warm-grey mb-12 max-w-2xl mx-auto leading-relaxed">
-              Your future self is waiting. Start your transformation today with a program built around your life.
+              {t.home.readyToFeelDesc}
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Link
@@ -507,7 +509,7 @@ export default function HomePage() {
                 to="/about"
                 className="w-full sm:w-auto px-12 py-6 rounded-full border border-warm-grey/30 text-soft-white font-medium text-xl hover:bg-white/5 transition-colors"
               >
-                Learn More About Me
+                {t.home.learnMoreAboutMe}
               </Link>
             </div>
           </AnimatedElement>
