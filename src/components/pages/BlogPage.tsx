@@ -106,7 +106,7 @@ export default function FaceToFaceTrainingPage() {
                 featured: true
               },
               {
-                title: "24-Week Transformation",
+                title: "12-Week Transformation",
                 price: "£960",
                 duration: "24 sessions",
                 description: "Complete transformation programme with comprehensive support.",
