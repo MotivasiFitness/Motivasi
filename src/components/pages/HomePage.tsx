@@ -314,7 +314,7 @@ export default function HomePage() {
               <div className="space-y-16">
                 {[
                   {
-                    title: "4 Personalised Programs",
+                    title: "4 Personalised Programs a week",
                     desc: "Tailored strength training plans that evolve with you. Whether you train at home or the gym, your program fits your schedule.",
                     image: "https://static.wixstatic.com/media/93e866_7d48abe991484564b3dbdd6baf6b5d8a~mv2.png?originWidth=768&originHeight=448"
                   },
