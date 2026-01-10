@@ -53,7 +53,6 @@ export default function OnlineTrainingPage() {
           </div>
         </div>
       </section>
-
       {/* What's Included Section */}
       <section className="py-24 px-8 lg:px-20">
         <div className="max-w-[100rem] mx-auto">
@@ -117,7 +116,6 @@ export default function OnlineTrainingPage() {
           </div>
         </div>
       </section>
-
       {/* How It Works Section */}
       <section className="py-24 px-8 lg:px-20 bg-charcoal-black">
         <div className="max-w-[100rem] mx-auto">
@@ -125,9 +123,7 @@ export default function OnlineTrainingPage() {
             <h2 className="font-heading text-5xl font-bold text-soft-white mb-4">
               How It Works
             </h2>
-            <p className="font-paragraph text-xl text-soft-bronze font-medium mb-4">
-              Option A: Clean & Professional (Recommended)
-            </p>
+
             <p className="font-paragraph text-xl text-warm-grey max-w-3xl mx-auto">
               A simple, proven process to get you results.
             </p>
@@ -180,7 +176,6 @@ export default function OnlineTrainingPage() {
           </div>
         </div>
       </section>
-
       {/* FAQ Section */}
       <section className="py-24 px-8 lg:px-20">
         <div className="max-w-4xl mx-auto">
@@ -258,7 +253,6 @@ export default function OnlineTrainingPage() {
           </div>
         </div>
       </section>
-
       {/* Pricing Section */}
       <section className="py-24 px-8 lg:px-20 bg-warm-sand-beige/30">
         <div className="max-w-[100rem] mx-auto">
@@ -376,7 +370,6 @@ export default function OnlineTrainingPage() {
           </div>
         </div>
       </section>
-
       {/* Testimonial Section */}
       <section className="py-24 px-8 lg:px-20 bg-warm-sand-beige">
         <div className="max-w-4xl mx-auto text-center">
@@ -398,7 +391,6 @@ export default function OnlineTrainingPage() {
           </div>
         </div>
       </section>
-
       {/* CTA Section */}
       <section className="py-24 px-8 lg:px-20 bg-charcoal-black">
         <div className="max-w-4xl mx-auto text-center">
@@ -416,7 +408,6 @@ export default function OnlineTrainingPage() {
           </button>
         </div>
       </section>
-
       {/* Contact Form Section */}
       <section ref={contactFormRef} className="py-24 px-8 lg:px-20 bg-soft-white">
         <div className="max-w-4xl mx-auto">
@@ -467,7 +458,6 @@ export default function OnlineTrainingPage() {
           </div>
         </div>
       </section>
-
       {/* Comparison Section */}
       <section className="py-24 px-8 lg:px-20 bg-warm-sand-beige/30">
         <div className="max-w-[100rem] mx-auto">
