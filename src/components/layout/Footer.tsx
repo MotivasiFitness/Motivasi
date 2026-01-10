@@ -107,10 +107,17 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-warm-grey mt-12 pt-8 text-center">
-          <p className="font-paragraph text-sm text-warm-grey">
-            © {new Date().getFullYear()} Motivasi. {t.footer.allRightsReserved}
-          </p>
+        <div className="border-t border-warm-grey mt-12 pt-8">
+          <div className="text-center mb-6">
+            <p className="font-paragraph text-sm text-warm-grey leading-relaxed">
+              © Motivasi {new Date().getFullYear()}. All rights reserved. Personal data is processed in accordance with our <Link to="/privacy" className="text-soft-bronze hover:underline">Privacy & Cookie Policy</Link> and applicable data protection laws.
+            </p>
+          </div>
+          <div className="text-center">
+            <p className="font-paragraph text-xs text-warm-grey/70">
+              <Link to="/privacy" className="text-soft-bronze hover:underline">Privacy & Cookie Policy</Link> | <button className="text-soft-bronze hover:underline">Cookie Settings</button>
+            </p>
+          </div>
         </div>
       </div>
     </footer>

@@ -10,18 +10,28 @@ export default function FaceToFaceTrainingPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: ''
+    message: '',
+    healthDataConsent: false,
+    marketingConsent: false
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    const { name, value, type } = e.target;
+    if (type === 'checkbox') {
+      const checked = (e.target as HTMLInputElement).checked;
+      setFormData(prev => ({
+        ...prev,
+        [name]: checked
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   const scrollToForm = () => {
@@ -51,7 +61,7 @@ export default function FaceToFaceTrainingPage() {
 
       if (response.ok) {
         setIsSubmitted(true);
-        setFormData({ name: '', email: '', message: '' });
+        setFormData({ name: '', email: '', message: '', healthDataConsent: false, marketingConsent: false });
         setTimeout(() => setIsSubmitted(false), 5000);
       } else {
         setSubmitError('Failed to send message. Please try again or contact us directly at hello@motivasi.co.uk');
@@ -392,6 +402,47 @@ export default function FaceToFaceTrainingPage() {
                     className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph resize-none"
                     placeholder="Tell me about your fitness goals..."
                   />
+                </div>
+
+                {/* Privacy Notice */}
+                <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-lg p-4">
+                  <p className="font-paragraph text-xs text-charcoal-black leading-relaxed">
+                    By submitting this form, you acknowledge that your personal data will be used to respond to your enquiry, manage bookings, and provide personal training services in accordance with our <Link to="/privacy" className="text-soft-bronze hover:underline">Privacy & Cookie Policy</Link>.
+                  </p>
+                </div>
+
+                {/* Consent Checkboxes */}
+                <div className="space-y-4">
+                  {/* Health Data Consent - Required */}
+                  <div className="flex items-start gap-3 p-3 bg-soft-white border border-warm-sand-beige rounded-lg">
+                    <input
+                      type="checkbox"
+                      id="healthDataConsent"
+                      name="healthDataConsent"
+                      checked={formData.healthDataConsent}
+                      onChange={handleInputChange}
+                      required
+                      className="w-4 h-4 accent-soft-bronze mt-0.5 flex-shrink-0 cursor-pointer"
+                    />
+                    <label htmlFor="healthDataConsent" className="font-paragraph text-xs text-charcoal-black cursor-pointer flex-1">
+                      <span className="text-soft-bronze font-bold">*</span> I consent to Motivasi collecting and processing my health and fitness information for the purpose of delivering a personalised training programme, in accordance with the <Link to="/privacy" className="text-soft-bronze hover:underline">Privacy & Cookie Policy</Link>.
+                    </label>
+                  </div>
+
+                  {/* Marketing Consent - Optional */}
+                  <div className="flex items-start gap-3 p-3 bg-soft-white border border-warm-sand-beige rounded-lg">
+                    <input
+                      type="checkbox"
+                      id="marketingConsent"
+                      name="marketingConsent"
+                      checked={formData.marketingConsent}
+                      onChange={handleInputChange}
+                      className="w-4 h-4 accent-soft-bronze mt-0.5 flex-shrink-0 cursor-pointer"
+                    />
+                    <label htmlFor="marketingConsent" className="font-paragraph text-xs text-charcoal-black cursor-pointer flex-1">
+                      I would like to receive updates, offers, and marketing communications from Motivasi. I understand I can unsubscribe at any time.
+                    </label>
+                  </div>
                 </div>
 
                 <button
