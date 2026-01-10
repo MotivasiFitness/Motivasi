@@ -80,7 +80,7 @@ export default function Header() {
                 to="/store" 
                 className="font-paragraph text-base bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors"
               >
-                {t.nav.bookNow}
+                Client Portal
               </Link>
             )}
             <LanguageSwitcher />
@@ -165,7 +165,7 @@ export default function Header() {
                   className="font-paragraph text-base bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors text-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {t.nav.bookNow}
+                  Client Portal
                 </Link>
               )}
             </div>
