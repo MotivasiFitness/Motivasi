@@ -12,6 +12,7 @@ import { MemberProtectedRoute } from '@/components/ui/member-protected-route';
 
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import CookieBanner from '@/components/CookieBanner';
 import HomePage from '@/components/pages/HomePage';
 import AboutPage from '@/components/pages/AboutPage';
 import BlogPage from '@/components/pages/BlogPage';
@@ -41,6 +42,7 @@ function SiteLayout() {
         <Outlet />
       </main>
       <Footer />
+      <CookieBanner />
     </div>
   );
 }
