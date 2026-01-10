@@ -18,6 +18,7 @@ import BlogPostPage from '@/components/pages/BlogPostPage';
 import ParQPage from '@/components/pages/ParQPage';
 import CheckoutPage from '@/components/pages/CheckoutPage';
 import PaymentSuccessPage from '@/components/pages/PaymentSuccessPage';
+import OnlineTrainingPage from '@/components/pages/OnlineTrainingPage';
 import CoachingPackages from '@/components/store/CoachingPackages';
 
 // Main Layout with Header and Footer
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
       {
         path: "parq",
         element: <ParQPage />,
+      },
+      {
+        path: "online-training",
+        element: <OnlineTrainingPage />,
       },
       {
         path: "checkout",
