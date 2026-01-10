@@ -453,21 +453,12 @@ export default function OnlineTrainingPage() {
                 <p className="font-paragraph text-base text-warm-grey mb-4">
                   Or reach out directly:
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a
-                    href="mailto:hello@motivasi.co.uk"
-                    className="text-soft-bronze font-medium hover:underline"
-                  >
-                    hello@motivasi.co.uk
-                  </a>
-                  <span className="hidden sm:inline text-warm-grey">•</span>
-                  <a
-                    href="tel:+447700000000"
-                    className="text-soft-bronze font-medium hover:underline"
-                  >
-                    +44 (0) 7700 000 000
-                  </a>
-                </div>
+                <a
+                  href="mailto:hello@motivasi.co.uk"
+                  className="text-soft-bronze font-medium hover:underline"
+                >
+                  hello@motivasi.co.uk
+                </a>
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Clock, Users, CheckCircle, ArrowRight, Mail, Phone, AlertCircle } from 'lucide-react';
+import { MapPin, Clock, Users, CheckCircle, ArrowRight, Mail, AlertCircle } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { useLanguage } from '@/i18n/LanguageContext';
 
@@ -10,7 +10,6 @@ export default function FaceToFaceTrainingPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -44,7 +43,6 @@ export default function FaceToFaceTrainingPage() {
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          phone: formData.phone,
           message: formData.message,
           _subject: `Face-to-Face Training Consultation Request from ${formData.name}`,
           _replyto: formData.email
@@ -53,7 +51,7 @@ export default function FaceToFaceTrainingPage() {
 
       if (response.ok) {
         setIsSubmitted(true);
-        setFormData({ name: '', email: '', phone: '', message: '' });
+        setFormData({ name: '', email: '', message: '' });
         setTimeout(() => setIsSubmitted(false), 5000);
       } else {
         setSubmitError('Failed to send message. Please try again or contact us directly at hello@motivasi.co.uk');
@@ -308,20 +306,6 @@ export default function FaceToFaceTrainingPage() {
 
                 <div className="flex gap-4">
                   <div className="w-12 h-12 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0">
-                    <Phone size={20} className="text-soft-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-heading text-lg font-bold text-soft-white mb-1">
-                      Phone
-                    </h3>
-                    <a href="tel:+447700000000" className="font-paragraph text-warm-grey hover:text-soft-bronze transition-colors">
-                      +44 (0) 7700 000 000
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0">
                     <MapPin size={20} className="text-soft-white" />
                   </div>
                   <div>
@@ -391,21 +375,6 @@ export default function FaceToFaceTrainingPage() {
                     required
                     className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
                     placeholder="your@email.com"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="phone" className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
-                    {t.blog.phoneNumber}
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
-                    placeholder="+44 (0) 7700 000 000"
                   />
                 </div>
 
