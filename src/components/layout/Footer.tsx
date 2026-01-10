@@ -20,13 +20,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Brand Section */}
           <div>
-            <Link to="/" className="inline-block mb-4 hover:opacity-80 transition-opacity">
+            <Link to="/" className="inline-flex items-center gap-2 mb-4 hover:opacity-80 transition-opacity">
               <Image
-                src="https://static.wixstatic.com/media/93e866_c83bedb44e494ce2ba17bf388750069b~mv2.png?originWidth=512&originHeight=512"
+                src="https://static.wixstatic.com/media/93e866_81ff1c66b9e449bc92b4e3a2a753a5ec~mv2.png"
                 alt="Motivasi Logo"
-                className="h-10 w-10"
-                width={40}
+                className="h-6 w-auto"
+                width={30}
               />
+              <span className="font-heading text-lg font-bold text-soft-white">Motivasi</span>
             </Link>
             <p className="font-paragraph text-base text-warm-grey mb-6">
               Empowering busy women to achieve fat loss and strength without extreme diets or intimidation.

@@ -12,13 +12,14 @@ export default function Header() {
       <div className="max-w-[100rem] mx-auto px-8 lg:px-20">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <Image
-              src="https://static.wixstatic.com/media/93e866_35278b477cff4684894dddf2229dd4f2~mv2.png?originWidth=768&originHeight=192"
-              alt="Motivasi Logo"
-              className="h-12 md:h-14 w-auto"
-              width={160}
+              src="https://static.wixstatic.com/media/93e866_81ff1c66b9e449bc92b4e3a2a753a5ec~mv2.png"
+              alt="Motivasi Lotus Logo"
+              className="h-8 md:h-10 w-auto"
+              width={40}
             />
+            <span className="font-heading text-2xl font-bold text-charcoal-black">Motivasi</span>
           </Link>
 
           {/* Desktop Navigation */}
