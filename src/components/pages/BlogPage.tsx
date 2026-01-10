@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Clock, Users, CheckCircle, ArrowRight, Mail, Phone } from 'lucide-react';
+import { MapPin, Clock, Users, CheckCircle, ArrowRight, Mail, Phone, AlertCircle } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 
 export default function FaceToFaceTrainingPage() {
+  const contactFormRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -11,6 +12,8 @@ export default function FaceToFaceTrainingPage() {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -20,11 +23,45 @@ export default function FaceToFaceTrainingPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const scrollToForm = () => {
+    contactFormRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    setFormData({ name: '', email: '', phone: '', message: '' });
-    setTimeout(() => setIsSubmitted(false), 3000);
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    try {
+      // Send email using Formspree
+      const response = await fetch('https://formspree.io/f/xyzpqrst', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          _subject: `Face-to-Face Training Consultation Request from ${formData.name}`,
+          _replyto: formData.email
+        })
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        setFormData({ name: '', email: '', phone: '', message: '' });
+        setTimeout(() => setIsSubmitted(false), 5000);
+      } else {
+        setSubmitError('Failed to send message. Please try again or contact us directly at hello@motivasi.com');
+      }
+    } catch (error) {
+      setSubmitError('An error occurred. Please contact us directly at hello@motivasi.com');
+      console.error('Form submission error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -286,10 +323,30 @@ export default function FaceToFaceTrainingPage() {
             </div>
 
             {/* Contact Form */}
-            <div className="bg-soft-white rounded-2xl p-8 md:p-12">
+            <div ref={contactFormRef} className="bg-soft-white rounded-2xl p-8 md:p-12">
               <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
                 Send a Message
               </h3>
+              {isSubmitted && (
+                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex gap-3">
+                  <CheckCircle className="text-green-600 flex-shrink-0" size={20} />
+                  <div>
+                    <p className="font-paragraph text-sm text-green-800">
+                      Thank you! Your message has been sent successfully. We'll get back to you within 24 hours.
+                    </p>
+                  </div>
+                </div>
+              )}
+              {submitError && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex gap-3">
+                  <AlertCircle className="text-red-600 flex-shrink-0" size={20} />
+                  <div>
+                    <p className="font-paragraph text-sm text-red-800">
+                      {submitError}
+                    </p>
+                  </div>
+                </div>
+              )}
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="name" className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
@@ -356,9 +413,10 @@ export default function FaceToFaceTrainingPage() {
 
                 <button
                   type="submit"
-                  className="w-full bg-charcoal-black text-soft-white py-3 rounded-lg font-medium text-lg hover:bg-soft-bronze transition-colors duration-300"
+                  disabled={isSubmitting}
+                  className="w-full bg-charcoal-black text-soft-white py-3 rounded-lg font-medium text-lg hover:bg-soft-bronze transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitted ? 'Message Sent! 🎉' : 'Send Message'}
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
             </div>
@@ -376,7 +434,10 @@ export default function FaceToFaceTrainingPage() {
             Start your face-to-face training journey today. Limited spaces available for new clients.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-soft-white text-soft-bronze px-8 py-4 rounded-lg font-medium text-lg hover:bg-opacity-90 transition-colors">
+            <button 
+              onClick={scrollToForm}
+              className="bg-soft-white text-soft-bronze px-8 py-4 rounded-lg font-medium text-lg hover:bg-opacity-90 transition-colors"
+            >
               Book a Consultation
             </button>
             <Link
