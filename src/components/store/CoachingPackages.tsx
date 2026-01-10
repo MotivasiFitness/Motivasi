@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { CheckCircle, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -83,11 +83,26 @@ const packages: Package[] = [
 
 export default function CoachingPackages() {
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>('GBP');
+  const navigate = useNavigate();
 
   const currencySymbols: Record<Currency, string> = {
     GBP: '£',
     USD: '$',
     EUR: '€',
+  };
+
+  const handleCheckout = (pkg: Package) => {
+    // Store the selected package in localStorage
+    const checkoutItem = {
+      id: pkg.id,
+      title: pkg.title,
+      price: pkg.prices[selectedCurrency],
+      currency: currencySymbols[selectedCurrency],
+      quantity: 1,
+    };
+    localStorage.setItem('checkoutItems', JSON.stringify([checkoutItem]));
+    // Navigate to checkout page
+    navigate('/checkout');
   };
 
   return (
@@ -188,8 +203,8 @@ export default function CoachingPackages() {
             </ul>
 
             {/* CTA Button */}
-            <Link
-              to="/parq"
+            <button
+              onClick={() => handleCheckout(pkg)}
               className={`w-full py-3 rounded-lg font-medium text-lg transition-all duration-300 flex items-center justify-center gap-2 ${
                 pkg.featured
                   ? 'bg-soft-bronze text-soft-white hover:bg-soft-white hover:text-charcoal-black'
@@ -198,7 +213,7 @@ export default function CoachingPackages() {
             >
               {pkg.cta}
               <ArrowRight size={20} />
-            </Link>
+            </button>
           </div>
         ))}
       </div>

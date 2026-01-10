@@ -16,6 +16,8 @@ import AboutPage from '@/components/pages/AboutPage';
 import BlogPage from '@/components/pages/BlogPage';
 import BlogPostPage from '@/components/pages/BlogPostPage';
 import ParQPage from '@/components/pages/ParQPage';
+import CheckoutPage from '@/components/pages/CheckoutPage';
+import PaymentSuccessPage from '@/components/pages/PaymentSuccessPage';
 import CoachingPackages from '@/components/store/CoachingPackages';
 
 // Main Layout with Header and Footer
@@ -70,6 +72,14 @@ const router = createBrowserRouter([
       {
         path: "parq",
         element: <ParQPage />,
+      },
+      {
+        path: "checkout",
+        element: <CheckoutPage />,
+      },
+      {
+        path: "payment-success",
+        element: <PaymentSuccessPage />,
       },
       {
         path: "store",
