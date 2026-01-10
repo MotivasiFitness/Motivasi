@@ -5,8 +5,13 @@ export interface Translations {
   nav: {
     home: string;
     about: string;
+    onlineTraining: string;
     faceToFaceTraining: string;
+    results: string;
+    contact: string;
     parqForm: string;
+    privacyPolicy: string;
+    terms: string;
     bookNow: string;
   };
   // Header
@@ -204,8 +209,13 @@ export const translations: Record<Language, Translations> = {
     nav: {
       home: 'Home',
       about: 'About',
+      onlineTraining: 'Online Training',
       faceToFaceTraining: 'Face-to-Face Training',
-      parqForm: 'PAR-Q Form',
+      results: 'Results',
+      contact: 'Contact',
+      parqForm: 'PAR-Q',
+      privacyPolicy: 'Privacy Policy',
+      terms: 'Terms',
       bookNow: 'Book Now',
     },
     header: {
@@ -395,8 +405,13 @@ export const translations: Record<Language, Translations> = {
     nav: {
       home: 'Home',
       about: 'About',
+      onlineTraining: 'Online Training',
       faceToFaceTraining: 'Face-to-Face Training',
-      parqForm: 'PAR-Q Form',
+      results: 'Results',
+      contact: 'Contact',
+      parqForm: 'PAR-Q',
+      privacyPolicy: 'Privacy Policy',
+      terms: 'Terms',
       bookNow: 'Book Now',
     },
     header: {
@@ -586,8 +601,13 @@ export const translations: Record<Language, Translations> = {
     nav: {
       home: 'Inicio',
       about: 'Acerca de',
+      onlineTraining: 'Entrenamiento en Línea',
       faceToFaceTraining: 'Entrenamiento Presencial',
+      results: 'Resultados',
+      contact: 'Contacto',
       parqForm: 'Formulario PAR-Q',
+      privacyPolicy: 'Política de Privacidad',
+      terms: 'Términos',
       bookNow: 'Reservar Ahora',
     },
     header: {
@@ -777,8 +797,13 @@ export const translations: Record<Language, Translations> = {
     nav: {
       home: 'Accueil',
       about: 'À propos',
+      onlineTraining: 'Entraînement en Ligne',
       faceToFaceTraining: 'Entraînement en Personne',
+      results: 'Résultats',
+      contact: 'Contact',
       parqForm: 'Formulaire PAR-Q',
+      privacyPolicy: 'Politique de Confidentialité',
+      terms: 'Conditions',
       bookNow: 'Réserver Maintenant',
     },
     header: {
@@ -968,8 +993,13 @@ export const translations: Record<Language, Translations> = {
     nav: {
       home: 'Startseite',
       about: 'Über Uns',
+      onlineTraining: 'Online-Training',
       faceToFaceTraining: 'Persönliches Training',
+      results: 'Ergebnisse',
+      contact: 'Kontakt',
       parqForm: 'PAR-Q Formular',
+      privacyPolicy: 'Datenschutzrichtlinie',
+      terms: 'Bedingungen',
       bookNow: 'Jetzt Buchen',
     },
     header: {
@@ -1159,8 +1189,13 @@ export const translations: Record<Language, Translations> = {
     nav: {
       home: 'Startpagina',
       about: 'Over Ons',
+      onlineTraining: 'Online Training',
       faceToFaceTraining: 'Persoonlijke Training',
+      results: 'Resultaten',
+      contact: 'Contact',
       parqForm: 'PAR-Q Formulier',
+      privacyPolicy: 'Privacybeleid',
+      terms: 'Voorwaarden',
       bookNow: 'Nu Boeken',
     },
     header: {
@@ -1350,8 +1385,13 @@ export const translations: Record<Language, Translations> = {
     nav: {
       home: 'Home',
       about: 'About',
+      onlineTraining: 'Online Training',
       faceToFaceTraining: 'Face-to-Face Training',
-      parqForm: 'PAR-Q Form',
+      results: 'Results',
+      contact: 'Contact',
+      parqForm: 'PAR-Q',
+      privacyPolicy: 'Privacy Policy',
+      terms: 'Terms',
       bookNow: 'Book Now',
     },
     header: {
@@ -1541,8 +1581,13 @@ export const translations: Record<Language, Translations> = {
     nav: {
       home: 'Home',
       about: 'About',
+      onlineTraining: 'Online Training',
       faceToFaceTraining: 'Face-to-Face Training',
-      parqForm: 'PAR-Q Form',
+      results: 'Results',
+      contact: 'Contact',
+      parqForm: 'PAR-Q',
+      privacyPolicy: 'Privacy Policy',
+      terms: 'Terms',
       bookNow: 'Book Now',
     },
     header: {

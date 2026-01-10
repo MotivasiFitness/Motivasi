@@ -59,20 +59,26 @@ export default function Footer() {
             <h4 className="font-heading text-xl font-bold mb-4">Quick Links</h4>
             <nav className="flex flex-col gap-3">
               <Link to="/" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
-                Home
+                {t.nav.home}
               </Link>
               <Link to="/about" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
-                About
+                {t.nav.about}
+              </Link>
+              <Link to="/online-training" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
+                {t.nav.onlineTraining}
               </Link>
               <Link to="/blog" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
-                Face-to-Face Training
+                {t.nav.faceToFaceTraining}
               </Link>
               <Link to="/parq" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
-                PAR-Q Form
+                {t.nav.parqForm}
               </Link>
-              <Link to="/store" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
-                Book Now
-              </Link>
+              <a href="#privacy" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
+                {t.nav.privacyPolicy}
+              </a>
+              <a href="#terms" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
+                {t.nav.terms}
+              </a>
             </nav>
           </div>
 

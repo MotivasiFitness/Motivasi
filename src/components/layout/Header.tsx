@@ -40,17 +40,29 @@ export default function Header() {
               {t.nav.about}
             </Link>
             <Link 
+              to="/online-training" 
+              className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+            >
+              {t.nav.onlineTraining}
+            </Link>
+            <Link 
               to="/blog" 
               className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
             >
               {t.nav.faceToFaceTraining}
             </Link>
-            <Link 
-              to="/parq" 
+            <a 
+              href="#results" 
               className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
             >
-              {t.nav.parqForm}
-            </Link>
+              {t.nav.results}
+            </a>
+            <a 
+              href="#contact" 
+              className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+            >
+              {t.nav.contact}
+            </a>
             <Link 
               to="/store" 
               className="font-paragraph text-base bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors"
@@ -93,19 +105,33 @@ export default function Header() {
                 {t.nav.about}
               </Link>
               <Link 
+                to="/online-training" 
+                className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {t.nav.onlineTraining}
+              </Link>
+              <Link 
                 to="/blog" 
                 className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t.nav.faceToFaceTraining}
               </Link>
-              <Link 
-                to="/parq" 
+              <a 
+                href="#results" 
                 className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                {t.nav.parqForm}
-              </Link>
+                {t.nav.results}
+              </a>
+              <a 
+                href="#contact" 
+                className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {t.nav.contact}
+              </a>
               <Link 
                 to="/store" 
                 className="font-paragraph text-base bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors text-center"
