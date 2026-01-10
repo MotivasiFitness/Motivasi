@@ -54,12 +54,6 @@ export default function Header() {
               {t.nav.faceToFaceTraining}
             </Link>
             <a 
-              href="#results" 
-              className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
-            >
-              {t.nav.results}
-            </a>
-            <a 
               href="#contact" 
               className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
             >
@@ -138,13 +132,6 @@ export default function Header() {
               >
                 {t.nav.faceToFaceTraining}
               </Link>
-              <a 
-                href="#results" 
-                className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {t.nav.results}
-              </a>
               <a 
                 href="#contact" 
                 className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
