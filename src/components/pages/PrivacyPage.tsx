@@ -334,6 +334,192 @@ export default function PrivacyPage() {
               </div>
             </section>
 
+            {/* USA Privacy Notice (CCPA/CPRA) */}
+            <section id="usa-privacy" className="scroll-mt-20">
+              <h2 className="font-heading text-4xl font-bold text-charcoal-black mb-6">
+                USA Privacy Notice (CCPA/CPRA)
+              </h2>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
+                    Applicability
+                  </h3>
+                  <p className="font-paragraph text-base text-warm-grey leading-relaxed">
+                    This section applies to residents of the United States, including California and other states with privacy laws similar to the California Consumer Privacy Act (CCPA) and California Privacy Rights Act (CPRA). If you are a US resident, this notice supplements our general Privacy & Cookie Policy.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
+                    Personal Information We Collect
+                  </h3>
+                  <p className="font-paragraph text-base text-warm-grey leading-relaxed mb-4">
+                    We collect and have collected the following categories of personal information from US residents in the past 12 months:
+                  </p>
+                  <div className="space-y-4 font-paragraph text-base text-warm-grey leading-relaxed">
+                    <div>
+                      <p className="font-bold text-charcoal-black mb-2">Identifiers</p>
+                      <p>
+                        Name, email address, phone number, postal address, date of birth, account credentials, and any other identifiers you provide when creating an account or contacting us.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-bold text-charcoal-black mb-2">Internet Activity</p>
+                      <p>
+                        Browsing history, pages visited, time spent on pages, clicks, search queries, device information (type, operating system, browser), IP address, referral source, and cookies or similar tracking technologies.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-bold text-charcoal-black mb-2">Commercial Information</p>
+                      <p>
+                        Purchase history, transaction records, payment information (processed securely by third-party payment processors), coaching packages purchased, and billing information.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-bold text-charcoal-black mb-2">Health & Fitness Data (Sensitive Personal Information)</p>
+                      <p>
+                        Health history, medical conditions, medications, fitness assessments, body measurements, progress photos, dietary information, exercise history, and any other health-related information you provide in the PAR-Q questionnaire or during your coaching relationship.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-bold text-charcoal-black mb-2">Inferences</p>
+                      <p>
+                        We may create inferences from your personal information to determine your fitness level, health status, preferences, and characteristics relevant to your coaching program.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
+                    How We Use Your Personal Information
+                  </h3>
+                  <p className="font-paragraph text-base text-warm-grey leading-relaxed mb-4">
+                    We use the personal information we collect for the following purposes:
+                  </p>
+                  <ul className="list-disc list-inside space-y-2 ml-2 font-paragraph text-base text-warm-grey">
+                    <li><span className="font-bold text-charcoal-black">Service Delivery:</span> To provide, maintain, and improve our coaching services, personalised training programs, and nutrition guidance</li>
+                    <li><span className="font-bold text-charcoal-black">Account Management:</span> To create and manage your account, process payments, and send service-related communications</li>
+                    <li><span className="font-bold text-charcoal-black">Communication:</span> To respond to your inquiries, send newsletters, updates, and promotional materials (with your consent)</li>
+                    <li><span className="font-bold text-charcoal-black">Website Operation:</span> To operate and improve our website, troubleshoot technical issues, and enhance user experience</li>
+                    <li><span className="font-bold text-charcoal-black">Health & Safety:</span> To assess your fitness level, identify health risks, and ensure your safety during training</li>
+                    <li><span className="font-bold text-charcoal-black">Analytics & Research:</span> To understand how our website and services are used, identify trends, and improve our offerings</li>
+                    <li><span className="font-bold text-charcoal-black">Legal Compliance:</span> To comply with legal obligations and enforce our terms of service</li>
+                    <li><span className="font-bold text-charcoal-black">Fraud Prevention:</span> To detect, prevent, and address fraud, security, and technical issues</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
+                    Sale or Sharing of Personal Information
+                  </h3>
+                  <p className="font-paragraph text-base text-warm-grey leading-relaxed">
+                    <span className="font-bold text-charcoal-black">Motivasi does not sell or share your personal information for targeted advertising purposes.</span> We do not sell, trade, or rent your personal information to third parties for their marketing purposes. We do not share your personal information with third parties for cross-context behavioral advertising.
+                  </p>
+                  <p className="font-paragraph text-base text-warm-grey leading-relaxed mt-4">
+                    We may share your information with service providers (such as payment processors, email providers, and hosting providers) who assist us in operating our website and providing our services. These service providers are contractually bound to use your information only as necessary to provide services to us and are prohibited from using or disclosing your information for other purposes.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
+                    Your Privacy Rights (CCPA/CPRA)
+                  </h3>
+                  <p className="font-paragraph text-base text-warm-grey leading-relaxed mb-4">
+                    As a US resident, you have the following rights regarding your personal information:
+                  </p>
+                  <div className="space-y-4 font-paragraph text-base text-warm-grey leading-relaxed">
+                    <div>
+                      <p className="font-bold text-charcoal-black mb-2">Right to Know</p>
+                      <p>
+                        You have the right to request what personal information we collect, use, and share about you. You can request a copy of the specific pieces of personal information we have collected about you.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-bold text-charcoal-black mb-2">Right to Delete</p>
+                      <p>
+                        You have the right to request deletion of personal information we have collected from you, subject to certain exceptions (such as information necessary to complete transactions, comply with legal obligations, or detect security incidents).
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-bold text-charcoal-black mb-2">Right to Correct</p>
+                      <p>
+                        You have the right to request correction of inaccurate personal information we maintain about you.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-bold text-charcoal-black mb-2">Right to Limit Use of Sensitive Personal Information</p>
+                      <p>
+                        You have the right to limit our use and disclosure of your sensitive personal information (including health and fitness data) to purposes necessary to provide the services you requested or as otherwise permitted by law. We use your health and fitness data only to provide your coaching services and ensure your safety—we do not use it for other purposes without your explicit consent.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-bold text-charcoal-black mb-2">Right to Opt-Out</p>
+                      <p>
+                        You have the right to opt out of the sale or sharing of your personal information (though we do not engage in these practices). You also have the right to opt out of targeted advertising and profiling.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-bold text-charcoal-black mb-2">Right to Non-Discrimination</p>
+                      <p>
+                        We will not discriminate against you for exercising your privacy rights. We will not deny you services, charge different prices, or provide different quality of service based on your exercise of these rights.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
+                    How to Exercise Your Rights
+                  </h3>
+                  <p className="font-paragraph text-base text-warm-grey leading-relaxed mb-4">
+                    To exercise any of your privacy rights, please submit a request to us by emailing:
+                  </p>
+                  <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-lg p-6 mb-4">
+                    <p className="font-paragraph text-base text-charcoal-black font-bold mb-2">
+                      Email: hello@motivasi.co.uk
+                    </p>
+                    <p className="font-paragraph text-base text-warm-grey">
+                      Subject Line: \"Privacy Rights Request\" (specify which right you are exercising)
+                    </p>
+                  </div>
+                  <p className="font-paragraph text-base text-warm-grey leading-relaxed">
+                    Please include the following information in your request:
+                  </p>
+                  <ul className="list-disc list-inside space-y-2 ml-2 font-paragraph text-base text-warm-grey mt-3">
+                    <li>Your full name</li>
+                    <li>Your email address</li>
+                    <li>The specific right you are exercising (e.g., \"Right to Know,\" \"Right to Delete,\" \"Right to Correct\")</li>
+                    <li>A description of your request</li>
+                  </ul>
+                  <p className="font-paragraph text-base text-warm-grey leading-relaxed mt-4">
+                    <span className="font-bold text-charcoal-black">Response Timeline:</span> We will respond to your request within 45 days of receipt. If we need additional time, we will notify you and provide a reason for the delay.
+                  </p>
+                  <p className="font-paragraph text-base text-warm-grey leading-relaxed mt-4">
+                    <span className="font-bold text-charcoal-black">Verification:</span> To protect your privacy and security, we may ask you to verify your identity before processing your request. This may include requesting additional information to confirm you are the person whose data you are requesting.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
+                    Authorised Agent
+                  </h3>
+                  <p className="font-paragraph text-base text-warm-grey leading-relaxed">
+                    If you are submitting a request on behalf of another person, you must provide proof of authorisation (such as a power of attorney). We will verify your authority before processing the request.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
+                    Shine the Light Law (California)
+                  </h3>
+                  <p className="font-paragraph text-base text-warm-grey leading-relaxed">
+                    Under California's \"Shine the Light\" law (Civil Code Section 1798.83), California residents have the right to request information about the categories of personal information we share with third parties for their direct marketing purposes. To make such a request, please contact us at hello@motivasi.co.uk with the subject line \"Shine the Light Request.\"
+                  </p>
+                </div>
+              </div>
+            </section>
+
             {/* Website Security */}
             <section id="website-security" className="scroll-mt-20">
               <h2 className="font-heading text-4xl font-bold text-charcoal-black mb-6">
