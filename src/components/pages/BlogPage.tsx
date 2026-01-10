@@ -171,6 +171,17 @@ export default function FaceToFaceTrainingPage() {
         </div>
       </section>
 
+      {/* UK-Based Service Notice */}
+      <section className="py-12 px-8 lg:px-20 bg-soft-bronze">
+        <div className="max-w-[100rem] mx-auto">
+          <div className="text-center">
+            <p className="font-paragraph text-lg font-medium text-soft-white">
+              ✓ <span className="font-bold">UK-Based Service Only</span> - Face-to-face training is available exclusively in the United Kingdom. For online coaching available worldwide, please visit our packages page.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Locations Section */}
       <section className="py-24 px-8 lg:px-20 bg-charcoal-black">
         <div className="max-w-[100rem] mx-auto">
