@@ -144,7 +144,7 @@ export default function OnlineTrainingPage() {
               {
                 step: "3",
                 title: "Choose Your Coaching Plan & Complete Onboarding",
-                desc: "Select the plan that works for you (Starter, Signature, or VIP) and complete your account setup to access the coaching app."
+                desc: "Select the plan that works for you (Starter, Signature, or VIP) and complete your account setup to access the coaching platform."
               },
               {
                 step: "4",
