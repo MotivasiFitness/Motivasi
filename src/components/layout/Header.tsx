@@ -53,12 +53,6 @@ export default function Header() {
             >
               {t.nav.faceToFaceTraining}
             </Link>
-            <a 
-              href="#contact" 
-              className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
-            >
-              {t.nav.contact}
-            </a>
             {isAuthenticated ? (
               <>
                 <Link 
@@ -132,13 +126,6 @@ export default function Header() {
               >
                 {t.nav.faceToFaceTraining}
               </Link>
-              <a 
-                href="#contact" 
-                className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {t.nav.contact}
-              </a>
               {isAuthenticated ? (
                 <>
                   <Link 
