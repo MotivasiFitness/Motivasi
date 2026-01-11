@@ -61,6 +61,7 @@ export interface Translations {
     nutritionGuidanceDesc: string;
     monthlyCoaching: string;
     cancelAnytime: string;
+    customTrainingPlatform: string;
     customTrainingApp: string;
     formAnalysis: string;
     habitTracking: string;
