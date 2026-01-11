@@ -181,15 +181,6 @@ export default function HomePage() {
               className="w-full h-full object-cover rounded-3xl"
               width={1200}
             />
-            {/* Enhanced blending gradient overlays for smoother transition */}
-            <div className="absolute inset-0 bg-gradient-to-r from-soft-white/80 via-soft-white/40 via-45% to-transparent pointer-events-none rounded-3xl" />
-            <div className="absolute inset-0 bg-gradient-to-b from-soft-white/70 via-transparent via-50% to-soft-white/70 pointer-events-none rounded-3xl" />
-            <div className="absolute inset-0 bg-gradient-to-t from-soft-white/65 via-transparent via-35% to-transparent pointer-events-none rounded-3xl" />
-            <div className="absolute inset-0 bg-gradient-to-l from-soft-white/75 via-transparent via-55% to-transparent pointer-events-none rounded-3xl" />
-            {/* Additional corner blending for ultra-smooth edges */}
-            <div className="absolute inset-0 bg-radial-gradient pointer-events-none rounded-3xl" style={{
-              background: 'radial-gradient(ellipse at center, transparent 0%, rgba(250, 249, 247, 0.4) 70%, rgba(250, 249, 247, 0.8) 100%)'
-            }} />
           </motion.div>
         </div>
       </section>
