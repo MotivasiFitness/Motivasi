@@ -172,7 +172,7 @@ export default function HomePage() {
         {/* Right Image - Parallax */}
         <div className="w-full lg:w-1/2 h-[60vh] lg:h-auto relative overflow-hidden flex items-center justify-center">
           <motion.div 
-            className="w-[95%] h-[95%]"
+            className="w-[95%] h-[95%] relative"
             style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]) }}
           >
             <Image
@@ -181,6 +181,9 @@ export default function HomePage() {
               className="w-full h-full object-contain"
               width={1200}
             />
+            {/* Blending gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-r from-soft-white via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-b from-soft-white via-transparent to-soft-white pointer-events-none" />
           </motion.div>
         </div>
       </section>
