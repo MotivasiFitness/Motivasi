@@ -172,13 +172,13 @@ export default function HomePage() {
         {/* Right Image - Parallax */}
         <div className="w-full lg:w-1/2 h-[60vh] lg:h-auto relative overflow-hidden flex items-center justify-center">
           <motion.div 
-            className="w-[95%] h-[95%] relative"
+            className="w-full h-full relative"
             style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]) }}
           >
             <Image
-              src="https://static.wixstatic.com/media/93e866_3a0c04d5fb8243048ed330bdef84ef21~mv2.jpg"
-              alt="Professional fitness trainer with barbell strength training"
-              className="w-full h-full object-contain"
+              src="https://static.wixstatic.com/media/93e866_58220d463541442f89aa2fb37133b142~mv2.png"
+              alt="Professional fitness trainer portrait"
+              className="w-full h-full object-cover"
               width={1200}
             />
             {/* Blending gradient overlay - enhanced for smoother transition */}
