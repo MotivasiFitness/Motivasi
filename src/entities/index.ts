@@ -179,6 +179,31 @@ export interface PrivateVideoLibrary {
 
 
 /**
+ * Collection ID: programs
+ * Interface for FitnessPrograms
+ */
+export interface FitnessPrograms {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  programName?: string;
+  /** @wixFieldType text */
+  description?: string;
+  /** @wixFieldType text */
+  duration?: string;
+  /** @wixFieldType text */
+  focusArea?: string;
+  /** @wixFieldType text */
+  status?: string;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType text */
+  clientId?: string;
+}
+
+
+/**
  * Collection ID: progresscheckins
  * Interface for ProgressCheckins
  */
@@ -206,6 +231,29 @@ export interface ProgressCheckins {
 
 
 /**
+ * Collection ID: trainerclientmessages
+ * Interface for TrainerClientMessages
+ */
+export interface TrainerClientMessages {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  conversationId?: string;
+  /** @wixFieldType text */
+  senderId?: string;
+  /** @wixFieldType text */
+  recipientId?: string;
+  /** @wixFieldType text */
+  content?: string;
+  /** @wixFieldType datetime */
+  sentAt?: Date | string;
+  /** @wixFieldType boolean */
+  isRead?: boolean;
+}
+
+
+/**
  * Collection ID: trainerqualifications
  * Interface for TrainerQualifications
  */
@@ -225,4 +273,52 @@ export interface TrainerQualifications {
   certificateImage?: string;
   /** @wixFieldType text */
   relevance?: string;
+}
+
+
+/**
+ * Collection ID: programs
+ * Interface for Fitness Programs
+ */
+export interface Programs {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  programName?: string;
+  /** @wixFieldType text */
+  description?: string;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType text */
+  clientId?: string;
+  /** @wixFieldType text */
+  duration?: string;
+  /** @wixFieldType text */
+  focusArea?: string;
+  /** @wixFieldType text */
+  status?: string;
+}
+
+
+/**
+ * Collection ID: trainerclientmessages
+ * Interface for Trainer Client Messages
+ */
+export interface TrainerClientMessages {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  conversationId?: string;
+  /** @wixFieldType text */
+  senderId?: string;
+  /** @wixFieldType text */
+  recipientId?: string;
+  /** @wixFieldType text */
+  content?: string;
+  /** @wixFieldType datetime */
+  sentAt?: Date | string;
+  /** @wixFieldType boolean */
+  isRead?: boolean;
 }

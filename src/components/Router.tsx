@@ -37,6 +37,13 @@ import BookingsPage from '@/components/pages/ClientPortal/BookingsPage';
 import MessagesPage from '@/components/pages/ClientPortal/MessagesPage';
 import VideoLibraryPage from '@/components/pages/ClientPortal/VideoLibraryPage';
 
+// Trainer Dashboard Pages
+import TrainerDashboardLayout from '@/components/pages/TrainerDashboard/TrainerDashboardLayout';
+import TrainerDashboardPage from '@/components/pages/TrainerDashboard/TrainerDashboardPage';
+import TrainerClientsPage from '@/components/pages/TrainerDashboard/TrainerClientsPage';
+import CreateProgramPage from '@/components/pages/TrainerDashboard/CreateProgramPage';
+import TrainerMessagesPage from '@/components/pages/TrainerDashboard/TrainerMessagesPage';
+
 // Main Layout with Header and Footer
 function SiteLayout() {
   return (
@@ -212,6 +219,32 @@ const router = createBrowserRouter([
           {
             path: "video-library",
             element: <VideoLibraryPage />,
+          },
+        ],
+      },
+      {
+        path: "trainer",
+        element: (
+          <MemberProtectedRoute>
+            <TrainerDashboardLayout />
+          </MemberProtectedRoute>
+        ),
+        children: [
+          {
+            index: true,
+            element: <TrainerDashboardPage />,
+          },
+          {
+            path: "clients",
+            element: <TrainerClientsPage />,
+          },
+          {
+            path: "programs",
+            element: <CreateProgramPage />,
+          },
+          {
+            path: "messages",
+            element: <TrainerMessagesPage />,
           },
         ],
       },
