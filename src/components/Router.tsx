@@ -45,6 +45,9 @@ import TrainerClientsPage from '@/components/pages/TrainerDashboard/TrainerClien
 import CreateProgramPage from '@/components/pages/TrainerDashboard/CreateProgramPage';
 import TrainerMessagesPage from '@/components/pages/TrainerDashboard/TrainerMessagesPage';
 
+// Admin Pages
+import AdminDashboard from '@/components/pages/AdminDashboard';
+
 // Main Layout with Header and Footer
 function SiteLayout() {
   return (
@@ -252,6 +255,14 @@ const router = createBrowserRouter([
             element: <TrainerMessagesPage />,
           },
         ],
+      },
+      {
+        path: "admin",
+        element: (
+          <MemberProtectedRoute>
+            <AdminDashboard />
+          </MemberProtectedRoute>
+        ),
       },
       {
         path: "*",
