@@ -170,15 +170,15 @@ export default function HomePage() {
         </div>
 
         {/* Right Image - Parallax */}
-        <div className="w-full lg:w-1/2 h-[60vh] lg:h-auto relative overflow-hidden">
+        <div className="w-full lg:w-1/2 h-[60vh] lg:h-auto relative overflow-hidden flex items-center justify-center">
           <motion.div 
-            className="absolute inset-0 w-full h-full"
+            className="w-[85%] h-[85%]"
             style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]) }}
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_7ae482d73a30410e9174ae129840abd4~mv2.png"
               alt="Professional fitness coach portrait"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
               width={1200}
             />
           </motion.div>
