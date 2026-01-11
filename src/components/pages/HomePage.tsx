@@ -178,7 +178,7 @@ export default function HomePage() {
             <Image
               src="https://static.wixstatic.com/media/93e866_ef269d4e34974b55aceddc01c79a92ad~mv2.png"
               alt="Professional fitness coach portrait"
-              className="w-full h-full object-cover rounded-3xl mix-blend-overlay shadow-[12px_12px_4px_0px_#d9d9d9]"
+              className="w-full h-full object-cover rounded-3xl shadow-[12px_12px_4px_0px_#d9d9d9] mix-blend-normal"
               width={1200}
             />
           </motion.div>
