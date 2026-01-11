@@ -172,13 +172,13 @@ export default function HomePage() {
         {/* Right Image - Parallax */}
         <div className="w-full lg:w-1/2 h-[60vh] lg:h-auto relative overflow-hidden">
           <motion.div 
-            className="absolute inset-0 w-full h-[120%]"
-            style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]) }}
+            className="absolute inset-0 w-full h-full"
+            style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]) }}
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_7ae482d73a30410e9174ae129840abd4~mv2.png"
               alt="Professional fitness coach portrait"
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full object-contain object-center"
               width={1200}
             />
             <div className="absolute inset-0 bg-gradient-to-r from-soft-white/20 to-transparent lg:from-soft-white lg:via-transparent" />
