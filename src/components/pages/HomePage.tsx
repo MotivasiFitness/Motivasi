@@ -102,13 +102,11 @@ export default function HomePage() {
 
   return (
     <div className="bg-soft-white min-h-screen w-full overflow-clip font-paragraph text-charcoal-black selection:bg-soft-bronze selection:text-soft-white">
-      
       {/* Progress Bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-soft-bronze origin-left z-50"
         style={{ scaleX }}
       />
-
       {/* --- Hero Section --- */}
       <section className="relative min-h-screen w-full flex flex-col lg:flex-row overflow-hidden">
         {/* Left Content */}
@@ -127,7 +125,7 @@ export default function HomePage() {
                     initial={{ y: "100%" }} 
                     animate={{ y: 0 }} 
                     transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                    className="block"
+                    className="block my-0.5 mx-0"
                   >
                     {t.home.heroTitle}
                   </motion.span>
@@ -137,7 +135,7 @@ export default function HomePage() {
                     initial={{ y: "100%" }} 
                     animate={{ y: 0 }} 
                     transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                    className="block"
+                    className="block my-3.5 mx-0"
                   >
                     {t.home.heroSubtitle}
                   </motion.span>
@@ -187,7 +185,6 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
-
       {/* --- Marquee Section --- */}
       <div className="py-8 bg-charcoal-black overflow-hidden whitespace-nowrap border-y border-soft-bronze/20">
         <motion.div 
@@ -209,7 +206,6 @@ export default function HomePage() {
           ))}
         </motion.div>
       </div>
-
       {/* --- The Philosophy (Text Heavy / Editorial) --- */}
       <section className="py-32 px-8 lg:px-20 bg-warm-sand-beige/30">
         <div className="max-w-[100rem] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
@@ -270,7 +266,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* --- Visual Breather (Parallax) --- */}
       <section className="relative h-[80vh] w-full overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 z-0">
@@ -293,7 +288,6 @@ export default function HomePage() {
           </AnimatedElement>
         </div>
       </section>
-
       {/* --- Sticky Signature Offer Section --- */}
       <section className="relative bg-soft-white py-32 px-8 lg:px-20">
         <div className="max-w-[100rem] mx-auto">
@@ -396,7 +390,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* --- Testimonials (Horizontal Scroll) --- */}
       {testimonials.length > 0 && (
         <section className="py-32 bg-warm-sand-beige overflow-hidden">
@@ -478,7 +471,6 @@ export default function HomePage() {
           </div>
         </section>
       )}
-
       {/* --- Final CTA --- */}
       <section className="relative py-32 px-8 lg:px-20 bg-charcoal-black overflow-hidden">
         <div className="absolute inset-0 opacity-20">
