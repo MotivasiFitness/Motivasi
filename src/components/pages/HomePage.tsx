@@ -176,8 +176,8 @@ export default function HomePage() {
             style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]) }}
           >
             <Image
-              src="https://static.wixstatic.com/media/93e866_0c314b7ae4cb41e0878a836b06d03018~mv2.png?originWidth=1152&originHeight=640"
-              alt="Women training at home with dumbbells and strength training equipment"
+              src="https://static.wixstatic.com/media/93e866_7ae482d73a30410e9174ae129840abd4~mv2.png"
+              alt="Professional fitness coach portrait"
               className="w-full h-full object-cover"
               width={1200}
             />
