@@ -172,20 +172,24 @@ export default function HomePage() {
         {/* Right Image - Parallax */}
         <div className="w-full lg:w-1/2 h-[60vh] lg:h-auto relative overflow-hidden flex items-center justify-center">
           <motion.div 
-            className="w-full h-full relative"
+            className="w-[95%] h-[95%] relative"
             style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]) }}
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_58220d463541442f89aa2fb37133b142~mv2.png"
               alt="Professional fitness trainer portrait"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover rounded-3xl"
               width={1200}
             />
-            {/* Blending gradient overlay - enhanced for smoother transition */}
-            <div className="absolute inset-0 bg-gradient-to-r from-soft-white/60 via-soft-white/20 via-50% to-transparent pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-b from-soft-white/50 via-transparent via-55% to-soft-white/50 pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-t from-soft-white/45 via-transparent via-40% pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-l from-soft-white/35 via-transparent via-60% pointer-events-none" />
+            {/* Enhanced blending gradient overlays for smoother transition */}
+            <div className="absolute inset-0 bg-gradient-to-r from-soft-white/80 via-soft-white/40 via-45% to-transparent pointer-events-none rounded-3xl" />
+            <div className="absolute inset-0 bg-gradient-to-b from-soft-white/70 via-transparent via-50% to-soft-white/70 pointer-events-none rounded-3xl" />
+            <div className="absolute inset-0 bg-gradient-to-t from-soft-white/65 via-transparent via-35% to-transparent pointer-events-none rounded-3xl" />
+            <div className="absolute inset-0 bg-gradient-to-l from-soft-white/75 via-transparent via-55% to-transparent pointer-events-none rounded-3xl" />
+            {/* Additional corner blending for ultra-smooth edges */}
+            <div className="absolute inset-0 bg-radial-gradient pointer-events-none rounded-3xl" style={{
+              background: 'radial-gradient(ellipse at center, transparent 0%, rgba(250, 249, 247, 0.4) 70%, rgba(250, 249, 247, 0.8) 100%)'
+            }} />
           </motion.div>
         </div>
       </section>
