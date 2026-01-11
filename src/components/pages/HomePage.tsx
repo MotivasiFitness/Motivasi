@@ -181,9 +181,10 @@ export default function HomePage() {
               className="w-full h-full object-contain"
               width={1200}
             />
-            {/* Blending gradient overlay - subtle */}
-            <div className="absolute inset-0 bg-gradient-to-r from-soft-white/30 via-transparent to-transparent pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-b from-soft-white/20 via-transparent to-soft-white/20 pointer-events-none" />
+            {/* Blending gradient overlay - soft edges with strong blend */}
+            <div className="absolute inset-0 bg-gradient-to-r from-soft-white/40 via-transparent via-70% to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-b from-soft-white/35 via-transparent via-60% to-soft-white/35 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-soft-white/25 via-transparent pointer-events-none" />
           </motion.div>
         </div>
       </section>
