@@ -43,11 +43,11 @@ export default function OnlineTrainingPage() {
             <div className="relative">
               <div className="aspect-square w-full max-w-lg mx-auto rounded-2xl overflow-hidden">
                 <Image
-                  src="https://static.wixstatic.com/media/93e866_0f87c0e4fd364ec19d67523c7472a283~mv2.png?originWidth=576&originHeight=768"
-                  alt="Online coaching session"
+                  src="https://static.wixstatic.com/media/93e866_84be481776af4fc3964a571dc2e19db0~mv2.jpg"
                   className="w-full h-full object-cover"
                   width={600}
-                />
+                  originWidth={480}
+                  originHeight={640} />
               </div>
             </div>
           </div>
