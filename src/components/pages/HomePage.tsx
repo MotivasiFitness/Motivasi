@@ -178,7 +178,7 @@ export default function HomePage() {
             <Image
               src="https://static.wixstatic.com/media/93e866_7ae482d73a30410e9174ae129840abd4~mv2.png"
               alt="Professional fitness coach portrait"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center"
               width={1200}
             />
             <div className="absolute inset-0 bg-gradient-to-r from-soft-white/20 to-transparent lg:from-soft-white lg:via-transparent" />
