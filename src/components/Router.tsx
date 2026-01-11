@@ -13,6 +13,7 @@ import { MemberProtectedRoute } from '@/components/ui/member-protected-route';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CookieBanner from '@/components/CookieBanner';
+import RoleSetup from '@/components/RoleSetup';
 import HomePage from '@/components/pages/HomePage';
 import AboutPage from '@/components/pages/AboutPage';
 import BlogPage from '@/components/pages/BlogPage';
@@ -183,6 +184,10 @@ const router = createBrowserRouter([
             </div>
           </div>
         ),
+      },
+      {
+        path: "role-setup",
+        element: <RoleSetup />,
       },
       {
         path: "portal",

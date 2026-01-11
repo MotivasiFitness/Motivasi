@@ -231,6 +231,27 @@ export interface ProgressCheckins {
 
 
 /**
+ * Collection ID: trainerclientassignments
+ * Interface for TrainerClientAssignments
+ */
+export interface TrainerClientAssignments {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType text */
+  clientId?: string;
+  /** @wixFieldType date */
+  assignmentDate?: Date | string;
+  /** @wixFieldType text */
+  status?: string;
+  /** @wixFieldType text */
+  notes?: string;
+}
+
+
+/**
  * Collection ID: trainerclientmessages
  * Interface for TrainerClientMessages
  */
@@ -250,6 +271,27 @@ export interface TrainerClientMessages {
   sentAt?: Date | string;
   /** @wixFieldType boolean */
   isRead?: boolean;
+}
+
+
+/**
+ * Collection ID: trainerclientassignments
+ * Interface for Trainer Client Assignments
+ */
+export interface TrainerClientAssignments {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType text */
+  clientId?: string;
+  /** @wixFieldType date */
+  assignmentDate?: Date | string;
+  /** @wixFieldType text */
+  status?: string;
+  /** @wixFieldType text */
+  notes?: string;
 }
 
 
@@ -277,48 +319,7 @@ export interface TrainerQualifications {
 
 
 /**
- * Collection ID: programs
- * Interface for Fitness Programs
+ * Member Role Type
+ * Defines the role of a member in the system
  */
-export interface Programs {
-  _id: string;
-  _createdDate?: Date;
-  _updatedDate?: Date;
-  /** @wixFieldType text */
-  programName?: string;
-  /** @wixFieldType text */
-  description?: string;
-  /** @wixFieldType text */
-  trainerId?: string;
-  /** @wixFieldType text */
-  clientId?: string;
-  /** @wixFieldType text */
-  duration?: string;
-  /** @wixFieldType text */
-  focusArea?: string;
-  /** @wixFieldType text */
-  status?: string;
-}
-
-
-/**
- * Collection ID: trainerclientmessages
- * Interface for Trainer Client Messages
- */
-export interface TrainerClientMessages {
-  _id: string;
-  _createdDate?: Date;
-  _updatedDate?: Date;
-  /** @wixFieldType text */
-  conversationId?: string;
-  /** @wixFieldType text */
-  senderId?: string;
-  /** @wixFieldType text */
-  recipientId?: string;
-  /** @wixFieldType text */
-  content?: string;
-  /** @wixFieldType datetime */
-  sentAt?: Date | string;
-  /** @wixFieldType boolean */
-  isRead?: boolean;
-}
+export type MemberRole = 'trainer' | 'client' | 'admin';

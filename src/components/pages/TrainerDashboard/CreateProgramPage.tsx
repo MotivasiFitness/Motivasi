@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { Programs } from '@/entities';
+import { Programs, TrainerClientAssignments } from '@/entities';
 import { useNavigate } from 'react-router-dom';
 import { AlertCircle, CheckCircle } from 'lucide-react';
+import { getTrainerClients } from '@/lib/role-utils';
 
 export default function CreateProgramPage() {
   const { member } = useMember();
@@ -11,6 +12,8 @@ export default function CreateProgramPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [assignedClients, setAssignedClients] = useState<TrainerClientAssignments[]>([]);
+  const [loadingClients, setLoadingClients] = useState(true);
 
   const [formData, setFormData] = useState({
     programName: '',
@@ -20,6 +23,24 @@ export default function CreateProgramPage() {
     focusArea: '',
     status: 'Active',
   });
+
+  // Load assigned clients
+  useEffect(() => {
+    const fetchAssignedClients = async () => {
+      if (!member?._id) return;
+      
+      try {
+        const clients = await getTrainerClients(member._id);
+        setAssignedClients(clients);
+      } catch (error) {
+        console.error('Error fetching assigned clients:', error);
+      } finally {
+        setLoadingClients(false);
+      }
+    };
+
+    fetchAssignedClients();
+  }, [member?._id]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -148,22 +169,39 @@ export default function CreateProgramPage() {
               />
             </div>
 
-            {/* Client ID */}
+            {/* Client Selection */}
             <div>
               <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
-                Client ID *
+                Select Client *
               </label>
-              <input
-                type="text"
-                name="clientId"
-                value={formData.clientId}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
-                placeholder="Enter the client's ID"
-              />
+              {loadingClients ? (
+                <div className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige bg-warm-sand-beige/30 text-warm-grey">
+                  Loading assigned clients...
+                </div>
+              ) : assignedClients.length === 0 ? (
+                <div className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige bg-warm-sand-beige/30">
+                  <p className="text-warm-grey text-sm">
+                    No clients assigned yet. <a href="/trainer/clients" className="text-soft-bronze hover:underline">Assign a client first</a>
+                  </p>
+                </div>
+              ) : (
+                <select
+                  name="clientId"
+                  value={formData.clientId}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
+                >
+                  <option value="">Select a client</option>
+                  {assignedClients.map((assignment) => (
+                    <option key={assignment._id} value={assignment.clientId}>
+                      Client {assignment.clientId?.slice(0, 8)}
+                    </option>
+                  ))}
+                </select>
+              )}
               <p className="text-xs text-warm-grey mt-2">
-                You can find the client ID in your client management system
+                Only clients assigned to you will appear in this list
               </p>
             </div>
 
