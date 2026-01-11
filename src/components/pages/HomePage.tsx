@@ -170,18 +170,22 @@ export default function HomePage() {
         </div>
 
         {/* Right Image - Parallax */}
-        <div className="w-full lg:w-1/2 h-[60vh] lg:h-auto relative overflow-hidden">
+        <div className="w-full lg:w-1/2 h-[60vh] lg:h-auto relative overflow-hidden flex items-center justify-center">
           <motion.div 
-            className="absolute inset-0 w-full h-[120%]"
-            style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]) }}
+            className="w-[95%] h-[95%] relative"
+            style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]) }}
           >
             <Image
-              src="https://static.wixstatic.com/media/93e866_0c314b7ae4cb41e0878a836b06d03018~mv2.png?originWidth=1152&originHeight=640"
-              alt="Women training at home with dumbbells and strength training equipment"
-              className="w-full h-full object-cover"
+              src="https://static.wixstatic.com/media/93e866_3a0c04d5fb8243048ed330bdef84ef21~mv2.jpg"
+              alt="Professional fitness trainer with barbell strength training"
+              className="w-full h-full object-contain"
               width={1200}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-soft-white/20 to-transparent lg:from-soft-white lg:via-transparent" />
+            {/* Blending gradient overlay - enhanced for smoother transition */}
+            <div className="absolute inset-0 bg-gradient-to-r from-soft-white/60 via-soft-white/20 via-50% to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-b from-soft-white/50 via-transparent via-55% to-soft-white/50 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-soft-white/45 via-transparent via-40% pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-l from-soft-white/35 via-transparent via-60% pointer-events-none" />
           </motion.div>
         </div>
       </section>
