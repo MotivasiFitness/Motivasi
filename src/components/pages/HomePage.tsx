@@ -121,7 +121,7 @@ export default function HomePage() {
             </AnimatedElement>
             
             <div className="relative z-20">
-              <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl font-bold text-charcoal-black leading-[0.9] mb-8 tracking-tight">
+              <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl font-bold text-charcoal-black leading-[1.1] mb-12 tracking-tight">
                 <span className="block overflow-hidden">
                   <motion.span 
                     initial={{ y: "100%" }} 
