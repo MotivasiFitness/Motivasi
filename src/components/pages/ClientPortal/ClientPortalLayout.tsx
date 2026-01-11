@@ -68,20 +68,33 @@ export default function ClientPortalLayout() {
             {navItems.map((item) => {
               const Icon = item.icon;
               const active = isActive(item.path);
+              const isRecommended = item.path === '/portal/program' || item.path === '/portal/messages';
+              
               return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                    active
-                      ? 'bg-soft-bronze text-soft-white'
-                      : 'text-warm-grey hover:bg-soft-white/10'
-                  }`}
-                >
-                  <Icon size={20} />
-                  <span className="font-paragraph font-medium">{item.label}</span>
-                </Link>
+                <div key={item.path} className="relative">
+                  {isRecommended && !active && (
+                    <div className="absolute -left-4 top-1/2 transform -translate-y-1/2 w-1 h-6 bg-soft-bronze rounded-r-full" />
+                  )}
+                  <Link
+                    to={item.path}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                      active
+                        ? 'bg-soft-bronze text-soft-white'
+                        : isRecommended
+                        ? 'bg-soft-bronze/10 text-soft-white hover:bg-soft-bronze/20'
+                        : 'text-warm-grey hover:bg-soft-white/10'
+                    }`}
+                  >
+                    <Icon size={20} />
+                    <span className="font-paragraph font-medium">{item.label}</span>
+                    {isRecommended && !active && (
+                      <span className="ml-auto text-xs bg-soft-bronze/30 px-2 py-1 rounded text-soft-white">
+                        Recommended
+                      </span>
+                    )}
+                  </Link>
+                </div>
               );
             })}
           </nav>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientBookings, ProgressCheckins, NutritionGuidance } from '@/entities';
-import { Calendar, CheckCircle, TrendingUp, Zap } from 'lucide-react';
+import { Calendar, CheckCircle, TrendingUp, Zap, Heart, ArrowRight } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { Link } from 'react-router-dom';
 
@@ -56,29 +56,29 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      {/* Welcome Section */}
+      {/* Welcome Section with Primary CTA */}
       <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
-        <h1 className="font-heading text-4xl font-bold mb-2">
-          Welcome back, {member?.profile?.nickname || member?.contact?.firstName}!
-        </h1>
-        <p className="text-soft-white/90">
-          You're making great progress. Keep up the momentum!
-        </p>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div>
+            <h1 className="font-heading text-4xl font-bold mb-2">
+              Welcome back, {member?.profile?.nickname || member?.contact?.firstName}!
+            </h1>
+            <p className="text-soft-white/90">
+              You're making great progress. Keep up the momentum!
+            </p>
+          </div>
+          <Link
+            to={upcomingBookings.length > 0 ? "/portal/program" : "/portal/bookings"}
+            className="inline-flex items-center gap-2 bg-soft-white text-soft-bronze px-8 py-4 rounded-lg font-medium hover:bg-soft-white/90 transition-colors whitespace-nowrap"
+          >
+            {upcomingBookings.length > 0 ? "Complete Today's Workout" : "Book Your Next Session"}
+            <ArrowRight size={20} />
+          </Link>
+        </div>
       </div>
 
       {/* Quick Stats */}
       <div className="grid md:grid-cols-3 gap-6">
-        <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-heading text-lg font-bold text-charcoal-black">Upcoming Sessions</h3>
-            <Calendar className="text-soft-bronze" size={24} />
-          </div>
-          <p className="font-heading text-4xl font-bold text-charcoal-black">
-            {upcomingBookings.length}
-          </p>
-          <p className="text-warm-grey text-sm mt-2">scheduled this month</p>
-        </div>
-
         <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-heading text-lg font-bold text-charcoal-black">Progress Tracked</h3>
@@ -87,7 +87,9 @@ export default function DashboardPage() {
           <p className="font-heading text-4xl font-bold text-charcoal-black">
             {latestCheckIn ? '✓' : '0'}
           </p>
-          <p className="text-warm-grey text-sm mt-2">check-ins completed</p>
+          <p className="text-warm-grey text-sm mt-2">
+            {latestCheckIn ? 'Last check-in completed' : 'No check-ins yet'}
+          </p>
         </div>
 
         <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6">
@@ -98,7 +100,22 @@ export default function DashboardPage() {
           <p className="font-heading text-4xl font-bold text-charcoal-black">
             100%
           </p>
-          <p className="text-warm-grey text-sm mt-2">keep it up!</p>
+          <p className="text-warm-grey text-sm mt-2">
+            You've followed your plan this week
+          </p>
+        </div>
+
+        <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-heading text-lg font-bold text-charcoal-black">Upcoming Sessions</h3>
+            <Calendar className="text-soft-bronze" size={24} />
+          </div>
+          <p className="font-heading text-4xl font-bold text-charcoal-black">
+            {upcomingBookings.length}
+          </p>
+          <p className="text-warm-grey text-sm mt-2">
+            {upcomingBookings.length > 0 ? 'scheduled this month' : 'No sessions booked yet'}
+          </p>
         </div>
       </div>
 
@@ -140,9 +157,21 @@ export default function DashboardPage() {
             ))}
           </div>
         ) : (
-          <p className="text-warm-grey text-center py-8">
-            No upcoming sessions. <Link to="/portal/bookings" className="text-soft-bronze hover:underline">Schedule one now</Link>
-          </p>
+          <div className="bg-warm-sand-beige/20 border border-warm-sand-beige rounded-lg p-6 text-center">
+            <p className="text-charcoal-black font-medium mb-2">
+              No sessions booked yet
+            </p>
+            <p className="text-warm-grey text-sm mb-4">
+              Booking ahead helps you stay consistent around family life
+            </p>
+            <Link 
+              to="/portal/bookings" 
+              className="inline-flex items-center gap-2 text-soft-bronze hover:underline font-medium text-sm"
+            >
+              Schedule in 30 seconds
+              <ArrowRight size={16} />
+            </Link>
+          </div>
         )}
       </div>
 
@@ -209,6 +238,21 @@ export default function DashboardPage() {
           </div>
         </div>
       )}
+
+      {/* Coach Support Block */}
+      <div className="bg-gradient-to-r from-soft-bronze/10 to-soft-bronze/5 border border-soft-bronze/30 rounded-2xl p-8">
+        <div className="flex items-start gap-4">
+          <Heart className="text-soft-bronze flex-shrink-0 mt-1" size={28} />
+          <div>
+            <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2">
+              You're not doing this alone
+            </h3>
+            <p className="text-warm-grey">
+              Your coach is reviewing your progress and is always here if you need support. Don't hesitate to reach out with questions or if you need adjustments to your program.
+            </p>
+          </div>
+        </div>
+      </div>
 
       {/* Quick Links */}
       <div className="grid md:grid-cols-2 gap-6">
