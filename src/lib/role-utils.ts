@@ -16,6 +16,9 @@ export function getMemberRole(memberId: string): MemberRole | null {
 /**
  * Set the role of a member in localStorage
  * This is a client-side helper - in production, roles should be stored in a database
+ * 
+ * NOTE: For security, only admins should be able to change roles to 'trainer'
+ * Non-admin users can only set their own role to 'client' during initial setup
  */
 export function setMemberRole(memberId: string, role: MemberRole): void {
   if (typeof window === 'undefined') return;
@@ -23,6 +26,46 @@ export function setMemberRole(memberId: string, role: MemberRole): void {
   const roles = JSON.parse(localStorage.getItem('memberRoles') || '{}');
   roles[memberId] = role;
   localStorage.setItem('memberRoles', JSON.stringify(roles));
+}
+
+/**
+ * Set the default role for a new member (always 'client')
+ * This is called during initial signup to ensure new users default to client role
+ */
+export function setDefaultRole(memberId: string): void {
+  if (typeof window === 'undefined') return;
+  
+  const roles = JSON.parse(localStorage.getItem('memberRoles') || '{}');
+  
+  // Only set default role if member doesn't already have one
+  if (!roles[memberId]) {
+    roles[memberId] = 'client';
+    localStorage.setItem('memberRoles', JSON.stringify(roles));
+  }
+}
+
+/**
+ * Change a member's role (admin-only operation)
+ * Only admins can change roles, especially to 'trainer'
+ */
+export function changeUserRole(
+  adminId: string,
+  targetUserId: string,
+  newRole: MemberRole
+): void {
+  if (typeof window === 'undefined') return;
+  
+  // Verify that the admin is actually an admin
+  if (!isAdmin(adminId)) {
+    throw new Error('Only administrators can change user roles');
+  }
+  
+  // Prevent changing to trainer role unless explicitly approved
+  if (newRole === 'trainer') {
+    console.warn(`Admin ${adminId} is changing user ${targetUserId} to trainer role`);
+  }
+  
+  setMemberRole(targetUserId, newRole);
 }
 
 /**

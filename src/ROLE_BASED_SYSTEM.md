@@ -72,24 +72,15 @@ const role = getMemberRole(memberId);
 // Check role
 if (isTrainer(memberId)) { /* ... */ }
 if (isClient(memberId)) { /* ... */ }
+if (isAdmin(memberId)) { /* ... */ }
 
-// Assign client to trainer
-await assignClientToTrainer(trainerId, clientId, notes);
+// Set default role (new users only)
+setDefaultRole(memberId); // Sets to 'client'
 
-// Get trainer's clients
-const clients = await getTrainerClients(trainerId);
+// Change user role (admin-only)
+changeUserRole(adminId, targetUserId, 'trainer');
 
-// Get client's trainers
-const trainers = await getClientTrainers(clientId);
-
-// Check assignment
-const isAssigned = await isTrainerAssignedToClient(trainerId, clientId);
-
-// Update assignment status
-await updateAssignmentStatus(assignmentId, 'Active');
-
-// Check access permissions
-const canAccess = await canTrainerAccessClient(trainerId, clientId);
+// ... rest of trainer-client assignment functions
 ```
 
 ### useRole Hook (`hooks/useRole.ts`)
@@ -116,23 +107,63 @@ function MyComponent() {
 
 ## User Flows
 
-### 1. **New User Registration**
+### 1. **New User Registration (Client)**
 
 ```
 User Signs Up
     ↓
 Redirected to /role-setup
     ↓
-Selects Role (Trainer or Client)
+Defaults to Client Role (or selects Client)
     ↓
 Role stored in localStorage
     ↓
-Redirected to appropriate dashboard
-    ├─ Trainer → /trainer
-    └─ Client → /portal
+Redirected to /portal (Client Dashboard)
 ```
 
-### 2. **Trainer Assigning a Client**
+### 1b. **New User Registration (Trainer - Admin Only)**
+
+```
+User Signs Up
+    ↓
+Redirected to /role-setup
+    ↓
+Trainer Option is DISABLED (unless user is admin)
+    ↓
+User sees message: "Trainer Role Requires Admin Approval"
+    ↓
+User can request trainer role via email
+    ↓
+Admin approves and manually sets role to 'trainer'
+    ↓
+User can then access /trainer dashboard
+```
+
+### 2. **Trainer Role Request (Non-Admin User)**
+
+```
+User wants to become a trainer
+    ↓
+Visits /role-setup
+    ↓
+Trainer button is DISABLED
+    ↓
+Sees message: "Trainer Role Requires Admin Approval"
+    ↓
+Clicks "Request Trainer Role" button
+    ↓
+Email sent to hello@motivasi.co.uk with request
+    ↓
+Admin reviews qualifications
+    ↓
+Admin approves and sets user role to 'trainer'
+    ↓
+User can now access /trainer dashboard
+```
+
+### 3. **Trainer Assigning a Client**
+
+### 3. **Trainer Assigning a Client**
 
 ```
 Trainer navigates to /trainer/clients
@@ -146,7 +177,7 @@ System creates TrainerClientAssignment record
 Client appears in trainer's client list
 ```
 
-### 3. **Trainer Creating a Program for a Client**
+### 4. **Trainer Creating a Program for a Client**
 
 ```
 Trainer navigates to /trainer/programs
@@ -160,7 +191,7 @@ Program created with trainerId and clientId
 Client can now see program in /portal/program
 ```
 
-### 4. **Client Viewing Assigned Programs**
+### 5. **Client Viewing Assigned Programs**
 
 ```
 Client logs in
@@ -171,6 +202,58 @@ System fetches programs where clientId matches
     ↓
 Displays all assigned programs
 ```
+
+## Role Management & Admin Controls
+
+### Setting Default Role for New Users
+
+New users automatically default to the **'client'** role during signup:
+
+```typescript
+import { setDefaultRole } from '@/lib/role-utils';
+
+// Called during user registration
+setDefaultRole(newUserId); // Sets role to 'client'
+```
+
+### Admin Changing User Roles
+
+Only administrators can change user roles, especially to 'trainer':
+
+```typescript
+import { changeUserRole } from '@/lib/role-utils';
+
+// Admin changes a user's role
+try {
+  changeUserRole(adminId, targetUserId, 'trainer');
+  // Success - user is now a trainer
+} catch (error) {
+  console.error('Only admins can change roles:', error);
+}
+```
+
+### Preventing Self-Selection of Trainer Role
+
+The RoleSetup component prevents non-admin users from selecting the trainer role:
+
+```typescript
+// In RoleSetup.tsx
+const userIsAdmin = isAdmin(member._id);
+
+// Trainer button is disabled for non-admins
+<button
+  disabled={!userIsAdmin}
+  onClick={() => handleRoleSelection('trainer')}
+>
+  {userIsAdmin ? "I'm a Trainer" : "Trainer Role (Admin Only)"}
+</button>
+```
+
+When a non-admin user tries to select trainer role:
+1. A modal appears explaining the requirement
+2. A "Request Trainer Role" button sends an email to admin
+3. User can proceed with client role setup
+4. Admin reviews request and manually approves if qualified
 
 ---
 
@@ -268,6 +351,9 @@ async function bulkAssignClients(trainerId, clientIds) {
 ### Current Implementation (Development)
 
 - Roles stored in `localStorage` (client-side only)
+- Trainer role selection is disabled for non-admin users
+- New users default to 'client' role
+- Admin-only functions prevent non-admin role changes
 - Suitable for development and testing
 - **NOT SECURE for production**
 
@@ -279,21 +365,32 @@ For production, implement the following:
    - Create a `MemberRoles` collection in CMS
    - Store role assignments server-side
    - Validate role on every API call
+   - Implement role change audit logging
 
 2. **Backend Validation**
-   - Verify role on server before allowing operations
-   - Check trainer-client assignment before allowing program creation
-   - Implement proper access control middleware
+   - Verify admin status before allowing role changes
+   - Check trainer qualifications before approval
+   - Implement role change request workflow
+   - Log all role modifications
 
 3. **JWT/Token Enhancement**
    - Include role in JWT token
    - Validate token role matches database
    - Implement role-based token expiration
+   - Refresh tokens on role changes
 
 4. **Audit Logging**
-   - Log all role changes
-   - Track who assigned/removed clients
+   - Log all role change requests
+   - Track who approved/denied trainer requests
    - Monitor unauthorized access attempts
+   - Maintain role change history
+
+5. **Admin Dashboard**
+   - Create admin panel for role management
+   - Review trainer role requests
+   - Approve/deny with comments
+   - View role change history
+   - Manage user permissions
 
 ---
 

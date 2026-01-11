@@ -275,27 +275,6 @@ export interface TrainerClientMessages {
 
 
 /**
- * Collection ID: trainerclientassignments
- * Interface for Trainer Client Assignments
- */
-export interface TrainerClientAssignments {
-  _id: string;
-  _createdDate?: Date;
-  _updatedDate?: Date;
-  /** @wixFieldType text */
-  trainerId?: string;
-  /** @wixFieldType text */
-  clientId?: string;
-  /** @wixFieldType date */
-  assignmentDate?: Date | string;
-  /** @wixFieldType text */
-  status?: string;
-  /** @wixFieldType text */
-  notes?: string;
-}
-
-
-/**
  * Collection ID: trainerqualifications
  * Interface for TrainerQualifications
  */
@@ -316,10 +295,3 @@ export interface TrainerQualifications {
   /** @wixFieldType text */
   relevance?: string;
 }
-
-
-/**
- * Member Role Type
- * Defines the role of a member in the system
- */
-export type MemberRole = 'trainer' | 'client' | 'admin';

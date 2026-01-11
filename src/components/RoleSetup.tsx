@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useMember } from '@/integrations';
-import { setMemberRole } from '@/lib/role-utils';
+import { setMemberRole, isAdmin } from '@/lib/role-utils';
 import { MemberRole } from '@/entities';
-import { AlertCircle, CheckCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle, Lock } from 'lucide-react';
 
 export default function RoleSetup() {
   const { member } = useMember();
@@ -10,12 +10,22 @@ export default function RoleSetup() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [showTrainerRequest, setShowTrainerRequest] = useState(false);
 
   if (!member?._id) {
     return null;
   }
 
+  // Check if user is admin
+  const userIsAdmin = isAdmin(member._id);
+
   const handleRoleSelection = async (role: MemberRole) => {
+    // Prevent non-admin users from selecting trainer role
+    if (role === 'trainer' && !userIsAdmin) {
+      setShowTrainerRequest(true);
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitError('');
 
@@ -48,7 +58,7 @@ export default function RoleSetup() {
             Welcome to Motivasi!
           </h1>
           <p className="font-paragraph text-xl text-warm-grey">
-            Let's set up your account. Are you a trainer or a client?
+            Let's set up your account. Please select your role.
           </p>
         </div>
 
@@ -74,38 +84,89 @@ export default function RoleSetup() {
           </div>
         )}
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Trainer Option */}
-          <button
-            onClick={() => handleRoleSelection('trainer')}
-            disabled={isSubmitting}
-            className="group relative overflow-hidden bg-charcoal-black text-soft-white p-12 rounded-2xl hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <div className="relative z-10 text-center">
-              <div className="w-16 h-16 bg-soft-bronze rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg
-                  className="w-8 h-8 text-soft-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+        {showTrainerRequest && (
+          <div className="mb-8 p-6 bg-soft-bronze/10 border border-soft-bronze/30 rounded-2xl">
+            <div className="flex gap-4">
+              <Lock className="text-soft-bronze flex-shrink-0 mt-1" size={24} />
+              <div>
+                <h3 className="font-heading text-lg font-bold text-charcoal-black mb-3">
+                  Trainer Role Requires Admin Approval
+                </h3>
+                <p className="font-paragraph text-base text-charcoal-black mb-4 leading-relaxed">
+                  To become a trainer on Motivasi, you need to be approved by an administrator. This ensures that only qualified professionals can create training programs and manage clients.
+                </p>
+                <p className="font-paragraph text-base text-warm-grey mb-6 leading-relaxed">
+                  If you're interested in becoming a trainer, please contact us with your qualifications and experience:
+                </p>
+                <a
+                  href="mailto:hello@motivasi.co.uk?subject=Trainer%20Role%20Request"
+                  className="inline-block bg-charcoal-black text-soft-white px-6 py-3 rounded-lg font-medium hover:bg-soft-bronze transition-colors"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-                  />
-                </svg>
-              </div>
-              <h3 className="font-heading text-2xl font-bold mb-4">I'm a Trainer</h3>
-              <p className="font-paragraph text-warm-grey mb-6">
-                Create and manage training programs, track client progress, and communicate with your clients.
-              </p>
-              <div className="text-soft-bronze font-medium group-hover:text-soft-white transition-colors">
-                Get Started →
+                  Request Trainer Role
+                </a>
+                <p className="font-paragraph text-sm text-warm-grey mt-4">
+                  In the meantime, you can set up your account as a client to explore the platform.
+                </p>
               </div>
             </div>
-            <div className="absolute inset-0 bg-soft-bronze transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 ease-out -z-10" />
+          </div>
+        )}
+
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Trainer Option - Disabled for non-admins */}
+          <button
+            onClick={() => handleRoleSelection('trainer')}
+            disabled={isSubmitting || !userIsAdmin}
+            className={`group relative overflow-hidden p-12 rounded-2xl transition-all duration-300 ${
+              userIsAdmin
+                ? 'bg-charcoal-black text-soft-white hover:shadow-xl cursor-pointer'
+                : 'bg-charcoal-black/50 text-soft-white/50 cursor-not-allowed'
+            }`}
+          >
+            <div className="relative z-10 text-center">
+              <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 ${
+                userIsAdmin ? 'bg-soft-bronze' : 'bg-soft-bronze/30'
+              }`}>
+                {!userIsAdmin && (
+                  <Lock className="w-8 h-8 text-soft-white/70" />
+                )}
+                {userIsAdmin && (
+                  <svg
+                    className="w-8 h-8 text-soft-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                    />
+                  </svg>
+                )}
+              </div>
+              <h3 className="font-heading text-2xl font-bold mb-4">
+                {userIsAdmin ? "I'm a Trainer" : "Trainer Role"}
+              </h3>
+              <p className={`font-paragraph mb-6 ${
+                userIsAdmin ? 'text-warm-grey' : 'text-soft-white/60'
+              }`}>
+                {userIsAdmin
+                  ? 'Create and manage training programs, track client progress, and communicate with your clients.'
+                  : 'Admin approval required. Contact us to request trainer access.'}
+              </p>
+              <div className={`font-medium transition-colors ${
+                userIsAdmin
+                  ? 'text-soft-bronze group-hover:text-soft-white'
+                  : 'text-soft-white/40'
+              }`}>
+                {userIsAdmin ? 'Get Started →' : 'Admin Only'}
+              </div>
+            </div>
+            {userIsAdmin && (
+              <div className="absolute inset-0 bg-soft-bronze transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 ease-out -z-10" />
+            )}
           </button>
 
           {/* Client Option */}
@@ -143,7 +204,9 @@ export default function RoleSetup() {
         </div>
 
         <p className="text-center text-sm text-warm-grey mt-8">
-          You can change your role later in your account settings.
+          {userIsAdmin
+            ? 'You can change your role later in your account settings.'
+            : 'You can update your account settings after setup.'}
         </p>
       </div>
     </div>
