@@ -176,7 +176,7 @@ export default function HomePage() {
             style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]) }}
           >
             <Image
-              src="https://static.wixstatic.com/media/93e866_67c4e57519aa46e584c66b009847214d~mv2.png"
+              src="https://static.wixstatic.com/media/93e866_7ae482d73a30410e9174ae129840abd4~mv2.png"
               alt="Professional fitness coach portrait"
               className="w-full h-full object-contain"
               width={1200}
