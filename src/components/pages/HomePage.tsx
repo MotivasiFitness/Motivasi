@@ -172,7 +172,7 @@ export default function HomePage() {
         {/* Right Image - Parallax */}
         <div className="w-full lg:w-1/2 h-[60vh] lg:h-auto relative overflow-hidden flex items-center justify-center">
           <motion.div 
-            className="w-[85%] h-[85%]"
+            className="w-[90%] h-[90%]"
             style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]) }}
           >
             <Image
