@@ -135,6 +135,25 @@ export interface ClientTestimonials {
 
 
 /**
+ * Collection ID: memberroles
+ * Interface for MemberRoles
+ */
+export interface MemberRoles {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  memberId?: string;
+  /** @wixFieldType text */
+  role?: string;
+  /** @wixFieldType datetime */
+  assignmentDate?: Date | string;
+  /** @wixFieldType text */
+  status?: string;
+}
+
+
+/**
  * Collection ID: nutritionguidance
  * Interface for NutritionGuidance
  */
@@ -295,3 +314,27 @@ export interface TrainerQualifications {
   /** @wixFieldType text */
   relevance?: string;
 }
+
+
+/**
+ * Collection ID: memberroles
+ * Interface for MemberRoles
+ */
+export interface MemberRoles {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  memberId?: string;
+  /** @wixFieldType text */
+  role?: 'client' | 'trainer' | 'admin';
+  /** @wixFieldType datetime */
+  assignmentDate?: Date | string;
+  /** @wixFieldType text */
+  status?: 'active' | 'inactive' | 'pending';
+}
+
+/**
+ * Type alias for member roles
+ */
+export type MemberRole = 'client' | 'trainer' | 'admin';

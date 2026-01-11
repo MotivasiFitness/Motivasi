@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMember } from '@/integrations';
 import { setMemberRole, isAdmin } from '@/lib/role-utils';
 import { MemberRole } from '@/entities';
@@ -11,13 +11,43 @@ export default function RoleSetup() {
   const [submitError, setSubmitError] = useState('');
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [showTrainerRequest, setShowTrainerRequest] = useState(false);
+  const [userIsAdmin, setUserIsAdmin] = useState(false);
+  const [isLoadingAdmin, setIsLoadingAdmin] = useState(true);
+
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      if (!member?._id) {
+        setIsLoadingAdmin(false);
+        return;
+      }
+      
+      try {
+        const isAdminUser = await isAdmin(member._id);
+        setUserIsAdmin(isAdminUser);
+      } catch (error) {
+        console.error('Error checking admin status:', error);
+        setUserIsAdmin(false);
+      } finally {
+        setIsLoadingAdmin(false);
+      }
+    };
+
+    checkAdminStatus();
+  }, [member?._id]);
 
   if (!member?._id) {
     return null;
   }
 
-  // Check if user is admin
-  const userIsAdmin = isAdmin(member._id);
+  if (isLoadingAdmin) {
+    return (
+      <div className="min-h-screen bg-soft-white flex items-center justify-center px-8">
+        <div className="text-center">
+          <p className="font-paragraph text-xl text-warm-grey">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleRoleSelection = async (role: MemberRole) => {
     // Prevent non-admin users from selecting trainer role
@@ -30,7 +60,7 @@ export default function RoleSetup() {
     setSubmitError('');
 
     try {
-      setMemberRole(member._id, role);
+      await setMemberRole(member._id, role);
       setSelectedRole(role);
       setSubmitSuccess(true);
 

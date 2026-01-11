@@ -1,46 +1,84 @@
 import { BaseCrudService } from '@/integrations';
-import { TrainerClientAssignments } from '@/entities';
-import { MemberRole } from '@/entities';
+import { TrainerClientAssignments, MemberRoles, MemberRole } from '@/entities';
 
 /**
- * Get the role of a member from localStorage or session
- * This is a client-side helper - in production, roles should be stored in a database
+ * Get the role of a member from the MemberRoles collection
+ * This queries the backend for secure, persistent role storage
  */
-export function getMemberRole(memberId: string): MemberRole | null {
-  if (typeof window === 'undefined') return null;
-  
-  const roles = JSON.parse(localStorage.getItem('memberRoles') || '{}');
-  return roles[memberId] || null;
+export async function getMemberRole(memberId: string): Promise<MemberRole | null> {
+  try {
+    const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+    const memberRole = items.find(
+      (mr) => mr.memberId === memberId && mr.status === 'active'
+    );
+    return memberRole?.role || null;
+  } catch (error) {
+    console.error('Error fetching member role:', error);
+    return null;
+  }
 }
 
 /**
- * Set the role of a member in localStorage
- * This is a client-side helper - in production, roles should be stored in a database
+ * Set the role of a member in the MemberRoles collection
+ * This creates or updates a role assignment in the backend
  * 
  * NOTE: For security, only admins should be able to change roles to 'trainer'
  * Non-admin users can only set their own role to 'client' during initial setup
  */
-export function setMemberRole(memberId: string, role: MemberRole): void {
-  if (typeof window === 'undefined') return;
-  
-  const roles = JSON.parse(localStorage.getItem('memberRoles') || '{}');
-  roles[memberId] = role;
-  localStorage.setItem('memberRoles', JSON.stringify(roles));
+export async function setMemberRole(memberId: string, role: MemberRole): Promise<void> {
+  try {
+    // Check if member already has a role
+    const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+    const existingRole = items.find((mr) => mr.memberId === memberId);
+
+    if (existingRole) {
+      // Update existing role
+      await BaseCrudService.update<MemberRoles>('memberroles', {
+        _id: existingRole._id,
+        role,
+        status: 'active',
+      });
+    } else {
+      // Create new role assignment
+      const newRole: MemberRoles = {
+        _id: crypto.randomUUID(),
+        memberId,
+        role,
+        assignmentDate: new Date(),
+        status: 'active',
+      };
+      await BaseCrudService.create('memberroles', newRole);
+    }
+  } catch (error) {
+    console.error('Error setting member role:', error);
+    throw new Error('Failed to set member role');
+  }
 }
 
 /**
  * Set the default role for a new member (always 'client')
  * This is called during initial signup to ensure new users default to client role
  */
-export function setDefaultRole(memberId: string): void {
-  if (typeof window === 'undefined') return;
-  
-  const roles = JSON.parse(localStorage.getItem('memberRoles') || '{}');
-  
-  // Only set default role if member doesn't already have one
-  if (!roles[memberId]) {
-    roles[memberId] = 'client';
-    localStorage.setItem('memberRoles', JSON.stringify(roles));
+export async function setDefaultRole(memberId: string): Promise<void> {
+  try {
+    // Check if member already has a role
+    const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+    const existingRole = items.find((mr) => mr.memberId === memberId);
+
+    // Only set default role if member doesn't already have one
+    if (!existingRole) {
+      const newRole: MemberRoles = {
+        _id: crypto.randomUUID(),
+        memberId,
+        role: 'client',
+        assignmentDate: new Date(),
+        status: 'active',
+      };
+      await BaseCrudService.create('memberroles', newRole);
+    }
+  } catch (error) {
+    console.error('Error setting default role:', error);
+    // Don't throw - this is a non-critical operation
   }
 }
 
@@ -48,15 +86,14 @@ export function setDefaultRole(memberId: string): void {
  * Change a member's role (admin-only operation)
  * Only admins can change roles, especially to 'trainer'
  */
-export function changeUserRole(
+export async function changeUserRole(
   adminId: string,
   targetUserId: string,
   newRole: MemberRole
-): void {
-  if (typeof window === 'undefined') return;
-  
+): Promise<void> {
   // Verify that the admin is actually an admin
-  if (!isAdmin(adminId)) {
+  const adminRole = await getMemberRole(adminId);
+  if (adminRole !== 'admin') {
     throw new Error('Only administrators can change user roles');
   }
   
@@ -65,28 +102,31 @@ export function changeUserRole(
     console.warn(`Admin ${adminId} is changing user ${targetUserId} to trainer role`);
   }
   
-  setMemberRole(targetUserId, newRole);
+  await setMemberRole(targetUserId, newRole);
 }
 
 /**
  * Check if a member is a trainer
  */
-export function isTrainer(memberId: string): boolean {
-  return getMemberRole(memberId) === 'trainer';
+export async function isTrainer(memberId: string): Promise<boolean> {
+  const role = await getMemberRole(memberId);
+  return role === 'trainer';
 }
 
 /**
  * Check if a member is a client
  */
-export function isClient(memberId: string): boolean {
-  return getMemberRole(memberId) === 'client';
+export async function isClient(memberId: string): Promise<boolean> {
+  const role = await getMemberRole(memberId);
+  return role === 'client';
 }
 
 /**
  * Check if a member is an admin
  */
-export function isAdmin(memberId: string): boolean {
-  return getMemberRole(memberId) === 'admin';
+export async function isAdmin(memberId: string): Promise<boolean> {
+  const role = await getMemberRole(memberId);
+  return role === 'admin';
 }
 
 /**
