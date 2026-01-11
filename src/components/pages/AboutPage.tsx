@@ -45,17 +45,18 @@ export default function AboutPage() {
             <div className="relative">
               <div className="aspect-[3/4] w-full max-w-lg mx-auto rounded-2xl overflow-hidden">
                 <Image
-                  src="https://static.wixstatic.com/media/93e866_0f87c0e4fd364ec19d67523c7472a283~mv2.png?originWidth=576&originHeight=768"
-                  alt="Personal trainer portrait"
+                  src="https://static.wixstatic.com/media/93e866_ad8d5ca17dc741309161d852cb79fc52~mv2.png"
                   className="w-full h-full object-cover"
                   width={600}
-                />
+                  originWidth={1024}
+                  originHeight={1536}
+                  focalPointX={30.908203125}
+                  focalPointY={46.54947916666667} />
               </div>
             </div>
           </div>
         </div>
       </section>
-
       {/* Mission Section */}
       <section className="py-24 px-8 lg:px-20 bg-warm-sand-beige">
         <div className="max-w-[100rem] mx-auto">
@@ -72,7 +73,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
       {/* Qualifications Section */}
       <section className="py-24 px-8 lg:px-20">
         <div className="max-w-[100rem] mx-auto">
@@ -139,7 +139,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
       {/* Approach Section */}
       <section className="py-24 px-8 lg:px-20 bg-charcoal-black">
         <div className="max-w-[100rem] mx-auto">

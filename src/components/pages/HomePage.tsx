@@ -180,7 +180,8 @@ export default function HomePage() {
               alt="Professional fitness coach portrait"
               className="w-full h-full object-cover rounded-3xl shadow-[12px_12px_4px_0px_#d9d9d9] mix-blend-normal"
               width={1200}
-            />
+              focalPointX={48.19272855630074}
+              focalPointY={38.573949876456055} />
           </motion.div>
         </div>
       </section>
