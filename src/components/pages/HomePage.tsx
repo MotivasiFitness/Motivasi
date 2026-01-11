@@ -181,7 +181,7 @@ export default function HomePage() {
               className="w-full h-full object-contain object-center"
               width={1200}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-soft-white/20 to-transparent lg:from-soft-white lg:via-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-soft-white via-soft-white/60 via-50% to-transparent lg:from-soft-white lg:via-soft-white/40 lg:via-60% lg:to-transparent" />
           </motion.div>
         </div>
       </section>
