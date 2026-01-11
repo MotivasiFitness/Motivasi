@@ -32,7 +32,7 @@ const packages: Package[] = [
       EUR: 170,
     },
     features: [
-      'Custom Training App Access',
+      'Custom Training Platform Access',
       'Form Analysis & Feedback',
       'Habit Tracking & Lifestyle Coaching',
       'Priority Support via WhatsApp',
