@@ -178,10 +178,9 @@ export default function HomePage() {
             <Image
               src="https://static.wixstatic.com/media/93e866_7ae482d73a30410e9174ae129840abd4~mv2.png"
               alt="Professional fitness coach portrait"
-              className="w-full h-full object-contain object-center"
+              className="w-full h-full object-cover"
               width={1200}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-soft-white via-soft-white/60 via-50% to-transparent lg:from-soft-white lg:via-soft-white/40 lg:via-60% lg:to-transparent" />
           </motion.div>
         </div>
       </section>
