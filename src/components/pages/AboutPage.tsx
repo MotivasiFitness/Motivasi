@@ -62,6 +62,61 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      {/* Why Women Choose to Train With Me Section */}
+      <section className="py-24 px-8 lg:px-20 bg-soft-white">
+        <div className="max-w-[100rem] mx-auto">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-12 text-center">
+              Why Women Choose to Train With Me
+            </h2>
+            <div className="bg-warm-sand-beige/30 rounded-2xl p-12 md:p-16">
+              <ul className="space-y-8">
+                <li className="flex gap-6 items-start">
+                  <div className="w-8 h-8 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-soft-white font-heading font-bold text-lg">✓</span>
+                  </div>
+                  <div>
+                    <p className="font-paragraph text-lg text-charcoal-black leading-relaxed">
+                      I understand the physical and emotional realities of motherhood
+                    </p>
+                  </div>
+                </li>
+                <li className="flex gap-6 items-start">
+                  <div className="w-8 h-8 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-soft-white font-heading font-bold text-lg">✓</span>
+                  </div>
+                  <div>
+                    <p className="font-paragraph text-lg text-charcoal-black leading-relaxed">
+                      I specialise in pre- and postnatal training and women's health
+                    </p>
+                  </div>
+                </li>
+                <li className="flex gap-6 items-start">
+                  <div className="w-8 h-8 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-soft-white font-heading font-bold text-lg">✓</span>
+                  </div>
+                  <div>
+                    <p className="font-paragraph text-lg text-charcoal-black leading-relaxed">
+                      I create programmes that fit around busy lives — not unrealistic routines
+                    </p>
+                  </div>
+                </li>
+                <li className="flex gap-6 items-start">
+                  <div className="w-8 h-8 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-soft-white font-heading font-bold text-lg">✓</span>
+                  </div>
+                  <div>
+                    <p className="font-paragraph text-lg text-charcoal-black leading-relaxed">
+                      I focus on long-term strength, confidence, and health
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Mission Section */}
       <section className="py-24 px-8 lg:px-20 bg-warm-sand-beige">
         <div className="max-w-[100rem] mx-auto">
@@ -187,6 +242,51 @@ export default function AboutPage() {
               <p className="font-paragraph text-base text-warm-grey">
                 {t.about.supportiveDesc}
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Condensed Why Choose Me Section - Before Final CTA */}
+      <section className="py-16 px-8 lg:px-20 bg-soft-white">
+        <div className="max-w-[100rem] mx-auto">
+          <div className="max-w-3xl mx-auto bg-warm-sand-beige/20 rounded-2xl p-8 md:p-12">
+            <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-8 text-center">
+              Why Women Choose to Train With Me
+            </h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="flex gap-4 items-start">
+                <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-soft-white font-heading font-bold text-sm">✓</span>
+                </div>
+                <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
+                  I understand the physical and emotional realities of motherhood
+                </p>
+              </div>
+              <div className="flex gap-4 items-start">
+                <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-soft-white font-heading font-bold text-sm">✓</span>
+                </div>
+                <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
+                  I specialise in pre- and postnatal training and women's health
+                </p>
+              </div>
+              <div className="flex gap-4 items-start">
+                <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-soft-white font-heading font-bold text-sm">✓</span>
+                </div>
+                <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
+                  I create programmes that fit around busy lives — not unrealistic routines
+                </p>
+              </div>
+              <div className="flex gap-4 items-start">
+                <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-soft-white font-heading font-bold text-sm">✓</span>
+                </div>
+                <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
+                  I focus on long-term strength, confidence, and health
+                </p>
+              </div>
             </div>
           </div>
         </div>
