@@ -2,13 +2,23 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientPrograms } from '@/entities';
-import { Play, ChevronDown } from 'lucide-react';
+import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight } from 'lucide-react';
 import { Image } from '@/components/ui/image';
+
+interface WorkoutSession {
+  day: string;
+  exercises: ClientPrograms[];
+  estimatedTime: number;
+  completed: boolean;
+}
 
 export default function MyProgramPage() {
   const { member } = useMember();
   const [programs, setPrograms] = useState<ClientPrograms[]>([]);
   const [expandedDay, setExpandedDay] = useState<string | null>(null);
+  const [expandedExercise, setExpandedExercise] = useState<string | null>(null);
+  const [activeWorkoutDay, setActiveWorkoutDay] = useState<string | null>(null);
+  const [completedWorkouts, setCompletedWorkouts] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -64,8 +74,25 @@ export default function MyProgramPage() {
 
   const workoutDays = Object.keys(groupedPrograms).sort();
 
+  // Calculate workout overview stats
+  const totalExercises = programs.length;
+  const estimatedSessionTime = Math.ceil((totalExercises * 3 + 5) / 5) * 5; // Rough estimate: 3 mins per exercise + 5 min warmup
+  const weeklyFrequency = workoutDays.length;
+  
+  // Get unique equipment from all exercises
+  const equipmentSet = new Set<string>();
+  programs.forEach(p => {
+    if (p.weightOrResistance) {
+      equipmentSet.add(p.weightOrResistance);
+    }
+  });
+  const equipment = Array.from(equipmentSet).join(' + ') || 'Bodyweight';
+
+  // Get training focus from program title
+  const trainingFocus = programs[0]?.programTitle || 'Full-body strength';
+
   return (
-    <div className="space-y-8 bg-muted-rose/20 min-h-screen p-8 rounded-2xl">
+    <div className="space-y-8 bg-warm-sand-beige/40 min-h-screen p-6 lg:p-8 rounded-2xl">
       {/* Header */}
       <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
         <h1 className="font-heading text-4xl font-bold mb-2">My Personalized Program</h1>
@@ -74,114 +101,288 @@ export default function MyProgramPage() {
         </p>
       </div>
 
-      {/* Program Overview */}
+      {/* Workout Overview Section */}
       {programs.length > 0 && (
-        <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
-          <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
-            {programs[0]?.programTitle || 'Your Program'}
+        <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8">
+          <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-8">
+            Workout Overview
           </h2>
-          {programs[0]?.sessionTitle && (
-            <p className="text-warm-grey mb-6">
-              Session: {programs[0].sessionTitle}
-            </p>
-          )}
-          <p className="text-charcoal-black">
-            Total Exercises: <span className="font-bold">{programs.length}</span>
-          </p>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+            {/* Session Length */}
+            <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
+              <Clock className="w-6 h-6 text-soft-bronze mb-2" />
+              <p className="text-sm text-warm-grey mb-1">Session Length</p>
+              <p className="font-heading text-2xl font-bold text-charcoal-black">
+                {estimatedSessionTime}–{estimatedSessionTime + 5} min
+              </p>
+            </div>
+
+            {/* Weekly Frequency */}
+            <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
+              <Target className="w-6 h-6 text-soft-bronze mb-2" />
+              <p className="text-sm text-warm-grey mb-1">Weekly Frequency</p>
+              <p className="font-heading text-2xl font-bold text-charcoal-black">
+                {weeklyFrequency}x per week
+              </p>
+            </div>
+
+            {/* Equipment Needed */}
+            <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
+              <Dumbbell className="w-6 h-6 text-soft-bronze mb-2" />
+              <p className="text-sm text-warm-grey mb-1">Equipment</p>
+              <p className="font-heading text-sm font-bold text-charcoal-black">
+                {equipment}
+              </p>
+            </div>
+
+            {/* Training Focus */}
+            <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
+              <CheckCircle2 className="w-6 h-6 text-soft-bronze mb-2" />
+              <p className="text-sm text-warm-grey mb-1">Training Focus</p>
+              <p className="font-heading text-sm font-bold text-charcoal-black">
+                {trainingFocus}
+              </p>
+            </div>
+          </div>
         </div>
       )}
 
-      {/* Workout Days */}
+      {/* Workout Days as Cards */}
       <div className="space-y-4">
         {workoutDays.length > 0 ? (
-          workoutDays.map((day) => (
-            <div key={day} className="bg-soft-white border border-warm-sand-beige rounded-2xl overflow-hidden">
-              {/* Day Header */}
-              <button
-                onClick={() => setExpandedDay(expandedDay === day ? null : day)}
-                className="w-full px-8 py-6 flex items-center justify-between hover:bg-warm-sand-beige/30 transition-colors"
+          workoutDays.map((day, dayIndex) => {
+            const dayExercises = groupedPrograms[day];
+            const isExpanded = expandedDay === day;
+            const isActive = activeWorkoutDay === day;
+            const isCompleted = completedWorkouts.has(day);
+
+            return (
+              <div
+                key={day}
+                className={`bg-soft-white border rounded-2xl overflow-hidden transition-all duration-300 ${
+                  isActive
+                    ? 'border-soft-bronze shadow-lg'
+                    : isCompleted
+                    ? 'border-green-200 bg-green-50/30'
+                    : 'border-warm-sand-beige'
+                }`}
               >
-                <h3 className="font-heading text-xl font-bold text-charcoal-black">
-                  {day}
-                </h3>
-                <div className="flex items-center gap-4">
-                  <span className="text-warm-grey text-sm">
-                    {groupedPrograms[day].length} exercises
-                  </span>
-                  <ChevronDown
-                    size={24}
-                    className={`text-soft-bronze transition-transform ${
-                      expandedDay === day ? 'rotate-180' : ''
-                    }`}
-                  />
-                </div>
-              </button>
-
-              {/* Exercises List */}
-              {expandedDay === day && (
-                <div className="border-t border-warm-sand-beige px-8 py-6 space-y-6">
-                  {groupedPrograms[day].map((exercise, idx) => (
-                    <div key={exercise._id} className="pb-6 border-b border-warm-sand-beige last:border-b-0 last:pb-0">
-                      <div className="flex items-start justify-between mb-4">
-                        <div>
-                          <h4 className="font-heading text-lg font-bold text-charcoal-black mb-2">
-                            {idx + 1}. {exercise.exerciseName}
-                          </h4>
-                          <div className="flex flex-wrap gap-4 text-sm">
-                            {exercise.sets && (
-                              <span className="text-warm-grey">
-                                <span className="font-bold text-charcoal-black">{exercise.sets}</span> sets
-                              </span>
-                            )}
-                            {exercise.reps && (
-                              <span className="text-warm-grey">
-                                <span className="font-bold text-charcoal-black">{exercise.reps}</span> reps
-                              </span>
-                            )}
-                            {exercise.weightOrResistance && (
-                              <span className="text-warm-grey">
-                                <span className="font-bold text-charcoal-black">{exercise.weightOrResistance}</span>
-                              </span>
-                            )}
-                            {exercise.tempo && (
-                              <span className="text-warm-grey">
-                                Tempo: <span className="font-bold text-charcoal-black">{exercise.tempo}</span>
-                              </span>
-                            )}
-                            {exercise.restTimeSeconds && (
-                              <span className="text-warm-grey">
-                                Rest: <span className="font-bold text-charcoal-black">{exercise.restTimeSeconds}s</span>
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      {exercise.exerciseNotes && (
-                        <div className="mb-4 p-4 bg-warm-sand-beige/30 rounded-lg">
-                          <p className="text-sm text-charcoal-black">
-                            <span className="font-bold">Notes:</span> {exercise.exerciseNotes}
-                          </p>
-                        </div>
-                      )}
-
-                      {exercise.exerciseVideoUrl && (
-                        <a
-                          href={exercise.exerciseVideoUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 text-soft-bronze hover:text-soft-bronze/80 transition-colors font-medium"
-                        >
-                          <Play size={16} />
-                          Watch Exercise Video
-                        </a>
+                {/* Workout Card Header */}
+                <button
+                  onClick={() => {
+                    setExpandedDay(isExpanded ? null : day);
+                    setActiveWorkoutDay(isExpanded ? null : day);
+                  }}
+                  className={`w-full px-6 lg:px-8 py-5 lg:py-6 flex items-center justify-between transition-colors ${
+                    isActive
+                      ? 'bg-soft-bronze/5 hover:bg-soft-bronze/10'
+                      : 'hover:bg-warm-sand-beige/30'
+                  }`}
+                >
+                  <div className="flex-1 text-left">
+                    <div className="flex items-center gap-3 mb-1">
+                      <h3 className="font-heading text-lg lg:text-xl font-bold text-charcoal-black">
+                        {day}
+                      </h3>
+                      {isCompleted && (
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                          <CheckCircle2 size={14} /> Completed
+                        </span>
                       )}
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))
+                    <p className="text-sm text-warm-grey">
+                      {dayExercises.length} exercises • {estimatedSessionTime}–{estimatedSessionTime + 5} min
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3 ml-4">
+                    {!isExpanded && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveWorkoutDay(day);
+                          setExpandedDay(day);
+                        }}
+                        className="hidden sm:flex items-center gap-2 bg-soft-bronze text-soft-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-soft-bronze/90 transition-colors whitespace-nowrap"
+                      >
+                        Start Workout <ArrowRight size={16} />
+                      </button>
+                    )}
+                    <ChevronDown
+                      size={24}
+                      className={`text-soft-bronze transition-transform flex-shrink-0 ${
+                        isExpanded ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </div>
+                </button>
+
+                {/* Mobile Start Button */}
+                {!isExpanded && (
+                  <div className="sm:hidden px-6 py-3 border-t border-warm-sand-beige">
+                    <button
+                      onClick={() => {
+                        setActiveWorkoutDay(day);
+                        setExpandedDay(day);
+                      }}
+                      className="w-full flex items-center justify-center gap-2 bg-soft-bronze text-soft-white px-4 py-3 rounded-lg font-bold text-base hover:bg-soft-bronze/90 transition-colors"
+                    >
+                      Start Workout <ArrowRight size={18} />
+                    </button>
+                  </div>
+                )}
+
+                {/* Exercises List */}
+                {isExpanded && (
+                  <div className="border-t border-warm-sand-beige px-6 lg:px-8 py-6 space-y-6">
+                    {/* Workout Progress Indicator */}
+                    <div className="flex items-center gap-3 pb-4 border-b border-warm-sand-beige">
+                      <div className="flex-1 h-2 bg-warm-sand-beige rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-soft-bronze transition-all duration-300"
+                          style={{ width: '0%' }}
+                        />
+                      </div>
+                      <span className="text-sm font-medium text-warm-grey whitespace-nowrap">
+                        Exercise 1 of {dayExercises.length}
+                      </span>
+                    </div>
+
+                    {dayExercises.map((exercise, idx) => (
+                      <div
+                        key={exercise._id}
+                        className="pb-6 border-b border-warm-sand-beige last:border-b-0 last:pb-0"
+                      >
+                        {/* Exercise Header with Toggle */}
+                        <button
+                          onClick={() =>
+                            setExpandedExercise(
+                              expandedExercise === exercise._id ? null : exercise._id
+                            )
+                          }
+                          className="w-full text-left mb-4 group"
+                        >
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="flex-1">
+                              <h4 className="font-heading text-lg font-bold text-charcoal-black mb-3 group-hover:text-soft-bronze transition-colors">
+                                {idx + 1}. {exercise.exerciseName}
+                              </h4>
+
+                              {/* Core Exercise Info (Always Visible) */}
+                              <div className="flex flex-wrap gap-3 lg:gap-4 text-sm mb-3">
+                                {exercise.sets && exercise.reps && (
+                                  <div className="flex items-center gap-1">
+                                    <span className="text-warm-grey">Sets × Reps:</span>
+                                    <span className="font-bold text-charcoal-black">
+                                      {exercise.sets} × {exercise.reps}
+                                    </span>
+                                  </div>
+                                )}
+                                {exercise.weightOrResistance && (
+                                  <div className="flex items-center gap-1">
+                                    <span className="text-warm-grey">Weight:</span>
+                                    <span className="font-bold text-charcoal-black">
+                                      {exercise.weightOrResistance}
+                                    </span>
+                                  </div>
+                                )}
+                                {exercise.restTimeSeconds && (
+                                  <div className="flex items-center gap-1">
+                                    <span className="text-warm-grey">Rest:</span>
+                                    <span className="font-bold text-charcoal-black">
+                                      {exercise.restTimeSeconds}s
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Reassurance Copy */}
+                              <p className="text-xs text-warm-grey italic">
+                                Don't worry — focus on control rather than perfection.
+                              </p>
+                            </div>
+
+                            {/* Expand Toggle */}
+                            {(exercise.tempo || exercise.exerciseNotes) && (
+                              <ChevronDown
+                                size={20}
+                                className={`text-soft-bronze transition-transform flex-shrink-0 mt-1 ${
+                                  expandedExercise === exercise._id ? 'rotate-180' : ''
+                                }`}
+                              />
+                            )}
+                          </div>
+                        </button>
+
+                        {/* Expandable Details */}
+                        {expandedExercise === exercise._id && (
+                          <div className="mt-4 pt-4 border-t border-warm-sand-beige/50 space-y-4">
+                            {exercise.tempo && (
+                              <div className="p-3 bg-warm-sand-beige/20 rounded-lg">
+                                <p className="text-xs text-warm-grey mb-1">Tempo (movement speed)</p>
+                                <p className="text-sm font-medium text-charcoal-black">
+                                  {exercise.tempo}
+                                </p>
+                              </div>
+                            )}
+
+                            {exercise.exerciseNotes && (
+                              <div className="p-3 bg-soft-bronze/5 rounded-lg border border-soft-bronze/20">
+                                <p className="text-xs text-warm-grey mb-1 font-medium">Technique Tips</p>
+                                <p className="text-sm text-charcoal-black leading-relaxed">
+                                  {exercise.exerciseNotes}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Video Button */}
+                        {exercise.exerciseVideoUrl && (
+                          <div className="mt-4">
+                            <a
+                              href={exercise.exerciseVideoUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-charcoal-black text-soft-white px-4 py-3 rounded-lg font-medium text-sm hover:bg-soft-bronze transition-colors"
+                            >
+                              <Play size={16} />
+                              Watch Exercise Video (short)
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+
+                    {/* Workout Completion Action */}
+                    <div className="mt-8 pt-6 border-t border-warm-sand-beige">
+                      <button
+                        onClick={() => {
+                          setCompletedWorkouts(new Set([...completedWorkouts, day]));
+                          setActiveWorkoutDay(null);
+                          setExpandedDay(null);
+                        }}
+                        disabled={isCompleted}
+                        className={`w-full flex items-center justify-center gap-2 px-6 py-4 rounded-lg font-bold text-base transition-all ${
+                          isCompleted
+                            ? 'bg-green-100 text-green-700 cursor-not-allowed'
+                            : 'bg-soft-bronze text-soft-white hover:bg-soft-bronze/90'
+                        }`}
+                      >
+                        <CheckCircle2 size={20} />
+                        {isCompleted ? 'Workout Completed!' : '✓ Mark Workout Complete'}
+                      </button>
+                      {isCompleted && (
+                        <p className="text-center text-sm text-green-700 font-medium mt-3">
+                          Great job — consistency builds confidence! 🔥
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })
         ) : (
           <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-12 text-center">
             <p className="text-warm-grey">
@@ -192,7 +393,7 @@ export default function MyProgramPage() {
       </div>
 
       {/* Tips Section */}
-      <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-2xl p-8">
+      <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-2xl p-6 lg:p-8">
         <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
           Program Tips
         </h3>
