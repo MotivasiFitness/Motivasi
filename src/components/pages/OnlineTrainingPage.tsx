@@ -370,6 +370,56 @@ export default function OnlineTrainingPage() {
           </div>
         </div>
       </section>
+      {/* Why Women Choose Motivasi Section */}
+      <section className="py-24 px-8 lg:px-20 bg-soft-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-4">
+              Why Women Choose Motivasi
+            </h2>
+            <p className="font-paragraph text-xl text-warm-grey max-w-3xl mx-auto">
+              Choosing the right coach matters — especially when your time, energy, and health are important.
+            </p>
+          </div>
+
+          <div className="bg-warm-sand-beige/20 border border-warm-sand-beige rounded-2xl p-8 md:p-12">
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="flex gap-4 items-start">
+                <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-soft-white font-heading font-bold text-sm">✓</span>
+                </div>
+                <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
+                  Coaching designed by a mum who understands the realities of busy life
+                </p>
+              </div>
+              <div className="flex gap-4 items-start">
+                <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-soft-white font-heading font-bold text-sm">✓</span>
+                </div>
+                <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
+                  Specialist support for pre-/postnatal training and women's health
+                </p>
+              </div>
+              <div className="flex gap-4 items-start">
+                <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-soft-white font-heading font-bold text-sm">✓</span>
+                </div>
+                <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
+                  Realistic programmes that work around family, work, and energy levels
+                </p>
+              </div>
+              <div className="flex gap-4 items-start">
+                <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-soft-white font-heading font-bold text-sm">✓</span>
+                </div>
+                <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
+                  A focus on sustainable fat loss, strength, and confidence — not extremes
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       {/* Testimonial Section */}
       <section className="py-24 px-8 lg:px-20 bg-warm-sand-beige">
         <div className="max-w-4xl mx-auto text-center">

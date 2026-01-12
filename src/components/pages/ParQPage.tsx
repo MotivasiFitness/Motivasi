@@ -768,6 +768,42 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
               </div>
             </FormSection>
 
+            {/* You're in the Right Place If... Reassurance Block */}
+            <div className="bg-warm-sand-beige/20 border border-warm-sand-beige rounded-2xl p-8 md:p-12">
+              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-8 text-center">
+                You're in the Right Place If…
+              </h3>
+              <div className="grid md:grid-cols-3 gap-6 mb-8">
+                <div className="flex gap-4 items-start">
+                  <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-soft-white font-heading font-bold text-sm">✓</span>
+                  </div>
+                  <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
+                    You're a busy woman or mum who wants realistic support
+                  </p>
+                </div>
+                <div className="flex gap-4 items-start">
+                  <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-soft-white font-heading font-bold text-sm">✓</span>
+                  </div>
+                  <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
+                    You want to feel stronger and healthier without extreme diets
+                  </p>
+                </div>
+                <div className="flex gap-4 items-start">
+                  <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-soft-white font-heading font-bold text-sm">✓</span>
+                  </div>
+                  <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
+                    You value guidance from someone who truly understands women's bodies
+                  </p>
+                </div>
+              </div>
+              <p className="font-paragraph text-base text-charcoal-black italic text-center">
+                This is about progress — not perfection.
+              </p>
+            </div>
+
             {/* Submit Button */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
               <button
