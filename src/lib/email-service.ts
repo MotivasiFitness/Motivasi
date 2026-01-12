@@ -12,36 +12,50 @@ interface EmailPayload {
 
 /**
  * Send email notification to trainer when client uploads video
- * Uses Formspree as the email backend
+ * PHASE 3 COMPLIANCE: Minimal email - no health metrics, measurements, or photos
+ * Email is notification only; portal contains all details
  */
 export async function sendVideoUploadNotification(
   trainerEmail: string,
   trainerName: string,
   clientId: string,
   videoTitle: string,
-  videoUrl: string
+  videoUrl: string,
+  exerciseCategory?: string
 ): Promise<boolean> {
   try {
+    const submittedDate = new Date().toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
     const response = await fetch('https://formspree.io/f/xyzpqrst', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        _subject: `New Video Submission: ${videoTitle}`,
+        _subject: 'New video submitted for review',
         _replyto: trainerEmail,
-        message: `
-A client has submitted a new exercise video for review.
+        message: `Hi ${trainerName},
 
-Video Title: ${videoTitle}
-Client ID: ${clientId}
-Video URL: ${videoUrl}
+A client has submitted a new exercise video for your review.
 
-Please log in to your Trainer Hub to review the video and provide feedback.
+Exercise: ${videoTitle}
+Category: ${exerciseCategory || 'General'}
+Submitted: ${submittedDate}
+
+Please log in to your Trainer Portal to review the video and provide feedback.
+
+---
+This is a notification email. All details are available in your Trainer Portal.
         `,
         trainer_name: trainerName,
         video_title: videoTitle,
-        client_id: clientId,
+        exercise_category: exerciseCategory || 'General',
       })
     });
 

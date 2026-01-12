@@ -314,3 +314,43 @@ export interface TrainerQualifications {
   /** @wixFieldType text */
   relevance?: string;
 }
+
+
+/**
+ * Collection ID: videosubmissionstatus
+ * Interface for VideoSubmissionStatus - tracks review status of video submissions
+ */
+export interface VideoSubmissionStatus {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  videoId?: string;
+  /** @wixFieldType text */
+  clientId?: string;
+  /** @wixFieldType text */
+  status?: string;
+  /** @wixFieldType datetime */
+  statusUpdatedAt?: Date | string;
+  /** @wixFieldType datetime */
+  feedbackProvidedAt?: Date | string;
+}
+
+
+/**
+ * Collection ID: trainernotes
+ * Interface for TrainerNotes - private trainer notes per client
+ */
+export interface TrainerNotes {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType text */
+  clientId?: string;
+  /** @wixFieldType text */
+  noteContent?: string;
+  /** @wixFieldType datetime */
+  noteDate?: Date | string;
+}

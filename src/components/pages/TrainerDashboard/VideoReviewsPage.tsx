@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { PrivateVideoLibrary, TrainerClientAssignments } from '@/entities';
-import { Video, AlertCircle, MessageSquare, ExternalLink, Filter, X, Clock, CheckCircle } from 'lucide-react';
+import { PrivateVideoLibrary, TrainerClientAssignments, VideoSubmissionStatus } from '@/entities';
+import { Video, AlertCircle, MessageSquare, ExternalLink, Filter, X, Clock, CheckCircle, Loader, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getTrainerClients } from '@/lib/role-utils';
 
@@ -15,6 +15,9 @@ interface VideoSubmission {
   accessTags?: string;
   _createdDate?: Date;
   submittedBy?: string;
+  reviewStatus?: 'New' | 'In Review' | 'Replied';
+  statusUpdatedAt?: Date;
+  feedbackProvidedAt?: Date;
 }
 
 export default function VideoReviewsPage() {
@@ -24,8 +27,9 @@ export default function VideoReviewsPage() {
   const [selectedVideo, setSelectedVideo] = useState<VideoSubmission | null>(null);
   const [clientAssignments, setClientAssignments] = useState<Map<string, string>>(new Map());
   const [filterCategory, setFilterCategory] = useState<string>('all');
-  const [reviewedVideos, setReviewedVideos] = useState<Set<string>>(new Set());
+  const [filterStatus, setFilterStatus] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'newest' | 'oldest'>('newest');
+  const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,6 +47,13 @@ export default function VideoReviewsPage() {
         // Get all videos from private video library
         const { items } = await BaseCrudService.getAll<PrivateVideoLibrary>('privatevideolibrary');
         
+        // Get all video submission statuses
+        const { items: statusItems } = await BaseCrudService.getAll<VideoSubmissionStatus>('videosubmissionstatus');
+        const statusMap = new Map<string, VideoSubmissionStatus>();
+        statusItems.forEach(s => {
+          if (s.videoId) statusMap.set(s.videoId, s);
+        });
+        
         // Filter videos that are tagged for trainer review (category = 'exercise-review' or accessTags contains trainer ID)
         const reviewVideos = items.filter((v) => {
           const isForReview = v.category === 'exercise-review' || v.accessTags?.includes(member._id);
@@ -50,7 +61,18 @@ export default function VideoReviewsPage() {
           return isForReview || isFromAssignedClient;
         });
 
-        setVideos(reviewVideos.sort((a, b) => {
+        // Enrich videos with status information
+        const enrichedVideos: VideoSubmission[] = reviewVideos.map(v => {
+          const status = statusMap.get(v._id);
+          return {
+            ...v,
+            reviewStatus: (status?.status as 'New' | 'In Review' | 'Replied') || 'New',
+            statusUpdatedAt: status?.statusUpdatedAt ? new Date(status.statusUpdatedAt) : undefined,
+            feedbackProvidedAt: status?.feedbackProvidedAt ? new Date(status.feedbackProvidedAt) : undefined,
+          };
+        });
+
+        setVideos(enrichedVideos.sort((a, b) => {
           const dateA = new Date(a._createdDate || 0).getTime();
           const dateB = new Date(b._createdDate || 0).getTime();
           return dateB - dateA;
@@ -68,6 +90,7 @@ export default function VideoReviewsPage() {
   // Filter and sort videos
   const filteredVideos = videos
     .filter(v => filterCategory === 'all' || v.category === filterCategory)
+    .filter(v => filterStatus === 'all' || v.reviewStatus === filterStatus)
     .sort((a, b) => {
       const dateA = new Date(a._createdDate || 0).getTime();
       const dateB = new Date(b._createdDate || 0).getTime();
@@ -75,10 +98,68 @@ export default function VideoReviewsPage() {
     });
 
   const categories = Array.from(new Set(videos.map(v => v.category).filter(Boolean)));
-  const unreviewed = videos.filter(v => !reviewedVideos.has(v._id)).length;
+  const newVideos = videos.filter(v => v.reviewStatus === 'New').length;
+  const inReviewVideos = videos.filter(v => v.reviewStatus === 'In Review').length;
 
-  const markAsReviewed = (videoId: string) => {
-    setReviewedVideos(prev => new Set([...prev, videoId]));
+  const updateVideoStatus = async (videoId: string, newStatus: 'New' | 'In Review' | 'Replied') => {
+    setUpdatingStatus(videoId);
+    try {
+      // Check if status record exists
+      const { items } = await BaseCrudService.getAll<VideoSubmissionStatus>('videosubmissionstatus');
+      const existingStatus = items.find(s => s.videoId === videoId);
+
+      const statusData: VideoSubmissionStatus = {
+        _id: existingStatus?._id || crypto.randomUUID(),
+        videoId,
+        clientId: videos.find(v => v._id === videoId)?.accessTags,
+        status: newStatus,
+        statusUpdatedAt: new Date(),
+        feedbackProvidedAt: newStatus === 'Replied' ? new Date() : existingStatus?.feedbackProvidedAt,
+      };
+
+      if (existingStatus) {
+        await BaseCrudService.update<VideoSubmissionStatus>('videosubmissionstatus', statusData);
+      } else {
+        await BaseCrudService.create('videosubmissionstatus', statusData);
+      }
+
+      // Update local state
+      setVideos(prev => prev.map(v => 
+        v._id === videoId 
+          ? { ...v, reviewStatus: newStatus, statusUpdatedAt: new Date() }
+          : v
+      ));
+    } catch (error) {
+      console.error('Error updating video status:', error);
+    } finally {
+      setUpdatingStatus(null);
+    }
+  };
+
+  const getStatusBadgeColor = (status: 'New' | 'In Review' | 'Replied' | undefined) => {
+    switch (status) {
+      case 'New':
+        return 'bg-soft-bronze/20 text-soft-bronze border border-soft-bronze/30';
+      case 'In Review':
+        return 'bg-blue-50 text-blue-700 border border-blue-200';
+      case 'Replied':
+        return 'bg-green-50 text-green-700 border border-green-200';
+      default:
+        return 'bg-warm-sand-beige text-charcoal-black';
+    }
+  };
+
+  const getTimeWaiting = (createdDate?: Date) => {
+    if (!createdDate) return '';
+    const now = new Date();
+    const created = new Date(createdDate);
+    const diffMs = now.getTime() - created.getTime();
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    
+    if (diffHours < 1) return 'Just now';
+    if (diffHours < 24) return `${diffHours}h ago`;
+    const diffDays = Math.floor(diffHours / 24);
+    return `${diffDays}d ago`;
   };
 
   if (loading) {
@@ -92,29 +173,38 @@ export default function VideoReviewsPage() {
   return (
     <div className="p-8 lg:p-12">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-12">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
-            <div>
-              <h1 className="font-heading text-5xl font-bold text-charcoal-black mb-2">
-                Video Reviews
-              </h1>
-              <p className="text-lg text-warm-grey">
-                Review exercise videos submitted by your clients
-              </p>
-            </div>
-            {unreviewed > 0 && (
-              <div className="bg-soft-bronze/10 border border-soft-bronze/30 rounded-lg p-4 w-fit">
+        {/* Header with Status Summary */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
+          <div>
+            <h1 className="font-heading text-5xl font-bold text-charcoal-black mb-2">
+              Video Reviews
+            </h1>
+            <p className="text-lg text-warm-grey">
+              Review exercise videos submitted by your clients
+            </p>
+          </div>
+          <div className="flex gap-4">
+            {newVideos > 0 && (
+              <div className="bg-soft-bronze/10 border border-soft-bronze/30 rounded-lg p-4">
                 <p className="font-paragraph text-sm text-charcoal-black">
-                  <span className="font-bold text-soft-bronze">{unreviewed}</span> unreviewed video{unreviewed !== 1 ? 's' : ''}
+                  <span className="font-bold text-soft-bronze">{newVideos}</span> new video{newVideos !== 1 ? 's' : ''}
+                </p>
+              </div>
+            )}
+            {inReviewVideos > 0 && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p className="font-paragraph text-sm text-charcoal-black">
+                  <span className="font-bold text-blue-700">{inReviewVideos}</span> in review
                 </p>
               </div>
             )}
           </div>
+        </div>
 
-          {/* Filters and Sort */}
-          {videos.length > 0 && (
-            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
+        {/* Filters and Sort */}
+        {videos.length > 0 && (
+          <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 mb-8">
+            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center flex-wrap">
               {/* Category Filter */}
               <div className="flex items-center gap-2">
                 <Filter size={18} className="text-warm-grey" />
@@ -127,6 +217,21 @@ export default function VideoReviewsPage() {
                   {categories.map(cat => (
                     <option key={cat} value={cat}>{cat}</option>
                   ))}
+                </select>
+              </div>
+
+              {/* Status Filter */}
+              <div className="flex items-center gap-2">
+                <Zap size={18} className="text-warm-grey" />
+                <select
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                  className="px-4 py-2 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph text-sm"
+                >
+                  <option value="all">All Statuses</option>
+                  <option value="New">New</option>
+                  <option value="In Review">In Review</option>
+                  <option value="Replied">Replied</option>
                 </select>
               </div>
 
@@ -148,8 +253,8 @@ export default function VideoReviewsPage() {
                 Showing {filteredVideos.length} of {videos.length} video{videos.length !== 1 ? 's' : ''}
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Videos Grid */}
         {filteredVideos.length === 0 ? (
@@ -167,16 +272,23 @@ export default function VideoReviewsPage() {
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredVideos.map((video) => {
-              const isReviewed = reviewedVideos.has(video._id);
+              const isNew = video.reviewStatus === 'New';
               return (
                 <div
                   key={video._id}
                   className={`bg-soft-white border-2 rounded-2xl overflow-hidden hover:border-soft-bronze transition-all ${
-                    isReviewed 
-                      ? 'border-green-200 bg-green-50/30' 
+                    isNew 
+                      ? 'border-soft-bronze/50 shadow-lg shadow-soft-bronze/10' 
                       : 'border-warm-sand-beige'
                   }`}
                 >
+                  {/* New Badge */}
+                  {isNew && (
+                    <div className="bg-soft-bronze text-soft-white px-3 py-1 text-xs font-bold uppercase tracking-widest">
+                      🔔 New - {getTimeWaiting(video._createdDate)}
+                    </div>
+                  )}
+
                   {/* Video Thumbnail */}
                   <div className="aspect-video bg-charcoal-black/10 flex items-center justify-center relative group">
                     <Video className="text-warm-grey" size={48} />
@@ -196,9 +308,6 @@ export default function VideoReviewsPage() {
                       <h3 className="font-heading text-lg font-bold text-charcoal-black line-clamp-2 flex-1">
                         {video.videoTitle || 'Untitled Video'}
                       </h3>
-                      {isReviewed && (
-                        <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                      )}
                     </div>
                     
                     {video.description && (
@@ -226,6 +335,48 @@ export default function VideoReviewsPage() {
                           </span>
                         </div>
                       )}
+                      {video.feedbackProvidedAt && (
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-warm-grey uppercase tracking-widest">Feedback:</span>
+                          <span className="text-sm text-charcoal-black">
+                            {new Date(video.feedbackProvidedAt).toLocaleDateString('en-GB', {
+                              day: 'numeric',
+                              month: 'short',
+                              year: 'numeric'
+                            })}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Status Badge */}
+                    <div className="mb-6">
+                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${getStatusBadgeColor(video.reviewStatus)}`}>
+                        {video.reviewStatus || 'New'}
+                      </span>
+                    </div>
+
+                    {/* Status Update Dropdown */}
+                    <div className="mb-6">
+                      <label className="block text-xs text-warm-grey uppercase tracking-widest mb-2">
+                        Update Status
+                      </label>
+                      <select
+                        value={video.reviewStatus || 'New'}
+                        onChange={(e) => updateVideoStatus(video._id, e.target.value as 'New' | 'In Review' | 'Replied')}
+                        disabled={updatingStatus === video._id}
+                        className="w-full px-3 py-2 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph text-sm disabled:opacity-50"
+                      >
+                        <option value="New">New</option>
+                        <option value="In Review">In Review</option>
+                        <option value="Replied">Replied</option>
+                      </select>
+                      {updatingStatus === video._id && (
+                        <div className="flex items-center gap-2 mt-2 text-xs text-soft-bronze">
+                          <Loader className="w-3 h-3 animate-spin" />
+                          Updating...
+                        </div>
+                      )}
                     </div>
 
                     {/* Actions */}
@@ -234,7 +385,6 @@ export default function VideoReviewsPage() {
                         href={video.videoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={() => markAsReviewed(video._id)}
                         className="flex-1 flex items-center justify-center gap-2 bg-charcoal-black text-soft-white px-4 py-2 rounded-lg hover:bg-soft-bronze transition-colors text-sm font-medium"
                       >
                         <ExternalLink size={16} />

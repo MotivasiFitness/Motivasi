@@ -32,6 +32,7 @@ export default function ClientPortalLayout() {
     { path: '/portal/messages', label: 'Messages', icon: MessageSquare },
     { path: '/portal/progress', label: 'Progress', icon: TrendingUp },
     { path: '/portal/video-library', label: 'Video Library', icon: Video },
+    { path: '/portal/my-submissions', label: 'My Submissions', icon: Video },
     { path: '/exercise-video-review', label: 'Upload Video', icon: Video },
   ];
 
