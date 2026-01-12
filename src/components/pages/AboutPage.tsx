@@ -28,18 +28,23 @@ export default function AboutPage() {
         <div className="max-w-[100rem] mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 className="font-heading text-6xl font-bold text-charcoal-black mb-6">
-                {t.about.meetYourCoach}
+              <h1 className="font-heading text-6xl font-bold text-charcoal-black mb-8">
+                Meet Your Coach
               </h1>
-              <p className="font-paragraph text-xl text-charcoal-black mb-6 leading-relaxed">
-                {t.about.passionateAbout}
-              </p>
-              <p className="font-paragraph text-lg text-warm-grey mb-6 leading-relaxed">
-                {t.about.specialisedTraining}
-              </p>
-              <p className="font-paragraph text-lg text-warm-grey leading-relaxed">
-                {t.about.approachSimple}
-              </p>
+              <div className="space-y-6 font-paragraph text-lg text-charcoal-black leading-relaxed">
+                <p>
+                  I'm a mum of two — and like many women, I know first-hand how much life changes after having children. Between sleepless nights, work, family responsibilities, and a body that no longer feels the same, fitness can quickly become confusing, overwhelming, or something that gets pushed to the bottom of the list.
+                </p>
+                <p>
+                  After the birth of my children, I experienced injuries from not training correctly and not having the right guidance on how to recover safely. I wanted to feel strong again — but I didn't know how to train my body properly, and there was very little support available. That experience changed everything.
+                </p>
+                <p>
+                  After years working in corporate management, I retrained as a personal trainer so I could truly understand the female body — particularly during pregnancy, postnatal recovery, and later life stages. I wanted to create the kind of support I wish I'd had: informed, reassuring, and built around real life.
+                </p>
+                <p>
+                  Today, I run a women's personal training business dedicated to helping women become stronger, healthier, and more confident at every stage of their journey — whether you're pre or postnatal, navigating menopause, or simply ready to prioritise your health again.
+                </p>
+              </div>
             </div>
 
             <div className="relative">
@@ -65,11 +70,16 @@ export default function AboutPage() {
               <Heart className="text-soft-white" size={32} />
             </div>
             <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-6">
-              {t.about.myMission}
+              My Approach
             </h2>
-            <p className="font-paragraph text-xl text-charcoal-black leading-relaxed">
-              {t.about.missionDesc}
-            </p>
+            <div className="space-y-6 font-paragraph text-xl text-charcoal-black leading-relaxed">
+              <p>
+                My approach is grounded in lived experience and professional expertise. I don't believe in extreme diets, punishment-style workouts, or intimidation. I believe in strength training that supports your body, practical nutrition that fits around family life, and consistent guidance that helps you feel capable and in control again.
+              </p>
+              <p className="text-2xl font-bold text-soft-bronze">
+                You don't need to "bounce back." You deserve to move forward — stronger than before.
+              </p>
+            </div>
           </div>
         </div>
       </section>
