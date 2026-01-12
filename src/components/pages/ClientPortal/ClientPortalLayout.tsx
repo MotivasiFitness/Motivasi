@@ -1,15 +1,76 @@
 import { useState } from 'react';
 import { Link, Outlet, useLocation, Navigate } from 'react-router-dom';
 import { useMember } from '@/integrations';
-import { Menu, X, LogOut, LayoutDashboard, Dumbbell, Apple, TrendingUp, Calendar, MessageSquare, Video, User, Loader } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, Dumbbell, Apple, TrendingUp, Calendar, MessageSquare, Video, User, Loader, AlertCircle } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { useRole } from '@/hooks/useRole';
+import DebugPanel from '@/components/DebugPanel';
 
 export default function ClientPortalLayout() {
   const { member, actions } = useMember();
-  const { isClient, isLoading } = useRole();
+  const { isClient, isLoading, setupError, debugInfo, role } = useRole();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const location = useLocation();
+
+  // Determine redirect reason
+  let redirectReason = '';
+  if (!isLoading && !isClient && !setupError) {
+    redirectReason = 'User is not a client';
+  }
+
+  // Show setup error with retry option
+  if (setupError && isLoading === false) {
+    return (
+      <div className="min-h-screen bg-soft-white flex items-center justify-center px-4">
+        <div className="max-w-md w-full">
+          <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-8 text-center">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <AlertCircle className="w-8 h-8 text-red-600" />
+            </div>
+            <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
+              Account Setup Failed
+            </h2>
+            <p className="font-paragraph text-base text-warm-grey mb-6">
+              {setupError}
+            </p>
+            <div className="space-y-3">
+              <button
+                onClick={() => {
+                  setRetryCount(retryCount + 1);
+                  window.location.reload();
+                }}
+                className="w-full bg-soft-bronze text-soft-white py-3 rounded-lg font-medium hover:bg-soft-bronze/90 transition-colors"
+              >
+                Retry Setup (Attempt {retryCount + 1})
+              </button>
+              <button
+                onClick={() => actions.logout()}
+                className="w-full bg-charcoal-black text-soft-white py-3 rounded-lg font-medium hover:bg-charcoal-black/90 transition-colors"
+              >
+                Sign Out
+              </button>
+            </div>
+            <p className="font-paragraph text-xs text-warm-grey mt-6">
+              If this problem persists, please contact support at hello@motivasi.co.uk
+            </p>
+          </div>
+
+          {/* Debug Panel */}
+          <DebugPanel
+            memberId={member?._id}
+            memberEmail={member?.loginEmail}
+            roleRecordFound={debugInfo?.roleRecordFound}
+            roleValue={debugInfo?.roleValue}
+            isLoading={isLoading}
+            setupError={setupError}
+            debugInfo={debugInfo}
+            redirectReason={redirectReason}
+          />
+        </div>
+      </div>
+    );
+  }
 
   // Redirect non-clients away from client portal
   if (!isLoading && !isClient) {
@@ -19,7 +80,24 @@ export default function ClientPortalLayout() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-soft-white flex items-center justify-center">
-        <Loader className="w-8 h-8 animate-spin text-soft-bronze" />
+        <div className="text-center">
+          <Loader className="w-8 h-8 animate-spin text-soft-bronze mx-auto mb-4" />
+          <p className="font-paragraph text-lg text-warm-grey">
+            Setting up your account…
+          </p>
+        </div>
+
+        {/* Debug Panel */}
+        <DebugPanel
+          memberId={member?._id}
+          memberEmail={member?.loginEmail}
+          roleRecordFound={debugInfo?.roleRecordFound}
+          roleValue={debugInfo?.roleValue}
+          isLoading={isLoading}
+          setupError={setupError}
+          debugInfo={debugInfo}
+          redirectReason="Loading..."
+        />
       </div>
     );
   }
@@ -45,6 +123,17 @@ export default function ClientPortalLayout() {
 
   return (
     <div className="min-h-screen bg-soft-white flex">
+      {/* Debug Panel */}
+      <DebugPanel
+        memberId={member?._id}
+        memberEmail={member?.loginEmail}
+        roleRecordFound={debugInfo?.roleRecordFound}
+        roleValue={debugInfo?.roleValue}
+        isLoading={isLoading}
+        setupError={setupError}
+        debugInfo={debugInfo}
+        redirectReason={redirectReason}
+      />
       {/* Sidebar */}
       <aside className={`fixed lg:static inset-y-0 left-0 z-40 w-64 bg-charcoal-black text-soft-white transform transition-transform duration-300 ${
         isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'

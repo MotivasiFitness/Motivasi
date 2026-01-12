@@ -4,20 +4,66 @@ import { TrainerClientAssignments, MemberRoles } from '@/entities';
 export type MemberRole = 'client' | 'trainer' | 'admin';
 
 /**
+ * Debug info for role operations
+ */
+export interface RoleDebugInfo {
+  memberId: string;
+  roleRecordFound: boolean;
+  roleValue: MemberRole | null;
+  error?: string;
+  timestamp: number;
+}
+
+/**
  * Get the role of a member from the MemberRoles collection
  * This queries the backend for secure, persistent role storage
+ * Filters by memberId field specifically
  */
 export async function getMemberRole(memberId: string): Promise<MemberRole | null> {
   try {
+    console.log(`[getMemberRole] Fetching role for memberId: ${memberId}`);
     const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+    
+    // Filter by memberId field - this is the critical query
     const memberRole = items.find(
       (mr) => mr.memberId === memberId && mr.status === 'active'
     );
-    const role = memberRole?.role as MemberRole | undefined;
-    return role || null;
+    
+    if (memberRole) {
+      console.log(`[getMemberRole] Found role record:`, memberRole);
+      const role = memberRole.role as MemberRole | undefined;
+      console.log(`[getMemberRole] Role value: ${role}`);
+      return role || null;
+    } else {
+      console.log(`[getMemberRole] No role record found for memberId: ${memberId}`);
+      return null;
+    }
   } catch (error) {
-    console.error('Error fetching member role:', error);
+    console.error('[getMemberRole] Error fetching member role:', error);
     return null;
+  }
+}
+
+/**
+ * Get debug info about a member's role
+ */
+export async function getMemberRoleDebugInfo(memberId: string): Promise<RoleDebugInfo> {
+  try {
+    const role = await getMemberRole(memberId);
+    return {
+      memberId,
+      roleRecordFound: role !== null,
+      roleValue: role,
+      timestamp: Date.now(),
+    };
+  } catch (error) {
+    return {
+      memberId,
+      roleRecordFound: false,
+      roleValue: null,
+      error: String(error),
+      timestamp: Date.now(),
+    };
   }
 }
 
@@ -60,16 +106,28 @@ export async function setMemberRole(memberId: string, role: MemberRole): Promise
 
 /**
  * Set the default role for a new member (always 'client')
- * This is called during initial signup to ensure new users default to client role
+ * Implements atomic upsert: if role exists, return it; if not, create it
+ * Includes retry logic for transient failures
  */
-export async function setDefaultRole(memberId: string): Promise<void> {
-  try {
-    // Check if member already has a role
-    const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles');
-    const existingRole = items.find((mr) => mr.memberId === memberId);
+export async function setDefaultRole(memberId: string, maxRetries: number = 3): Promise<MemberRole> {
+  let lastError: Error | null = null;
+  
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      console.log(`[setDefaultRole] Attempt ${attempt}/${maxRetries} for memberId: ${memberId}`);
+      
+      // Check if member already has a role
+      const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+      const existingRole = items.find((mr) => mr.memberId === memberId);
 
-    // Only set default role if member doesn't already have one
-    if (!existingRole) {
+      if (existingRole) {
+        console.log(`[setDefaultRole] Role already exists for ${memberId}:`, existingRole);
+        const role = existingRole.role as MemberRole;
+        return role;
+      }
+
+      // Create new role assignment
+      console.log(`[setDefaultRole] Creating new client role for ${memberId}`);
       const newRole: MemberRoles = {
         _id: crypto.randomUUID(),
         memberId,
@@ -77,12 +135,37 @@ export async function setDefaultRole(memberId: string): Promise<void> {
         assignmentDate: new Date(),
         status: 'active',
       };
+      
       await BaseCrudService.create('memberroles', newRole);
+      console.log(`[setDefaultRole] Successfully created role for ${memberId}`);
+      
+      // Verify the role was created by refetching
+      await new Promise(resolve => setTimeout(resolve, 100));
+      const { items: updatedItems } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+      const verifiedRole = updatedItems.find((mr) => mr.memberId === memberId);
+      
+      if (verifiedRole) {
+        console.log(`[setDefaultRole] Verified role creation for ${memberId}`);
+        return 'client';
+      } else {
+        throw new Error('Role creation verification failed');
+      }
+    } catch (error) {
+      lastError = error as Error;
+      console.error(`[setDefaultRole] Attempt ${attempt} failed:`, error);
+      
+      if (attempt < maxRetries) {
+        // Exponential backoff: 100ms, 200ms, 400ms
+        const delay = 100 * Math.pow(2, attempt - 1);
+        console.log(`[setDefaultRole] Retrying in ${delay}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
     }
-  } catch (error) {
-    console.error('Error setting default role:', error);
-    // Don't throw - this is a non-critical operation
   }
+  
+  // All retries failed
+  console.error(`[setDefaultRole] Failed after ${maxRetries} attempts:`, lastError);
+  throw new Error(`Failed to set default role after ${maxRetries} attempts: ${lastError?.message}`);
 }
 
 /**
