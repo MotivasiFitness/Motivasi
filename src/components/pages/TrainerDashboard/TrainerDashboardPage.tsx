@@ -114,7 +114,7 @@ export default function TrainerDashboardPage() {
           >
             <BookOpen className="mb-4 group-hover:scale-110 transition-transform" size={32} />
             <h3 className="font-heading text-2xl font-bold mb-2">Create New Program</h3>
-            <p className="text-warm-grey">Design a personalized fitness program for your client</p>
+            <p className="text-warm-grey">Design a personalised fitness programme for your client</p>
           </Link>
 
           <Link

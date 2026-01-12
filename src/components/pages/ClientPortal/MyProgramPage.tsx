@@ -388,7 +388,7 @@ export default function MyProgramPage() {
         ) : (
           <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-12 text-center">
             <p className="text-warm-grey">
-              Your personalized program will be added soon. Check back later!
+              Your personalised programme will be added soon. Check back later!
             </p>
           </div>
         )}

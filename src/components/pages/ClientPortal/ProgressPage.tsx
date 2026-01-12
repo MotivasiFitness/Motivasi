@@ -562,7 +562,7 @@ function CheckinCard({ checkin, checkinNumber, isExpanded, onToggleExpand }: Che
                   Trainer Feedback
                 </p>
                 <p className="font-paragraph text-sm text-warm-grey/80">
-                  Trainer feedback coming soon — check back for personalized insights on your progress.
+                  Trainer feedback coming soon — check back for personalised insights on your progress.
                 </p>
               </div>
             </div>

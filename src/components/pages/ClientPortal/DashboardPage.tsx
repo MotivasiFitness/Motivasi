@@ -263,7 +263,7 @@ export default function DashboardPage() {
           <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-white transition-colors duration-300">
             My Program
           </h3>
-          <p className="text-warm-grey group-hover:text-soft-white/80 transition-colors duration-300">View your personalized workout plan</p>
+          <p className="text-warm-grey group-hover:text-soft-white/80 transition-colors duration-300">View your personalised workout plan</p>
         </Link>
 
         <Link

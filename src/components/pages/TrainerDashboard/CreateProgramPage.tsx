@@ -107,7 +107,7 @@ export default function CreateProgramPage() {
             Create New Program
           </h1>
           <p className="text-lg text-warm-grey">
-            Design a personalized fitness program for your client
+            Design a personalised fitness programme for your client
           </p>
         </div>
 

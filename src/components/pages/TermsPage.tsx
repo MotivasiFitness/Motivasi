@@ -156,7 +156,7 @@ export default function TermsPage() {
                   </h3>
                   <div className="space-y-4 font-paragraph text-base text-warm-grey leading-relaxed">
                     <p>
-                      You are responsible for obtaining medical clearance from your GP or healthcare provider before starting any exercise program, especially if you:
+                      You are responsible for obtaining medical clearance from your GP or healthcare provider before starting any exercise programme, especially if you:
                     </p>
                     <ul className="list-disc list-inside space-y-2 ml-2">
                       <li>Have any diagnosed medical conditions</li>
@@ -432,7 +432,7 @@ export default function TermsPage() {
                   Testimonials and before/after photos on our website represent individual results and are not typical or guaranteed. Your results may differ. Motivasi is not responsible for any failure to achieve desired results.
                 </p>
                 <p>
-                  Coaching is a partnership between you and your coach. Your commitment, consistency, and adherence to the program are essential for achieving results. Motivasi provides guidance, support, and expertise, but ultimate responsibility for your health and fitness outcomes rests with you.
+                  Coaching is a partnership between you and your coach. Your commitment, consistency, and adherence to the programme are essential for achieving results. Motivasi provides guidance, support, and expertise, but ultimate responsibility for your health and fitness outcomes rests with you.
                 </p>
               </div>
             </section>

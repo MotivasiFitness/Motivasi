@@ -45,7 +45,7 @@ export default function NutritionPage() {
       <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
         <h1 className="font-heading text-4xl font-bold mb-2">Nutrition Guidance</h1>
         <p className="text-soft-white/90">
-          Your personalized meal plans and nutrition recommendations
+          Your personalised meal plans and nutrition recommendations
         </p>
       </div>
 
@@ -222,7 +222,7 @@ export default function NutritionPage() {
       ) : (
         <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-12 text-center">
           <p className="text-charcoal-black font-medium mb-2">
-            Your personalized nutrition guidance will be added soon.
+            Your personalised nutrition guidance will be added soon.
           </p>
           <p className="text-warm-grey text-sm">
             Once your trainer creates your meal plan, it will appear here.
