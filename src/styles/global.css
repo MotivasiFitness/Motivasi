@@ -3,3 +3,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Global Hover & Active State System */
+/* Applied to all tabs, quick links, and card-style navigation elements */
+
+/* Base hover state for interactive cards/tabs */
+.interactive-card-hover {
+  @apply transition-all duration-300;
+}
+
+.interactive-card-hover:hover {
+  @apply bg-soft-bronze text-soft-white;
+}
+
+/* For elements that need to maintain text color on hover */
+.interactive-card-hover-preserve-text {
+  @apply transition-all duration-300;
+}
+
+.interactive-card-hover-preserve-text:hover {
+  @apply bg-soft-bronze;
+}
+
+/* Active/selected state */
+.interactive-card-active {
+  @apply bg-soft-bronze text-soft-white;
+}
+
+/* Button-style interactive elements */
+.interactive-button-hover {
+  @apply transition-all duration-300 hover:bg-soft-bronze hover:text-soft-white;
+}
+
+/* Tab/filter button styles */
+.interactive-tab-button {
+  @apply transition-all duration-300;
+}
+
+.interactive-tab-button:not(.interactive-tab-active):hover {
+  @apply bg-soft-bronze text-soft-white border-soft-bronze;
+}
+
+.interactive-tab-active {
+  @apply bg-soft-bronze text-soft-white;
+}

@@ -110,7 +110,7 @@ export default function TrainerDashboardPage() {
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           <Link
             to="/trainer/programs"
-            className="bg-charcoal-black text-soft-white p-8 rounded-2xl hover:bg-soft-bronze transition-colors group"
+            className="bg-charcoal-black text-soft-white p-8 rounded-2xl hover:bg-soft-bronze transition-all duration-300 group"
           >
             <BookOpen className="mb-4 group-hover:scale-110 transition-transform" size={32} />
             <h3 className="font-heading text-2xl font-bold mb-2">Create New Program</h3>
@@ -119,7 +119,7 @@ export default function TrainerDashboardPage() {
 
           <Link
             to="/trainer/clients"
-            className="bg-soft-bronze text-soft-white p-8 rounded-2xl hover:bg-charcoal-black transition-colors group"
+            className="bg-soft-bronze text-soft-white p-8 rounded-2xl hover:bg-charcoal-black transition-all duration-300 group"
           >
             <Users className="mb-4 group-hover:scale-110 transition-transform" size={32} />
             <h3 className="font-heading text-2xl font-bold mb-2">Manage Clients</h3>
@@ -128,7 +128,7 @@ export default function TrainerDashboardPage() {
 
           <Link
             to="/trainer/video-reviews"
-            className="bg-warm-sand-beige text-charcoal-black p-8 rounded-2xl hover:bg-soft-bronze hover:text-soft-white transition-colors group"
+            className="bg-warm-sand-beige text-charcoal-black p-8 rounded-2xl hover:bg-soft-bronze hover:text-soft-white transition-all duration-300 group"
           >
             <Video className="mb-4 group-hover:scale-110 transition-transform" size={32} />
             <h3 className="font-heading text-2xl font-bold mb-2">Video Reviews</h3>
