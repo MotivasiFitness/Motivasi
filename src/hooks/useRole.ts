@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
-import { getMemberRole, isTrainer, isClient, isAdmin } from '@/lib/role-utils';
-import { MemberRole } from '@/entities';
+import { getMemberRole, isTrainer, isClient, isAdmin, setDefaultRole } from '@/lib/role-utils';
+
+export type MemberRole = 'client' | 'trainer' | 'admin';
 
 /**
  * Hook to get and manage member role
@@ -29,7 +30,14 @@ export function useRole() {
     const loadRole = async () => {
       setIsLoading(true);
       try {
-        const memberRole = await getMemberRole(memberId);
+        let memberRole = await getMemberRole(memberId);
+        
+        // If user has no role, set default role to 'client'
+        if (!memberRole) {
+          await setDefaultRole(memberId);
+          memberRole = 'client';
+        }
+        
         setRole(memberRole);
         
         const [isTrainerCheck, isClientCheck, isAdminCheck] = await Promise.all([

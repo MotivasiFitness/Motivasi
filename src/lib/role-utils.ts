@@ -1,5 +1,7 @@
 import { BaseCrudService } from '@/integrations';
-import { TrainerClientAssignments, MemberRoles, MemberRole } from '@/entities';
+import { TrainerClientAssignments, MemberRoles } from '@/entities';
+
+export type MemberRole = 'client' | 'trainer' | 'admin';
 
 /**
  * Get the role of a member from the MemberRoles collection

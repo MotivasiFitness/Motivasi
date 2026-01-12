@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useMember } from '@/integrations';
 import { setMemberRole, isAdmin } from '@/lib/role-utils';
-import { MemberRole } from '@/entities';
 import { AlertCircle, CheckCircle, Lock } from 'lucide-react';
+
+export type MemberRole = 'client' | 'trainer' | 'admin';
 
 export default function RoleSetup() {
   const { member } = useMember();
