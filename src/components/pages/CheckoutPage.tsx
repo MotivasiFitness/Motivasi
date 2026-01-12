@@ -251,7 +251,7 @@ export default function CheckoutPage() {
                 )}
 
                 {/* Personal Information */}
-                <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
+                <div className="bg-warm-sand-beige/20 border border-warm-sand-beige rounded-2xl p-8">
                   <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
                     Personal Information
                   </h2>
@@ -318,7 +318,7 @@ export default function CheckoutPage() {
                 </div>
 
                 {/* Billing Address */}
-                <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
+                <div className="bg-warm-sand-beige/20 border border-warm-sand-beige rounded-2xl p-8">
                   <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
                     Billing Address
                   </h2>
@@ -386,7 +386,7 @@ export default function CheckoutPage() {
                 </div>
 
                 {/* Card Details */}
-                <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
+                <div className="bg-warm-sand-beige/20 border border-warm-sand-beige rounded-2xl p-8">
                   <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
                     Payment Details
                   </h2>
@@ -522,7 +522,7 @@ export default function CheckoutPage() {
 
             {/* Order Summary Sidebar */}
             <div className="lg:col-span-1">
-              <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 sticky top-8">
+              <div className="bg-warm-sand-beige/20 border border-warm-sand-beige rounded-2xl p-8 sticky top-8">
                 <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
                   Order Summary
                 </h2>

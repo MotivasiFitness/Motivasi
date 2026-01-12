@@ -74,7 +74,7 @@ export default function AboutPage() {
         </div>
       </section>
       {/* Qualifications Section */}
-      <section className="py-24 px-8 lg:px-20">
+      <section className="py-24 px-8 lg:px-20 bg-warm-sand-beige/40">
         <div className="max-w-[100rem] mx-auto">
           <div className="text-center mb-16">
             <div className="w-16 h-16 bg-soft-bronze rounded-full flex items-center justify-center mx-auto mb-6">
@@ -92,7 +92,7 @@ export default function AboutPage() {
             {qualifications.map((qual) => (
               <div
                 key={qual._id}
-                className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 hover:border-soft-bronze transition-colors"
+                className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 hover:border-soft-bronze hover:shadow-lg transition-all"
               >
                 {qual.certificateImage && (
                   <div className="aspect-video w-full rounded-xl overflow-hidden mb-6">

@@ -39,7 +39,7 @@ export default function AccessibilityPage() {
         <div className="max-w-[100rem] mx-auto grid lg:grid-cols-4 gap-12">
           {/* Sidebar Navigation */}
           <div className="lg:col-span-1">
-            <div className="sticky top-32 bg-soft-white border border-warm-sand-beige rounded-2xl p-6">
+            <div className="sticky top-32 bg-warm-sand-beige/20 border border-warm-sand-beige rounded-2xl p-6">
               <h3 className="font-heading text-lg font-bold text-charcoal-black mb-6">
                 Contents
               </h3>
