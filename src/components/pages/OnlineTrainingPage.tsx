@@ -516,7 +516,7 @@ export default function OnlineTrainingPage() {
               Online vs In-Person Coaching
             </h2>
             <p className="font-paragraph text-xl text-charcoal-black">
-              Both are effective. Choose what works for your lifestyle.
+              Both work — but one is designed for busy women.
             </p>
           </div>
 
@@ -525,29 +525,50 @@ export default function OnlineTrainingPage() {
               <thead>
                 <tr className="border-b-2 border-warm-sand-beige">
                   <th className="text-left py-4 px-6 font-heading text-lg font-bold text-charcoal-black">Feature</th>
-                  <th className="text-center py-4 px-6 font-heading text-lg font-bold text-charcoal-black">Online</th>
+                  <th className="text-center py-4 px-6 font-heading text-lg font-bold text-charcoal-black bg-soft-bronze/5">Online</th>
                   <th className="text-center py-4 px-6 font-heading text-lg font-bold text-charcoal-black">In-Person</th>
                 </tr>
               </thead>
               <tbody>
                 {[
-                  { feature: "Flexibility", online: "✓ Train anytime, anywhere", inPerson: "✗ Fixed schedule" },
-                  { feature: "Cost", online: "✓ More affordable", inPerson: "✗ Higher cost" },
-                  { feature: "Privacy", online: "✓ Train at home", inPerson: "✗ Gym environment" },
-                  { feature: "Real-time form correction", online: "✓ Video reviews", inPerson: "✓ Hands-on" },
-                  { feature: "Recorded workouts", online: "✓ Watch anytime", inPerson: "✗ Not available" },
-                  { feature: "24/7 messaging support", online: "✓ Always available", inPerson: "✗ Limited" },
-                  { feature: "Hands-on adjustments", online: "✗ Not possible", inPerson: "✓ Yes" },
-                  { feature: "Travel required", online: "✓ None", inPerson: "✗ Yes" }
+                  { feature: "Flexibility", online: "✔ Train anytime, anywhere", inPerson: "✗ Fixed schedule" },
+                  { feature: "Cost", online: "✔ More affordable", inPerson: "✗ Higher cost" },
+                  { feature: "Privacy", online: "✔ Train at home", inPerson: "✗ Gym environment" },
+                  { feature: "Real-time form correction", online: "✔ Video reviews", inPerson: "✔ Hands-on" },
+                  { feature: "Recorded workouts", online: "✔ Watch anytime", inPerson: "✗ Not available" },
+                  { feature: "24/7 messaging support", online: "✔ Always available", inPerson: "✗ Limited" },
+                  { feature: "Hands-on adjustments", online: "✗ Not possible", inPerson: "✔ Yes" },
+                  { feature: "Travel required", online: "✔ None", inPerson: "✗ Yes" }
                 ].map((row, idx) => (
                   <tr key={idx} className="border-b border-warm-sand-beige hover:bg-soft-white/50 transition-colors">
                     <td className="py-4 px-6 font-paragraph font-medium text-charcoal-black">{row.feature}</td>
-                    <td className="py-4 px-6 text-center font-paragraph text-warm-grey">{row.online}</td>
+                    <td className="py-4 px-6 text-center font-paragraph text-warm-grey bg-soft-bronze/5">{row.online}</td>
                     <td className="py-4 px-6 text-center font-paragraph text-warm-grey">{row.inPerson}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Decision Prompt */}
+          <div className="mt-16 bg-soft-white border border-warm-sand-beige rounded-2xl p-8 md:p-12">
+            <p className="font-paragraph text-lg text-charcoal-black leading-relaxed mb-8">
+              Not sure which option is right for you? If your schedule changes week to week, online coaching gives you expert support without the pressure of fixed appointments. Most of my clients choose online coaching for flexibility, accountability, and long-term results.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/online-training"
+                className="flex-1 bg-charcoal-black text-soft-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-soft-bronze transition-colors text-center"
+              >
+                View Online Coaching Options
+              </Link>
+              <Link
+                to="/blog"
+                className="flex-1 border-2 border-charcoal-black text-charcoal-black px-8 py-4 rounded-lg font-medium text-lg hover:bg-warm-sand-beige/30 transition-colors text-center"
+              >
+                Book In-Person Training
+              </Link>
+            </div>
           </div>
         </div>
       </section>
