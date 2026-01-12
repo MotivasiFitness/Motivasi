@@ -35,7 +35,14 @@ export function useRole() {
         // If user has no role, set default role to 'client'
         if (!memberRole) {
           await setDefaultRole(memberId);
-          memberRole = 'client';
+          // Small delay to ensure database write is committed before checking role
+          await new Promise(resolve => setTimeout(resolve, 100));
+          // Refetch the role to ensure it's in the database
+          memberRole = await getMemberRole(memberId);
+          // If still no role, default to 'client' (shouldn't happen, but safety fallback)
+          if (!memberRole) {
+            memberRole = 'client';
+          }
         }
         
         setRole(memberRole);

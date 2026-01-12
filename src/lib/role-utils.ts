@@ -13,7 +13,8 @@ export async function getMemberRole(memberId: string): Promise<MemberRole | null
     const memberRole = items.find(
       (mr) => mr.memberId === memberId && mr.status === 'active'
     );
-    return memberRole?.role || null;
+    const role = memberRole?.role as MemberRole | undefined;
+    return role || null;
   } catch (error) {
     console.error('Error fetching member role:', error);
     return null;
