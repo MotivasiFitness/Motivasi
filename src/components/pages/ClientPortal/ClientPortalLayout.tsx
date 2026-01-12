@@ -12,10 +12,10 @@ export default function ClientPortalLayout() {
   const navItems = [
     { path: '/portal', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/portal/program', label: 'My Program', icon: Dumbbell },
-    { path: '/portal/nutrition', label: 'Nutrition', icon: Apple },
-    { path: '/portal/progress', label: 'Progress', icon: TrendingUp },
     { path: '/portal/bookings', label: 'Bookings', icon: Calendar },
+    { path: '/portal/nutrition', label: 'Nutrition', icon: Apple },
     { path: '/portal/messages', label: 'Messages', icon: MessageSquare },
+    { path: '/portal/progress', label: 'Progress', icon: TrendingUp },
     { path: '/portal/video-library', label: 'Video Library', icon: Video },
   ];
 
@@ -68,12 +68,11 @@ export default function ClientPortalLayout() {
             {navItems.map((item) => {
               const Icon = item.icon;
               const active = isActive(item.path);
-              const isRecommended = item.path === '/portal/program' || item.path === '/portal/messages';
               
               return (
                 <div key={item.path} className="relative">
-                  {isRecommended && !active && (
-                    <div className="absolute -left-4 top-1/2 transform -translate-y-1/2 w-1 h-6 bg-soft-bronze rounded-r-full" />
+                  {active && (
+                    <div className="absolute -left-4 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-soft-bronze rounded-r-full" />
                   )}
                   <Link
                     to={item.path}
@@ -81,18 +80,11 @@ export default function ClientPortalLayout() {
                     className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                       active
                         ? 'bg-soft-bronze text-soft-white'
-                        : isRecommended
-                        ? 'bg-soft-bronze/10 text-soft-white hover:bg-soft-bronze/20'
                         : 'text-warm-grey hover:bg-soft-white/10'
                     }`}
                   >
                     <Icon size={20} />
                     <span className="font-paragraph font-medium">{item.label}</span>
-                    {isRecommended && !active && (
-                      <span className="ml-auto text-xs bg-soft-bronze/30 px-2 py-1 rounded text-soft-white">
-                        Recommended
-                      </span>
-                    )}
                   </Link>
                 </div>
               );

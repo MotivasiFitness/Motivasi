@@ -95,6 +95,17 @@ export default function MessagesPage() {
       <div className="flex-1 bg-soft-white border border-warm-sand-beige rounded-2xl p-8 overflow-y-auto flex flex-col">
         {messages.length > 0 ? (
           <div className="space-y-4 flex-1">
+            {/* Proactive System Message */}
+            <div className="flex justify-start mb-6">
+              <div className="max-w-xs lg:max-w-md px-6 py-4 rounded-2xl bg-warm-sand-beige text-charcoal-black rounded-bl-none border-l-4 border-soft-bronze">
+                <p className="font-paragraph text-sm mb-2">
+                  👋 Quick check-in: How are you feeling this week? Reply anytime — I'm here to support you.
+                </p>
+                <p className="text-xs text-warm-grey">
+                  System message
+                </p>
+              </div>
+            </div>
             {messages.map((message) => {
               const isFromClient = message.senderIdentifier === member?._id;
               return (
@@ -127,9 +138,18 @@ export default function MessagesPage() {
         ) : (
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
+              {/* Proactive System Message for Empty State */}
+              <div className="mb-8 max-w-xs mx-auto px-6 py-4 rounded-2xl bg-warm-sand-beige text-charcoal-black rounded-bl-none border-l-4 border-soft-bronze">
+                <p className="font-paragraph text-sm mb-2">
+                  👋 Quick check-in: How are you feeling this week? Reply anytime — I'm here to support you.
+                </p>
+                <p className="text-xs text-warm-grey">
+                  System message
+                </p>
+              </div>
               <MessageCircle className="w-12 h-12 text-warm-grey mx-auto mb-4 opacity-50" />
               <p className="text-warm-grey">
-                No messages yet. Start a conversation with your trainer!
+                Start a conversation with your trainer!
               </p>
             </div>
           </div>

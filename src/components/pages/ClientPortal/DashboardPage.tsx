@@ -68,10 +68,10 @@ export default function DashboardPage() {
             </p>
           </div>
           <Link
-            to={upcomingBookings.length > 0 ? "/portal/program" : "/portal/bookings"}
-            className="inline-flex items-center gap-2 bg-soft-white text-soft-bronze px-8 py-4 rounded-lg font-medium hover:bg-soft-white/90 transition-colors whitespace-nowrap"
+            to="/portal/bookings"
+            className="inline-flex items-center gap-2 bg-soft-white text-soft-bronze px-10 py-5 rounded-lg font-bold text-lg hover:bg-soft-white/90 transition-colors whitespace-nowrap shadow-lg"
           >
-            {upcomingBookings.length > 0 ? "Complete Today's Workout" : "Book Your Next Session"}
+            Book Your Next Session
             <ArrowRight size={20} />
           </Link>
         </div>
@@ -101,7 +101,7 @@ export default function DashboardPage() {
             100%
           </p>
           <p className="text-warm-grey text-sm mt-2">
-            You've followed your plan this week
+            🔥 You stayed consistent this week. That's how real results are built.
           </p>
         </div>
 
@@ -161,12 +161,12 @@ export default function DashboardPage() {
             <p className="text-charcoal-black font-medium mb-2">
               No sessions booked yet
             </p>
-            <p className="text-warm-grey text-sm mb-4">
-              Booking ahead helps you stay consistent around family life
+            <p className="text-warm-grey text-sm mb-6">
+              Clients who book ahead stay more consistent around family life.
             </p>
             <Link 
               to="/portal/bookings" 
-              className="inline-flex items-center gap-2 text-soft-bronze hover:underline font-medium text-sm"
+              className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white hover:bg-soft-bronze/90 transition-colors font-bold px-6 py-3 rounded-lg"
             >
               Schedule in 30 seconds
               <ArrowRight size={16} />
