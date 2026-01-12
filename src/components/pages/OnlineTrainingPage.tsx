@@ -61,41 +61,41 @@ export default function OnlineTrainingPage() {
               What's Included in Your Package
             </h2>
             <p className="font-paragraph text-xl text-charcoal-black max-w-3xl mx-auto">
-              Everything you need to succeed, delivered digitally and personalised to your needs.
+              Everything you need to feel supported, confident, and make real progress — even with a busy life.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 mb-16">
             {[
               {
                 icon: <Video size={32} />,
                 title: "Personalised Video Training",
-                desc: "Custom-recorded workout videos tailored to your fitness level, goals, and available equipment. Watch anytime, anywhere."
+                desc: "Workouts designed specifically for your body, goals, and stage of life — so you never feel unsure what to do. Train safely and confidently, wherever you are."
               },
               {
                 icon: <Users size={32} />,
                 title: "Weekly Check-In Calls",
-                desc: "One-on-one video calls to review your progress, adjust your program, answer questions, and keep you accountable."
+                desc: "Dedicated time to review your progress, adjust your plan, and talk through challenges. This is where accountability, confidence, and momentum are built."
               },
               {
                 icon: <Smartphone size={32} />,
-                title: "Private Coaching Platform",
-                desc: "Access your workouts, nutrition guidance, progress tracking, and direct messaging with me in one secure coaching platform."
+                title: "Your Private Coaching Hub",
+                desc: "Everything in one place — workouts, nutrition guidance, progress tracking, and direct messaging — so you're never left guessing or searching for answers."
               },
               {
                 icon: <Heart size={32} />,
-                title: "Nutrition Guidance",
-                desc: "Personalised nutrition advice tailored to your goals, lifestyle, and any special considerations (postpartum, perimenopause, etc.)."
+                title: "Practical Nutrition Guidance",
+                desc: "Simple, realistic nutrition support tailored to busy women. No extreme dieting — just strategies that support fat loss, energy, and long-term health."
               },
               {
                 icon: <Clock size={32} />,
-                title: "Flexible Scheduling",
-                desc: "Train on your schedule. Workouts range from 30-60 minutes, so you can fit fitness into your busy life."
+                title: "Fits Around Your Life",
+                desc: "Sessions designed to work around work, family, and changing energy levels. Short, effective workouts that adapt as life changes."
               },
               {
                 icon: <Zap size={32} />,
-                title: "Real-Time Support",
-                desc: "Message me anytime with questions, form checks, or motivation. I respond within 24 hours."
+                title: "Ongoing Support Between Sessions",
+                desc: "Message me anytime for form checks, questions, or motivation — so you're supported even on the hard days."
               }
             ].map((feature, idx) => (
               <div
@@ -113,6 +113,16 @@ export default function OnlineTrainingPage() {
                 </p>
               </div>
             ))}
+          </div>
+
+          {/* Reassurance and Trust Lines */}
+          <div className="max-w-3xl mx-auto text-center space-y-4">
+            <p className="font-paragraph text-lg text-charcoal-black font-medium leading-relaxed">
+              You're never doing this alone — support, guidance, and accountability are built into every step.
+            </p>
+            <p className="font-paragraph text-base text-warm-grey leading-relaxed">
+              Designed specifically for busy women, mums, and women 35+ navigating changing bodies and busy lives.
+            </p>
           </div>
         </div>
       </section>
