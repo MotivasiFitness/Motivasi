@@ -5,12 +5,14 @@ import { Image } from '@/components/ui/image';
 import { MiniCart } from '@/wix-verticals/react-pages/react-router/routes/root';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useMember } from '@/integrations';
+import { useRole } from '@/hooks/useRole';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { t } = useLanguage();
   const { member, isAuthenticated, actions } = useMember();
+  const { isTrainer, isClient } = useRole();
 
   return (
     <header className="bg-soft-white border-b border-warm-sand-beige sticky top-0 z-40">
@@ -55,12 +57,21 @@ export default function Header() {
             </Link>
             {isAuthenticated ? (
               <>
-                <Link 
-                  to="/portal" 
-                  className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
-                >
-                  My Portal
-                </Link>
+                {isTrainer ? (
+                  <Link 
+                    to="/trainer" 
+                    className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+                  >
+                    Trainer Hub
+                  </Link>
+                ) : (
+                  <Link 
+                    to="/portal" 
+                    className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+                  >
+                    My Portal
+                  </Link>
+                )}
                 <button
                   onClick={actions.logout}
                   className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors flex items-center gap-2"
@@ -128,13 +139,23 @@ export default function Header() {
               </Link>
               {isAuthenticated ? (
                 <>
-                  <Link 
-                    to="/portal" 
-                    className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    My Portal
-                  </Link>
+                  {isTrainer ? (
+                    <Link 
+                      to="/trainer" 
+                      className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Trainer Hub
+                    </Link>
+                  ) : (
+                    <Link 
+                      to="/portal" 
+                      className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      My Portal
+                    </Link>
+                  )}
                   <button
                     onClick={() => {
                       actions.logout();

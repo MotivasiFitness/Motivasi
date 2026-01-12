@@ -1,18 +1,35 @@
 import { useMember } from '@/integrations';
-import { Outlet, Link, useLocation } from 'react-router-dom';
-import { MessageSquare, Users, BookOpen, Settings, LogOut, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
+import { MessageSquare, Users, BookOpen, Settings, LogOut, Menu, X, Loader } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useRole } from '@/hooks/useRole';
 
 export default function TrainerDashboardLayout() {
   const { member, actions } = useMember();
+  const { isTrainer, isLoading } = useRole();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+
+  // Redirect non-trainers away from trainer portal
+  if (!isLoading && !isTrainer) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-soft-white flex items-center justify-center">
+        <Loader className="w-8 h-8 animate-spin text-soft-bronze" />
+      </div>
+    );
+  }
 
   const navItems = [
     { path: '/trainer', label: 'Dashboard', icon: Users },
     { path: '/trainer/clients', label: 'My Clients', icon: Users },
     { path: '/trainer/programs', label: 'Programs', icon: BookOpen },
     { path: '/trainer/messages', label: 'Messages', icon: MessageSquare },
+    { path: '/trainer/video-reviews', label: 'Video Reviews', icon: MessageSquare },
+    { path: '/trainer/progress', label: 'Client Progress', icon: BookOpen },
   ];
 
   const isActive = (path: string) => location.pathname === path;

@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { Programs } from '@/entities';
-import { Users, BookOpen, MessageSquare, TrendingUp } from 'lucide-react';
+import { FitnessPrograms } from '@/entities';
+import { Users, BookOpen, MessageSquare, TrendingUp, Video } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function TrainerDashboardPage() {
   const { member } = useMember();
-  const [programs, setPrograms] = useState<Programs[]>([]);
+  const [programs, setPrograms] = useState<FitnessPrograms[]>([]);
   const [stats, setStats] = useState({
     totalClients: 0,
     activePrograms: 0,
@@ -19,7 +19,7 @@ export default function TrainerDashboardPage() {
     const fetchData = async () => {
       if (!member?._id) return;
 
-      const { items } = await BaseCrudService.getAll<Programs>('programs');
+      const { items } = await BaseCrudService.getAll<FitnessPrograms>('programs');
       const trainerPrograms = items.filter(p => p.trainerId === member._id);
       
       setPrograms(trainerPrograms);
@@ -107,7 +107,7 @@ export default function TrainerDashboardPage() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid md:grid-cols-2 gap-6 mb-12">
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
           <Link
             to="/trainer/programs"
             className="bg-charcoal-black text-soft-white p-8 rounded-2xl hover:bg-soft-bronze transition-colors group"
@@ -124,6 +124,15 @@ export default function TrainerDashboardPage() {
             <Users className="mb-4 group-hover:scale-110 transition-transform" size={32} />
             <h3 className="font-heading text-2xl font-bold mb-2">Manage Clients</h3>
             <p className="text-soft-white/80">View and manage all your assigned clients</p>
+          </Link>
+
+          <Link
+            to="/trainer/video-reviews"
+            className="bg-warm-sand-beige text-charcoal-black p-8 rounded-2xl hover:bg-soft-bronze hover:text-soft-white transition-colors group"
+          >
+            <Video className="mb-4 group-hover:scale-110 transition-transform" size={32} />
+            <h3 className="font-heading text-2xl font-bold mb-2">Video Reviews</h3>
+            <p className="text-charcoal-black/70 group-hover:text-soft-white/80">Review exercise videos from clients</p>
           </Link>
         </div>
 

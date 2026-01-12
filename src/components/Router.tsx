@@ -44,9 +44,11 @@ import TrainerDashboardPage from '@/components/pages/TrainerDashboard/TrainerDas
 import TrainerClientsPage from '@/components/pages/TrainerDashboard/TrainerClientsPage';
 import CreateProgramPage from '@/components/pages/TrainerDashboard/CreateProgramPage';
 import TrainerMessagesPage from '@/components/pages/TrainerDashboard/TrainerMessagesPage';
+import VideoReviewsPage from '@/components/pages/TrainerDashboard/VideoReviewsPage';
+import ClientProgressPage from '@/components/pages/TrainerDashboard/ClientProgressPage';
 
-// Admin Pages
 import AdminDashboard from '@/components/pages/AdminDashboard';
+import ExerciseVideoReviewPage from '@/components/pages/ExerciseVideoReviewPage';
 
 // Main Layout with Header and Footer
 function SiteLayout() {
@@ -254,7 +256,23 @@ const router = createBrowserRouter([
             path: "messages",
             element: <TrainerMessagesPage />,
           },
+          {
+            path: "video-reviews",
+            element: <VideoReviewsPage />,
+          },
+          {
+            path: "progress",
+            element: <ClientProgressPage />,
+          },
         ],
+      },
+      {
+        path: "exercise-video-review",
+        element: (
+          <MemberProtectedRoute>
+            <ExerciseVideoReviewPage />
+          </MemberProtectedRoute>
+        ),
       },
       {
         path: "admin",

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { Programs, TrainerClientAssignments } from '@/entities';
+import { FitnessPrograms, TrainerClientAssignments } from '@/entities';
 import { MessageSquare, Plus, AlertCircle, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getTrainerClients, assignClientToTrainer } from '@/lib/role-utils';
@@ -32,7 +32,7 @@ export default function TrainerClientsPage() {
       const assignments = await getTrainerClients(member._id);
       
       // Get programs for each client
-      const { items: programs } = await BaseCrudService.getAll<Programs>('programs');
+      const { items: programs } = await BaseCrudService.getAll<FitnessPrograms>('programs');
       const trainerPrograms = programs.filter(p => p.trainerId === member._id);
 
       // Build client info

@@ -1,13 +1,28 @@
 import { useState } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation, Navigate } from 'react-router-dom';
 import { useMember } from '@/integrations';
-import { Menu, X, LogOut, LayoutDashboard, Dumbbell, Apple, TrendingUp, Calendar, MessageSquare, Video, User } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, Dumbbell, Apple, TrendingUp, Calendar, MessageSquare, Video, User, Loader } from 'lucide-react';
 import { Image } from '@/components/ui/image';
+import { useRole } from '@/hooks/useRole';
 
 export default function ClientPortalLayout() {
   const { member, actions } = useMember();
+  const { isClient, isLoading } = useRole();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+
+  // Redirect non-clients away from client portal
+  if (!isLoading && !isClient) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-soft-white flex items-center justify-center">
+        <Loader className="w-8 h-8 animate-spin text-soft-bronze" />
+      </div>
+    );
+  }
 
   const navItems = [
     { path: '/portal', label: 'Dashboard', icon: LayoutDashboard },
@@ -17,6 +32,7 @@ export default function ClientPortalLayout() {
     { path: '/portal/messages', label: 'Messages', icon: MessageSquare },
     { path: '/portal/progress', label: 'Progress', icon: TrendingUp },
     { path: '/portal/video-library', label: 'Video Library', icon: Video },
+    { path: '/exercise-video-review', label: 'Upload Video', icon: Video },
   ];
 
   const isActive = (path: string) => {
