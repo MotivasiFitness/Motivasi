@@ -39,7 +39,7 @@ export default function NutritionPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 bg-soft-bronze/10 min-h-screen p-8 rounded-2xl">
       {/* Header */}
       <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
         <h1 className="font-heading text-4xl font-bold mb-2">Nutrition Guidance</h1>

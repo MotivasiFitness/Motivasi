@@ -82,7 +82,7 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="space-y-8 h-screen flex flex-col">
+    <div className="space-y-8 h-screen flex flex-col bg-soft-bronze/5 p-8 rounded-2xl">
       {/* Header */}
       <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
         <h1 className="font-heading text-4xl font-bold mb-2">Messages</h1>

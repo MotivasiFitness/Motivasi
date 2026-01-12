@@ -55,7 +55,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 bg-warm-sand-beige/40 min-h-screen p-8 rounded-2xl">
       {/* Welcome Section with Primary CTA */}
       <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
