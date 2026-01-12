@@ -87,7 +87,6 @@ export default function FaceToFaceTrainingPage() {
           </p>
         </div>
       </section>
-
       {/* Training Options Section */}
       <section className="py-24 px-8 lg:px-20">
         <div className="max-w-[100rem] mx-auto">
@@ -178,7 +177,6 @@ export default function FaceToFaceTrainingPage() {
           </div>
         </div>
       </section>
-
       {/* UK-Based Service Notice */}
       <section className="py-12 px-8 lg:px-20 bg-soft-bronze">
         <div className="max-w-[100rem] mx-auto">
@@ -189,7 +187,6 @@ export default function FaceToFaceTrainingPage() {
           </div>
         </div>
       </section>
-
       {/* Locations Section */}
       <section className="py-24 px-8 lg:px-20 bg-charcoal-black">
         <div className="max-w-[100rem] mx-auto">
@@ -223,7 +220,6 @@ export default function FaceToFaceTrainingPage() {
           </div>
         </div>
       </section>
-
       {/* Why Face-to-Face Section */}
       <section className="py-24 px-8 lg:px-20 bg-warm-sand-beige/30">
         <div className="max-w-[100rem] mx-auto">
@@ -275,17 +271,18 @@ export default function FaceToFaceTrainingPage() {
             <div className="relative">
               <div className="aspect-square w-full rounded-2xl overflow-hidden">
                 <Image
-                  src="https://static.wixstatic.com/media/93e866_0f87c0e4fd364ec19d67523c7472a283~mv2.png?originWidth=576&originHeight=768"
-                  alt="Personal training session"
+                  src="https://static.wixstatic.com/media/93e866_befb471af6704f8eacfde13d90bf0e65~mv2.png"
                   className="w-full h-full object-cover"
                   width={600}
-                />
+                  originWidth={611}
+                  originHeight={623}
+                  focalPointX={75.20458265139116}
+                  focalPointY={27.72873194221509} />
               </div>
             </div>
           </div>
         </div>
       </section>
-
       {/* Contact Section */}
       <section className="py-24 px-8 lg:px-20 bg-charcoal-black">
         <div className="max-w-[100rem] mx-auto">
@@ -457,7 +454,6 @@ export default function FaceToFaceTrainingPage() {
           </div>
         </div>
       </section>
-
       {/* Final CTA Section */}
       <section className="py-24 px-8 lg:px-20 bg-soft-bronze">
         <div className="max-w-4xl mx-auto text-center">
