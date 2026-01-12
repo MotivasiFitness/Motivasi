@@ -6,12 +6,13 @@ import { useRole } from '@/hooks/useRole';
 
 export default function TrainerDashboardLayout() {
   const { member, actions } = useMember();
-  const { isTrainer, isLoading } = useRole();
+  const { isTrainer, isAdmin, isLoading } = useRole();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
-  // Redirect non-trainers away from trainer portal
-  if (!isLoading && !isTrainer) {
+  // Allow trainers and admins to access trainer portal
+  // Admins can access for management and testing purposes
+  if (!isLoading && !isTrainer && !isAdmin) {
     return <Navigate to="/" replace />;
   }
 

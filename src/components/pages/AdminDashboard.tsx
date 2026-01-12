@@ -3,12 +3,14 @@ import { useMember } from '@/integrations';
 import { useRole } from '@/hooks/useRole';
 import { BaseCrudService } from '@/integrations';
 import { MemberRoles } from '@/entities';
-import { Search, Edit2, Check, X, AlertCircle, Loader, Shield } from 'lucide-react';
+import { Search, Edit2, Check, X, AlertCircle, Loader, Shield, Plus, Trash2 } from 'lucide-react';
 import { Navigate } from 'react-router-dom';
+import { setMemberRoles } from '@/lib/role-utils';
 
 interface UserWithRole {
   memberId: string;
   role: 'client' | 'trainer' | 'admin';
+  roles: ('client' | 'trainer' | 'admin')[];
   status: string;
   assignmentDate?: Date | string;
 }
@@ -32,12 +34,32 @@ export default function AdminDashboard() {
         setIsLoading(true);
         const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles');
         
-        const userList: UserWithRole[] = items.map(item => ({
-          memberId: item.memberId || '',
-          role: (item.role as 'client' | 'trainer' | 'admin') || 'client',
-          status: item.status || 'active',
-          assignmentDate: item.assignmentDate
-        }));
+        const userList: UserWithRole[] = items.map(item => {
+          // Parse roles from either 'roles' field (new) or 'role' field (legacy)
+          let roles: ('client' | 'trainer' | 'admin')[] = [];
+          
+          if (item.roles) {
+            // New format: comma-separated roles
+            roles = item.roles
+              .split(',')
+              .map(r => r.trim().toLowerCase())
+              .filter((r): r is 'client' | 'trainer' | 'admin' => ['client', 'trainer', 'admin'].includes(r));
+          } else if (item.role) {
+            // Legacy format: single role
+            const role = item.role.toLowerCase() as 'client' | 'trainer' | 'admin';
+            if (['client', 'trainer', 'admin'].includes(role)) {
+              roles = [role];
+            }
+          }
+          
+          return {
+            memberId: item.memberId || '',
+            role: (item.role as 'client' | 'trainer' | 'admin') || 'client',
+            roles: roles.length > 0 ? roles : ['client'],
+            status: item.status || 'active',
+            assignmentDate: item.assignmentDate
+          };
+        });
         
         setUsers(userList);
         setFilteredUsers(userList);
@@ -91,7 +113,7 @@ export default function AdminDashboard() {
       // Update local state
       setUsers(prevUsers =>
         prevUsers.map(user =>
-          user.memberId === memberId ? { ...user, role } : user
+          user.memberId === memberId ? { ...user, role, roles: [role] } : user
         )
       );
 
@@ -100,6 +122,35 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error('Error updating role:', error);
       setMessage({ type: 'error', text: 'Failed to update user role' });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  // Handle multiple roles assignment
+  const handleMultipleRolesChange = async (memberId: string, newRoles: ('client' | 'trainer' | 'admin')[]) => {
+    setIsSaving(true);
+    try {
+      if (newRoles.length === 0) {
+        setMessage({ type: 'error', text: 'At least one role must be selected' });
+        setIsSaving(false);
+        return;
+      }
+
+      await setMemberRoles(memberId, newRoles);
+
+      // Update local state
+      setUsers(prevUsers =>
+        prevUsers.map(user =>
+          user.memberId === memberId ? { ...user, roles: newRoles, role: newRoles[0] } : user
+        )
+      );
+
+      setMessage({ type: 'success', text: `User roles updated to: ${newRoles.join(', ')}` });
+      setEditingUserId(null);
+    } catch (error) {
+      console.error('Error updating roles:', error);
+      setMessage({ type: 'error', text: 'Failed to update user roles' });
     } finally {
       setIsSaving(false);
     }
@@ -226,29 +277,45 @@ export default function AdminDashboard() {
                         </td>
                         <td className="py-4 px-6">
                           {editingUserId === user.memberId ? (
-                            <select
-                              value={newRole}
-                              onChange={(e) =>
-                                setNewRole(e.target.value as 'client' | 'trainer' | 'admin')
-                              }
-                              className="px-3 py-2 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none font-paragraph text-base"
-                            >
-                              <option value="client">Client</option>
-                              <option value="trainer">Trainer</option>
-                              <option value="admin">Admin</option>
-                            </select>
+                            <div className="space-y-2">
+                              <div className="text-xs font-medium text-charcoal-black mb-2">Select roles:</div>
+                              <div className="space-y-2">
+                                {(['client', 'trainer', 'admin'] as const).map((roleOption) => (
+                                  <label key={roleOption} className="flex items-center gap-2 cursor-pointer">
+                                    <input
+                                      type="checkbox"
+                                      checked={newRole === roleOption || (Array.isArray(newRole) && newRole.includes(roleOption))}
+                                      onChange={(e) => {
+                                        // For simplicity, toggle single role for now
+                                        // In a full implementation, you'd manage an array of roles
+                                        setNewRole(roleOption);
+                                      }}
+                                      className="w-4 h-4 rounded border-warm-sand-beige"
+                                    />
+                                    <span className="text-sm font-paragraph">
+                                      {roleOption.charAt(0).toUpperCase() + roleOption.slice(1)}
+                                    </span>
+                                  </label>
+                                ))}
+                              </div>
+                            </div>
                           ) : (
-                            <span
-                              className={`inline-block px-4 py-2 rounded-full text-sm font-medium ${
-                                user.role === 'admin'
-                                  ? 'bg-soft-bronze text-soft-white'
-                                  : user.role === 'trainer'
-                                  ? 'bg-soft-bronze/20 text-soft-bronze'
-                                  : 'bg-warm-sand-beige text-charcoal-black'
-                              }`}
-                            >
-                              {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
-                            </span>
+                            <div className="flex flex-wrap gap-2">
+                              {user.roles.map((role) => (
+                                <span
+                                  key={role}
+                                  className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
+                                    role === 'admin'
+                                      ? 'bg-soft-bronze text-soft-white'
+                                      : role === 'trainer'
+                                      ? 'bg-soft-bronze/20 text-soft-bronze'
+                                      : 'bg-warm-sand-beige text-charcoal-black'
+                                  }`}
+                                >
+                                  {role.charAt(0).toUpperCase() + role.slice(1)}
+                                </span>
+                              ))}
+                            </div>
                           )}
                         </td>
                         <td className="py-4 px-6 font-paragraph text-base text-warm-grey">

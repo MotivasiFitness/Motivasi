@@ -8,15 +8,15 @@ import DebugPanel from '@/components/DebugPanel';
 
 export default function ClientPortalLayout() {
   const { member, actions } = useMember();
-  const { isClient, isLoading, setupError, debugInfo, role } = useRole();
+  const { isClient, isAdmin, isLoading, setupError, debugInfo, role } = useRole();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const location = useLocation();
 
   // Determine redirect reason
   let redirectReason = '';
-  if (!isLoading && !isClient && !setupError) {
-    redirectReason = 'User is not a client';
+  if (!isLoading && !isClient && !isAdmin && !setupError) {
+    redirectReason = 'User is not a client or admin';
   }
 
   // Show setup error with retry option
@@ -72,8 +72,9 @@ export default function ClientPortalLayout() {
     );
   }
 
-  // Redirect non-clients away from client portal
-  if (!isLoading && !isClient) {
+  // Redirect non-clients and non-admins away from client portal
+  // Admins can access for management and testing purposes
+  if (!isLoading && !isClient && !isAdmin) {
     return <Navigate to="/" replace />;
   }
 

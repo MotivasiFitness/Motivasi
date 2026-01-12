@@ -137,6 +137,7 @@ export interface ClientTestimonials {
 /**
  * Collection ID: memberroles
  * Interface for MemberRoles
+ * Supports both single role (legacy) and multiple roles (new)
  */
 export interface MemberRoles {
   _id: string;
@@ -144,8 +145,10 @@ export interface MemberRoles {
   _updatedDate?: Date;
   /** @wixFieldType text */
   memberId?: string;
-  /** @wixFieldType text */
+  /** @wixFieldType text - Legacy: single role (client, trainer, admin) */
   role?: string;
+  /** @wixFieldType text - New: comma-separated roles (e.g., "admin,trainer") */
+  roles?: string;
   /** @wixFieldType datetime */
   assignmentDate?: Date | string;
   /** @wixFieldType text */

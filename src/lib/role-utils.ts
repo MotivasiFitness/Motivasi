@@ -18,6 +18,8 @@ export interface RoleDebugInfo {
  * Get the role of a member from the MemberRoles collection
  * This queries the backend for secure, persistent role storage
  * Filters by memberId field specifically
+ * 
+ * Supports both single role (legacy) and multiple roles (new)
  */
 export async function getMemberRole(memberId: string): Promise<MemberRole | null> {
   try {
@@ -31,6 +33,7 @@ export async function getMemberRole(memberId: string): Promise<MemberRole | null
     
     if (memberRole) {
       console.log(`[getMemberRole] Found role record:`, memberRole);
+      // Support both single role (legacy) and multiple roles (new)
       const role = memberRole.role as MemberRole | undefined;
       console.log(`[getMemberRole] Role value: ${role}`);
       return role || null;
@@ -41,6 +44,51 @@ export async function getMemberRole(memberId: string): Promise<MemberRole | null
   } catch (error) {
     console.error('[getMemberRole] Error fetching member role:', error);
     return null;
+  }
+}
+
+/**
+ * Get all roles for a member (supports multiple roles)
+ * Returns array of roles from either 'roles' field (new) or 'role' field (legacy)
+ */
+export async function getMemberRoles(memberId: string): Promise<MemberRole[]> {
+  try {
+    console.log(`[getMemberRoles] Fetching all roles for memberId: ${memberId}`);
+    const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+    
+    const memberRole = items.find(
+      (mr) => mr.memberId === memberId && mr.status === 'active'
+    );
+    
+    if (!memberRole) {
+      console.log(`[getMemberRoles] No role record found for memberId: ${memberId}`);
+      return [];
+    }
+    
+    // Check for multiple roles (new format: comma-separated)
+    if (memberRole.roles) {
+      const roles = memberRole.roles
+        .split(',')
+        .map(r => r.trim().toLowerCase())
+        .filter((r): r is MemberRole => ['client', 'trainer', 'admin'].includes(r));
+      console.log(`[getMemberRoles] Found multiple roles:`, roles);
+      return roles;
+    }
+    
+    // Fall back to single role (legacy format)
+    if (memberRole.role) {
+      const role = memberRole.role.toLowerCase() as MemberRole;
+      if (['client', 'trainer', 'admin'].includes(role)) {
+        console.log(`[getMemberRoles] Found single role:`, role);
+        return [role];
+      }
+    }
+    
+    console.log(`[getMemberRoles] No valid roles found for memberId: ${memberId}`);
+    return [];
+  } catch (error) {
+    console.error('[getMemberRoles] Error fetching member roles:', error);
+    return [];
   }
 }
 
@@ -101,6 +149,56 @@ export async function setMemberRole(memberId: string, role: MemberRole): Promise
   } catch (error) {
     console.error('Error setting member role:', error);
     throw new Error('Failed to set member role');
+  }
+}
+
+/**
+ * Set multiple roles for a member (admin-only operation)
+ * Stores roles as comma-separated string in 'roles' field
+ * Also maintains 'role' field for backward compatibility (set to first role)
+ */
+export async function setMemberRoles(memberId: string, roles: MemberRole[]): Promise<void> {
+  try {
+    if (roles.length === 0) {
+      throw new Error('At least one role must be specified');
+    }
+
+    // Deduplicate and sort roles for consistency
+    const uniqueRoles = Array.from(new Set(roles)).sort();
+    const rolesString = uniqueRoles.join(',');
+    const primaryRole = uniqueRoles[0]; // First role is primary for backward compatibility
+
+    console.log(`[setMemberRoles] Setting roles for ${memberId}: ${rolesString}`);
+
+    // Check if member already has a role
+    const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+    const existingRole = items.find((mr) => mr.memberId === memberId);
+
+    if (existingRole) {
+      // Update existing role
+      await BaseCrudService.update<MemberRoles>('memberroles', {
+        _id: existingRole._id,
+        role: primaryRole,
+        roles: rolesString,
+        status: 'active',
+      });
+      console.log(`[setMemberRoles] Updated roles for ${memberId}`);
+    } else {
+      // Create new role assignment
+      const newRole: MemberRoles = {
+        _id: crypto.randomUUID(),
+        memberId,
+        role: primaryRole,
+        roles: rolesString,
+        assignmentDate: new Date(),
+        status: 'active',
+      };
+      await BaseCrudService.create('memberroles', newRole);
+      console.log(`[setMemberRoles] Created new roles for ${memberId}`);
+    }
+  } catch (error) {
+    console.error('Error setting member roles:', error);
+    throw new Error('Failed to set member roles');
   }
 }
 
@@ -192,27 +290,27 @@ export async function changeUserRole(
 }
 
 /**
- * Check if a member is a trainer
+ * Check if a member is a trainer (supports multiple roles)
  */
 export async function isTrainer(memberId: string): Promise<boolean> {
-  const role = await getMemberRole(memberId);
-  return role === 'trainer';
+  const roles = await getMemberRoles(memberId);
+  return roles.includes('trainer');
 }
 
 /**
- * Check if a member is a client
+ * Check if a member is a client (supports multiple roles)
  */
 export async function isClient(memberId: string): Promise<boolean> {
-  const role = await getMemberRole(memberId);
-  return role === 'client';
+  const roles = await getMemberRoles(memberId);
+  return roles.includes('client');
 }
 
 /**
- * Check if a member is an admin
+ * Check if a member is an admin (supports multiple roles)
  */
 export async function isAdmin(memberId: string): Promise<boolean> {
-  const role = await getMemberRole(memberId);
-  return role === 'admin';
+  const roles = await getMemberRoles(memberId);
+  return roles.includes('admin');
 }
 
 /**
