@@ -258,42 +258,42 @@ export default function DashboardPage() {
       <div className="grid md:grid-cols-2 gap-6">
         <Link
           to="/portal/program"
-          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 hover:border-soft-bronze transition-colors group"
+          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 hover:bg-soft-bronze hover:border-soft-bronze hover:text-soft-white transition-all duration-300 group"
         >
-          <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-bronze transition-colors">
+          <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-white transition-colors duration-300">
             My Program
           </h3>
-          <p className="text-warm-grey">View your personalized workout plan</p>
+          <p className="text-warm-grey group-hover:text-soft-white/80 transition-colors duration-300">View your personalized workout plan</p>
         </Link>
 
         <Link
           to="/portal/nutrition"
-          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 hover:border-soft-bronze transition-colors group"
+          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 hover:bg-soft-bronze hover:border-soft-bronze hover:text-soft-white transition-all duration-300 group"
         >
-          <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-bronze transition-colors">
+          <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-white transition-colors duration-300">
             Nutrition Guidance
           </h3>
-          <p className="text-warm-grey">Check your meal plans and nutrition tips</p>
+          <p className="text-warm-grey group-hover:text-soft-white/80 transition-colors duration-300">Check your meal plans and nutrition tips</p>
         </Link>
 
         <Link
           to="/portal/messages"
-          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 hover:border-soft-bronze transition-colors group"
+          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 hover:bg-soft-bronze hover:border-soft-bronze hover:text-soft-white transition-all duration-300 group"
         >
-          <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-bronze transition-colors">
+          <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-white transition-colors duration-300">
             Messages
           </h3>
-          <p className="text-warm-grey">Chat with your trainer</p>
+          <p className="text-warm-grey group-hover:text-soft-white/80 transition-colors duration-300">Chat with your trainer</p>
         </Link>
 
         <Link
           to="/portal/video-library"
-          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 hover:border-soft-bronze transition-colors group"
+          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 hover:bg-soft-bronze hover:border-soft-bronze hover:text-soft-white transition-all duration-300 group"
         >
-          <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-bronze transition-colors">
+          <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-white transition-colors duration-300">
             Video Library
           </h3>
-          <p className="text-warm-grey">Access exercise demos and guidance videos</p>
+          <p className="text-warm-grey group-hover:text-soft-white/80 transition-colors duration-300">Access exercise demos and guidance videos</p>
         </Link>
       </div>
     </div>
