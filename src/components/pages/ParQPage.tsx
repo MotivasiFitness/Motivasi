@@ -22,6 +22,7 @@ export default function ParQPage() {
     surgeryDetails: '',
     familyHistory: '',
     familyHistoryDetails: '',
+    redFlagSymptoms: [] as string[],
     
     // Injury & Pain History
     currentPain: '',
@@ -50,9 +51,12 @@ export default function ParQPage() {
     confidence: '',
     additionalInfo: '',
     
-    // Consent
+    // Consent & Declarations
     healthDataConsent: false,
-    marketingConsent: false
+    marketingConsent: false,
+    physicalActivityReadiness: false,
+    informedConsent: false,
+    fullName: ''
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -63,10 +67,20 @@ export default function ParQPage() {
     const { name, value, type } = e.target;
     if (type === 'checkbox') {
       const checked = (e.target as HTMLInputElement).checked;
-      setFormData(prev => ({
-        ...prev,
-        [name]: checked
-      }));
+      // Handle multi-select checkboxes for red flag symptoms
+      if (name === 'redFlagSymptoms') {
+        setFormData(prev => {
+          const symptoms = checked
+            ? [...prev.redFlagSymptoms, value]
+            : prev.redFlagSymptoms.filter(s => s !== value);
+          return { ...prev, redFlagSymptoms: symptoms };
+        });
+      } else {
+        setFormData(prev => ({
+          ...prev,
+          [name]: checked
+        }));
+      }
     } else {
       setFormData(prev => ({
         ...prev,
@@ -87,10 +101,26 @@ export default function ParQPage() {
       return;
     }
 
+    if (!formData.physicalActivityReadiness) {
+      setSubmitError('You must confirm the Physical Activity Readiness Declaration to proceed.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!formData.informedConsent) {
+      setSubmitError('You must accept the Informed Consent to proceed.');
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
+      // Check for red flag symptoms
+      const hasRedFlags = formData.redFlagSymptoms.length > 0 && !formData.redFlagSymptoms.includes('None of the above');
+      
       // Format the form data into a readable email body
       const emailBody = `
 Women's Personal Training PAR-Q & Health Questionnaire Submission
+${hasRedFlags ? '\n⚠️ RED FLAG SYMPTOMS REPORTED - MEDICAL CLEARANCE REQUIRED' : ''}
 
 === BASIC INFORMATION ===
 Name: ${formData.firstName} ${formData.lastName}
@@ -110,6 +140,8 @@ ${formData.surgery === 'yes' ? `Details: ${formData.surgeryDetails}` : ''}
 
 Family History of Heart Disease: ${formData.familyHistory}
 ${formData.familyHistory === 'yes' ? `Details: ${formData.familyHistoryDetails}` : ''}
+
+Red Flag Symptoms During Exercise: ${formData.redFlagSymptoms.length > 0 ? formData.redFlagSymptoms.join(', ') : 'None reported'}
 
 === INJURY & PAIN HISTORY ===
 Current Pain/Discomfort: ${formData.currentPain}
@@ -131,13 +163,17 @@ Work Type: ${formData.workType}
 === FEMALE-SPECIFIC CONSIDERATIONS ===
 Menstrual Cycle Status: ${formData.menstrualCycle}
 Menopause Status: ${formData.menopauseStatus}
-Pregnancy Status: ${formData.pregnancyStatus}
+Pregnancy / Postnatal Status: ${formData.pregnancyStatus}
 
 === GOALS & CONFIDENCE ===
 Primary Goal: ${formData.primaryGoal}
 Secondary Goals: ${formData.secondaryGoals}
 Confidence Level: ${formData.confidence}
 Additional Information: ${formData.additionalInfo}
+
+=== DIGITAL SIGNATURE ===
+Full Name: ${formData.fullName}
+Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       `;
 
       // Send email using Formspree (free service for form submissions)
@@ -149,7 +185,7 @@ Additional Information: ${formData.additionalInfo}
         body: JSON.stringify({
           email: formData.email,
           message: emailBody,
-          _subject: `PAR-Q Questionnaire from ${formData.firstName} ${formData.lastName}`,
+          _subject: `PAR-Q Questionnaire from ${formData.firstName} ${formData.lastName}${hasRedFlags ? ' - MEDICAL CLEARANCE REQUIRED' : ''}`,
           _replyto: formData.email
         })
       });
@@ -170,6 +206,7 @@ Additional Information: ${formData.additionalInfo}
           surgeryDetails: '',
           familyHistory: '',
           familyHistoryDetails: '',
+          redFlagSymptoms: [],
           currentPain: '',
           currentPainDetails: '',
           pastInjuries: '',
@@ -188,7 +225,10 @@ Additional Information: ${formData.additionalInfo}
           confidence: '',
           additionalInfo: '',
           healthDataConsent: false,
-          marketingConsent: false
+          marketingConsent: false,
+          physicalActivityReadiness: false,
+          informedConsent: false,
+          fullName: ''
         });
         setTimeout(() => setIsSubmitted(false), 5000);
       } else {
@@ -302,10 +342,10 @@ Additional Information: ${formData.additionalInfo}
               <CheckCircle className="text-green-600 flex-shrink-0" size={24} />
               <div>
                 <h3 className="font-heading text-lg font-bold text-green-900 mb-1">
-                  Thank You!
+                  Thank You for Completing Your PAR-Q
                 </h3>
                 <p className="font-paragraph text-green-800">
-                  Your questionnaire has been submitted successfully. We'll review your responses and contact you shortly to discuss your personalised training programme.
+                  We'll review your responses and be in touch within 24 hours. If medical clearance is required, we'll let you know next steps before training begins.
                 </p>
               </div>
             </div>
@@ -365,7 +405,45 @@ Additional Information: ${formData.additionalInfo}
                 name="familyHistory"
                 showDetails={true}
               />
+              
+              {/* Red Flag Symptoms */}
+              <div className="border-t border-warm-sand-beige pt-6">
+                <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-3">
+                  Have you ever experienced any of the following during or after exercise? (Select all that apply)
+                </label>
+                <div className="space-y-3">
+                  {[
+                    { value: 'chest-pain', label: 'Chest pain or pressure' },
+                    { value: 'dizziness', label: 'Dizziness or fainting' },
+                    { value: 'shortness-of-breath', label: 'Shortness of breath beyond normal exertion' },
+                    { value: 'palpitations', label: 'Heart palpitations' },
+                    { value: 'none', label: 'None of the above' }
+                  ].map(symptom => (
+                    <label key={symptom.value} className="flex items-center gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="redFlagSymptoms"
+                        value={symptom.value}
+                        checked={formData.redFlagSymptoms.includes(symptom.value)}
+                        onChange={handleInputChange}
+                        className="w-4 h-4 accent-soft-bronze rounded"
+                      />
+                      <span className="font-paragraph text-base text-charcoal-black">{symptom.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
             </FormSection>
+
+            {/* Important - Medical Clearance Trigger */}
+            <div className="bg-soft-bronze/10 border border-soft-bronze/30 rounded-2xl p-8">
+              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
+                Important – Medical Clearance
+              </h3>
+              <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
+                If you answer "Yes" to any of the medical or injury questions above, you may be required to obtain written medical clearance from a GP or qualified healthcare professional before starting your personal training programme. Motivasi reserves the right to delay or modify training until appropriate clearance is received, to ensure your safety.
+              </p>
+            </div>
 
             {/* Injury & Pain History */}
             <FormSection 
@@ -519,10 +597,13 @@ Additional Information: ${formData.additionalInfo}
                   <option value="">Select an option</option>
                   <option value="not-pregnant">Not pregnant</option>
                   <option value="pregnant">Currently pregnant</option>
-                  <option value="postpartum">Postpartum (within 12 months)</option>
+                  <option value="postnatal">Postnatal (within the last 12 months)</option>
                   <option value="prefer-not-to-say">Prefer not to say</option>
                 </select>
               </FormField>
+              <p className="font-paragraph text-sm text-warm-grey italic">
+                If you are currently pregnant or postnatal, training will be adapted accordingly and may require medical clearance depending on your circumstances.
+              </p>
             </FormSection>
 
             {/* Goals & Confidence */}
@@ -579,6 +660,26 @@ Additional Information: ${formData.additionalInfo}
               </p>
             </div>
 
+            {/* Physical Activity Readiness Declaration */}
+            <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 md:p-10">
+              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
+                Physical Activity Readiness Declaration
+              </h3>
+              <p className="font-paragraph text-base text-charcoal-black leading-relaxed mb-6">
+                I confirm that the information I have provided in this questionnaire is complete and accurate to the best of my knowledge. I understand that participating in physical exercise involves some inherent risk, and I agree to inform my trainer immediately of any changes to my health, medical condition, or pregnancy status during my training programme.
+              </p>
+            </div>
+
+            {/* Professional Scope Disclaimer */}
+            <div className="bg-soft-bronze/10 border border-soft-bronze/30 rounded-2xl p-8">
+              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
+                Important Notice
+              </h3>
+              <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
+                Motivasi provides fitness coaching and personal training services only. We do not diagnose medical conditions or provide medical advice. Any guidance provided is for general fitness purposes and should not replace advice from a qualified healthcare professional.
+              </p>
+            </div>
+
             {/* Consent Checkboxes */}
             <FormSection title="Consent & Preferences">
               <div className="space-y-6">
@@ -594,7 +695,39 @@ Additional Information: ${formData.additionalInfo}
                     className="w-5 h-5 accent-soft-bronze mt-0.5 flex-shrink-0 cursor-pointer"
                   />
                   <label htmlFor="healthDataConsent" className="font-paragraph text-sm text-charcoal-black cursor-pointer flex-1">
-                    <span className="text-soft-bronze font-bold">*</span> I consent to Motivasi collecting and processing my health and fitness information for the purpose of delivering a personalised training programme, in accordance with the <Link to="/privacy" className="text-soft-bronze hover:underline">Privacy & Cookie Policy</Link>.
+                    <span className="text-soft-bronze font-bold">*</span> <span className="font-bold">Consent & Data Use:</span> I consent to Motivasi collecting and processing my health and fitness information for the purpose of delivering a personalised training programme. I understand that this information will be handled confidentially and in accordance with the <Link to="/privacy" className="text-soft-bronze hover:underline">Privacy & Cookie Policy</Link> and applicable data protection laws.
+                  </label>
+                </div>
+
+                {/* Physical Activity Readiness Checkbox - Required */}
+                <div className="flex items-start gap-3 p-4 bg-soft-white border border-warm-sand-beige rounded-lg">
+                  <input
+                    type="checkbox"
+                    id="physicalActivityReadiness"
+                    name="physicalActivityReadiness"
+                    checked={formData.physicalActivityReadiness}
+                    onChange={handleInputChange}
+                    required
+                    className="w-5 h-5 accent-soft-bronze mt-0.5 flex-shrink-0 cursor-pointer"
+                  />
+                  <label htmlFor="physicalActivityReadiness" className="font-paragraph text-sm text-charcoal-black cursor-pointer flex-1">
+                    <span className="text-soft-bronze font-bold">*</span> I confirm that the information I have provided in this questionnaire is complete and accurate to the best of my knowledge. I understand that participating in physical exercise involves some inherent risk, and I agree to inform my trainer immediately of any changes to my health, medical condition, or pregnancy status during my training programme.
+                  </label>
+                </div>
+
+                {/* Informed Consent Checkbox - Required */}
+                <div className="flex items-start gap-3 p-4 bg-soft-white border border-warm-sand-beige rounded-lg">
+                  <input
+                    type="checkbox"
+                    id="informedConsent"
+                    name="informedConsent"
+                    checked={formData.informedConsent}
+                    onChange={handleInputChange}
+                    required
+                    className="w-5 h-5 accent-soft-bronze mt-0.5 flex-shrink-0 cursor-pointer"
+                  />
+                  <label htmlFor="informedConsent" className="font-paragraph text-sm text-charcoal-black cursor-pointer flex-1">
+                    <span className="text-soft-bronze font-bold">*</span> I understand that personal training involves physical activity and accept responsibility for participating within my own limits. I agree to follow my trainer's instructions and to stop exercising if I experience pain, dizziness, or discomfort.
                   </label>
                 </div>
 
@@ -611,6 +744,26 @@ Additional Information: ${formData.additionalInfo}
                   <label htmlFor="marketingConsent" className="font-paragraph text-sm text-charcoal-black cursor-pointer flex-1">
                     I would like to receive updates, offers, and marketing communications from Motivasi. I understand I can unsubscribe at any time.
                   </label>
+                </div>
+
+                {/* Digital Signature */}
+                <div className="border-t border-warm-sand-beige pt-6">
+                  <label htmlFor="fullName" className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
+                    Full Name (Digital Signature) <span className="text-soft-bronze">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleInputChange}
+                    placeholder="Enter your full name"
+                    required
+                    className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
+                  />
+                  <p className="font-paragraph text-xs text-warm-grey mt-2">
+                    By entering your name, you are digitally signing this questionnaire. Date and time will be automatically recorded upon submission.
+                  </p>
                 </div>
               </div>
             </FormSection>
