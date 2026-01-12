@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientBookings } from '@/entities';
-import { Calendar, Clock, Video, MapPin, Plus, Trash2 } from 'lucide-react';
+import { Calendar, Clock, Video, MapPin, Plus, Trash2, Lightbulb, CheckCircle2, ArrowRight } from 'lucide-react';
 
 export default function BookingsPage() {
   const { member } = useMember();
@@ -105,8 +105,26 @@ export default function BookingsPage() {
   const upcomingBookings = bookings.filter(b => new Date(b.appointmentDate || '') > new Date());
   const pastBookings = bookings.filter(b => new Date(b.appointmentDate || '') <= new Date());
 
+  // Calculate last session date
+  const lastSessionDate = pastBookings.length > 0 
+    ? new Date(pastBookings[pastBookings.length - 1].appointmentDate || '')
+    : null;
+
+  const getLastSessionText = () => {
+    if (!lastSessionDate) return 'No previous sessions yet';
+    const now = new Date();
+    const diffTime = now.getTime() - lastSessionDate.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) return 'Last session: Today';
+    if (diffDays === 1) return 'Last session: Yesterday';
+    if (diffDays < 7) return `Last session: ${diffDays} days ago`;
+    if (diffDays < 30) return `Last session: ${Math.floor(diffDays / 7)} weeks ago`;
+    return `Last session: ${Math.floor(diffDays / 30)} months ago`;
+  };
+
   return (
-    <div className="space-y-8 bg-warm-grey/10 min-h-screen p-8 rounded-2xl">
+    <div className="space-y-8 bg-warm-sand-beige/20 min-h-screen p-6 lg:p-8 rounded-2xl">
       {/* Header */}
       <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
         <h1 className="font-heading text-4xl font-bold mb-2">Bookings & Consultations</h1>
@@ -115,14 +133,67 @@ export default function BookingsPage() {
         </p>
       </div>
 
-      {/* New Booking Button */}
-      <button
-        onClick={() => setShowForm(!showForm)}
-        className="w-full bg-soft-bronze text-soft-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-soft-bronze/90 transition-colors flex items-center justify-center gap-2"
-      >
-        <Plus size={20} />
-        Schedule New Session
-      </button>
+      {/* Primary CTA - Schedule New Session */}
+      <div className="space-y-3">
+        <button
+          onClick={() => setShowForm(!showForm)}
+          className="w-full bg-soft-bronze text-soft-white px-8 py-6 lg:py-7 rounded-xl font-bold text-lg lg:text-xl hover:bg-soft-bronze/90 transition-all duration-300 flex items-center justify-center gap-3 shadow-md hover:shadow-lg"
+        >
+          <Plus size={24} />
+          Schedule New Session
+          <ArrowRight size={20} className="ml-auto" />
+        </button>
+        <p className="text-center text-sm text-warm-grey font-medium">
+          Takes under 30 seconds · Fits around family life
+        </p>
+      </div>
+
+      {/* Booking Context Info Block */}
+      <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8 space-y-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+          {/* Recommended Frequency */}
+          <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
+            <p className="text-xs lg:text-sm text-warm-grey mb-1 uppercase tracking-wide font-medium">
+              Recommended
+            </p>
+            <p className="font-heading text-2xl lg:text-3xl font-bold text-charcoal-black">
+              1x/week
+            </p>
+            <p className="text-xs text-warm-grey mt-1">for best results</p>
+          </div>
+
+          {/* Last Session */}
+          <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
+            <p className="text-xs lg:text-sm text-warm-grey mb-1 uppercase tracking-wide font-medium">
+              Last Session
+            </p>
+            <p className="font-heading text-lg lg:text-2xl font-bold text-charcoal-black">
+              {getLastSessionText().split(': ')[1] || 'None yet'}
+            </p>
+            <p className="text-xs text-warm-grey mt-1">stay consistent</p>
+          </div>
+
+          {/* Upcoming Sessions Count */}
+          <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl col-span-2 lg:col-span-1">
+            <p className="text-xs lg:text-sm text-warm-grey mb-1 uppercase tracking-wide font-medium">
+              Upcoming
+            </p>
+            <p className="font-heading text-2xl lg:text-3xl font-bold text-soft-bronze">
+              {upcomingBookings.length}
+            </p>
+            <p className="text-xs text-warm-grey mt-1">sessions booked</p>
+          </div>
+        </div>
+
+        {/* Supportive Message */}
+        {upcomingBookings.length === 0 && (
+          <div className="pt-4 border-t border-warm-sand-beige">
+            <p className="text-center text-sm text-charcoal-black leading-relaxed">
+              <span className="font-medium">Booking ahead helps you stay consistent around family life.</span> When sessions are in the diary, you're more likely to show up for yourself.
+            </p>
+          </div>
+        )}
+      </div>
 
       {/* Booking Form */}
       {showForm && (
@@ -211,24 +282,40 @@ export default function BookingsPage() {
         </div>
       )}
 
-      {/* Upcoming Bookings */}
-      {upcomingBookings.length > 0 && (
-        <div>
-          <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
-            Upcoming Sessions
-          </h2>
-          <div className="space-y-4">
+      {/* Upcoming Sessions */}
+      <div>
+        <h2 className="font-heading text-2xl lg:text-3xl font-bold text-charcoal-black mb-8">
+          Upcoming Sessions
+        </h2>
+        {upcomingBookings.length > 0 ? (
+          <div className="space-y-6">
             {upcomingBookings.map((booking) => (
-              <div key={booking._id} className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6">
-                <div className="flex items-start justify-between mb-4">
+              <div key={booking._id} className="bg-soft-white border border-soft-bronze/30 rounded-2xl p-6 lg:p-8 hover:border-soft-bronze hover:shadow-md transition-all duration-300">
+                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 lg:gap-6 mb-5">
                   <div className="flex-1">
-                    <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2">
-                      {booking.serviceType?.replace('-', ' ').toUpperCase()}
+                    {/* Session Title */}
+                    <h3 className="font-heading text-2xl lg:text-3xl font-bold text-charcoal-black mb-2">
+                      {booking.serviceType === 'consultation' && 'Initial Consultation'}
+                      {booking.serviceType === 'training' && 'Training Session'}
+                      {booking.serviceType === 'check-in' && 'Progress Check-in Call'}
+                      {booking.serviceType === 'nutrition' && 'Nutrition Consultation'}
+                      {booking.serviceType === 'form-review' && 'Form Review Session'}
                     </h3>
+
+                    {/* Context Line */}
+                    <p className="text-sm text-warm-grey font-medium mb-4">
+                      {booking.serviceType === 'consultation' && 'Get to know each other & plan your journey'}
+                      {booking.serviceType === 'training' && 'Personalized workout with form guidance'}
+                      {booking.serviceType === 'check-in' && 'Weekly accountability & progress review'}
+                      {booking.serviceType === 'nutrition' && 'Nutrition guidance tailored to you'}
+                      {booking.serviceType === 'form-review' && 'Technique analysis & improvement tips'}
+                    </p>
+
+                    {/* Date & Time */}
                     <div className="space-y-2">
-                      <div className="flex items-center gap-3 text-warm-grey">
-                        <Calendar size={18} />
-                        <span>
+                      <div className="flex items-center gap-3 text-charcoal-black">
+                        <Calendar size={18} className="text-soft-bronze flex-shrink-0" />
+                        <span className="font-medium">
                           {new Date(booking.appointmentDate || '').toLocaleDateString('en-GB', {
                             weekday: 'long',
                             month: 'long',
@@ -237,21 +324,25 @@ export default function BookingsPage() {
                           })}
                         </span>
                       </div>
-                      <div className="flex items-center gap-3 text-warm-grey">
-                        <Clock size={18} />
-                        <span>{booking.appointmentTime}</span>
+                      <div className="flex items-center gap-3 text-charcoal-black">
+                        <Clock size={18} className="text-soft-bronze flex-shrink-0" />
+                        <span className="font-medium">{booking.appointmentTime}</span>
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-col items-end gap-3">
-                    <span className={`px-4 py-2 rounded-full text-sm font-medium ${
+
+                  {/* Right Side - Status & Actions */}
+                  <div className="flex flex-col items-start lg:items-end gap-3">
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
                       booking.status === 'confirmed'
-                        ? 'bg-green-100 text-green-800'
+                        ? 'bg-green-100 text-green-700'
                         : booking.status === 'pending'
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : 'bg-gray-100 text-gray-800'
+                        ? 'bg-yellow-100 text-yellow-700'
+                        : 'bg-gray-100 text-gray-700'
                     }`}>
-                      {booking.status?.toUpperCase()}
+                      {booking.status === 'confirmed' && '✓ Confirmed'}
+                      {booking.status === 'pending' && '⏳ Pending'}
+                      {!booking.status && 'Scheduled'}
                     </span>
                     {booking.videoCallLink && (
                       <a
@@ -268,7 +359,7 @@ export default function BookingsPage() {
                 </div>
 
                 {booking.trainerNotes && (
-                  <div className="mb-4 p-4 bg-warm-sand-beige/30 rounded-lg">
+                  <div className="mb-5 p-4 bg-warm-sand-beige/30 rounded-lg border border-warm-sand-beige/50">
                     <p className="text-sm text-charcoal-black">
                       <span className="font-bold">Notes:</span> {booking.trainerNotes}
                     </p>
@@ -285,27 +376,70 @@ export default function BookingsPage() {
               </div>
             ))}
           </div>
+        ) : (
+          <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-12 text-center">
+            <Calendar className="w-12 h-12 text-warm-grey mx-auto mb-4 opacity-50" />
+            <p className="text-charcoal-black font-medium mb-2">
+              No sessions booked yet — let's get one in the diary.
+            </p>
+            <p className="text-warm-grey text-sm mb-6">
+              Booking ahead helps you stay consistent around family life.
+            </p>
+            <button
+              onClick={() => setShowForm(true)}
+              className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white px-8 py-3 rounded-lg font-medium hover:bg-soft-bronze/90 transition-colors"
+            >
+              <Plus size={18} />
+              Schedule a Session
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Supportive Nudge */}
+      {upcomingBookings.length > 0 && (
+        <div className="bg-soft-bronze/5 border border-soft-bronze/20 rounded-2xl p-6 flex gap-4 items-start">
+          <Lightbulb size={20} className="text-soft-bronze flex-shrink-0 mt-0.5" />
+          <p className="text-sm text-charcoal-black leading-relaxed">
+            <span className="font-bold">💡 Clients who book ahead are more likely to stay consistent.</span> Having sessions in your calendar makes it easier to prioritize your health alongside family commitments.
+          </p>
         </div>
       )}
 
-      {/* Past Bookings */}
+      {/* Past Sessions */}
       {pastBookings.length > 0 && (
         <div>
-          <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
+          <h2 className="font-heading text-2xl lg:text-3xl font-bold text-charcoal-black mb-8">
             Past Sessions
           </h2>
-          <div className="space-y-4">
+          <div className="space-y-6">
             {pastBookings.map((booking) => (
-              <div key={booking._id} className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 opacity-75">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="font-heading text-lg font-bold text-charcoal-black mb-2">
-                      {booking.serviceType?.replace('-', ' ').toUpperCase()}
+              <div key={booking._id} className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8 opacity-80 hover:opacity-100 transition-opacity duration-300">
+                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 lg:gap-6">
+                  <div className="flex-1">
+                    {/* Session Title */}
+                    <h3 className="font-heading text-xl lg:text-2xl font-bold text-charcoal-black mb-2">
+                      {booking.serviceType === 'consultation' && 'Initial Consultation'}
+                      {booking.serviceType === 'training' && 'Training Session'}
+                      {booking.serviceType === 'check-in' && 'Progress Check-in Call'}
+                      {booking.serviceType === 'nutrition' && 'Nutrition Consultation'}
+                      {booking.serviceType === 'form-review' && 'Form Review Session'}
                     </h3>
+
+                    {/* Context Line */}
+                    <p className="text-sm text-warm-grey font-medium mb-4">
+                      {booking.serviceType === 'consultation' && 'Get to know each other & plan your journey'}
+                      {booking.serviceType === 'training' && 'Personalized workout with form guidance'}
+                      {booking.serviceType === 'check-in' && 'Weekly accountability & progress review'}
+                      {booking.serviceType === 'nutrition' && 'Nutrition guidance tailored to you'}
+                      {booking.serviceType === 'form-review' && 'Technique analysis & improvement tips'}
+                    </p>
+
+                    {/* Date & Time */}
                     <div className="space-y-2">
-                      <div className="flex items-center gap-3 text-warm-grey">
-                        <Calendar size={18} />
-                        <span>
+                      <div className="flex items-center gap-3 text-charcoal-black">
+                        <Calendar size={18} className="text-warm-grey flex-shrink-0" />
+                        <span className="text-sm">
                           {new Date(booking.appointmentDate || '').toLocaleDateString('en-GB', {
                             month: 'long',
                             day: 'numeric',
@@ -313,35 +447,22 @@ export default function BookingsPage() {
                           })}
                         </span>
                       </div>
-                      <div className="flex items-center gap-3 text-warm-grey">
-                        <Clock size={18} />
-                        <span>{booking.appointmentTime}</span>
+                      <div className="flex items-center gap-3 text-charcoal-black">
+                        <Clock size={18} className="text-warm-grey flex-shrink-0" />
+                        <span className="text-sm">{booking.appointmentTime}</span>
                       </div>
                     </div>
                   </div>
-                  <span className="px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                    COMPLETED
-                  </span>
+
+                  {/* Completed Badge */}
+                  <div className="flex items-center gap-2 text-green-700 font-medium text-sm">
+                    <CheckCircle2 size={18} />
+                    Completed
+                  </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-      )}
-
-      {bookings.length === 0 && !showForm && (
-        <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-12 text-center">
-          <Calendar className="w-12 h-12 text-warm-grey mx-auto mb-4 opacity-50" />
-          <p className="text-warm-grey mb-4">
-            No bookings yet. Schedule your first session!
-          </p>
-          <button
-            onClick={() => setShowForm(true)}
-            className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white px-6 py-3 rounded-lg font-medium hover:bg-soft-bronze/90 transition-colors"
-          >
-            <Plus size={16} />
-            Schedule a Session
-          </button>
         </div>
       )}
     </div>
