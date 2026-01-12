@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { PrivateVideoLibrary } from '@/entities';
+import { PrivateVideoLibrary, TrainerClientAssignments } from '@/entities';
 import { Upload, AlertCircle, CheckCircle, Loader } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { sendVideoUploadNotification } from '@/lib/email-service';
+import { getClientTrainers } from '@/lib/role-utils';
 
 export default function ExerciseVideoReviewPage() {
   const { member } = useMember();
@@ -63,6 +65,28 @@ export default function ExerciseVideoReviewPage() {
       };
 
       await BaseCrudService.create('privatevideolibrary', videoSubmission);
+
+      // Send notification to assigned trainers
+      try {
+        const trainers = await getClientTrainers(member?._id || '');
+        for (const trainer of trainers) {
+          // In a real app, we'd fetch the trainer's email from their member profile
+          // For now, we'll use a placeholder that would be replaced with actual email
+          const trainerEmail = `trainer-${trainer.trainerId}@motivasi.co.uk`;
+          const trainerName = trainer.trainerId?.slice(0, 8) || 'Trainer';
+          
+          await sendVideoUploadNotification(
+            trainerEmail,
+            trainerName,
+            member?._id || '',
+            formData.videoTitle,
+            formData.videoUrl
+          );
+        }
+      } catch (error) {
+        console.error('Error sending notifications:', error);
+        // Don't fail the submission if notifications fail
+      }
 
       setSubmitSuccess(true);
       setFormData({
