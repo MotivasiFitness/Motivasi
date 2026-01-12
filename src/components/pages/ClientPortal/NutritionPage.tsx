@@ -236,27 +236,27 @@ export default function NutritionPage() {
           Nutrition Tips
         </h3>
         <div className="grid sm:grid-cols-2 gap-6">
-          <div className="bg-soft-white rounded-xl p-6 hover:shadow-md transition-shadow">
-            <h4 className="font-paragraph font-bold text-charcoal-black mb-3">💧 Stay Hydrated</h4>
-            <p className="text-warm-grey text-sm leading-relaxed">
+          <div className="bg-soft-white rounded-xl p-6 hover:bg-soft-bronze hover:text-soft-white transition-all duration-300">
+            <h4 className="font-paragraph font-bold mb-3">💧 Stay Hydrated</h4>
+            <p className="text-sm leading-relaxed">
               Drink at least 2-3 liters of water daily. Proper hydration supports recovery and performance.
             </p>
           </div>
-          <div className="bg-soft-white rounded-xl p-6 hover:shadow-md transition-shadow">
-            <h4 className="font-paragraph font-bold text-charcoal-black mb-3">🥗 Eat Whole Foods</h4>
-            <p className="text-warm-grey text-sm leading-relaxed">
+          <div className="bg-soft-white rounded-xl p-6 hover:bg-soft-bronze hover:text-soft-white transition-all duration-300">
+            <h4 className="font-paragraph font-bold mb-3">🥗 Eat Whole Foods</h4>
+            <p className="text-sm leading-relaxed">
               Focus on whole, unprocessed foods. They provide better nutrition and keep you fuller longer.
             </p>
           </div>
-          <div className="bg-soft-white rounded-xl p-6 hover:shadow-md transition-shadow">
-            <h4 className="font-paragraph font-bold text-charcoal-black mb-3">⏰ Meal Timing</h4>
-            <p className="text-warm-grey text-sm leading-relaxed">
+          <div className="bg-soft-white rounded-xl p-6 hover:bg-soft-bronze hover:text-soft-white transition-all duration-300">
+            <h4 className="font-paragraph font-bold mb-3">⏰ Meal Timing</h4>
+            <p className="text-sm leading-relaxed">
               Eat balanced meals every 3-4 hours. This keeps your energy stable throughout the day.
             </p>
           </div>
-          <div className="bg-soft-white rounded-xl p-6 hover:shadow-md transition-shadow">
-            <h4 className="font-paragraph font-bold text-charcoal-black mb-3">📊 Track Progress</h4>
-            <p className="text-warm-grey text-sm leading-relaxed">
+          <div className="bg-soft-white rounded-xl p-6 hover:bg-soft-bronze hover:text-soft-white transition-all duration-300">
+            <h4 className="font-paragraph font-bold mb-3">📊 Track Progress</h4>
+            <p className="text-sm leading-relaxed">
               Keep a food diary to identify patterns. This helps us adjust your nutrition plan as needed.
             </p>
           </div>
@@ -269,30 +269,30 @@ export default function NutritionPage() {
           Understanding Your Macros
         </h3>
         <div className="grid sm:grid-cols-3 gap-6">
-          <div className="p-6 bg-warm-sand-beige/30 rounded-xl hover:shadow-md transition-shadow">
-            <h4 className="font-heading text-lg font-bold text-charcoal-black mb-3">Protein</h4>
-            <p className="text-warm-grey text-sm mb-4 leading-relaxed">
+          <div className="p-6 bg-warm-sand-beige/30 rounded-xl hover:bg-soft-bronze hover:text-soft-white transition-all duration-300">
+            <h4 className="font-heading text-lg font-bold mb-3">Protein</h4>
+            <p className="text-sm mb-4 leading-relaxed">
               Builds and repairs muscle tissue. Aim for 1.6-2.2g per kg of body weight.
             </p>
-            <p className="text-xs text-warm-grey italic">
+            <p className="text-xs italic opacity-80">
               Sources: chicken, fish, eggs, legumes, Greek yogurt
             </p>
           </div>
-          <div className="p-6 bg-warm-sand-beige/30 rounded-xl hover:shadow-md transition-shadow">
-            <h4 className="font-heading text-lg font-bold text-charcoal-black mb-3">Carbs</h4>
-            <p className="text-warm-grey text-sm mb-4 leading-relaxed">
+          <div className="p-6 bg-warm-sand-beige/30 rounded-xl hover:bg-soft-bronze hover:text-soft-white transition-all duration-300">
+            <h4 className="font-heading text-lg font-bold mb-3">Carbs</h4>
+            <p className="text-sm mb-4 leading-relaxed">
               Provides energy for workouts. Choose complex carbs for sustained energy.
             </p>
-            <p className="text-xs text-warm-grey italic">
+            <p className="text-xs italic opacity-80">
               Sources: oats, brown rice, sweet potatoes, whole grain bread
             </p>
           </div>
-          <div className="p-6 bg-warm-sand-beige/30 rounded-xl hover:shadow-md transition-shadow">
-            <h4 className="font-heading text-lg font-bold text-charcoal-black mb-3">Fats</h4>
-            <p className="text-warm-grey text-sm mb-4 leading-relaxed">
+          <div className="p-6 bg-warm-sand-beige/30 rounded-xl hover:bg-soft-bronze hover:text-soft-white transition-all duration-300">
+            <h4 className="font-heading text-lg font-bold mb-3">Fats</h4>
+            <p className="text-sm mb-4 leading-relaxed">
               Essential for hormone production and nutrient absorption.
             </p>
-            <p className="text-xs text-warm-grey italic">
+            <p className="text-xs italic opacity-80">
               Sources: avocado, nuts, olive oil, fatty fish, seeds
             </p>
           </div>

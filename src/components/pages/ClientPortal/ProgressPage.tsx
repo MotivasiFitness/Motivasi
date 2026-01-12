@@ -138,34 +138,34 @@ export default function ProgressPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {/* Energy Levels Trend */}
-            <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-xl p-5">
+            <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-xl p-5 hover:bg-soft-bronze hover:text-soft-white hover:border-soft-bronze transition-all duration-300">
               <div className="flex items-start gap-3 mb-3">
-                <Zap size={20} className="text-soft-bronze flex-shrink-0 mt-0.5" />
-                <h3 className="font-paragraph font-bold text-charcoal-black">Energy Levels Improving</h3>
+                <Zap size={20} className="flex-shrink-0 mt-0.5" />
+                <h3 className="font-paragraph font-bold">Energy Levels Improving</h3>
               </div>
-              <p className="font-paragraph text-sm text-warm-grey/80 leading-relaxed">
+              <p className="font-paragraph text-sm leading-relaxed opacity-90">
                 Your energy is trending upward — a sign that recovery and nutrition are on track.
               </p>
             </div>
 
             {/* Measurements Trend */}
-            <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-xl p-5">
+            <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-xl p-5 hover:bg-soft-bronze hover:text-soft-white hover:border-soft-bronze transition-all duration-300">
               <div className="flex items-start gap-3 mb-3">
-                <TrendingUpIcon size={20} className="text-soft-bronze flex-shrink-0 mt-0.5" />
-                <h3 className="font-paragraph font-bold text-charcoal-black">Measurements Trending Right</h3>
+                <TrendingUpIcon size={20} className="flex-shrink-0 mt-0.5" />
+                <h3 className="font-paragraph font-bold">Measurements Trending Right</h3>
               </div>
-              <p className="font-paragraph text-sm text-warm-grey/80 leading-relaxed">
+              <p className="font-paragraph text-sm leading-relaxed opacity-90">
                 Your body composition is moving in the right direction — consistency is paying off.
               </p>
             </div>
 
             {/* Strength & Confidence */}
-            <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-xl p-5">
+            <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-xl p-5 hover:bg-soft-bronze hover:text-soft-white hover:border-soft-bronze transition-all duration-300">
               <div className="flex items-start gap-3 mb-3">
-                <Heart size={20} className="text-soft-bronze flex-shrink-0 mt-0.5" />
-                <h3 className="font-paragraph font-bold text-charcoal-black">Strength & Confidence</h3>
+                <Heart size={20} className="flex-shrink-0 mt-0.5" />
+                <h3 className="font-paragraph font-bold">Strength & Confidence</h3>
               </div>
-              <p className="font-paragraph text-sm text-warm-grey/80 leading-relaxed">
+              <p className="font-paragraph text-sm leading-relaxed opacity-90">
                 You're building real strength — progress isn't just weight, how you feel matters most.
               </p>
             </div>
@@ -415,14 +415,14 @@ function CheckinCard({ checkin, checkinNumber, isExpanded, onToggleExpand }: Che
       {/* Header - Always Visible */}
       <button
         onClick={onToggleExpand}
-        className="w-full px-6 lg:px-8 py-5 flex items-center justify-between hover:bg-warm-sand-beige/20 transition-colors"
+        className="w-full px-6 lg:px-8 py-5 flex items-center justify-between hover:bg-soft-bronze hover:text-soft-white transition-all duration-300"
       >
         <div className="flex items-start gap-4 flex-1 text-left">
           <div>
-            <h3 className="font-heading text-lg font-bold text-charcoal-black mb-1">
+            <h3 className="font-heading text-lg font-bold mb-1">
               Check-in #{checkinNumber}
             </h3>
-            <div className="flex items-center gap-2 text-warm-grey text-sm">
+            <div className="flex items-center gap-2 text-sm">
               <Calendar size={14} />
               <span>
                 {new Date(checkin.checkinDate || '').toLocaleDateString('en-GB', {
@@ -438,8 +438,8 @@ function CheckinCard({ checkin, checkinNumber, isExpanded, onToggleExpand }: Che
         {/* Weight - Subtle, to the side */}
         {checkin.currentWeight && (
           <div className="text-right mr-4">
-            <p className="text-warm-grey text-xs">Weight</p>
-            <p className="font-paragraph text-base font-medium text-charcoal-black">
+            <p className="text-xs">Weight</p>
+            <p className="font-paragraph text-base font-medium">
               {checkin.currentWeight} kg
             </p>
           </div>
@@ -450,7 +450,7 @@ function CheckinCard({ checkin, checkinNumber, isExpanded, onToggleExpand }: Che
           {isExpanded ? (
             <ChevronUp size={20} className="text-soft-bronze" />
           ) : (
-            <ChevronDown size={20} className="text-warm-grey" />
+            <ChevronDown size={20} className="text-soft-bronze" />
           )}
         </div>
       </button>

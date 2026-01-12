@@ -173,15 +173,17 @@ export default function MyProgramPage() {
                     setExpandedDay(isExpanded ? null : day);
                     setActiveWorkoutDay(isExpanded ? null : day);
                   }}
-                  className={`w-full px-6 lg:px-8 py-5 lg:py-6 flex items-center justify-between transition-colors ${
+                  className={`w-full px-6 lg:px-8 py-5 lg:py-6 flex items-center justify-between transition-all duration-300 ${
                     isActive
-                      ? 'bg-soft-bronze/5 hover:bg-soft-bronze/10'
-                      : 'hover:bg-warm-sand-beige/30'
+                      ? 'bg-soft-bronze text-soft-white'
+                      : 'hover:bg-soft-bronze hover:text-soft-white'
                   }`}
                 >
                   <div className="flex-1 text-left">
                     <div className="flex items-center gap-3 mb-1">
-                      <h3 className="font-heading text-lg lg:text-xl font-bold text-charcoal-black">
+                      <h3 className={`font-heading text-lg lg:text-xl font-bold ${
+                        isActive ? 'text-soft-white' : 'text-charcoal-black'
+                      }`}>
                         {day}
                       </h3>
                       {isCompleted && (
@@ -190,7 +192,7 @@ export default function MyProgramPage() {
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-warm-grey">
+                    <p className={`text-sm ${isActive ? 'text-soft-white/80' : 'text-warm-grey'}`}>
                       {dayExercises.length} exercises • {estimatedSessionTime}–{estimatedSessionTime + 5} min
                     </p>
                   </div>
@@ -210,7 +212,7 @@ export default function MyProgramPage() {
                     )}
                     <ChevronDown
                       size={24}
-                      className={`text-soft-bronze transition-transform flex-shrink-0 ${
+                      className={`${isActive ? 'text-soft-white' : 'text-soft-bronze'} transition-transform flex-shrink-0 ${
                         isExpanded ? 'rotate-180' : ''
                       }`}
                     />
