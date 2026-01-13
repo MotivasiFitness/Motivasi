@@ -122,13 +122,16 @@ export default function TrainerClientsPage() {
               Manage and communicate with your assigned clients
             </p>
           </div>
-          <button
-            onClick={() => setShowAssignForm(!showAssignForm)}
-            className="flex items-center gap-2 bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-charcoal-black transition-colors"
-          >
-            <Plus size={20} />
-            Assign Client
-          </button>
+          {/* Only show top-right button if clients exist */}
+          {clients.length > 0 && (
+            <button
+              onClick={() => setShowAssignForm(!showAssignForm)}
+              className="flex items-center gap-2 bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-charcoal-black transition-colors"
+            >
+              <Plus size={20} />
+              Assign Client
+            </button>
+          )}
         </div>
 
         {/* Assign Client Form */}
@@ -196,15 +199,26 @@ export default function TrainerClientsPage() {
           </div>
         ) : clients.length === 0 ? (
           <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-12 text-center">
-            <p className="text-warm-grey text-lg mb-6">
-              You don't have any clients assigned yet.
+            <p className="text-charcoal-black text-lg font-medium mb-4">
+              You don't have any clients assigned yet
+            </p>
+            <p className="text-warm-grey text-base mb-8 max-w-2xl mx-auto">
+              Assign a client to start managing workouts, messaging, video reviews, and progress tracking — all in one place.
             </p>
             <button
               onClick={() => setShowAssignForm(true)}
-              className="inline-block bg-charcoal-black text-soft-white px-8 py-3 rounded-lg hover:bg-soft-bronze transition-colors"
+              className="inline-block bg-charcoal-black text-soft-white px-8 py-3 rounded-lg hover:bg-soft-bronze transition-colors mb-8"
             >
               Assign Your First Client
             </button>
+            <div className="space-y-3 pt-8 border-t border-warm-sand-beige">
+              <p className="text-warm-grey text-sm">
+                Once assigned, clients will automatically appear in your messages, programs, video reviews, and progress pages.
+              </p>
+              <p className="text-warm-grey text-sm italic">
+                You can assign or remove clients at any time.
+              </p>
+            </div>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
