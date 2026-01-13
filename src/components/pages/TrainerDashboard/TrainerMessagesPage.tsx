@@ -2,15 +2,22 @@ import { useEffect, useState, useRef } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { TrainerClientMessages } from '@/entities';
-import { Send, MessageSquare, AlertCircle } from 'lucide-react';
+import { Send, MessageSquare, AlertCircle, Check, CheckCheck, RotateCcw, Loader } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
+import { getClientDisplayNames } from '@/lib/client-display-name';
 
 interface Conversation {
   conversationId: string;
   clientId: string;
+  clientDisplayName: string;
   lastMessage?: string;
   lastMessageTime?: Date;
   unreadCount: number;
+}
+
+interface MessageWithStatus extends TrainerClientMessages {
+  sendStatus?: 'pending' | 'sent' | 'failed';
+  isOptimistic?: boolean;
 }
 
 export default function TrainerMessagesPage() {
@@ -18,11 +25,12 @@ export default function TrainerMessagesPage() {
   const [searchParams] = useSearchParams();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
-  const [messages, setMessages] = useState<TrainerClientMessages[]>([]);
+  const [messages, setMessages] = useState<MessageWithStatus[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState('');
+  const [failedMessageId, setFailedMessageId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Fetch conversations
@@ -43,13 +51,20 @@ export default function TrainerMessagesPage() {
 
         // Group by conversation
         const conversationMap = new Map<string, Conversation>();
+        const clientIds = new Set<string>();
+
         trainerMessages.forEach((msg) => {
           const convId = msg.conversationId || `${msg.senderId}-${msg.recipientId}`;
           const clientId = msg.senderId === member._id ? msg.recipientId : msg.senderId;
 
+          if (clientId) {
+            clientIds.add(clientId);
+          }
+
           const existing = conversationMap.get(convId) || {
             conversationId: convId,
             clientId: clientId || '',
+            clientDisplayName: '',
             unreadCount: 0,
           };
 
@@ -63,7 +78,15 @@ export default function TrainerMessagesPage() {
           conversationMap.set(convId, existing);
         });
 
-        const conversationsList = Array.from(conversationMap.values());
+        // Fetch display names for all clients
+        const displayNames = await getClientDisplayNames(Array.from(clientIds));
+
+        // Update conversations with display names
+        const conversationsList = Array.from(conversationMap.values()).map(conv => ({
+          ...conv,
+          clientDisplayName: displayNames.get(conv.clientId) || `Client ${conv.clientId.slice(-4).toUpperCase()}`,
+        }));
+
         setConversations(conversationsList);
 
         // Check if we have a clientId from query params (coming from TrainerClientsPage)
@@ -113,11 +136,21 @@ export default function TrainerMessagesPage() {
         
         console.log('[TrainerMessagesPage] Found messages:', convMessages.length);
         
-        setMessages(convMessages.sort((a, b) => {
-          const dateA = new Date(a.sentAt || 0).getTime();
-          const dateB = new Date(b.sentAt || 0).getTime();
-          return dateA - dateB;
-        }));
+        // Sort messages and add status
+        const messagesWithStatus: MessageWithStatus[] = convMessages
+          .sort((a, b) => {
+            const dateA = new Date(a.sentAt || 0).getTime();
+            const dateB = new Date(b.sentAt || 0).getTime();
+            return dateA - dateB;
+          })
+          .map(msg => ({
+            ...msg,
+            sendStatus: 'sent' as const,
+            isOptimistic: false,
+          }));
+
+        setMessages(messagesWithStatus);
+        setFailedMessageId(null);
 
         // Mark as read
         convMessages.forEach(async (msg) => {
@@ -150,6 +183,25 @@ export default function TrainerMessagesPage() {
     e.preventDefault();
     if (!newMessage.trim() || !selectedConversation || !member?._id) return;
 
+    const messageText = newMessage.trim();
+    const messageId = crypto.randomUUID();
+    
+    // Create optimistic message
+    const optimisticMessage: MessageWithStatus = {
+      _id: messageId,
+      conversationId: selectedConversation,
+      senderId: member._id,
+      recipientId: conversations.find(c => c.conversationId === selectedConversation)?.clientId || '',
+      content: messageText,
+      sentAt: new Date(),
+      isRead: false,
+      sendStatus: 'pending',
+      isOptimistic: true,
+    };
+
+    // Add optimistic message to UI immediately
+    setMessages(prev => [...prev, optimisticMessage]);
+    setNewMessage('');
     setIsSending(true);
     setError('');
 
@@ -164,35 +216,105 @@ export default function TrainerMessagesPage() {
       }
 
       const message: TrainerClientMessages = {
-        _id: crypto.randomUUID(),
+        _id: messageId,
         conversationId: selectedConversation,
         senderId: member._id,
         recipientId: clientId,
-        content: newMessage,
+        content: messageText,
         sentAt: new Date(),
         isRead: false,
       };
 
       console.log('[TrainerMessagesPage] Creating message:', message);
       await BaseCrudService.create('trainerclientmessages', message);
-      setNewMessage('');
-      
-      // Refresh messages
-      const { items } = await BaseCrudService.getAll<TrainerClientMessages>('trainerclientmessages');
-      const convMessages = items.filter((m) => m.conversationId === selectedConversation);
-      setMessages(convMessages.sort((a, b) => {
-        const dateA = new Date(a.sentAt || 0).getTime();
-        const dateB = new Date(b.sentAt || 0).getTime();
-        return dateA - dateB;
-      }));
+
+      // Update optimistic message to sent status
+      setMessages(prev =>
+        prev.map(msg =>
+          msg._id === messageId
+            ? { ...msg, sendStatus: 'sent' as const, isOptimistic: false }
+            : msg
+        )
+      );
 
       console.log('[TrainerMessagesPage] Message sent successfully');
+      setFailedMessageId(null);
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Failed to send message';
       console.error('[TrainerMessagesPage] Error sending message:', errorMsg, err);
+      
+      // Update optimistic message to failed status
+      setMessages(prev =>
+        prev.map(msg =>
+          msg._id === messageId
+            ? { ...msg, sendStatus: 'failed' as const, isOptimistic: false }
+            : msg
+        )
+      );
+
+      setFailedMessageId(messageId);
       setError(errorMsg);
     } finally {
       setIsSending(false);
+    }
+  };
+
+  const handleRetryMessage = async (messageId: string) => {
+    const failedMessage = messages.find(m => m._id === messageId);
+    if (!failedMessage || !failedMessage.content) return;
+
+    // Update to pending status
+    setMessages(prev =>
+      prev.map(msg =>
+        msg._id === messageId
+          ? { ...msg, sendStatus: 'pending' as const }
+          : msg
+      )
+    );
+
+    setError('');
+
+    try {
+      console.log('[TrainerMessagesPage] Retrying message:', messageId);
+      
+      const message: TrainerClientMessages = {
+        _id: messageId,
+        conversationId: failedMessage.conversationId || '',
+        senderId: failedMessage.senderId || '',
+        recipientId: failedMessage.recipientId || '',
+        content: failedMessage.content,
+        sentAt: new Date(),
+        isRead: false,
+      };
+
+      await BaseCrudService.create('trainerclientmessages', message);
+
+      // Update to sent status
+      setMessages(prev =>
+        prev.map(msg =>
+          msg._id === messageId
+            ? { ...msg, sendStatus: 'sent' as const }
+            : msg
+        )
+      );
+
+      setFailedMessageId(null);
+      console.log('[TrainerMessagesPage] Message retry successful');
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : 'Failed to retry message';
+      console.error('[TrainerMessagesPage] Error retrying message:', errorMsg, err);
+
+      // Update back to failed status
+      setMessages(prev =>
+        prev.map(msg =>
+          msg._id === messageId
+            ? { ...msg, sendStatus: 'failed' as const }
+            : msg
+        )
+      );
+
+      setFailedMessageId(messageId);
+      setError(errorMsg);
     }
   };
 
@@ -229,31 +351,31 @@ export default function TrainerMessagesPage() {
             ) : (
               <div className="space-y-2 p-4">
                 {conversations.map((conv) => (
-                  <button
-                    key={conv.conversationId}
-                    onClick={() => setSelectedConversation(conv.conversationId)}
-                    className={`w-full text-left p-4 rounded-lg transition-colors ${
-                      selectedConversation === conv.conversationId
-                        ? 'bg-soft-bronze text-soft-white'
-                        : 'hover:bg-warm-sand-beige/30'
-                    }`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h3 className="font-paragraph font-bold">
-                          Client {conv.clientId.slice(0, 8)}
-                        </h3>
-                        <p className="text-sm truncate opacity-75">
-                          {conv.lastMessage}
-                        </p>
-                      </div>
-                      {conv.unreadCount > 0 && (
-                        <span className="ml-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                          {conv.unreadCount}
-                        </span>
-                      )}
-                    </div>
-                  </button>
+                   <button
+                     key={conv.conversationId}
+                     onClick={() => setSelectedConversation(conv.conversationId)}
+                     className={`w-full text-left p-4 rounded-lg transition-colors ${
+                       selectedConversation === conv.conversationId
+                         ? 'bg-soft-bronze text-soft-white'
+                         : 'hover:bg-warm-sand-beige/30'
+                     }`}
+                   >
+                     <div className="flex items-start justify-between">
+                       <div className="flex-1 min-w-0">
+                         <h3 className="font-paragraph font-bold truncate">
+                           {conv.clientDisplayName}
+                         </h3>
+                         <p className="text-sm truncate opacity-75">
+                           {conv.lastMessage}
+                         </p>
+                       </div>
+                       {conv.unreadCount > 0 && (
+                         <span className="ml-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center flex-shrink-0">
+                           {conv.unreadCount}
+                         </span>
+                       )}
+                     </div>
+                   </button>
                 ))}
               </div>
             )}
@@ -264,6 +386,13 @@ export default function TrainerMessagesPage() {
         <div className="flex-1 bg-soft-white border border-warm-sand-beige rounded-2xl flex flex-col hidden lg:flex">
           {selectedConversation ? (
             <>
+              {/* Chat Header */}
+              <div className="p-6 border-b border-warm-sand-beige">
+                <h2 className="font-heading text-2xl font-bold text-charcoal-black">
+                  {conversations.find(c => c.conversationId === selectedConversation)?.clientDisplayName || 'Chat'}
+                </h2>
+              </div>
+
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-6 space-y-4">
                 {messages.length === 0 ? (
@@ -274,20 +403,49 @@ export default function TrainerMessagesPage() {
                   messages.map((msg) => (
                     <div
                       key={msg._id}
-                      className={`flex ${msg.senderId === member?._id ? 'justify-end' : 'justify-start'}`}
+                      className={`flex flex-col ${msg.senderId === member?._id ? 'items-end' : 'items-start'}`}
                     >
                       <div
                         className={`max-w-xs px-4 py-2 rounded-lg ${
                           msg.senderId === member?._id
                             ? 'bg-soft-bronze text-soft-white'
                             : 'bg-warm-sand-beige text-charcoal-black'
-                        }`}
+                        } ${msg.isOptimistic ? 'opacity-75' : ''}`}
                       >
                         <p className="font-paragraph text-sm">{msg.content}</p>
-                        <p className="text-xs opacity-70 mt-1">
-                          {new Date(msg.sentAt || '').toLocaleTimeString()}
-                        </p>
+                        <div className="flex items-center gap-1 mt-1">
+                          <p className="text-xs opacity-70">
+                            {new Date(msg.sentAt || '').toLocaleTimeString()}
+                          </p>
+                          {msg.senderId === member?._id && (
+                            <>
+                              {msg.sendStatus === 'pending' && (
+                                <Loader size={12} className="animate-spin" />
+                              )}
+                              {msg.sendStatus === 'sent' && (
+                                <CheckCheck size={12} />
+                              )}
+                              {msg.sendStatus === 'failed' && (
+                                <AlertCircle size={12} className="text-red-400" />
+                              )}
+                            </>
+                          )}
+                        </div>
                       </div>
+
+                      {/* Failed Message Retry */}
+                      {msg.sendStatus === 'failed' && msg.senderId === member?._id && (
+                        <div className="mt-2 flex items-center gap-2">
+                          <p className="text-xs text-red-600 font-medium">Failed to send</p>
+                          <button
+                            onClick={() => handleRetryMessage(msg._id)}
+                            className="text-xs text-soft-bronze hover:underline font-medium flex items-center gap-1"
+                          >
+                            <RotateCcw size={12} />
+                            Retry
+                          </button>
+                        </div>
+                      )}
                     </div>
                   ))
                 )}

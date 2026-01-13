@@ -5,10 +5,12 @@ import { FitnessPrograms, TrainerClientAssignments, MemberRoles, TrainerClientMe
 import { MessageSquare, Plus, AlertCircle, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getTrainerClients, assignClientToTrainer } from '@/lib/role-utils';
+import { getClientDisplayNames } from '@/lib/client-display-name';
 
 interface ClientInfo {
   assignmentId: string;
   clientId: string;
+  clientDisplayName: string;
   programCount: number;
   activePrograms: number;
   assignmentStatus: string;
@@ -49,6 +51,10 @@ export default function TrainerClientsPage() {
       // Get all messages to find/create conversation IDs
       const { items: messages } = await BaseCrudService.getAll<TrainerClientMessages>('trainerclientmessages');
 
+      // Get display names for all assigned clients
+      const clientIds = assignments.map(a => a.clientId).filter(Boolean) as string[];
+      const displayNames = await getClientDisplayNames(clientIds);
+
       // Build client info
       const clientMap = new Map<string, ClientInfo>();
       
@@ -63,6 +69,7 @@ export default function TrainerClientsPage() {
           clientMap.set(assignment.clientId, {
             assignmentId: assignment._id,
             clientId: assignment.clientId,
+            clientDisplayName: displayNames.get(assignment.clientId) || `Client ${assignment.clientId.slice(-4).toUpperCase()}`,
             programCount: 0,
             activePrograms: 0,
             assignmentStatus: assignment.status || 'Active',
@@ -320,7 +327,7 @@ export default function TrainerClientsPage() {
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <h3 className="font-heading text-xl font-bold text-charcoal-black">
-                      Client {client.clientId.slice(0, 8)}
+                      {client.clientDisplayName}
                     </h3>
                     <p className="text-sm text-warm-grey mt-1">
                       {client.activePrograms} active • {client.programCount} total
