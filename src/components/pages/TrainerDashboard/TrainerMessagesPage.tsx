@@ -2,7 +2,8 @@ import { useEffect, useState, useRef } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { TrainerClientMessages } from '@/entities';
-import { Send, MessageSquare } from 'lucide-react';
+import { Send, MessageSquare, AlertCircle } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 
 interface Conversation {
   conversationId: string;
@@ -14,78 +15,127 @@ interface Conversation {
 
 export default function TrainerMessagesPage() {
   const { member } = useMember();
+  const [searchParams] = useSearchParams();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
   const [messages, setMessages] = useState<TrainerClientMessages[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
+  const [error, setError] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Fetch conversations
   useEffect(() => {
     const fetchConversations = async () => {
-      if (!member?._id) return;
+      try {
+        if (!member?._id) return;
 
-      const { items } = await BaseCrudService.getAll<TrainerClientMessages>('trainerclientmessages');
-      
-      // Filter messages where trainer is involved
-      const trainerMessages = items.filter(
-        (m) => m.senderId === member._id || m.recipientId === member._id
-      );
+        console.log('[TrainerMessagesPage] Fetching conversations for trainer:', member._id);
+        const { items } = await BaseCrudService.getAll<TrainerClientMessages>('trainerclientmessages');
+        
+        // Filter messages where trainer is involved
+        const trainerMessages = items.filter(
+          (m) => m.senderId === member._id || m.recipientId === member._id
+        );
 
-      // Group by conversation
-      const conversationMap = new Map<string, Conversation>();
-      trainerMessages.forEach((msg) => {
-        const convId = msg.conversationId || `${msg.senderId}-${msg.recipientId}`;
-        const clientId = msg.senderId === member._id ? msg.recipientId : msg.senderId;
+        console.log('[TrainerMessagesPage] Found trainer messages:', trainerMessages.length);
 
-        const existing = conversationMap.get(convId) || {
-          conversationId: convId,
-          clientId: clientId || '',
-          unreadCount: 0,
-        };
+        // Group by conversation
+        const conversationMap = new Map<string, Conversation>();
+        trainerMessages.forEach((msg) => {
+          const convId = msg.conversationId || `${msg.senderId}-${msg.recipientId}`;
+          const clientId = msg.senderId === member._id ? msg.recipientId : msg.senderId;
 
-        if (msg.recipientId === member._id && !msg.isRead) {
-          existing.unreadCount += 1;
+          const existing = conversationMap.get(convId) || {
+            conversationId: convId,
+            clientId: clientId || '',
+            unreadCount: 0,
+          };
+
+          if (msg.recipientId === member._id && !msg.isRead) {
+            existing.unreadCount += 1;
+          }
+
+          existing.lastMessage = msg.content;
+          existing.lastMessageTime = new Date(msg.sentAt || '');
+
+          conversationMap.set(convId, existing);
+        });
+
+        const conversationsList = Array.from(conversationMap.values());
+        setConversations(conversationsList);
+
+        // Check if we have a clientId from query params (coming from TrainerClientsPage)
+        const clientIdParam = searchParams.get('clientId');
+        const conversationIdParam = searchParams.get('conversationId');
+        
+        if (clientIdParam) {
+          console.log('[TrainerMessagesPage] Client ID from params:', clientIdParam);
+          // Find or create conversation for this client
+          const existingConv = conversationsList.find(c => c.clientId === clientIdParam);
+          if (existingConv) {
+            console.log('[TrainerMessagesPage] Found existing conversation:', existingConv.conversationId);
+            setSelectedConversation(existingConv.conversationId);
+          } else if (conversationIdParam) {
+            console.log('[TrainerMessagesPage] Using conversation ID from params:', conversationIdParam);
+            setSelectedConversation(conversationIdParam);
+          } else {
+            console.log('[TrainerMessagesPage] Creating new conversation ID for client:', clientIdParam);
+            const newConvId = `${member._id}-${clientIdParam}`;
+            setSelectedConversation(newConvId);
+          }
         }
 
-        existing.lastMessage = msg.content;
-        existing.lastMessageTime = new Date(msg.sentAt || '');
-
-        conversationMap.set(convId, existing);
-      });
-
-      setConversations(Array.from(conversationMap.values()));
-      setLoading(false);
+        setLoading(false);
+      } catch (err) {
+        console.error('[TrainerMessagesPage] Error fetching conversations:', err);
+        setError('Failed to load conversations');
+        setLoading(false);
+      }
     };
 
     fetchConversations();
-  }, [member?._id]);
+  }, [member?._id, searchParams]);
 
   // Fetch messages for selected conversation
   useEffect(() => {
     const fetchMessages = async () => {
-      if (!selectedConversation) return;
-
-      const { items } = await BaseCrudService.getAll<TrainerClientMessages>('trainerclientmessages');
-      const convMessages = items.filter((m) => m.conversationId === selectedConversation);
-      
-      setMessages(convMessages.sort((a, b) => {
-        const dateA = new Date(a.sentAt || 0).getTime();
-        const dateB = new Date(b.sentAt || 0).getTime();
-        return dateA - dateB;
-      }));
-
-      // Mark as read
-      convMessages.forEach(async (msg) => {
-        if (msg.recipientId === member?._id && !msg.isRead) {
-          await BaseCrudService.update('trainerclientmessages', {
-            _id: msg._id,
-            isRead: true,
-          });
+      try {
+        if (!selectedConversation) {
+          console.log('[TrainerMessagesPage] No conversation selected');
+          return;
         }
-      });
+
+        console.log('[TrainerMessagesPage] Fetching messages for conversation:', selectedConversation);
+        const { items } = await BaseCrudService.getAll<TrainerClientMessages>('trainerclientmessages');
+        const convMessages = items.filter((m) => m.conversationId === selectedConversation);
+        
+        console.log('[TrainerMessagesPage] Found messages:', convMessages.length);
+        
+        setMessages(convMessages.sort((a, b) => {
+          const dateA = new Date(a.sentAt || 0).getTime();
+          const dateB = new Date(b.sentAt || 0).getTime();
+          return dateA - dateB;
+        }));
+
+        // Mark as read
+        convMessages.forEach(async (msg) => {
+          if (msg.recipientId === member?._id && !msg.isRead) {
+            try {
+              await BaseCrudService.update('trainerclientmessages', {
+                _id: msg._id,
+                isRead: true,
+              });
+            } catch (err) {
+              console.error('[TrainerMessagesPage] Error marking message as read:', err);
+            }
+          }
+        });
+      } catch (err) {
+        console.error('[TrainerMessagesPage] Error fetching messages:', err);
+        setError('Failed to load messages');
+      }
     };
 
     fetchMessages();
@@ -101,10 +151,17 @@ export default function TrainerMessagesPage() {
     if (!newMessage.trim() || !selectedConversation || !member?._id) return;
 
     setIsSending(true);
+    setError('');
 
     try {
+      console.log('[TrainerMessagesPage] Sending message to conversation:', selectedConversation);
+      
       const conversation = conversations.find((c) => c.conversationId === selectedConversation);
       const clientId = conversation?.clientId || '';
+
+      if (!clientId) {
+        throw new Error('Client ID not found for this conversation');
+      }
 
       const message: TrainerClientMessages = {
         _id: crypto.randomUUID(),
@@ -116,6 +173,7 @@ export default function TrainerMessagesPage() {
         isRead: false,
       };
 
+      console.log('[TrainerMessagesPage] Creating message:', message);
       await BaseCrudService.create('trainerclientmessages', message);
       setNewMessage('');
       
@@ -127,8 +185,12 @@ export default function TrainerMessagesPage() {
         const dateB = new Date(b.sentAt || 0).getTime();
         return dateA - dateB;
       }));
-    } catch (error) {
-      console.error('Error sending message:', error);
+
+      console.log('[TrainerMessagesPage] Message sent successfully');
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : 'Failed to send message';
+      console.error('[TrainerMessagesPage] Error sending message:', errorMsg, err);
+      setError(errorMsg);
     } finally {
       setIsSending(false);
     }
@@ -150,6 +212,13 @@ export default function TrainerMessagesPage() {
           <div className="p-6 border-b border-warm-sand-beige">
             <h2 className="font-heading text-2xl font-bold text-charcoal-black">Messages</h2>
           </div>
+
+          {error && (
+            <div className="p-4 m-4 bg-red-50 border border-red-200 rounded-lg flex gap-3">
+              <AlertCircle className="text-red-600 flex-shrink-0" size={20} />
+              <p className="font-paragraph text-xs text-red-800">{error}</p>
+            </div>
+          )}
 
           <div className="flex-1 overflow-y-auto">
             {conversations.length === 0 ? (

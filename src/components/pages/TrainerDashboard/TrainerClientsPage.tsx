@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { FitnessPrograms, TrainerClientAssignments, MemberRoles } from '@/entities';
+import { FitnessPrograms, TrainerClientAssignments, MemberRoles, TrainerClientMessages } from '@/entities';
 import { MessageSquare, Plus, AlertCircle, CheckCircle } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getTrainerClients, assignClientToTrainer } from '@/lib/role-utils';
 
 interface ClientInfo {
@@ -12,6 +12,7 @@ interface ClientInfo {
   programCount: number;
   activePrograms: number;
   assignmentStatus: string;
+  conversationId?: string;
 }
 
 interface AvailableClient {
@@ -22,6 +23,7 @@ interface AvailableClient {
 
 export default function TrainerClientsPage() {
   const { member } = useMember();
+  const navigate = useNavigate();
   const [clients, setClients] = useState<ClientInfo[]>([]);
   const [availableClients, setAvailableClients] = useState<AvailableClient[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,6 +32,8 @@ export default function TrainerClientsPage() {
   const [assignmentError, setAssignmentError] = useState('');
   const [assignmentSuccess, setAssignmentSuccess] = useState('');
   const [isAssigning, setIsAssigning] = useState(false);
+  const [messageError, setMessageError] = useState('');
+  const [messagingClientId, setMessagingClientId] = useState<string | null>(null);
 
   const fetchClients = async () => {
     if (!member?._id) return;
@@ -42,17 +46,27 @@ export default function TrainerClientsPage() {
       const { items: programs } = await BaseCrudService.getAll<FitnessPrograms>('programs');
       const trainerPrograms = programs.filter(p => p.trainerId === member._id);
 
+      // Get all messages to find/create conversation IDs
+      const { items: messages } = await BaseCrudService.getAll<TrainerClientMessages>('trainerclientmessages');
+
       // Build client info
       const clientMap = new Map<string, ClientInfo>();
       
       assignments.forEach((assignment) => {
         if (assignment.clientId) {
+          // Find existing conversation for this client
+          const existingConversation = messages.find(
+            m => (m.senderId === member._id && m.recipientId === assignment.clientId) ||
+                 (m.senderId === assignment.clientId && m.recipientId === member._id)
+          );
+          
           clientMap.set(assignment.clientId, {
             assignmentId: assignment._id,
             clientId: assignment.clientId,
             programCount: 0,
             activePrograms: 0,
             assignmentStatus: assignment.status || 'Active',
+            conversationId: existingConversation?.conversationId || `${member._id}-${assignment.clientId}`,
           });
         }
       });
@@ -133,6 +147,42 @@ export default function TrainerClientsPage() {
       console.error('Error assigning client:', error);
     } finally {
       setIsAssigning(false);
+    }
+  };
+
+  const handleMessageClient = async (clientId: string, conversationId: string) => {
+    console.log('[handleMessageClient] Starting message flow', { clientId, conversationId, trainerId: member?._id });
+    setMessageError('');
+    setMessagingClientId(clientId);
+
+    try {
+      // Validate required data
+      if (!clientId || !clientId.trim()) {
+        const error = 'Client ID is missing or invalid';
+        console.error('[handleMessageClient] Validation failed:', error);
+        setMessageError(error);
+        setMessagingClientId(null);
+        return;
+      }
+
+      if (!member?._id) {
+        const error = 'Trainer ID not found - please ensure you are logged in';
+        console.error('[handleMessageClient] Validation failed:', error);
+        setMessageError(error);
+        setMessagingClientId(null);
+        return;
+      }
+
+      console.log('[handleMessageClient] Validation passed, navigating to messages');
+
+      // Navigate to messages page with client ID as query parameter
+      // The messages page will handle creating/finding the conversation
+      navigate(`/trainer/messages?clientId=${encodeURIComponent(clientId)}&conversationId=${encodeURIComponent(conversationId)}`);
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Failed to open messaging';
+      console.error('[handleMessageClient] Error:', errorMsg, error);
+      setMessageError(errorMsg);
+      setMessagingClientId(null);
     }
   };
 
@@ -296,9 +346,22 @@ export default function TrainerClientsPage() {
                   </div>
                 </div>
 
-                <button className="w-full flex items-center justify-center gap-2 bg-charcoal-black text-soft-white px-4 py-3 rounded-lg hover:bg-soft-bronze transition-colors">
+                {/* Message Error Alert */}
+                {messageError && messagingClientId === client.clientId && (
+                  <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex gap-2">
+                    <AlertCircle className="text-red-600 flex-shrink-0" size={16} />
+                    <p className="font-paragraph text-xs text-red-800">{messageError}</p>
+                  </div>
+                )}
+
+                <button
+                  onClick={() => handleMessageClient(client.clientId, client.conversationId || `${member?._id}-${client.clientId}`)}
+                  disabled={messagingClientId === client.clientId}
+                  className="w-full flex items-center justify-center gap-2 bg-charcoal-black text-soft-white px-4 py-3 rounded-lg hover:bg-soft-bronze transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  title="Open messaging with this client"
+                >
                   <MessageSquare size={18} />
-                  Message Client
+                  {messagingClientId === client.clientId ? 'Opening...' : 'Message Client'}
                 </button>
               </div>
             ))}
