@@ -17,6 +17,7 @@ interface ClientInfo {
 interface AvailableClient {
   memberId: string;
   role: string;
+  email?: string;
 }
 
 export default function TrainerClientsPage() {
@@ -85,6 +86,7 @@ export default function TrainerClientsPage() {
         unassignedClients.map((mr) => ({
           memberId: mr.memberId || '',
           role: mr.role || 'client',
+          email: mr.memberId || '',
         }))
       );
     } catch (error) {
@@ -200,7 +202,7 @@ export default function TrainerClientsPage() {
                     <option value="">-- Select a client --</option>
                     {availableClients.map((client) => (
                       <option key={client.memberId} value={client.memberId}>
-                        {client.memberId}
+                        {client.email || client.memberId}
                       </option>
                     ))}
                   </select>
