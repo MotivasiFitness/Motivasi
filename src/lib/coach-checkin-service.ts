@@ -17,6 +17,19 @@ export interface ClientCheckInPrompt {
   avgDifficulty?: number;
   missedWorkoutsLast7Days?: number;
   noResponseLabel?: string; // "No response after check-in" label
+  followUpReminder?: {
+    label: string;
+    daysSinceLastInteraction: number;
+    type: 'no-checkin' | 'no-response'; // Type of follow-up reminder
+  };
+}
+
+export interface FollowUpReminderDismissal {
+  _id: string;
+  trainerId: string;
+  clientId: string;
+  dismissedAt: Date | string;
+  dismissedUntil: Date | string; // 7 days from dismissal
 }
 
 export interface CoachCheckInMessage {
@@ -32,9 +45,199 @@ export interface CoachCheckInMessage {
 }
 
 /**
- * Get clients that need check-ins for a trainer
- * Returns clients with risk signals (At Risk, Too Hard, Too Easy, Inactive)
- * Also includes clients who received a check-in but didn't respond/complete workout
+ * Get follow-up reminders for clients who need a quiet reminder
+ * Surfaces clients who are At Risk/Inactive AND:
+ * - No check-in sent yet, OR
+ * - Check-in sent but no response and no workout logged
+ * AND 5-7 days have passed since last trainer interaction
+ * AND reminder hasn't been dismissed in the last 7 days
+ */
+export async function getFollowUpReminders(
+  trainerId: string,
+  daysSinceLastInteraction: number = 6 // 5-7 days, default 6
+): Promise<ClientCheckInPrompt[]> {
+  try {
+    const { items: programs } = await BaseCrudService.getAll<any>('programs');
+    const trainerPrograms = programs.filter((p) => p.trainerId === trainerId);
+
+    const { items: checkInMessages } = await BaseCrudService.getAll<ClientCoachMessages>(
+      'clientcoachmessages'
+    );
+
+    // Get dismissed reminders for this trainer
+    const dismissedReminders = await getDismissedReminders(trainerId);
+    const dismissedClientIds = new Set(dismissedReminders.map((r) => r.clientId));
+
+    const reminders: ClientCheckInPrompt[] = [];
+    const processedClients = new Set<string>();
+
+    const cutoffDate = new Date(Date.now() - daysSinceLastInteraction * 24 * 60 * 60 * 1000);
+
+    for (const program of trainerPrograms) {
+      if (!program.clientId || processedClients.has(program.clientId)) continue;
+      if (dismissedClientIds.has(program.clientId)) continue; // Skip dismissed reminders
+
+      const signal = await getClientAdherenceSignal(program.clientId, program._id);
+
+      // Only show reminders for At Risk or Inactive clients
+      if (signal.status !== 'At Risk' && signal.status !== 'Inactive') {
+        continue;
+      }
+
+      // Check if there's a recent check-in from this trainer
+      const recentCheckIn = checkInMessages.find(
+        (m) =>
+          m.clientId === program.clientId &&
+          m.trainerId === trainerId &&
+          m.sentAt &&
+          new Date(m.sentAt) >= cutoffDate
+      );
+
+      // If there's a recent check-in, skip (we already have a no-response label for that)
+      if (recentCheckIn) {
+        continue;
+      }
+
+      // Check last trainer interaction (any message sent)
+      const lastTrainerMessage = checkInMessages
+        .filter((m) => m.clientId === program.clientId && m.trainerId === trainerId)
+        .sort((a, b) => {
+          const dateA = a.sentAt ? new Date(a.sentAt).getTime() : 0;
+          const dateB = b.sentAt ? new Date(b.sentAt).getTime() : 0;
+          return dateB - dateA;
+        })[0];
+
+      const lastInteractionDate = lastTrainerMessage
+        ? new Date(lastTrainerMessage.sentAt || new Date())
+        : new Date(program._createdDate || new Date());
+
+      const daysSinceLastInteractionActual = Math.floor(
+        (Date.now() - lastInteractionDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
+
+      // Only show reminder if 5-7 days have passed since last interaction
+      if (daysSinceLastInteractionActual < 5 || daysSinceLastInteractionActual > 14) {
+        continue;
+      }
+
+      // Determine reminder type
+      const hasCheckIn = checkInMessages.some(
+        (m) => m.clientId === program.clientId && m.trainerId === trainerId
+      );
+
+      reminders.push({
+        clientId: program.clientId,
+        reason: signal.status,
+        reasonDescription: signal.status === 'At Risk' 
+          ? `Missed ${signal.missedWorkoutsLast7Days} workouts in last 7 days`
+          : `No activity for ${signal.daysSinceLastActivity} days`,
+        lastWorkoutDate: signal.lastWorkoutDate,
+        daysSinceLastActivity: signal.daysSinceLastActivity,
+        avgDifficulty: signal.avgDifficulty,
+        missedWorkoutsLast7Days: signal.missedWorkoutsLast7Days,
+        followUpReminder: {
+          label: `🕒 Consider checking in (${daysSinceLastInteractionActual} days)`,
+          daysSinceLastInteraction: daysSinceLastInteractionActual,
+          type: hasCheckIn ? 'no-response' : 'no-checkin',
+        },
+      });
+
+      processedClients.add(program.clientId);
+    }
+
+    return reminders;
+  } catch (error) {
+    console.error('Error getting follow-up reminders:', error);
+    return [];
+  }
+}
+
+/**
+ * Get dismissed reminders for a trainer
+ * Returns reminders that are still within the 7-day dismissal window
+ */
+export async function getDismissedReminders(trainerId: string): Promise<FollowUpReminderDismissal[]> {
+  try {
+    // In a real implementation, this would fetch from a database
+    // For now, we'll use localStorage as a fallback
+    const key = `dismissed-reminders-${trainerId}`;
+    const stored = localStorage.getItem(key);
+    if (!stored) return [];
+
+    const dismissed: FollowUpReminderDismissal[] = JSON.parse(stored);
+    const now = new Date();
+
+    // Filter out expired dismissals (older than 7 days)
+    return dismissed.filter((d) => new Date(d.dismissedUntil) > now);
+  } catch (error) {
+    console.error('Error getting dismissed reminders:', error);
+    return [];
+  }
+}
+
+/**
+ * Dismiss a follow-up reminder for 7 days
+ */
+export async function dismissFollowUpReminder(
+  trainerId: string,
+  clientId: string
+): Promise<void> {
+  try {
+    const key = `dismissed-reminders-${trainerId}`;
+    const stored = localStorage.getItem(key);
+    const dismissed: FollowUpReminderDismissal[] = stored ? JSON.parse(stored) : [];
+
+    const now = new Date();
+    const dismissedUntil = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days
+
+    // Check if already dismissed
+    const existingIndex = dismissed.findIndex((d) => d.clientId === clientId);
+    if (existingIndex >= 0) {
+      dismissed[existingIndex] = {
+        ...dismissed[existingIndex],
+        dismissedAt: now,
+        dismissedUntil,
+      };
+    } else {
+      dismissed.push({
+        _id: crypto.randomUUID(),
+        trainerId,
+        clientId,
+        dismissedAt: now,
+        dismissedUntil,
+      });
+    }
+
+    localStorage.setItem(key, JSON.stringify(dismissed));
+  } catch (error) {
+    console.error('Error dismissing follow-up reminder:', error);
+  }
+}
+
+/**
+ * Clear a dismissed reminder (when client logs workout or responds)
+ */
+export async function clearDismissedReminder(trainerId: string, clientId: string): Promise<void> {
+  try {
+    const key = `dismissed-reminders-${trainerId}`;
+    const stored = localStorage.getItem(key);
+    if (!stored) return;
+
+    const dismissed: FollowUpReminderDismissal[] = JSON.parse(stored);
+    const filtered = dismissed.filter((d) => d.clientId !== clientId);
+
+    if (filtered.length === 0) {
+      localStorage.removeItem(key);
+    } else {
+      localStorage.setItem(key, JSON.stringify(filtered));
+    }
+  } catch (error) {
+    console.error('Error clearing dismissed reminder:', error);
+  }
+}
+
+/**
+ * Get clients needing check-in based on adherence signals
  */
 export async function getClientsNeedingCheckIn(
   trainerId: string
@@ -327,97 +530,90 @@ I wanted to check in and see how you're getting on with your programme. Let me k
 }
 
 /**
- * Get all check-in message templates for a given status
+ * Get follow-up message templates (specific to follow-up reminders)
+ * These are different from initial check-in templates
  */
-export function getCheckInMessageTemplates(
+export function getFollowUpMessageTemplates(
   reason: AdherenceStatus
 ): Array<{ label: string; text: string }> {
   switch (reason) {
     case 'At Risk':
       return [
         {
-          label: 'Check-in on obstacles',
+          label: 'Gentle re-engagement',
           text: `Hi,
 
-I noticed you've missed a couple of workouts this week. How are you doing? If there are any obstacles, let me know and we can adjust things.`,
+I wanted to check in again. I know life gets busy, but I'd love to help you get back on track with your training.
+
+Is there anything I can adjust in your programme to make it easier to fit into your schedule? Let me know how I can support you.`,
         },
         {
-          label: 'Offer support',
+          label: 'Problem-solving approach',
           text: `Hi,
 
-I'm here to support you. If the programme isn't working with your schedule, we can find a solution together.`,
-        },
-        {
-          label: 'Motivational',
-          text: `Hi,
+I've noticed you've missed a few sessions recently. Rather than pushing harder, I'd like to understand what's getting in the way.
 
-You've got this! Let's get back on track together. What can I do to help you stay consistent?`,
+Are there specific obstacles we can work around together? Let's find a solution that works for you.`,
         },
       ];
 
     case 'Inactive':
       return [
         {
-          label: 'Urgent check-in',
+          label: 'Reconnection',
           text: `Hi,
 
-I haven't seen you in the app for a while. I want to check in and make sure everything is okay. Let me know how you're getting on.`,
+I've missed seeing you in the app. I want to make sure you're okay and that your programme is still working for you.
+
+Let's reconnect and get you back on track. What's been going on?`,
         },
         {
-          label: 'Remove barriers',
+          label: 'Support & understanding',
           text: `Hi,
 
-If something is getting in the way of your training, let's talk about it. We can find a way to make this work for you.`,
-        },
-        {
-          label: 'Reconnect',
-          text: `Hi,
+It's been a while since we last connected. I'm here to support you, not judge.
 
-I miss seeing you in the app! Let's reconnect and get you back on track. What's been going on?`,
+If something's changed or you're facing challenges, let's talk about it. We can adjust your programme or find a way forward together.`,
         },
       ];
 
     case 'Too Hard':
       return [
         {
-          label: 'Offer to scale back',
+          label: 'Scaling back offer',
           text: `Hi,
 
-I've noticed the difficulty has been high. Let's scale things back to make it more manageable while still challenging you.`,
+I want to check in about how the programme is feeling. If it's been too intense, we can absolutely scale things back.
+
+Your consistency and long-term progress matter more than pushing too hard. Let me know if you'd like to adjust.`,
         },
         {
-          label: 'Adjust intensity',
+          label: 'Recovery focus',
           text: `Hi,
 
-Your feedback shows the programme might be too intense right now. Let's adjust the intensity to find the right balance.`,
-        },
-        {
-          label: 'Check in on recovery',
-          text: `Hi,
+I've been thinking about your training. Sometimes taking a step back to focus on recovery and form is exactly what we need.
 
-How's your recovery been? If you're feeling fatigued, we can dial back the intensity and focus on quality over quantity.`,
+Would you like to dial back the intensity for a bit? We can refocus on quality over quantity.`,
         },
       ];
 
     case 'Too Easy':
       return [
         {
-          label: 'Suggest progression',
+          label: 'Progression opportunity',
           text: `Hi,
 
-Great work! You're finding the current programme manageable. I think you're ready to progress. Let's discuss how to challenge you more.`,
+You're doing great with your current programme! I think you're ready for the next level.
+
+Let's discuss how we can progress your training to keep you challenged and engaged. When can we chat about this?`,
         },
         {
-          label: 'Level up',
+          label: 'Momentum building',
           text: `Hi,
 
-You're crushing it! Let's increase the intensity or complexity to keep you engaged and progressing toward your goals.`,
-        },
-        {
-          label: 'Celebrate & progress',
-          text: `Hi,
+I love seeing your consistency! You're clearly ready for more.
 
-Excellent consistency! You're ready for the next level. Let's make your training more challenging to keep you progressing.`,
+Let's increase the challenge and keep building on this momentum. Are you open to progressing your training?`,
         },
       ];
 
@@ -427,7 +623,7 @@ Excellent consistency! You're ready for the next level. Let's make your training
           label: 'General check-in',
           text: `Hi,
 
-I wanted to check in and see how you're getting on with your programme. Let me know if you have any questions or if there's anything I can help with.`,
+I wanted to check in and see how you're getting on. Let me know if there's anything I can help with.`,
         },
       ];
   }
@@ -548,11 +744,16 @@ export async function getCheckInEffectivenessMetrics(
 export default {
   getClientsNeedingCheckIn,
   getClientsWithNoResponseAfterCheckIn,
+  getFollowUpReminders,
+  getDismissedReminders,
+  dismissFollowUpReminder,
+  clearDismissedReminder,
   sendCoachCheckInMessage,
   markCheckInAsResponded,
   trackCheckInReengagement,
   getCheckInMessageTemplate,
   getCheckInMessageTemplates,
+  getFollowUpMessageTemplates,
   getRecentCheckInMessages,
   hasRecentCheckIn,
   getCheckInEffectivenessMetrics,

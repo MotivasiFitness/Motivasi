@@ -10,6 +10,7 @@ import {
   MessageSquare,
   Eye,
   FileText,
+  X,
 } from 'lucide-react';
 import {
   getTrainerClientAdherenceSignals,
@@ -17,7 +18,11 @@ import {
   getActivitySummary,
   getRecentFeedback,
 } from '@/lib/adherence-tracking';
-import { getClientsWithNoResponseAfterCheckIn } from '@/lib/coach-checkin-service';
+import { 
+  getClientsWithNoResponseAfterCheckIn,
+  getFollowUpReminders,
+  dismissFollowUpReminder,
+} from '@/lib/coach-checkin-service';
 
 interface ClientReviewData extends ClientAdherenceSignal {
   activitySummary?: {
@@ -28,6 +33,11 @@ interface ClientReviewData extends ClientAdherenceSignal {
   };
   lastFeedbackNote?: string;
   noResponseLabel?: string;
+  followUpReminder?: {
+    label: string;
+    daysSinceLastInteraction: number;
+    type: 'no-checkin' | 'no-response';
+  };
 }
 
 export default function ClientsToReviewSection() {
@@ -46,11 +56,24 @@ export default function ClientsToReviewSection() {
         // Also get clients with no response after check-in
         const noResponseClients = await getClientsWithNoResponseAfterCheckIn(member._id);
 
-        // Combine both lists
+        // Also get follow-up reminders
+        const followUpReminders = await getFollowUpReminders(member._id);
+
+        // Combine all lists
         const allSignals = [...signals];
         for (const noResponseClient of noResponseClients) {
           if (!allSignals.find((s) => s.clientId === noResponseClient.clientId)) {
             allSignals.push(noResponseClient);
+          }
+        }
+
+        // Add follow-up reminders to matching clients
+        for (const reminder of followUpReminders) {
+          const existingClient = allSignals.find((s) => s.clientId === reminder.clientId);
+          if (existingClient) {
+            existingClient.followUpReminder = reminder.followUpReminder;
+          } else {
+            allSignals.push(reminder);
           }
         }
 
@@ -205,6 +228,19 @@ export default function ClientsToReviewSection() {
                   <p className="font-paragraph text-sm text-charcoal-black/70">
                     {client.noResponseLabel || client.reason || client.status}
                   </p>
+                  {/* Follow-Up Reminder Label */}
+                  {client.followUpReminder && (
+                    <div className="flex items-center gap-2 mt-2">
+                      <button
+                        onClick={() => dismissFollowUpReminder(member?._id || '', client.clientId)}
+                        className="text-xs text-warm-grey hover:text-charcoal-black transition-colors flex items-center gap-1 bg-warm-sand-beige/30 px-2 py-1 rounded"
+                      >
+                        <Clock size={14} />
+                        {client.followUpReminder.label}
+                        <X size={12} className="ml-1" />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex flex-col items-end gap-2">

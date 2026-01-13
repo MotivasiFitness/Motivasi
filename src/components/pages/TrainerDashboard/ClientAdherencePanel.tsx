@@ -11,6 +11,7 @@ import {
   Activity,
   MessageSquare,
   Send,
+  X,
 } from 'lucide-react';
 import {
   getTrainerClientAdherenceSignals,
@@ -25,6 +26,9 @@ import {
   getCheckInMessageTemplate,
   getCheckInMessageTemplates,
   getClientsWithNoResponseAfterCheckIn,
+  getFollowUpReminders,
+  getFollowUpMessageTemplates,
+  dismissFollowUpReminder,
 } from '@/lib/coach-checkin-service';
 
 interface ClientAdherenceData extends ClientAdherenceSignal {
@@ -41,6 +45,11 @@ interface ClientAdherenceData extends ClientAdherenceSignal {
     reason: string;
     sentAt: Date;
   }>;
+  followUpReminder?: {
+    label: string;
+    daysSinceLastInteraction: number;
+    type: 'no-checkin' | 'no-response';
+  };
 }
 
 interface CheckInModalState {
@@ -48,6 +57,7 @@ interface CheckInModalState {
   clientId: string | null;
   status: string | null;
   message: string;
+  isFollowUp?: boolean;
   selectedTemplate: string;
   isSending: boolean;
 }
@@ -77,12 +87,25 @@ export default function ClientAdherencePanel() {
         // Also get clients with no response after check-in
         const noResponseClients = await getClientsWithNoResponseAfterCheckIn(member._id);
 
-        // Combine both lists
+        // Also get follow-up reminders
+        const followUpReminders = await getFollowUpReminders(member._id);
+
+        // Combine all lists
         const allSignals = [...signals];
         for (const noResponseClient of noResponseClients) {
           // Check if this client is already in the signals list
           if (!allSignals.find((s) => s.clientId === noResponseClient.clientId)) {
             allSignals.push(noResponseClient);
+          }
+        }
+
+        // Add follow-up reminders to matching clients
+        for (const reminder of followUpReminders) {
+          const existingClient = allSignals.find((s) => s.clientId === reminder.clientId);
+          if (existingClient) {
+            existingClient.followUpReminder = reminder.followUpReminder;
+          } else {
+            allSignals.push(reminder);
           }
         }
 
@@ -193,13 +216,17 @@ export default function ClientAdherencePanel() {
     return getCheckInMessageTemplates(status as any);
   };
 
-  const handleOpenCheckInModal = (clientId: string, status: string) => {
-    const template = getCheckInMessageTemplate(status as any);
+  const handleOpenCheckInModal = (clientId: string, status: string, isFollowUp: boolean = false) => {
+    const template = isFollowUp 
+      ? getFollowUpMessageTemplates(status as any)[0]?.text || ''
+      : getCheckInMessageTemplate(status as any);
+    
     setCheckInModal({
       isOpen: true,
       clientId,
       status,
       message: template,
+      isFollowUp,
       selectedTemplate: 'default',
       isSending: false,
     });
@@ -345,6 +372,37 @@ export default function ClientAdherencePanel() {
                   <p className="font-paragraph text-sm text-charcoal-black/70">
                     {client.noResponseLabel || client.reason || 'Status: ' + client.status}
                   </p>
+                  {/* Follow-Up Reminder Label */}
+                  {client.followUpReminder && (
+                    <div className="flex items-center gap-2 mt-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenCheckInModal(client.clientId, client.status, true);
+                        }}
+                        className="text-xs text-warm-grey hover:text-charcoal-black transition-colors flex items-center gap-1 bg-warm-sand-beige/30 px-2 py-1 rounded hover:bg-warm-sand-beige/50"
+                      >
+                        <Clock size={14} />
+                        {client.followUpReminder.label}
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          dismissFollowUpReminder(member?._id || '', client.clientId);
+                          setClients((prev) =>
+                            prev.map((c) =>
+                              c.clientId === client.clientId
+                                ? { ...c, followUpReminder: undefined }
+                                : c
+                            )
+                          );
+                        }}
+                        className="text-xs text-warm-grey hover:text-charcoal-black transition-colors"
+                      >
+                        <X size={14} />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
               <span
@@ -554,7 +612,9 @@ export default function ClientAdherencePanel() {
                 <select
                   value={checkInModal.selectedTemplate}
                   onChange={(e) => {
-                    const templates = getQuickTemplates(checkInModal.status || '');
+                    const templates = checkInModal.isFollowUp
+                      ? getFollowUpMessageTemplates(checkInModal.status || '')
+                      : getQuickTemplates(checkInModal.status || '');
                     const selectedIdx = parseInt(e.target.value);
                     if (selectedIdx >= 0 && templates[selectedIdx]) {
                       setCheckInModal((prev) => ({
@@ -567,12 +627,20 @@ export default function ClientAdherencePanel() {
                   className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph text-sm"
                 >
                   <option value="default">-- Select a template --</option>
-                  {getQuickTemplates(checkInModal.status || '').map((template, idx) => (
+                  {(checkInModal.isFollowUp
+                    ? getFollowUpMessageTemplates(checkInModal.status || '')
+                    : getQuickTemplates(checkInModal.status || '')
+                  ).map((template, idx) => (
                     <option key={idx} value={idx}>
                       {template.label}
                     </option>
                   ))}
                 </select>
+                {checkInModal.isFollowUp && (
+                  <p className="text-xs text-soft-bronze mt-2">
+                    💡 Follow-up templates are designed for clients who haven't responded to previous check-ins.
+                  </p>
+                )}
               </div>
 
               {/* Message Editor */}
@@ -613,6 +681,7 @@ export default function ClientAdherencePanel() {
                       clientId: null,
                       status: null,
                       message: '',
+                      isFollowUp: false,
                       selectedTemplate: 'default',
                       isSending: false,
                     })
