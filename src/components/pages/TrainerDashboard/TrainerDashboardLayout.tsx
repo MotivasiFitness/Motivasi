@@ -25,13 +25,13 @@ export default function TrainerDashboardLayout() {
   }
 
   const navItems = [
-    { path: '/trainer', label: 'Dashboard', icon: Users },
-    { path: '/trainer/clients', label: 'My Clients', icon: Users },
-    { path: '/trainer/programs', label: 'Programs', icon: BookOpen },
-    { path: '/trainer/ai-assistant', label: 'AI Assistant', icon: Sparkles },
-    { path: '/trainer/messages', label: 'Messages', icon: MessageSquare },
-    { path: '/trainer/video-reviews', label: 'Video Reviews', icon: MessageSquare },
-    { path: '/trainer/progress', label: 'Client Progress', icon: BookOpen },
+    { path: '/trainer', label: 'Dashboard', icon: Users, color: 'text-blue-400' },
+    { path: '/trainer/clients', label: 'My Clients', icon: Users, color: 'text-emerald-400' },
+    { path: '/trainer/programs', label: 'Programs', icon: BookOpen, color: 'text-purple-400' },
+    { path: '/trainer/ai-assistant', label: 'AI Assistant', icon: Sparkles, color: 'text-yellow-400' },
+    { path: '/trainer/messages', label: 'Messages', icon: MessageSquare, color: 'text-pink-400' },
+    { path: '/trainer/video-reviews', label: 'Video Reviews', icon: MessageSquare, color: 'text-orange-400' },
+    { path: '/trainer/progress', label: 'Client Progress', icon: BookOpen, color: 'text-cyan-400' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -75,7 +75,7 @@ export default function TrainerDashboardLayout() {
                     : 'text-warm-grey hover:bg-soft-bronze/10'
                 }`}
               >
-                <Icon size={20} />
+                <Icon size={20} className={item.color} />
                 <span className="font-paragraph">{item.label}</span>
               </Link>
             );
