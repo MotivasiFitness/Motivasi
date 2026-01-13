@@ -482,8 +482,8 @@ export default function MyProgramPage() {
                       <button
                         onClick={() => {
                           setCompletedWorkouts(new Set([...completedWorkouts, workout._id || '']));
-                          setSessionCompleteMessage(true);
-                          setTimeout(() => setSessionCompleteMessage(false), 2000);
+                          setShowCompletionRing(true);
+                          setRingAnimationTrigger(true);
                         }}
                         disabled={isCompleted}
                         className={`w-full flex items-center justify-center gap-2 px-6 py-4 rounded-lg font-bold text-base transition-all ${
@@ -557,44 +557,60 @@ export default function MyProgramPage() {
       {/* Workout Overview Section */}
       {programs.length > 0 && (
         <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8">
-          <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-8">
-            Workout Overview
-          </h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-            {/* Session Length */}
-            <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
-              <Clock className="w-6 h-6 text-soft-bronze mb-2" />
-              <p className="text-sm text-warm-grey mb-1">Session Length</p>
-              <p className="font-heading text-2xl font-bold text-charcoal-black">
-                {estimatedSessionTime}–{estimatedSessionTime + 5} min
-              </p>
+          <div className="grid lg:grid-cols-5 gap-8 items-start">
+            {/* Progress Ring - Left Side */}
+            <div className="lg:col-span-1 flex justify-center">
+              <div className="w-full max-w-xs">
+                <ProgramCompletionRing
+                  completedWorkouts={completedWorkouts.size}
+                  totalWorkouts={workoutDays.length}
+                  compact={true}
+                />
+              </div>
             </div>
 
-            {/* Weekly Frequency */}
-            <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
-              <Target className="w-6 h-6 text-soft-bronze mb-2" />
-              <p className="text-sm text-warm-grey mb-1">Weekly Frequency</p>
-              <p className="font-heading text-2xl font-bold text-charcoal-black">
-                {weeklyFrequency}x per week
-              </p>
-            </div>
+            {/* Stats Grid - Right Side */}
+            <div className="lg:col-span-4">
+              <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
+                Workout Overview
+              </h2>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+                {/* Session Length */}
+                <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
+                  <Clock className="w-6 h-6 text-soft-bronze mb-2" />
+                  <p className="text-sm text-warm-grey mb-1">Session Length</p>
+                  <p className="font-heading text-2xl font-bold text-charcoal-black">
+                    {estimatedSessionTime}–{estimatedSessionTime + 5} min
+                  </p>
+                </div>
 
-            {/* Equipment Needed */}
-            <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
-              <Dumbbell className="w-6 h-6 text-soft-bronze mb-2" />
-              <p className="text-sm text-warm-grey mb-1">Equipment</p>
-              <p className="font-heading text-sm font-bold text-charcoal-black">
-                {equipment}
-              </p>
-            </div>
+                {/* Weekly Frequency */}
+                <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
+                  <Target className="w-6 h-6 text-soft-bronze mb-2" />
+                  <p className="text-sm text-warm-grey mb-1\">Weekly Frequency</p>
+                  <p className="font-heading text-2xl font-bold text-charcoal-black">
+                    {weeklyFrequency}x per week
+                  </p>
+                </div>
 
-            {/* Training Focus */}
-            <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
-              <CheckCircle2 className="w-6 h-6 text-soft-bronze mb-2" />
-              <p className="text-sm text-warm-grey mb-1">Training Focus</p>
-              <p className="font-heading text-sm font-bold text-charcoal-black">
-                {trainingFocus}
-              </p>
+                {/* Equipment Needed */}
+                <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
+                  <Dumbbell className="w-6 h-6 text-soft-bronze mb-2" />
+                  <p className="text-sm text-warm-grey mb-1">Equipment</p>
+                  <p className="font-heading text-sm font-bold text-charcoal-black">
+                    {equipment}
+                  </p>
+                </div>
+
+                {/* Training Focus */}
+                <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
+                  <CheckCircle2 className="w-6 h-6 text-soft-bronze mb-2" />
+                  <p className="text-sm text-warm-grey mb-1">Training Focus</p>
+                  <p className="font-heading text-sm font-bold text-charcoal-black">
+                    {trainingFocus}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
