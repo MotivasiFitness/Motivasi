@@ -317,46 +317,21 @@ export interface TrainerQualifications {
 
 
 /**
- * Collection ID: clientworkoutactivity
- * Interface for ClientWorkoutActivity
+ * Collection ID: clientcoachmessages
+ * Interface for ClientCoachMessages
  */
-export interface ClientWorkoutActivity {
+export interface ClientCoachMessages {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
   /** @wixFieldType text */
   clientId?: string;
   /** @wixFieldType text */
-  programId?: string;
+  trainerId?: string;
   /** @wixFieldType text */
-  workoutDayId?: string;
-  /** @wixFieldType boolean */
-  completed?: boolean;
+  message?: string;
+  /** @wixFieldType text */
+  reason?: string;
   /** @wixFieldType datetime */
-  completedAt?: Date | string;
-  /** @wixFieldType text */
-  notes?: string;
-}
-
-
-/**
- * Collection ID: clientworkoutfeedback
- * Interface for ClientWorkoutFeedback
- */
-export interface ClientWorkoutFeedback {
-  _id: string;
-  _createdDate?: Date;
-  _updatedDate?: Date;
-  /** @wixFieldType text */
-  clientId?: string;
-  /** @wixFieldType text */
-  programId?: string;
-  /** @wixFieldType text */
-  workoutActivityId?: string;
-  /** @wixFieldType number */
-  difficultyRating?: number;
-  /** @wixFieldType text */
-  feedbackNote?: string;
-  /** @wixFieldType datetime */
-  submittedAt?: Date | string;
+  sentAt?: Date | string;
 }
