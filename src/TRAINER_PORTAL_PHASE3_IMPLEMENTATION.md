@@ -1,353 +1,717 @@
-# Trainer Portal Phase 3 Implementation
+# AI Program Assistant - Phase 3 Implementation
+## Intelligence, Adaptation & Scale
+
+**Status**: ✅ Complete  
+**Date**: January 2026  
+**Version**: 3.0
+
+---
 
 ## Overview
-Phase 3 implements the Trainer Review Queue, Trainer Internal Notes, Client Upload History, and Email Compliance refinements for the Motivasi Trainer Portal.
 
-## Features Implemented
+Phase 3 focuses on making the AI Program Assistant intelligent, adaptive, and scalable for teams. This includes:
 
-### 1. Trainer Review Queue (HIGH PRIORITY) ✅
+1. **Program Performance Intelligence** - Track and analyze program metrics
+2. **Smart Progress Adjustments** - AI-suggested program modifications
+3. **Reusable AI Snippets** - Build a personal library of training blocks
+4. **Multi-Trainer Team Mode** - Support for teams with role-based permissions
 
-#### Video Submission Status System
-- **New Collection**: `videosubmissionstatus` tracks review status of each video
-- **Status Values**: `'New'`, `'In Review'`, `'Replied'`
-- **Default Status**: `'New'` when video is uploaded
-- **Persistence**: Status persists across refresh via database
+---
 
-#### VideoReviewsPage Enhancements
-- **Status Filtering**: Trainers can filter by status (All, New, In Review, Replied)
-- **Status Badges**: Visual indicators with color coding:
-  - `New`: Soft bronze with "🔔 New" badge + time waiting (e.g., "18h ago")
-  - `In Review`: Blue badge
-  - `Replied`: Green badge with checkmark
-- **Status Update Dropdown**: Trainers can change status via dropdown on each video card
-- **Summary Cards**: Display count of new videos and videos in review at top of page
-- **Sorting**: By newest/oldest submission date
-- **Category Filtering**: By exercise category
+## 1. Program Performance Intelligence
 
-#### UX Enhancements
-- New videos highlighted with bronze border and shadow
-- Time waiting indicator (e.g., "🔔 New - 18h ago")
-- Status update dropdown on each video card
-- Loading state during status update
-- Empty state message when no videos to review
+### Purpose
+Track how programs perform with clients and provide actionable insights to trainers.
 
-### 2. Trainer Internal Notes (PRIVATE, CLIENT-SPECIFIC) ✅
+### Data Collection
 
-#### New Collection: `trainernotes`
-- **Fields**:
-  - `trainerId`: Trainer who created the note
-  - `clientId`: Client the note is about
-  - `noteContent`: Text content of the note
-  - `noteDate`: Timestamp of note creation/update
-- **Privacy**: Notes are NEVER visible to clients
-- **Access**: Only visible to the trainer who created them and admins
+#### ProgramPerformanceMetrics Collection
+Stores performance data for each program-client pair:
 
-#### TrainerNotesSection Component
-- **Location**: Can be added to Client Progress page or Client Profile page
-- **Features**:
-  - Add new notes with "Add Note" button
-  - Edit existing notes inline
-  - Delete notes with confirmation
-  - Timestamps on all notes
-  - Notes sorted by most recent first
-  - Privacy notice: "🔒 Private: These notes are only visible to you and other admins"
-- **Use Cases**:
-  - Injury history
-  - Client preferences
-  - Coaching cues
-  - Personal context
-  - Progress observations
-
-### 3. Client Upload History (CLIENT CONFIDENCE FEATURE) ✅
-
-#### New Page: MyVideoSubmissionsPage
-- **Route**: `/portal/my-submissions`
-- **Access**: Client Portal only (protected by MemberProtectedRoute)
-- **Display Information**:
-  - Video title and description
-  - Exercise category
-  - Upload date
-  - Current status (New / In Review / Replied)
-  - Date feedback was provided (if status is "Replied")
-  - Watch video link
-
-#### Status Display for Clients
-- **New**: "Waiting for Review" with alert icon
-- **In Review**: "Being Reviewed" with spinning loader icon
-- **Replied**: "Feedback Provided" with checkmark + notification to check Messages
-
-#### Features
-- Filter by status (All, Waiting for Review, Being Reviewed, Feedback Provided)
-- No trainer notes visible to clients
-- CTA to submit another video
-- Empty state when no submissions
-- Responsive design (mobile-friendly)
-
-#### Navigation
-- Added to Client Portal sidebar as "My Submissions"
-- Link to upload new video
-
-### 4. Email Copy & Compliance Refinement ✅
-
-#### Email Template Updates
-- **Subject**: "New video submitted for review" (simple, no video title)
-- **Body Structure**:
-  - Greeting with trainer name
-  - Simple notification: "A client has submitted a new exercise video for your review"
-  - Exercise name/title
-  - Category
-  - Submitted date/time
-  - CTA: "Please log in to your Trainer Portal to review the video and provide feedback"
-  - Footer: "This is a notification email. All details are available in your Trainer Portal."
-
-#### Compliance Rules
-- ✅ NO health metrics (weight, measurements, body fat %)
-- ✅ NO photos embedded
-- ✅ NO personal health information
-- ✅ Emails are notifications only
-- ✅ Portal contains all detailed information
-- ✅ Simple, minimal format
-- ✅ Clear CTA to portal
-
-#### Updated Function Signature
 ```typescript
-sendVideoUploadNotification(
-  trainerEmail: string,
-  trainerName: string,
-  clientId: string,
-  videoTitle: string,
-  videoUrl: string,
-  exerciseCategory?: string  // NEW: optional category
-): Promise<boolean>
-```
-
-### 5. Micro UX Polish ✅
-
-#### Empty States
-- Video Reviews page: "No video submissions yet" with helpful message
-- My Submissions page: "You haven't submitted any videos yet" with CTA
-- Trainer Notes: "No notes yet. Add one to track important information"
-
-#### Loading States
-- Spinner during status update
-- Loading skeleton on initial page load
-- "Updating..." text during save
-
-#### Tooltips & Hints
-- Privacy notice on Trainer Notes section
-- "Filter by status" label on status dropdown
-- "Update Status" label on status dropdown
-- Time waiting indicator on new videos
-
-#### Success Confirmations
-- Status update completes with visual feedback
-- Note saved with updated timestamp
-- Feedback provided notification on client submissions
-
-## Database Schema
-
-### VideoSubmissionStatus Collection
-```typescript
-interface VideoSubmissionStatus {
+interface ProgramPerformanceMetrics {
   _id: string;
-  _createdDate?: Date;
-  _updatedDate?: Date;
-  videoId?: string;           // Reference to video in privatevideolibrary
-  clientId?: string;          // Client who submitted the video
-  status?: string;            // 'New' | 'In Review' | 'Replied'
-  statusUpdatedAt?: Date;     // When status was last changed
-  feedbackProvidedAt?: Date;  // When trainer replied (if status = 'Replied')
+  programId: string;
+  clientId: string;
+  trainerId: string;
+  completionRate: number;           // 0-100%
+  workoutCompletionRate: number;    // 0-100%
+  exerciseSubstitutionCount: number; // How many exercises were swapped
+  missedSessionCount: number;        // Total missed sessions
+  dropOffWeek?: number;              // Week where client typically stops
+  trainerEditsCount: number;         // Manual edits by trainer
+  aiGeneratedSectionsCount: number;  // Sections created by AI
+  clientDifficultyRating?: number;   // 1-10 client feedback
+  performanceNotes?: string;         // Trainer observations
+  lastUpdated: Date;
+  status: 'active' | 'completed' | 'archived';
 }
 ```
 
-### TrainerNotes Collection
+### Recording Metrics
+
 ```typescript
-interface TrainerNotes {
-  _id: string;
-  _createdDate?: Date;
-  _updatedDate?: Date;
-  trainerId?: string;         // Trainer who created the note
-  clientId?: string;          // Client the note is about
-  noteContent?: string;       // Text content
-  noteDate?: Date;            // Timestamp of note
+import { recordProgramMetrics } from '@/lib/program-performance-intelligence';
+
+// Record metrics when program is assigned
+await recordProgramMetrics(
+  programId,
+  clientId,
+  trainerId,
+  {
+    completionRate: 0,
+    workoutCompletionRate: 0,
+    exerciseSubstitutionCount: 0,
+    missedSessionCount: 0,
+    trainerEditsCount: 0,
+    aiGeneratedSectionsCount: 3,
+  }
+);
+
+// Update metrics as program progresses
+await updateProgramMetrics(metricsId, {
+  completionRate: 75,
+  workoutCompletionRate: 80,
+  missedSessionCount: 2,
+  clientDifficultyRating: 7,
+});
+```
+
+### Performance Insights
+
+The system analyzes metrics and generates insights:
+
+```typescript
+import { analyzePerformance } from '@/lib/program-performance-intelligence';
+
+const insights = await analyzePerformance(trainerId);
+// Returns:
+// - High performers (>80% completion)
+// - Low performers (<50% completion)
+// - Drop-off warnings (Week 3-4 pattern)
+// - Volume concerns (>150 total sets)
+// - Engagement issues (high substitution rate)
+```
+
+### Program Insights Panel
+
+**Location**: `/src/components/pages/TrainerDashboard/ProgramInsightsPanel.tsx`
+
+Features:
+- Summary cards (total programs, avg completion, high performers, needs attention)
+- Expandable insight cards with recommendations
+- Affected programs list
+- Suggested actions
+- Performance metrics legend
+
+**Usage**:
+```tsx
+import ProgramInsightsPanel from '@/components/pages/TrainerDashboard/ProgramInsightsPanel';
+
+export default function TrainerHub() {
+  return (
+    <div>
+      <ProgramInsightsPanel />
+    </div>
+  );
 }
 ```
 
-## Security & Privacy
+---
 
-### Trainer Notes Privacy
-- ✅ Notes are NEVER returned to clients
-- ✅ Only trainer who created them can see/edit them
-- ✅ Admins can see all trainer notes
-- ✅ No client-facing API endpoints expose trainer notes
-- ✅ Filter by `trainerId === currentUserId` on all queries
+## 2. Smart Progress Adjustments
 
-### Video Status Visibility
-- ✅ Clients see their own video status only
-- ✅ Trainers see status for assigned clients only
-- ✅ Status is public information (not sensitive)
-- ✅ Feedback dates are visible to clients (encourages engagement)
+### Purpose
+AI suggests intelligent program modifications based on client performance data.
 
-### Email Security
-- ✅ No sensitive data in emails
-- ✅ Portal link requires authentication
-- ✅ Client IDs not exposed in email body
-- ✅ Video URLs not exposed in email (portal link only)
+### Adjustment Types
 
-## File Structure
+The system can suggest:
 
-### New Files Created
+1. **Load Increase** - Client is handling current load well
+2. **Load Decrease** - Client is struggling with intensity
+3. **Volume Increase** - Client wants more work
+4. **Volume Decrease** - Client is fatigued
+5. **Deload Week** - Prevent burnout before drop-off week
+6. **Exercise Swap** - Replace exercises client doesn't like
+7. **Frequency Change** - Adjust training days per week
+
+### Generating Suggestions
+
+```typescript
+import { generateSmartAdjustments } from '@/lib/program-performance-intelligence';
+
+const metrics = await getProgramMetrics(programId);
+const suggestions = await generateSmartAdjustments(
+  programId,
+  clientId,
+  trainerId,
+  metrics
+);
+
+// Returns array of SmartAdjustmentSuggestion objects
+// Each includes:
+// - adjustmentType
+// - rationale
+// - confidence (0-100)
+// - basedOnMetrics (which metrics influenced this)
+// - status ('pending', 'accepted', 'edited', 'ignored')
 ```
-/src/components/pages/TrainerDashboard/TrainerNotesSection.tsx
-/src/components/pages/ClientPortal/MyVideoSubmissionsPage.tsx
-/src/entities/index.ts (updated with new interfaces)
-/src/lib/email-service.ts (updated with compliance)
+
+### Smart Adjustment Card Component
+
+**Location**: `/src/components/pages/TrainerDashboard/SmartAdjustmentCard.tsx`
+
+Features:
+- Displays adjustment suggestion with rationale
+- Shows confidence level (color-coded)
+- Lists metrics that influenced the suggestion
+- Three action buttons:
+  - **Accept**: Apply suggestion as-is
+  - **Edit**: Modify suggestion before applying
+  - **Ignore**: Dismiss suggestion
+- Expandable details section
+
+**Usage**:
+```tsx
+import SmartAdjustmentCard from '@/components/pages/TrainerDashboard/SmartAdjustmentCard';
+
+{suggestions.map(suggestion => (
+  <SmartAdjustmentCard
+    key={suggestion._id}
+    suggestion={suggestion}
+    onAccept={handleAccept}
+    onEdit={handleEdit}
+    onIgnore={handleIgnore}
+  />
+))}
 ```
 
-### Modified Files
+### Recording Trainer Response
+
+```typescript
+import { recordAdjustmentResponse } from '@/lib/program-performance-intelligence';
+
+// Trainer accepts suggestion
+await recordAdjustmentResponse(suggestionId, 'accepted');
+
+// Trainer edits suggestion
+await recordAdjustmentResponse(suggestionId, 'edited', {
+  suggestedValue: '5x5 instead of 3x8',
+});
+
+// Trainer ignores suggestion
+await recordAdjustmentResponse(suggestionId, 'ignored');
 ```
-/src/components/Router.tsx (added route for my-submissions)
-/src/components/pages/TrainerDashboard/VideoReviewsPage.tsx (status system)
-/src/components/pages/ClientPortal/ClientPortalLayout.tsx (added nav item)
+
+---
+
+## 3. Reusable AI Snippets & Presets
+
+### Purpose
+Allow trainers to build a personal library of reusable training blocks and quickly insert them into programs.
+
+### Snippet Types
+
+```typescript
+type SnippetType = 
+  | 'warm-up'        // 5-10 min warm-up routines
+  | 'progression'    // Progression strategies
+  | 'coaching-cue'   // Form cues and tips
+  | 'finisher'       // End-of-workout finishers
+  | 'circuit'        // Circuit-style workouts
+  | 'cooldown'       // Cool-down routines
+  | 'mobility';      // Mobility/flexibility work
+
+type SnippetCategory = 
+  | 'strength'
+  | 'hypertrophy'
+  | 'endurance'
+  | 'mobility'
+  | 'recovery'
+  | 'general';
 ```
+
+### Creating Snippets
+
+```typescript
+import { createSnippet } from '@/lib/ai-snippets-manager';
+
+const snippet = await createSnippet(trainerId, {
+  snippetName: '5-Minute Dynamic Warm-up',
+  snippetType: 'warm-up',
+  content: `
+    1. Arm circles: 10 each direction
+    2. Leg swings: 10 each leg, each direction
+    3. Bodyweight squats: 15 reps
+    4. Push-ups: 10 reps
+    5. Jumping jacks: 20 reps
+  `,
+  category: 'general',
+  tags: ['quick', 'no-equipment', 'energizing'],
+  description: 'Quick warm-up for any workout',
+  isShared: false,
+});
+```
+
+### Managing Snippets
+
+```typescript
+import {
+  getTrainerSnippets,
+  getSnippetsByType,
+  getSnippetsByCategory,
+  searchSnippetsByTag,
+  updateSnippet,
+  deleteSnippet,
+  duplicateSnippet,
+  incrementUsageCount,
+  shareSnippetWithTeam,
+} from '@/lib/ai-snippets-manager';
+
+// Get all snippets for trainer
+const snippets = await getTrainerSnippets(trainerId);
+
+// Filter by type
+const warmups = await getSnippetsByType(trainerId, 'warm-up');
+
+// Search by tag
+const quickSnippets = await searchSnippetsByTag(trainerId, 'quick');
+
+// Duplicate for variations
+const copy = await duplicateSnippet(snippetId, trainerId, 'New Warm-up');
+
+// Share with team
+await shareSnippetWithTeam(snippetId, ['trainer-2', 'trainer-3']);
+
+// Track usage
+await incrementUsageCount(snippetId);
+```
+
+### AI Snippets Library Component
+
+**Location**: `/src/components/pages/TrainerDashboard/AISnippetsLibrary.tsx`
+
+Features:
+- Summary cards (total snippets, by type, by category)
+- Create new snippet form
+- Search and filter functionality
+- Snippet cards with:
+  - Name, type, category, tags
+  - Usage count
+  - Description
+  - Preview of content
+  - Duplicate and delete buttons
+- Most used and recently added lists
+
+**Usage**:
+```tsx
+import AISnippetsLibrary from '@/components/pages/TrainerDashboard/AISnippetsLibrary';
+
+export default function SnippetsPage() {
+  return <AISnippetsLibrary />;
+}
+```
+
+### Library Summary
+
+```typescript
+import { getSnippetLibrarySummary } from '@/lib/ai-snippets-manager';
+
+const summary = await getSnippetLibrarySummary(trainerId);
+// Returns:
+// {
+//   totalSnippets: 24,
+//   byType: { 'warm-up': 5, 'finisher': 3, ... },
+//   byCategory: { 'strength': 8, 'mobility': 4, ... },
+//   mostUsed: [...],
+//   recentlyAdded: [...]
+// }
+```
+
+---
+
+## 4. Multi-Trainer / Team Mode Foundations
+
+### Purpose
+Enable teams of trainers to work together with shared resources and approval workflows.
+
+### Team Roles
+
+```typescript
+type TeamRole = 'head-coach' | 'trainer' | 'assistant';
+
+// Head Coach: Full access, can approve templates
+// Trainer: Can create/edit own programs, limited sharing
+// Assistant: Read-only access to team resources
+```
+
+### Role-Based Permissions
+
+```typescript
+import { getRolePermissions, hasPermission } from '@/lib/team-management';
+
+// Get all permissions for a role
+const permissions = getRolePermissions('trainer');
+
+// Check specific permission
+const canApprove = hasPermission(permissions, 'templates', 'approve');
+// Returns: false for 'trainer', true for 'head-coach'
+```
+
+### Permission Matrix
+
+| Resource | Action | Head Coach | Trainer | Assistant |
+|----------|--------|-----------|---------|-----------|
+| Programs | Create | ✅ | ✅ | ❌ |
+| Programs | Approve | ✅ | ❌ | ❌ |
+| Programs | Share | ✅ | ❌ | ❌ |
+| Templates | Create | ✅ | ✅ | ❌ |
+| Templates | Approve | ✅ | ❌ | ❌ |
+| Templates | Delete | ✅ | ❌ | ❌ |
+| Snippets | Create | ✅ | ✅ | ❌ |
+| Snippets | Share | ✅ | ❌ | ❌ |
+| Team | Manage | ✅ | ❌ | ❌ |
+| Analytics | View | ✅ | ✅ | ❌ |
+
+### Program Templates
+
+Templates allow teams to standardize program structures:
+
+```typescript
+import { createProgramTemplate, approveProgramTemplate } from '@/lib/team-management';
+
+// Trainer creates template
+const template = await createProgramTemplate(
+  'Upper/Lower Split',
+  'Classic 4-day upper/lower program',
+  programData,
+  trainerId,
+  isShared = true  // Submit for approval
+);
+// Status: 'pending-approval'
+
+// Head Coach approves
+await approveProgramTemplate(
+  templateId,
+  headCoachId,
+  'Great structure, approved for team use'
+);
+// Status: 'approved'
+
+// Now available to all team members
+const templates = await getProgramTemplates(undefined, teamId, 'approved');
+```
+
+### Team Style Presets
+
+Standardize training preferences across team:
+
+```typescript
+import { createTeamStylePreset, getTeamStylePresets } from '@/lib/team-management';
+
+// Head Coach creates team preset
+const preset = await createTeamStylePreset(
+  'Team Strength Focus',
+  {
+    strength: '3-5',
+    hypertrophy: '6-8',
+    endurance: '12-15',
+  },
+  {
+    strength: 180,
+    hypertrophy: 90,
+    endurance: 45,
+  },
+  ['Barbell Squat', 'Barbell Bench Press', 'Barbell Deadlift'],
+  'technical',
+  headCoachId,
+  teamId,
+  isShared = true
+);
+
+// All trainers can use this preset
+const presets = await getTeamStylePresets(undefined, teamId);
+```
+
+### Approval Workflow
+
+1. **Trainer** creates template and marks as "shared"
+2. **System** changes status to "pending-approval"
+3. **Head Coach** reviews template
+4. **Head Coach** approves or rejects with notes
+5. **Status** changes to "approved" or "rejected"
+6. **Team** can use approved templates
+
+```typescript
+// Reject with feedback
+await rejectProgramTemplate(
+  templateId,
+  headCoachId,
+  'Volume is too high for beginners. Please reduce by 20%.'
+);
+// Status: 'rejected'
+// Trainer can revise and resubmit
+```
+
+### Shared Team Resources
+
+```typescript
+import { getSharedTeamResources } from '@/lib/team-management';
+
+const resources = await getSharedTeamResources(teamId);
+// Returns:
+// {
+//   templates: [...approved templates...],
+//   presets: [...team presets...],
+//   snippets: [...shared snippets...] (from AI Snippets Manager)
+// }
+```
+
+---
 
 ## Integration Points
 
-### Adding Trainer Notes to Client Progress Page
-```typescript
-import TrainerNotesSection from '@/components/pages/TrainerDashboard/TrainerNotesSection';
+### With Program Editor
 
-// In ClientProgressPage or similar:
-<TrainerNotesSection clientId={clientId} clientName={clientName} />
+Smart adjustments appear as inline cards in the Program Editor:
+
+```tsx
+// In ProgramEditorEnhanced.tsx
+const suggestions = await generateSmartAdjustments(...);
+
+{suggestions.map(suggestion => (
+  <SmartAdjustmentCard
+    suggestion={suggestion}
+    onAccept={handleAcceptAdjustment}
+    onEdit={handleEditAdjustment}
+    onIgnore={handleIgnoreAdjustment}
+  />
+))}
 ```
 
-### Updating Video Status
-```typescript
-// When trainer marks video as reviewed:
-const statusData: VideoSubmissionStatus = {
-  _id: existingStatus?._id || crypto.randomUUID(),
-  videoId,
-  clientId,
-  status: 'In Review',
-  statusUpdatedAt: new Date(),
-};
+### With AI Program Generator
 
-if (existingStatus) {
-  await BaseCrudService.update('videosubmissionstatus', statusData);
-} else {
-  await BaseCrudService.create('videosubmissionstatus', statusData);
+AI uses snippets and team presets during generation:
+
+```typescript
+// In AI generation prompt
+const snippets = await getTrainerSnippets(trainerId);
+const teamPresets = await getTeamStylePresets(undefined, teamId);
+
+// Include in prompt:
+// "Use these preferred warm-ups: [snippets]"
+// "Follow this style: [teamPresets]"
+```
+
+### With Trainer Dashboard
+
+All three components integrate into trainer hub:
+
+```tsx
+export default function TrainerHub() {
+  return (
+    <div className="space-y-8">
+      <ProgramInsightsPanel />
+      
+      <div>
+        <h2>Suggested Adjustments</h2>
+        {suggestions.map(s => <SmartAdjustmentCard {...s} />)}
+      </div>
+      
+      <AISnippetsLibrary />
+    </div>
+  );
 }
 ```
 
-### Sending Compliant Email
-```typescript
-await sendVideoUploadNotification(
-  trainerEmail,
-  trainerName,
-  clientId,
-  'Squat Form Check',
-  videoUrl,
-  'Strength Training'  // Category
-);
+---
+
+## Data Flow
+
+### Program Lifecycle with Intelligence
+
+```
+1. Trainer creates program (AI uses snippets + team presets)
+   ↓
+2. Program assigned to client
+   ↓
+3. Metrics recorded as client progresses
+   ↓
+4. System analyzes metrics (weekly/on-demand)
+   ↓
+5. Smart adjustments generated
+   ↓
+6. Trainer reviews and accepts/edits/ignores
+   ↓
+7. Program updated with adjustments
+   ↓
+8. New version created (if shared)
+   ↓
+9. Head Coach approves (if team template)
+   ↓
+10. Template available to all trainers
 ```
 
-## Testing Checklist
+---
 
-### Trainer Review Queue
-- [ ] New videos show with "New" status by default
-- [ ] Status persists after page refresh
-- [ ] Trainer can change status via dropdown
-- [ ] Status update shows loading state
-- [ ] Filter by status works correctly
-- [ ] New videos highlighted visually
-- [ ] Time waiting indicator shows correct time
-- [ ] Empty state displays when no videos
+## Configuration & Customization
 
-### Trainer Notes
-- [ ] Can add new note
-- [ ] Note appears immediately after save
-- [ ] Can edit existing note
-- [ ] Can delete note with confirmation
-- [ ] Notes sorted by most recent first
-- [ ] Timestamps display correctly
-- [ ] Privacy notice visible
-- [ ] Notes don't appear in client-facing pages
+### Adjustment Confidence Thresholds
 
-### Client Upload History
-- [ ] Client can see all their submissions
-- [ ] Status displays correctly for each video
-- [ ] Filter by status works
-- [ ] Feedback date shows when status is "Replied"
-- [ ] No trainer notes visible
-- [ ] CTA to submit another video works
-- [ ] Empty state displays when no submissions
+```typescript
+// In generateSmartAdjustments()
+const CONFIDENCE_THRESHOLDS = {
+  'load-increase': 85,      // High confidence needed
+  'load-decrease': 90,      // Very high confidence
+  'deload-week': 80,        // Moderate-high
+  'exercise-swap': 75,      // Moderate
+  'frequency-change': 85,   // High
+};
+```
 
-### Email Compliance
-- [ ] Email subject is "New video submitted for review"
-- [ ] Email body includes trainer name
-- [ ] Email body includes exercise title
-- [ ] Email body includes category
-- [ ] Email body includes submitted date/time
-- [ ] Email body has CTA to portal
-- [ ] No health metrics in email
-- [ ] No photos in email
-- [ ] No client ID in email body
+### Performance Insight Thresholds
 
-### Security
-- [ ] Trainer notes not visible to clients
-- [ ] Clients only see their own submissions
-- [ ] Trainers only see assigned clients' videos
-- [ ] Status updates require authentication
-- [ ] No sensitive data in emails
+```typescript
+// In analyzePerformance()
+const THRESHOLDS = {
+  HIGH_PERFORMER: 80,       // 80%+ completion
+  LOW_PERFORMER: 50,        // <50% completion
+  DROP_OFF_WEEK: 4,         // Week 4 or earlier
+  EXCESSIVE_VOLUME: 150,    // Total sets
+  HIGH_SUBSTITUTION: 5,     // Exercise swaps
+};
+```
 
-## Acceptance Criteria (SIGN-OFF)
+### Snippet Usage Tracking
 
-✅ **Trainers can clearly see what needs review**
-- New videos highlighted with status badge
-- Count of new videos displayed
-- Filter by status available
-- Time waiting indicator shows urgency
+Automatically incremented when:
+- Snippet inserted into program
+- Program generated using snippet
+- Snippet used in AI prompt
 
-✅ **Trainers can keep private notes per client**
-- TrainerNotesSection component created
-- Notes are private to trainer only
-- Notes are editable and timestamped
-- Notes persist in database
+---
 
-✅ **Clients can see upload history + status**
-- MyVideoSubmissionsPage created
-- Shows all client submissions
-- Displays current status
-- Shows feedback date when available
-- No trainer notes visible
+## Best Practices
 
-✅ **Emails remain clean, minimal, and reliable**
-- Subject: "New video submitted for review"
-- Body: Trainer name, exercise, category, date, CTA
-- No health metrics, measurements, or photos
-- Portal link for all details
+### For Trainers
 
-✅ **No regression in Phase 1 or Phase 2 features**
-- Video upload still works
-- Trainer messages still work
-- Client progress tracking still works
-- All existing routes still functional
+1. **Record Metrics Regularly**
+   - Update completion rates weekly
+   - Log client difficulty feedback
+   - Track missed sessions
 
-## Notes for Future Phases
+2. **Review Insights**
+   - Check insights panel weekly
+   - Act on drop-off warnings early
+   - Document why you accept/reject adjustments
 
-### Phase 4 Potential Features (OUT OF SCOPE)
-- Video annotation tools
-- Real-time notifications (WebSocket)
-- Live chat
-- Advanced analytics/charts
-- Custom program builders
-- Mobile app logic
-- Wix Studio migration
+3. **Build Snippet Library**
+   - Create snippets for your most-used blocks
+   - Tag snippets for easy searching
+   - Duplicate and modify for variations
 
-### Improvements to Consider
-- SLA tracking (e.g., "Waiting 18h - respond soon")
-- Bulk status updates
-- Note templates
-- Video tagging system
-- Trainer workload dashboard
-- Client engagement metrics
+4. **Use Team Resources**
+   - Leverage approved templates
+   - Follow team style presets
+   - Share successful snippets with team
+
+### For Head Coaches
+
+1. **Approve Templates Promptly**
+   - Review within 48 hours
+   - Provide constructive feedback
+   - Establish team standards
+
+2. **Create Team Presets**
+   - Define rep ranges for team
+   - Set coaching tone standards
+   - Curate favorite exercises
+
+3. **Monitor Performance**
+   - Review team analytics
+   - Identify patterns across trainers
+   - Share best practices
+
+---
+
+## Troubleshooting
+
+### Metrics Not Recording
+- Ensure `recordProgramMetrics()` called when program assigned
+- Check that programId, clientId, trainerId are valid
+- Verify collection exists in database
+
+### Adjustments Not Generating
+- Check that metrics exist for program
+- Ensure metrics have sufficient data (not all zeros)
+- Verify confidence thresholds aren't too high
+
+### Snippets Not Appearing
+- Confirm snippets created with correct trainerId
+- Check search filters aren't too restrictive
+- Verify snippet content isn't empty
+
+### Approval Workflow Issues
+- Ensure user has 'head-coach' role
+- Check template status is 'pending-approval'
+- Verify teamId matches
+
+---
+
+## Future Enhancements
+
+1. **Advanced Analytics**
+   - Trainer comparison metrics
+   - Client outcome predictions
+   - Program success patterns
+
+2. **Automated Adjustments**
+   - Auto-apply low-risk adjustments
+   - Scheduled deload weeks
+   - Progressive overload automation
+
+3. **AI Learning**
+   - Learn from trainer decisions
+   - Improve suggestion accuracy
+   - Personalized recommendations
+
+4. **Team Collaboration**
+   - Real-time program editing
+   - Trainer notes and comments
+   - Program sharing between trainers
+
+5. **Client Feedback Integration**
+   - In-app difficulty ratings
+   - Exercise preference tracking
+   - Automated feedback collection
+
+---
+
+## Support & Questions
+
+For implementation questions:
+- Review code examples in this document
+- Check component prop types
+- Examine test files for usage patterns
+
+For feature requests:
+- Document use case
+- Describe expected behavior
+- Provide example data
+
+---
+
+## Summary
+
+Phase 3 transforms the AI Program Assistant into an intelligent, adaptive system that:
+
+✅ **Tracks** program performance with detailed metrics  
+✅ **Analyzes** performance to identify patterns and issues  
+✅ **Suggests** smart adjustments based on data  
+✅ **Learns** from trainer decisions  
+✅ **Scales** across teams with role-based permissions  
+✅ **Standardizes** with shared templates and presets  
+✅ **Reuses** training blocks via snippet library  
+
+All while maintaining trainer control and approval at every step.

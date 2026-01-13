@@ -314,3 +314,73 @@ export interface TrainerQualifications {
   /** @wixFieldType text */
   relevance?: string;
 }
+
+
+/**
+ * Collection ID: programperformancemetrics
+ * Interface for ProgramPerformanceMetrics
+ */
+export interface ProgramPerformanceMetrics {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  programId?: string;
+  /** @wixFieldType text */
+  clientId?: string;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType number */
+  completionRate?: number;
+  /** @wixFieldType number */
+  workoutCompletionRate?: number;
+  /** @wixFieldType number */
+  exerciseSubstitutionCount?: number;
+  /** @wixFieldType number */
+  missedSessionCount?: number;
+  /** @wixFieldType number */
+  dropOffWeek?: number;
+  /** @wixFieldType number */
+  trainerEditsCount?: number;
+  /** @wixFieldType number */
+  aiGeneratedSectionsCount?: number;
+  /** @wixFieldType number */
+  clientDifficultyRating?: number;
+  /** @wixFieldType text */
+  performanceNotes?: string;
+  /** @wixFieldType datetime */
+  lastUpdated?: Date | string;
+  /** @wixFieldType text */
+  status?: string;
+}
+
+
+/**
+ * Collection ID: traineraisnippets
+ * Interface for TrainerAISnippets
+ */
+export interface TrainerAISnippets {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType text */
+  snippetName?: string;
+  /** @wixFieldType text */
+  snippetType?: string;
+  /** @wixFieldType text */
+  content?: string;
+  /** @wixFieldType text */
+  category?: string;
+  /** @wixFieldType number */
+  usageCount?: number;
+  /** @wixFieldType boolean */
+  isShared?: boolean;
+  /** @wixFieldType text */
+  sharedWithTeamIds?: string;
+  /** @wixFieldType text */
+  tags?: string;
+  /** @wixFieldType text */
+  description?: string;
+}
