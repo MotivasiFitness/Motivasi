@@ -3,8 +3,14 @@ import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { Programs, TrainerClientAssignments } from '@/entities';
 import { useNavigate } from 'react-router-dom';
-import { AlertCircle, CheckCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle, Sparkles, Loader, X } from 'lucide-react';
 import { getTrainerClients } from '@/lib/role-utils';
+import {
+  generateProgramDescription,
+  generateFallbackDescription,
+  validateDescription,
+  formatDescription,
+} from '@/lib/ai-description-generator';
 
 export default function CreateProgramPage() {
   const { member } = useMember();
@@ -14,6 +20,10 @@ export default function CreateProgramPage() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [assignedClients, setAssignedClients] = useState<TrainerClientAssignments[]>([]);
   const [loadingClients, setLoadingClients] = useState(true);
+  const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
+  const [descriptionError, setDescriptionError] = useState('');
+  const [showReplacePrompt, setShowReplacePrompt] = useState(false);
+  const [pendingDescription, setPendingDescription] = useState('');
 
   const [formData, setFormData] = useState({
     programName: '',
@@ -50,6 +60,109 @@ export default function CreateProgramPage() {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleGenerateDescription = async () => {
+    setIsGeneratingDescription(true);
+    setDescriptionError('');
+    setPendingDescription('');
+
+    try {
+      // Validate required fields
+      if (!formData.programName.trim()) {
+        setDescriptionError('Please enter a program name first');
+        setIsGeneratingDescription(false);
+        return;
+      }
+
+      if (!formData.duration.trim()) {
+        setDescriptionError('Please enter a program duration first');
+        setIsGeneratingDescription(false);
+        return;
+      }
+
+      if (!formData.focusArea.trim()) {
+        setDescriptionError('Please select a focus area first');
+        setIsGeneratingDescription(false);
+        return;
+      }
+
+      // Generate description
+      const generatedResult = await generateProgramDescription({
+        programTitle: formData.programName,
+        duration: formData.duration,
+        focusArea: formData.focusArea,
+        trainingStyle: 'personalized and progressive',
+        clientGoals: formData.focusArea,
+      });
+
+      const formattedDescription = formatDescription(generatedResult.description);
+
+      // Validate generated description
+      const validation = validateDescription(formattedDescription);
+      if (!validation.isValid) {
+        throw new Error(validation.errors.join(', '));
+      }
+
+      // If there's existing description, show replace prompt
+      if (formData.description.trim()) {
+        setPendingDescription(formattedDescription);
+        setShowReplacePrompt(true);
+      } else {
+        // No existing description, insert directly
+        setFormData((prev) => ({
+          ...prev,
+          description: formattedDescription,
+        }));
+      }
+    } catch (error) {
+      console.error('Error generating description:', error);
+
+      // Try fallback generation
+      try {
+        const fallback = generateFallbackDescription({
+          programTitle: formData.programName,
+          duration: formData.duration,
+          focusArea: formData.focusArea,
+        });
+
+        const formattedFallback = formatDescription(fallback.description);
+
+        if (formData.description.trim()) {
+          setPendingDescription(formattedFallback);
+          setShowReplacePrompt(true);
+        } else {
+          setFormData((prev) => ({
+            ...prev,
+            description: formattedFallback,
+          }));
+        }
+
+        setDescriptionError(
+          'Used fallback description. You can edit it as needed.'
+        );
+      } catch (fallbackError) {
+        setDescriptionError(
+          'Failed to generate description. Please write one manually.'
+        );
+      }
+    } finally {
+      setIsGeneratingDescription(false);
+    }
+  };
+
+  const handleReplaceDescription = () => {
+    setFormData((prev) => ({
+      ...prev,
+      description: pendingDescription,
+    }));
+    setShowReplacePrompt(false);
+    setPendingDescription('');
+  };
+
+  const handleKeepExisting = () => {
+    setShowReplacePrompt(false);
+    setPendingDescription('');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -135,6 +248,34 @@ export default function CreateProgramPage() {
           </div>
         )}
 
+        {/* Replace Description Prompt Modal */}
+        {showReplacePrompt && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-soft-white rounded-2xl p-8 max-w-md w-full">
+              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
+                Replace Description?
+              </h3>
+              <p className="font-paragraph text-base text-warm-grey mb-6">
+                You already have a description. Would you like to replace it with the AI-generated one?
+              </p>
+              <div className="flex gap-4">
+                <button
+                  onClick={handleReplaceDescription}
+                  className="flex-1 bg-soft-bronze text-soft-white py-2 rounded-lg font-medium hover:bg-soft-bronze/90 transition-colors"
+                >
+                  Replace
+                </button>
+                <button
+                  onClick={handleKeepExisting}
+                  className="flex-1 bg-warm-sand-beige text-charcoal-black py-2 rounded-lg font-medium hover:bg-warm-sand-beige/80 transition-colors"
+                >
+                  Keep Existing
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Form */}
         <form onSubmit={handleSubmit} className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
           <div className="space-y-8">
@@ -154,11 +295,45 @@ export default function CreateProgramPage() {
               />
             </div>
 
-            {/* Description */}
+            {/* Description with AI Generate Button */}
             <div>
-              <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
-                Description
-              </label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block font-paragraph text-sm font-medium text-charcoal-black">
+                  Description
+                </label>
+                <button
+                  type="button"
+                  onClick={handleGenerateDescription}
+                  disabled={
+                    isGeneratingDescription ||
+                    !formData.programName.trim() ||
+                    !formData.duration.trim() ||
+                    !formData.focusArea.trim()
+                  }
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-soft-bronze text-soft-white font-medium text-sm hover:bg-soft-bronze/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isGeneratingDescription ? (
+                    <>
+                      <Loader size={16} className="animate-spin" />
+                      Generating...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles size={16} />
+                      Generate with AI
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Description Error */}
+              {descriptionError && (
+                <div className="mb-3 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2">
+                  <AlertCircle className="text-amber-600 flex-shrink-0" size={16} />
+                  <p className="font-paragraph text-xs text-amber-800">{descriptionError}</p>
+                </div>
+              )}
+
               <textarea
                 name="description"
                 value={formData.description}
@@ -167,6 +342,9 @@ export default function CreateProgramPage() {
                 className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph resize-none"
                 placeholder="Describe the program goals and approach..."
               />
+              <p className="text-xs text-warm-grey mt-2">
+                AI can generate a description based on the program name, duration, and focus area.
+              </p>
             </div>
 
             {/* Client Selection */}
