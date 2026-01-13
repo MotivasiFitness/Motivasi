@@ -6,6 +6,7 @@ import { Users, BookOpen, MessageSquare, TrendingUp, Video } from 'lucide-react'
 import { Link } from 'react-router-dom';
 import WeeklyRetentionSnapshot from './WeeklyRetentionSnapshot';
 import WeeklyCoachNotesPanel from './WeeklyCoachNotesPanel';
+import AtRiskClientSurfacing from './AtRiskClientSurfacing';
 
 export default function TrainerDashboardPage() {
   const { member } = useMember();
@@ -141,6 +142,11 @@ export default function TrainerDashboardPage() {
         {/* Weekly Retention Snapshot */}
         <div className="mb-12">
           <WeeklyRetentionSnapshot />
+        </div>
+
+        {/* At-Risk Client Surfacing - PRIORITY SECTION */}
+        <div className="mb-12">
+          <AtRiskClientSurfacing />
         </div>
 
         {/* Weekly Coach Notes Panel */}
