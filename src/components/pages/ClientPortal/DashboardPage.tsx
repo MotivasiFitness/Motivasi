@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { ClientBookings, ProgressCheckins, NutritionGuidance, ClientPrograms } from '@/entities';
-import { Calendar, CheckCircle, TrendingUp, Zap, Heart, ArrowRight } from 'lucide-react';
+import { ClientBookings, ProgressCheckins, NutritionGuidance, ClientPrograms, WeeklyCoachesNotes } from '@/entities';
+import { Calendar, CheckCircle, TrendingUp, Zap, Heart, ArrowRight, MessageCircle } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { Link } from 'react-router-dom';
 import ProgramCompletionRing from '@/components/ClientPortal/ProgramCompletionRing';
@@ -13,6 +13,7 @@ export default function DashboardPage() {
   const [latestCheckIn, setLatestCheckIn] = useState<ProgressCheckins | null>(null);
   const [programs, setPrograms] = useState<ClientPrograms[]>([]);
   const [completedWorkouts, setCompletedWorkouts] = useState<number>(0);
+  const [weeklyCoachNote, setWeeklyCoachNote] = useState<WeeklyCoachesNotes | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -47,6 +48,24 @@ export default function DashboardPage() {
         // Calculate completed workouts (unique workout days)
         const uniqueDays = new Set(programItems.map(p => p.workoutDay));
         setCompletedWorkouts(Math.floor(uniqueDays.size * 0.6)); // Mock: 60% completion for demo
+
+        // Fetch current week's coach note
+        const { items: coachNotes } = await BaseCrudService.getAll<WeeklyCoachesNotes>('weeklycoachesnotes');
+        const today = new Date();
+        const day = today.getDay();
+        const diff = today.getDate() - day + (day === 0 ? -6 : 1);
+        const weekStart = new Date(today.setDate(diff));
+        weekStart.setHours(0, 0, 0, 0);
+        const weekStartStr = weekStart.toISOString().split('T')[0];
+
+        const currentWeekNote = coachNotes.find(
+          n =>
+            n.clientId === member._id &&
+            n.isPublished &&
+            n.weekStartDate &&
+            new Date(n.weekStartDate).toISOString().split('T')[0] === weekStartStr
+        );
+        setWeeklyCoachNote(currentWeekNote || null);
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
       } finally {
@@ -67,6 +86,30 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8 bg-warm-sand-beige/40 min-h-screen p-8 rounded-2xl">
+      {/* Weekly Coach Note - If Available */}
+      {weeklyCoachNote && weeklyCoachNote.noteContent && (
+        <div className="bg-gradient-to-r from-soft-bronze/10 to-soft-bronze/5 border-l-4 border-soft-bronze rounded-2xl p-6">
+          <div className="flex gap-4">
+            <MessageCircle className="w-6 h-6 text-soft-bronze flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h2 className="font-heading text-lg font-bold text-charcoal-black mb-2">
+                This Week's Note from Your Coach
+              </h2>
+              <p className="font-paragraph text-charcoal-black leading-relaxed">
+                {weeklyCoachNote.noteContent}
+              </p>
+              <p className="text-xs text-warm-grey mt-3">
+                Updated {new Date(weeklyCoachNote.lastUpdated || '').toLocaleDateString('en-GB', {
+                  weekday: 'long',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Welcome Section with Primary CTA */}
       <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">

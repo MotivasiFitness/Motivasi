@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { ClientPrograms, ClientAssignedWorkouts } from '@/entities';
-import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight, Volume2, AlertCircle } from 'lucide-react';
+import { ClientPrograms, ClientAssignedWorkouts, WeeklyCoachesNotes } from '@/entities';
+import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight, Volume2, AlertCircle, MessageCircle } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import PostWorkoutFeedbackPrompt from '@/components/ClientPortal/PostWorkoutFeedbackPrompt';
 import ProgramCompletionRing from '@/components/ClientPortal/ProgramCompletionRing';
@@ -55,6 +55,7 @@ export default function MyProgramPage() {
   const [showCompletionRing, setShowCompletionRing] = useState(false);
   const [ringAnimationTrigger, setRingAnimationTrigger] = useState(false);
   const [useNewSystem, setUseNewSystem] = useState(false);
+  const [weeklyCoachNote, setWeeklyCoachNote] = useState<WeeklyCoachesNotes | null>(null);
 
   // Rest timer effect
   useEffect(() => {

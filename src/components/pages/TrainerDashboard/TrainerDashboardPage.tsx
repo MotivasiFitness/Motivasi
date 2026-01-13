@@ -5,6 +5,7 @@ import { FitnessPrograms } from '@/entities';
 import { Users, BookOpen, MessageSquare, TrendingUp, Video } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import WeeklyRetentionSnapshot from './WeeklyRetentionSnapshot';
+import WeeklyCoachNotesPanel from './WeeklyCoachNotesPanel';
 
 export default function TrainerDashboardPage() {
   const { member } = useMember();
@@ -140,6 +141,11 @@ export default function TrainerDashboardPage() {
         {/* Weekly Retention Snapshot */}
         <div className="mb-12">
           <WeeklyRetentionSnapshot />
+        </div>
+
+        {/* Weekly Coach Notes Panel */}
+        <div className="mb-12">
+          <WeeklyCoachNotesPanel />
         </div>
 
         {/* Recent Programs */}

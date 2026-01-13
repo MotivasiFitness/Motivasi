@@ -314,3 +314,26 @@ export interface TrainerQualifications {
   /** @wixFieldType text */
   relevance?: string;
 }
+
+
+/**
+ * Collection ID: weeklycoachesnotes
+ * Interface for WeeklyCoachesNotes
+ */
+export interface WeeklyCoachesNotes {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  clientId?: string;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType date */
+  weekStartDate?: Date | string;
+  /** @wixFieldType text */
+  noteContent?: string;
+  /** @wixFieldType datetime */
+  lastUpdated?: Date | string;
+  /** @wixFieldType boolean */
+  isPublished?: boolean;
+}
