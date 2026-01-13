@@ -50,6 +50,7 @@ import ClientProgressPage from '@/components/pages/TrainerDashboard/ClientProgre
 
 import AdminDashboard from '@/components/pages/AdminDashboard';
 import ExerciseVideoReviewPage from '@/components/pages/ExerciseVideoReviewPage';
+import TrainerAssignmentMigration from '@/components/pages/TrainerAssignmentMigration';
 
 // Main Layout with Header and Footer
 function SiteLayout() {
@@ -284,6 +285,14 @@ const router = createBrowserRouter([
         element: (
           <MemberProtectedRoute>
             <AdminDashboard />
+          </MemberProtectedRoute>
+        ),
+      },
+      {
+        path: "admin/trainer-assignment",
+        element: (
+          <MemberProtectedRoute>
+            <TrainerAssignmentMigration />
           </MemberProtectedRoute>
         ),
       },
