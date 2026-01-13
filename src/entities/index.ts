@@ -314,3 +314,27 @@ export interface TrainerQualifications {
   /** @wixFieldType text */
   relevance?: string;
 }
+
+
+/**
+ * Collection ID: clientprofiles
+ * Interface for ClientProfiles
+ * Stores client name information for display across the app
+ */
+export interface ClientProfiles {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  memberId?: string;
+  /** @wixFieldType text */
+  firstName?: string;
+  /** @wixFieldType text */
+  lastName?: string;
+  /** @wixFieldType text */
+  displayName?: string;
+  /** @wixFieldType text */
+  email?: string;
+  /** @wixFieldType image */
+  profilePhoto?: string;
+}

@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Send, Loader, AlertCircle, CheckCircle } from 'lucide-react';
 import { sendCoachCheckInMessage, getCheckInMessageTemplate } from '@/lib/coach-checkin-service';
 import { AdherenceStatus } from '@/lib/adherence-tracking';
+import { getClientDisplayName } from '@/lib/client-profile-service';
 
 interface CoachCheckInModalProps {
   clientId: string;
@@ -24,6 +25,15 @@ export default function CoachCheckInModal({
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
+  const [clientName, setClientName] = useState<string>('');
+
+  useEffect(() => {
+    const loadClientName = async () => {
+      const name = await getClientDisplayName(clientId);
+      setClientName(name);
+    };
+    loadClientName();
+  }, [clientId]);
 
   const handleSend = async () => {
     if (!message.trim()) {
@@ -79,6 +89,8 @@ export default function CoachCheckInModal({
               Send Check-In Message
             </h2>
             <p className="font-paragraph text-sm text-warm-grey mt-1">
+              {clientName && <span className="font-medium">{clientName}</span>}
+              {clientName && reasonDescription && ' • '}
               {reasonDescription}
             </p>
           </div>

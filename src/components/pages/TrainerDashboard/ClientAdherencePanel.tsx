@@ -30,6 +30,7 @@ import {
   getFollowUpMessageTemplates,
   dismissFollowUpReminder,
 } from '@/lib/coach-checkin-service';
+import { getClientDisplayName } from '@/lib/client-profile-service';
 
 interface ClientAdherenceData extends ClientAdherenceSignal {
   clientName?: string;
@@ -141,8 +142,12 @@ export default function ClientAdherencePanel() {
                 sentAt: new Date(m.sentAt || new Date()),
               }));
 
+            // Get client display name
+            const clientName = await getClientDisplayName(signal.clientId);
+
             return {
               ...signal,
+              clientName,
               activitySummary,
               recentDifficultyAvg,
               recentMessages: clientMessages,
@@ -274,8 +279,12 @@ export default function ClientAdherencePanel() {
               sentAt: new Date(m.sentAt || new Date()),
             }));
 
+          // Get client display name
+          const clientName = await getClientDisplayName(signal.clientId);
+
           return {
             ...signal,
+            clientName,
             activitySummary,
             recentDifficultyAvg,
             recentMessages: clientMessages,
@@ -367,7 +376,7 @@ export default function ClientAdherencePanel() {
                 {getStatusIcon(client.status)}
                 <div className="text-left flex-1">
                   <h4 className="font-heading text-lg font-bold text-charcoal-black">
-                    Client {client.clientId.slice(0, 8)}
+                    {client.clientName || `Client ${client.clientId.slice(0, 8)}`}
                   </h4>
                   <p className="font-paragraph text-sm text-charcoal-black/70">
                     {client.noResponseLabel || client.reason || 'Status: ' + client.status}

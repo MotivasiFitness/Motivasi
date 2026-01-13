@@ -23,8 +23,10 @@ import {
   getFollowUpReminders,
   dismissFollowUpReminder,
 } from '@/lib/coach-checkin-service';
+import { getClientDisplayName } from '@/lib/client-profile-service';
 
 interface ClientReviewData extends ClientAdherenceSignal {
+  clientName?: string;
   activitySummary?: {
     completed: number;
     missed: number;
@@ -83,9 +85,11 @@ export default function ClientsToReviewSection() {
             const activitySummary = await getActivitySummary(signal.clientId, '');
             const recentFeedback = await getRecentFeedback(signal.clientId, '', 7);
             const lastFeedbackNote = recentFeedback[0]?.feedbackNote;
+            const clientName = await getClientDisplayName(signal.clientId);
 
             return {
               ...signal,
+              clientName,
               activitySummary,
               lastFeedbackNote,
             };
@@ -223,7 +227,7 @@ export default function ClientsToReviewSection() {
                 {getStatusIcon(client.status)}
                 <div className="flex-1">
                   <h4 className="font-heading text-lg font-bold text-charcoal-black">
-                    Client {client.clientId.slice(0, 8)}
+                    {client.clientName || `Client ${client.clientId.slice(0, 8)}`}
                   </h4>
                   <p className="font-paragraph text-sm text-charcoal-black/70">
                     {client.noResponseLabel || client.reason || client.status}
