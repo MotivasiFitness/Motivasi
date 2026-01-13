@@ -51,6 +51,7 @@ import AIAssistantPage from '@/components/pages/TrainerDashboard/AIAssistantPage
 import ProgramEditorPage from '@/components/pages/TrainerDashboard/ProgramEditorPage';
 import ProgramEditorEnhanced from '@/components/pages/TrainerDashboard/ProgramEditorEnhanced';
 import TrainerPreferencesPage from '@/components/pages/TrainerDashboard/TrainerPreferencesPage';
+import WorkoutAssignmentPage from '@/components/pages/TrainerDashboard/WorkoutAssignmentPage';
 
 import AdminDashboard from '@/components/pages/AdminDashboard';
 import ExerciseVideoReviewPage from '@/components/pages/ExerciseVideoReviewPage';
@@ -277,6 +278,10 @@ const router = createBrowserRouter([
           {
             path: "preferences",
             element: <TrainerPreferencesPage />,
+          },
+          {
+            path: "workout-assignment",
+            element: <WorkoutAssignmentPage />,
           },
           {
             path: "messages",

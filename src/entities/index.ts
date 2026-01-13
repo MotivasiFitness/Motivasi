@@ -314,3 +314,53 @@ export interface TrainerQualifications {
   /** @wixFieldType text */
   relevance?: string;
 }
+
+
+/**
+ * Collection ID: clientassignedworkouts
+ * Interface for ClientAssignedWorkouts
+ * Manages weekly workout assignments with slot-based organization
+ */
+export interface ClientAssignedWorkouts {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  clientId?: string;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType date */
+  weekStartDate?: Date | string;
+  /** @wixFieldType number */
+  weekNumber?: number;
+  /** @wixFieldType number */
+  workoutSlot?: number;
+  /** @wixFieldType text */
+  status?: string;
+  /** @wixFieldType text */
+  programTitle?: string;
+  /** @wixFieldType text */
+  sessionTitle?: string;
+  /** @wixFieldType text */
+  workoutDay?: string;
+  /** @wixFieldType text */
+  exerciseName?: string;
+  /** @wixFieldType number */
+  sets?: number;
+  /** @wixFieldType number */
+  reps?: number;
+  /** @wixFieldType text */
+  weightOrResistance?: string;
+  /** @wixFieldType text */
+  tempo?: string;
+  /** @wixFieldType number */
+  restTimeSeconds?: number;
+  /** @wixFieldType text */
+  exerciseNotes?: string;
+  /** @wixFieldType number */
+  exerciseOrder?: number;
+  /** @wixFieldType url */
+  exerciseVideoUrl?: string;
+  /** @wixFieldType text */
+  notes?: string;
+}

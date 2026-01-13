@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { ClientPrograms } from '@/entities';
+import { ClientPrograms, ClientAssignedWorkouts } from '@/entities';
 import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight, Volume2, AlertCircle } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import PostWorkoutFeedbackPrompt from '@/components/ClientPortal/PostWorkoutFeedbackPrompt';
 import ProgramCompletionRing from '@/components/ClientPortal/ProgramCompletionRing';
 import { recordWorkoutCompletion } from '@/lib/adherence-tracking';
+import { 
+  getActiveWorkoutsForCurrentWeek, 
+  formatWeekDisplay, 
+  getDaysSinceUpdate,
+  getWeekStartDate 
+} from '@/lib/workout-assignment-service';
 
 interface WorkoutSession {
   day: string;
@@ -32,6 +38,7 @@ interface ExerciseCompleteState {
 export default function MyProgramPage() {
   const { member } = useMember();
   const [programs, setPrograms] = useState<ClientPrograms[]>([]);
+  const [assignedWorkouts, setAssignedWorkouts] = useState<ClientAssignedWorkouts[]>([]);
   const [expandedDay, setExpandedDay] = useState<string | null>(null);
   const [expandedExercise, setExpandedExercise] = useState<string | null>(null);
   const [activeWorkoutDay, setActiveWorkoutDay] = useState<string | null>(null);
@@ -47,6 +54,7 @@ export default function MyProgramPage() {
   const [expandedWeightInputs, setExpandedWeightInputs] = useState<Set<string>>(new Set());
   const [showCompletionRing, setShowCompletionRing] = useState(false);
   const [ringAnimationTrigger, setRingAnimationTrigger] = useState(false);
+  const [useNewSystem, setUseNewSystem] = useState(false);
 
   // Rest timer effect
   useEffect(() => {
@@ -70,6 +78,18 @@ export default function MyProgramPage() {
       if (!member?._id) return;
 
       try {
+        // Try to fetch from new system first
+        const { items: assignedItems } = await BaseCrudService.getAll<ClientAssignedWorkouts>('clientassignedworkouts');
+        const activeWorkouts = await getActiveWorkoutsForCurrentWeek(member._id);
+        
+        if (activeWorkouts.length > 0) {
+          setAssignedWorkouts(activeWorkouts);
+          setUseNewSystem(true);
+          setLoading(false);
+          return;
+        }
+        
+        // Fall back to legacy system
         const { items } = await BaseCrudService.getAll<ClientPrograms>('clientprograms');
         // Group by workout day
         const grouped = items.reduce((acc, program) => {
@@ -97,6 +117,7 @@ export default function MyProgramPage() {
           }
         });
         setExerciseSetStates(initialSetStates);
+        setUseNewSystem(false);
       } catch (error) {
         console.error('Error fetching programs:', error);
       } finally {
@@ -200,6 +221,223 @@ export default function MyProgramPage() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p className="text-warm-grey">Loading your program...</p>
+      </div>
+    );
+  }
+
+  // NEW SYSTEM: Render assigned workouts
+  if (useNewSystem && assignedWorkouts.length > 0) {
+    const weekStart = getWeekStartDate();
+    const weekDisplay = formatWeekDisplay(weekStart);
+    
+    return (
+      <div className="space-y-8 bg-warm-sand-beige/40 min-h-screen p-6 lg:p-8 rounded-2xl">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
+          <h1 className="font-heading text-4xl font-bold mb-2">My Personalized Program</h1>
+          <p className="text-soft-white/90">
+            {weekDisplay} • Follow your customized workout plan designed specifically for your goals
+          </p>
+        </div>
+
+        {/* Workout Overview Section */}
+        {assignedWorkouts.length > 0 && (
+          <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8">
+            <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-8">
+              This Week's Workouts
+            </h2>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+              {[1, 2, 3, 4].map((slot) => {
+                const workout = assignedWorkouts.find(w => w.workoutSlot === slot);
+                return (
+                  <div
+                    key={slot}
+                    className={`flex flex-col items-center text-center p-4 rounded-xl ${
+                      workout
+                        ? 'bg-soft-bronze/10 border border-soft-bronze/30'
+                        : 'bg-warm-sand-beige/20 border border-warm-sand-beige'
+                    }`}
+                  >
+                    <div className="font-heading text-2xl font-bold text-charcoal-black mb-2">
+                      Workout {slot}
+                    </div>
+                    {workout ? (
+                      <>
+                        <p className="text-sm text-warm-grey mb-2">
+                          {workout.exerciseName || 'Workout'}
+                        </p>
+                        <p className="text-xs text-warm-grey/60">
+                          {getDaysSinceUpdate(workout._updatedDate)}
+                        </p>
+                      </>
+                    ) : (
+                      <p className="text-sm text-warm-grey">Not assigned</p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Workout Cards */}
+        <div className="space-y-4">
+          {assignedWorkouts.map((workout, idx) => {
+            const workoutSlot = workout.workoutSlot || idx + 1;
+            const isExpanded = expandedDay === workout._id;
+            const isActive = activeWorkoutDay === workout._id;
+            const isCompleted = completedWorkouts.has(workout._id || '');
+
+            return (
+              <div
+                key={workout._id}
+                className={`bg-soft-white border rounded-2xl overflow-hidden transition-all duration-300 ${
+                  isActive
+                    ? 'border-soft-bronze shadow-lg'
+                    : isCompleted
+                    ? 'border-green-200 bg-green-50/30'
+                    : 'border-warm-sand-beige'
+                }`}
+              >
+                {/* Workout Card Header */}
+                <button
+                  onClick={() => {
+                    setExpandedDay(isExpanded ? null : workout._id || null);
+                    setActiveWorkoutDay(isExpanded ? null : workout._id || null);
+                  }}
+                  className={`w-full px-6 lg:px-8 py-5 lg:py-6 flex items-center justify-between transition-all duration-300 ${
+                    isActive
+                      ? 'bg-soft-bronze text-soft-white'
+                      : 'hover:bg-soft-bronze hover:text-soft-white'
+                  }`}
+                >
+                  <div className="flex-1 text-left">
+                    <div className="flex items-center gap-3 mb-1">
+                      <h3 className={`font-heading text-lg lg:text-xl font-bold ${
+                        isActive ? 'text-soft-white' : 'text-charcoal-black'
+                      }`}>
+                        Workout {workoutSlot}
+                      </h3>
+                      {isCompleted && (
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                          <CheckCircle2 size={14} /> Completed
+                        </span>
+                      )}
+                    </div>
+                    <p className={`text-sm ${isActive ? 'text-soft-white/80' : 'text-warm-grey'}`}>
+                      {workout.exerciseName} • {getDaysSinceUpdate(workout._updatedDate)}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3 ml-4">
+                    {!isExpanded && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveWorkoutDay(workout._id || null);
+                          setExpandedDay(workout._id || null);
+                        }}
+                        className="hidden sm:flex items-center gap-2 bg-soft-bronze text-soft-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-soft-bronze/90 transition-colors whitespace-nowrap"
+                      >
+                        Start Workout <ArrowRight size={16} />
+                      </button>
+                    )}
+                    <ChevronDown
+                      size={24}
+                      className={`${isActive ? 'text-soft-white' : 'text-soft-bronze'} transition-transform flex-shrink-0 ${
+                        isExpanded ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </div>
+                </button>
+
+                {/* Mobile Start Button */}
+                {!isExpanded && (
+                  <div className="sm:hidden px-6 py-3 border-t border-warm-sand-beige">
+                    <button
+                      onClick={() => {
+                        setActiveWorkoutDay(workout._id || null);
+                        setExpandedDay(workout._id || null);
+                      }}
+                      className="w-full flex items-center justify-center gap-2 bg-soft-bronze text-soft-white px-4 py-3 rounded-lg font-bold text-base hover:bg-soft-bronze/90 transition-colors"
+                    >
+                      Start Workout <ArrowRight size={18} />
+                    </button>
+                  </div>
+                )}
+
+                {/* Expanded Workout Details */}
+                {isExpanded && (
+                  <div className="border-t border-warm-sand-beige px-6 lg:px-8 py-6 space-y-6">
+                    {/* Exercise Details */}
+                    <div className="space-y-4">
+                      <h4 className="font-heading text-lg font-bold text-charcoal-black">
+                        {workout.exerciseName}
+                      </h4>
+
+                      <div className="flex flex-wrap gap-3 lg:gap-4 text-sm">
+                        {workout.sets && (
+                          <div className="flex items-center gap-1">
+                            <span className="text-warm-grey">Sets × Reps:</span>
+                            <span className="font-bold text-charcoal-black">
+                              {workout.sets} × {workout.reps}
+                            </span>
+                          </div>
+                        )}
+                        {workout.weightOrResistance && (
+                          <div className="flex items-center gap-1">
+                            <span className="text-warm-grey">Suggested weight:</span>
+                            <span className="font-bold text-charcoal-black">
+                              {workout.weightOrResistance}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      {workout.exerciseNotes && (
+                        <div className="text-xs text-warm-grey italic px-3 py-2 bg-warm-sand-beige/20 rounded-lg border-l-2 border-soft-bronze">
+                          💡 Coach note: {workout.exerciseNotes}
+                        </div>
+                      )}
+
+                      {workout.exerciseVideoUrl && (
+                        <a
+                          href={workout.exerciseVideoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-2 bg-charcoal-black text-soft-white px-4 py-3 rounded-lg font-medium text-sm hover:bg-soft-bronze transition-colors"
+                        >
+                          <Play size={16} />
+                          Watch demo (30s)
+                        </a>
+                      )}
+                    </div>
+
+                    {/* Completion Button */}
+                    <div className="pt-6 border-t border-warm-sand-beige">
+                      <button
+                        onClick={() => {
+                          setCompletedWorkouts(new Set([...completedWorkouts, workout._id || '']));
+                          setSessionCompleteMessage(true);
+                          setTimeout(() => setSessionCompleteMessage(false), 2000);
+                        }}
+                        disabled={isCompleted}
+                        className={`w-full flex items-center justify-center gap-2 px-6 py-4 rounded-lg font-bold text-base transition-all ${
+                          isCompleted
+                            ? 'bg-green-100 text-green-700 cursor-not-allowed'
+                            : 'bg-soft-bronze text-soft-white hover:bg-soft-bronze/90'
+                        }`}
+                      >
+                        <CheckCircle2 size={20} />
+                        {isCompleted ? 'Workout Completed!' : '✓ Mark Workout Complete'}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   }
