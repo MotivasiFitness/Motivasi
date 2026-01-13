@@ -4,6 +4,7 @@ import { BaseCrudService } from '@/integrations';
 import { FitnessPrograms } from '@/entities';
 import { Users, BookOpen, MessageSquare, TrendingUp, Video } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import WeeklyRetentionSnapshot from './WeeklyRetentionSnapshot';
 
 export default function TrainerDashboardPage() {
   const { member } = useMember();
@@ -134,6 +135,11 @@ export default function TrainerDashboardPage() {
             <h3 className="font-heading text-2xl font-bold mb-2">Video Reviews</h3>
             <p className="text-charcoal-black/70 group-hover:text-soft-white/80">Review exercise videos from clients</p>
           </Link>
+        </div>
+
+        {/* Weekly Retention Snapshot */}
+        <div className="mb-12">
+          <WeeklyRetentionSnapshot />
         </div>
 
         {/* Recent Programs */}

@@ -271,6 +271,33 @@ export interface TrainerClientAssignments {
 
 
 /**
+ * Collection ID: clientcoachmessages
+ * Interface for ClientCoachMessages (Coach Check-In Messages)
+ */
+export interface ClientCoachMessages {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  clientId?: string;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType text */
+  message?: string;
+  /** @wixFieldType text */
+  reason?: string;
+  /** @wixFieldType datetime */
+  sentAt?: Date | string;
+  /** @wixFieldType boolean */
+  responded?: boolean;
+  /** @wixFieldType datetime */
+  respondedAt?: Date | string;
+  /** @wixFieldType boolean */
+  reengagedWithin72h?: boolean;
+}
+
+
+/**
  * Collection ID: trainerclientmessages
  * Interface for TrainerClientMessages
  */

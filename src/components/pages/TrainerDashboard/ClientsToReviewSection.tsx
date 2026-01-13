@@ -17,6 +17,7 @@ import {
   getActivitySummary,
   getRecentFeedback,
 } from '@/lib/adherence-tracking';
+import { getClientsWithNoResponseAfterCheckIn } from '@/lib/coach-checkin-service';
 
 interface ClientReviewData extends ClientAdherenceSignal {
   activitySummary?: {
@@ -26,6 +27,7 @@ interface ClientReviewData extends ClientAdherenceSignal {
     completionRate: number;
   };
   lastFeedbackNote?: string;
+  noResponseLabel?: string;
 }
 
 export default function ClientsToReviewSection() {
@@ -41,9 +43,20 @@ export default function ClientsToReviewSection() {
         setIsLoading(true);
         const signals = await getTrainerClientAdherenceSignals(member._id);
 
+        // Also get clients with no response after check-in
+        const noResponseClients = await getClientsWithNoResponseAfterCheckIn(member._id);
+
+        // Combine both lists
+        const allSignals = [...signals];
+        for (const noResponseClient of noResponseClients) {
+          if (!allSignals.find((s) => s.clientId === noResponseClient.clientId)) {
+            allSignals.push(noResponseClient);
+          }
+        }
+
         // Enrich with activity summaries and feedback
         const enrichedClients: ClientReviewData[] = await Promise.all(
-          signals.map(async (signal) => {
+          allSignals.map(async (signal) => {
             const activitySummary = await getActivitySummary(signal.clientId, '');
             const recentFeedback = await getRecentFeedback(signal.clientId, '', 7);
             const lastFeedbackNote = recentFeedback[0]?.feedbackNote;
@@ -190,7 +203,7 @@ export default function ClientsToReviewSection() {
                     Client {client.clientId.slice(0, 8)}
                   </h4>
                   <p className="font-paragraph text-sm text-charcoal-black/70">
-                    {client.reason || client.status}
+                    {client.noResponseLabel || client.reason || client.status}
                   </p>
                 </div>
               </div>

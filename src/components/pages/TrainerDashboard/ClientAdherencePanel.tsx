@@ -20,7 +20,12 @@ import {
 } from '@/lib/adherence-tracking';
 import { BaseCrudService } from '@/integrations';
 import { ClientCoachMessages } from '@/entities';
-import { sendCoachCheckInMessage, getCheckInMessageTemplate } from '@/lib/coach-checkin-service';
+import {
+  sendCoachCheckInMessage,
+  getCheckInMessageTemplate,
+  getCheckInMessageTemplates,
+  getClientsWithNoResponseAfterCheckIn,
+} from '@/lib/coach-checkin-service';
 
 interface ClientAdherenceData extends ClientAdherenceSignal {
   clientName?: string;
@@ -69,9 +74,21 @@ export default function ClientAdherencePanel() {
         setIsLoading(true);
         const signals = await getTrainerClientAdherenceSignals(member._id);
 
+        // Also get clients with no response after check-in
+        const noResponseClients = await getClientsWithNoResponseAfterCheckIn(member._id);
+
+        // Combine both lists
+        const allSignals = [...signals];
+        for (const noResponseClient of noResponseClients) {
+          // Check if this client is already in the signals list
+          if (!allSignals.find((s) => s.clientId === noResponseClient.clientId)) {
+            allSignals.push(noResponseClient);
+          }
+        }
+
         // Enrich signals with activity summaries and recent messages
         const enrichedClients: ClientAdherenceData[] = await Promise.all(
-          signals.map(async (signal) => {
+          allSignals.map(async (signal) => {
             // Get activity summary
             const activitySummary = await getActivitySummary(signal.clientId, '');
 
@@ -173,70 +190,7 @@ export default function ClientAdherencePanel() {
   };
 
   const getQuickTemplates = (status: string): Array<{ label: string; text: string }> => {
-    switch (status) {
-      case 'At Risk':
-        return [
-          {
-            label: 'Check-in on obstacles',
-            text: 'Hi! I noticed you\'ve missed a couple of workouts this week. How are you doing? If there are any obstacles, let me know and we can adjust things.',
-          },
-          {
-            label: 'Offer support',
-            text: 'I\'m here to support you. If the programme isn\'t working with your schedule, we can find a solution together.',
-          },
-          {
-            label: 'Motivational',
-            text: 'You\'ve got this! Let\'s get back on track together. What can I do to help you stay consistent?',
-          },
-        ];
-      case 'Inactive':
-        return [
-          {
-            label: 'Urgent check-in',
-            text: 'I haven\'t seen you in the app for a while. I want to check in and make sure everything is okay. Let me know how you\'re getting on.',
-          },
-          {
-            label: 'Remove barriers',
-            text: 'If something is getting in the way of your training, let\'s talk about it. We can find a way to make this work for you.',
-          },
-          {
-            label: 'Reconnect',
-            text: 'I miss seeing you in the app! Let\'s reconnect and get you back on track. What\'s been going on?',
-          },
-        ];
-      case 'Too Hard':
-        return [
-          {
-            label: 'Offer to scale back',
-            text: 'I\'ve noticed the difficulty has been high. Let\'s scale things back to make it more manageable while still challenging you.',
-          },
-          {
-            label: 'Adjust intensity',
-            text: 'Your feedback shows the programme might be too intense right now. Let\'s adjust the intensity to find the right balance.',
-          },
-          {
-            label: 'Check in on recovery',
-            text: 'How\'s your recovery been? If you\'re feeling fatigued, we can dial back the intensity and focus on quality over quantity.',
-          },
-        ];
-      case 'Too Easy':
-        return [
-          {
-            label: 'Suggest progression',
-            text: 'Great work! You\'re finding the current programme manageable. I think you\'re ready to progress. Let\'s discuss how to challenge you more.',
-          },
-          {
-            label: 'Level up',
-            text: 'You\'re crushing it! Let\'s increase the intensity or complexity to keep you engaged and progressing toward your goals.',
-          },
-          {
-            label: 'Celebrate & progress',
-            text: 'Excellent consistency! You\'re ready for the next level. Let\'s make your training more challenging to keep you progressing.',
-          },
-        ];
-      default:
-        return [];
-    }
+    return getCheckInMessageTemplates(status as any);
   };
 
   const handleOpenCheckInModal = (clientId: string, status: string) => {
@@ -389,7 +343,7 @@ export default function ClientAdherencePanel() {
                     Client {client.clientId.slice(0, 8)}
                   </h4>
                   <p className="font-paragraph text-sm text-charcoal-black/70">
-                    {client.reason || 'Status: ' + client.status}
+                    {client.noResponseLabel || client.reason || 'Status: ' + client.status}
                   </p>
                 </div>
               </div>
