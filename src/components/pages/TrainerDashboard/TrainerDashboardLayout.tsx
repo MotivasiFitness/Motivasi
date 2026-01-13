@@ -3,6 +3,7 @@ import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
 import { MessageSquare, Users, BookOpen, Settings, LogOut, Menu, X, Loader, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useRole } from '@/hooks/useRole';
+import PortalHeader from '@/components/layout/PortalHeader';
 
 export default function TrainerDashboardLayout() {
   const { member, actions } = useMember();
@@ -37,82 +38,88 @@ export default function TrainerDashboardLayout() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="min-h-screen bg-soft-white flex flex-col lg:flex-row">
-      {/* Mobile Menu Button */}
-      <button
-        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-charcoal-black text-soft-white rounded-lg"
-      >
-        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
+    <div className="min-h-screen bg-soft-white flex flex-col">
+      {/* Portal Header - Replaces Global Header */}
+      <PortalHeader portalType="trainer" />
 
-      {/* Sidebar */}
-      <aside
-        className={`fixed lg:static inset-0 lg:inset-auto w-64 bg-charcoal-black text-soft-white flex flex-col z-40 transform transition-transform lg:translate-x-0 ${
-          mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
-      >
-        {/* Logo/Header */}
-        <div className="p-6 border-b border-soft-bronze/20">
-          <h1 className="font-heading text-2xl font-bold text-soft-white">Trainer Hub</h1>
-          <p className="text-sm text-warm-grey mt-2">
-            {member?.profile?.nickname || member?.loginEmail}
-          </p>
-        </div>
+      {/* Main Content Area */}
+      <div className="flex-1 flex">
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="lg:hidden fixed top-20 left-4 z-50 p-2 bg-charcoal-black text-soft-white rounded-lg"
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
 
-        {/* Navigation */}
-        <nav className="flex-1 p-6 space-y-2">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                  isActive(item.path)
-                    ? 'bg-soft-bronze text-soft-white'
-                    : 'text-warm-grey hover:bg-soft-bronze/10'
-                }`}
-              >
-                <Icon size={20} className={item.color} />
-                <span className="font-paragraph">{item.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
+        {/* Sidebar */}
+        <aside
+          className={`fixed lg:static inset-0 lg:inset-auto w-64 bg-charcoal-black text-soft-white flex flex-col z-40 transform transition-transform lg:translate-x-0 mt-16 lg:mt-0 ${
+            mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
+        >
+          {/* Logo/Header */}
+          <div className="p-6 border-b border-soft-bronze/20">
+            <h1 className="font-heading text-2xl font-bold text-soft-white">Trainer Hub</h1>
+            <p className="text-sm text-warm-grey mt-2">
+              {member?.profile?.nickname || member?.loginEmail}
+            </p>
+          </div>
 
-        {/* Footer */}
-        <div className="p-6 border-t border-soft-bronze/20 space-y-3">
-          <Link
-            to="/trainer/settings"
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-warm-grey hover:bg-soft-bronze/10 transition-colors"
-          >
-            <Settings size={20} />
-            <span className="font-paragraph">Settings</span>
-          </Link>
-          <button
-            onClick={actions.logout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-warm-grey hover:bg-red-500/10 hover:text-red-400 transition-colors"
-          >
-            <LogOut size={20} />
-            <span className="font-paragraph">Sign Out</span>
-          </button>
-        </div>
-      </aside>
+          {/* Navigation */}
+          <nav className="flex-1 p-6 space-y-2">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                    isActive(item.path)
+                      ? 'bg-soft-bronze text-soft-white'
+                      : 'text-warm-grey hover:bg-soft-bronze/10'
+                  }`}
+                >
+                  <Icon size={20} className={item.color} />
+                  <span className="font-paragraph">{item.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
 
-      {/* Main Content */}
-      <main className="flex-1 w-full lg:w-auto pt-16 lg:pt-0">
-        <Outlet />
-      </main>
+          {/* Footer */}
+          <div className="p-6 border-t border-soft-bronze/20 space-y-3">
+            <Link
+              to="/trainer/settings"
+              className="flex items-center gap-3 px-4 py-3 rounded-lg text-warm-grey hover:bg-soft-bronze/10 transition-colors"
+            >
+              <Settings size={20} />
+              <span className="font-paragraph">Settings</span>
+            </Link>
+            <button
+              onClick={actions.logout}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-warm-grey hover:bg-red-500/10 hover:text-red-400 transition-colors"
+            >
+              <LogOut size={20} />
+              <span className="font-paragraph">Sign Out</span>
+            </button>
+          </div>
+        </aside>
 
-      {/* Mobile Overlay */}
-      {mobileMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
-          onClick={() => setMobileMenuOpen(false)}
-        />
-      )}
+        {/* Main Content */}
+        <main className="flex-1 w-full lg:w-auto">
+          <Outlet />
+        </main>
+
+        {/* Mobile Overlay */}
+        {mobileMenuOpen && (
+          <div
+            className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+        )}
+      </div>
     </div>
   );
 }

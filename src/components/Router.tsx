@@ -11,6 +11,7 @@ import { Cart } from '@/wix-verticals/react-pages/react-router/routes/cart';
 import { MemberProtectedRoute } from '@/components/ui/member-protected-route';
 
 import Header from '@/components/layout/Header';
+import PortalHeader from '@/components/layout/PortalHeader';
 import Footer from '@/components/layout/Footer';
 import CookieBanner from '@/components/CookieBanner';
 import RoleSetup from '@/components/RoleSetup';
