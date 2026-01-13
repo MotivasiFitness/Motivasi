@@ -9,6 +9,8 @@ import {
   AlertCircle,
   CheckCircle,
   Activity,
+  MessageSquare,
+  Send,
 } from 'lucide-react';
 import {
   getTrainerClientAdherenceSignals,
@@ -16,6 +18,9 @@ import {
   getActivitySummary,
   getRecentFeedback,
 } from '@/lib/adherence-tracking';
+import { BaseCrudService } from '@/integrations';
+import { ClientCoachMessages } from '@/entities';
+import { sendCoachCheckInMessage, getCheckInMessageTemplate } from '@/lib/coach-checkin-service';
 
 interface ClientAdherenceData extends ClientAdherenceSignal {
   clientName?: string;
@@ -26,6 +31,20 @@ interface ClientAdherenceData extends ClientAdherenceSignal {
     completionRate: number;
   };
   recentDifficultyAvg?: number;
+  recentMessages?: Array<{
+    message: string;
+    reason: string;
+    sentAt: Date;
+  }>;
+}
+
+interface CheckInModalState {
+  isOpen: boolean;
+  clientId: string | null;
+  status: string | null;
+  message: string;
+  selectedTemplate: string;
+  isSending: boolean;
 }
 
 export default function ClientAdherencePanel() {
@@ -33,6 +52,14 @@ export default function ClientAdherencePanel() {
   const [clients, setClients] = useState<ClientAdherenceData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [expandedClient, setExpandedClient] = useState<string | null>(null);
+  const [checkInModal, setCheckInModal] = useState<CheckInModalState>({
+    isOpen: false,
+    clientId: null,
+    status: null,
+    message: '',
+    selectedTemplate: 'default',
+    isSending: false,
+  });
 
   useEffect(() => {
     const loadAdherenceData = async () => {
@@ -42,7 +69,7 @@ export default function ClientAdherencePanel() {
         setIsLoading(true);
         const signals = await getTrainerClientAdherenceSignals(member._id);
 
-        // Enrich signals with activity summaries
+        // Enrich signals with activity summaries and recent messages
         const enrichedClients: ClientAdherenceData[] = await Promise.all(
           signals.map(async (signal) => {
             // Get activity summary
@@ -56,10 +83,29 @@ export default function ClientAdherencePanel() {
                   recentFeedback.length
                 : undefined;
 
+            // Get recent check-in messages (last 3)
+            const { items: allMessages } = await BaseCrudService.getAll<ClientCoachMessages>(
+              'clientcoachmessages'
+            );
+            const clientMessages = allMessages
+              .filter((m) => m.clientId === signal.clientId && m.trainerId === member._id)
+              .sort((a, b) => {
+                const dateA = a.sentAt ? new Date(a.sentAt).getTime() : 0;
+                const dateB = b.sentAt ? new Date(b.sentAt).getTime() : 0;
+                return dateB - dateA;
+              })
+              .slice(0, 3)
+              .map((m) => ({
+                message: m.message || '',
+                reason: m.reason || '',
+                sentAt: new Date(m.sentAt || new Date()),
+              }));
+
             return {
               ...signal,
               activitySummary,
               recentDifficultyAvg,
+              recentMessages: clientMessages,
             };
           })
         );
@@ -123,6 +169,152 @@ export default function ClientAdherencePanel() {
         return 'bg-green-100 text-green-800';
       default:
         return 'bg-warm-sand-beige text-charcoal-black';
+    }
+  };
+
+  const getQuickTemplates = (status: string): Array<{ label: string; text: string }> => {
+    switch (status) {
+      case 'At Risk':
+        return [
+          {
+            label: 'Check-in on obstacles',
+            text: 'Hi! I noticed you\'ve missed a couple of workouts this week. How are you doing? If there are any obstacles, let me know and we can adjust things.',
+          },
+          {
+            label: 'Offer support',
+            text: 'I\'m here to support you. If the programme isn\'t working with your schedule, we can find a solution together.',
+          },
+          {
+            label: 'Motivational',
+            text: 'You\'ve got this! Let\'s get back on track together. What can I do to help you stay consistent?',
+          },
+        ];
+      case 'Inactive':
+        return [
+          {
+            label: 'Urgent check-in',
+            text: 'I haven\'t seen you in the app for a while. I want to check in and make sure everything is okay. Let me know how you\'re getting on.',
+          },
+          {
+            label: 'Remove barriers',
+            text: 'If something is getting in the way of your training, let\'s talk about it. We can find a way to make this work for you.',
+          },
+          {
+            label: 'Reconnect',
+            text: 'I miss seeing you in the app! Let\'s reconnect and get you back on track. What\'s been going on?',
+          },
+        ];
+      case 'Too Hard':
+        return [
+          {
+            label: 'Offer to scale back',
+            text: 'I\'ve noticed the difficulty has been high. Let\'s scale things back to make it more manageable while still challenging you.',
+          },
+          {
+            label: 'Adjust intensity',
+            text: 'Your feedback shows the programme might be too intense right now. Let\'s adjust the intensity to find the right balance.',
+          },
+          {
+            label: 'Check in on recovery',
+            text: 'How\'s your recovery been? If you\'re feeling fatigued, we can dial back the intensity and focus on quality over quantity.',
+          },
+        ];
+      case 'Too Easy':
+        return [
+          {
+            label: 'Suggest progression',
+            text: 'Great work! You\'re finding the current programme manageable. I think you\'re ready to progress. Let\'s discuss how to challenge you more.',
+          },
+          {
+            label: 'Level up',
+            text: 'You\'re crushing it! Let\'s increase the intensity or complexity to keep you engaged and progressing toward your goals.',
+          },
+          {
+            label: 'Celebrate & progress',
+            text: 'Excellent consistency! You\'re ready for the next level. Let\'s make your training more challenging to keep you progressing.',
+          },
+        ];
+      default:
+        return [];
+    }
+  };
+
+  const handleOpenCheckInModal = (clientId: string, status: string) => {
+    const template = getCheckInMessageTemplate(status as any);
+    setCheckInModal({
+      isOpen: true,
+      clientId,
+      status,
+      message: template,
+      selectedTemplate: 'default',
+      isSending: false,
+    });
+  };
+
+  const handleSendCheckIn = async () => {
+    if (!checkInModal.clientId || !checkInModal.status || !member?._id) return;
+
+    setCheckInModal((prev) => ({ ...prev, isSending: true }));
+
+    try {
+      await sendCoachCheckInMessage(
+        checkInModal.clientId,
+        member._id,
+        checkInModal.message,
+        checkInModal.status as any
+      );
+
+      // Refresh the client data to show the new message
+      const signals = await getTrainerClientAdherenceSignals(member._id);
+      const enrichedClients: ClientAdherenceData[] = await Promise.all(
+        signals.map(async (signal) => {
+          const activitySummary = await getActivitySummary(signal.clientId, '');
+          const recentFeedback = await getRecentFeedback(signal.clientId, '', 7);
+          const recentDifficultyAvg =
+            recentFeedback.length > 0
+              ? recentFeedback.reduce((sum, f) => sum + f.difficultyRating, 0) /
+                recentFeedback.length
+              : undefined;
+
+          const { items: allMessages } = await BaseCrudService.getAll<ClientCoachMessages>(
+            'clientcoachmessages'
+          );
+          const clientMessages = allMessages
+            .filter((m) => m.clientId === signal.clientId && m.trainerId === member._id)
+            .sort((a, b) => {
+              const dateA = a.sentAt ? new Date(a.sentAt).getTime() : 0;
+              const dateB = b.sentAt ? new Date(b.sentAt).getTime() : 0;
+              return dateB - dateA;
+            })
+            .slice(0, 3)
+            .map((m) => ({
+              message: m.message || '',
+              reason: m.reason || '',
+              sentAt: new Date(m.sentAt || new Date()),
+            }));
+
+          return {
+            ...signal,
+            activitySummary,
+            recentDifficultyAvg,
+            recentMessages: clientMessages,
+          };
+        })
+      );
+
+      setClients(enrichedClients);
+      setCheckInModal({
+        isOpen: false,
+        clientId: null,
+        status: null,
+        message: '',
+        selectedTemplate: 'default',
+        isSending: false,
+      });
+    } catch (error) {
+      console.error('Error sending check-in:', error);
+    } finally {
+      setCheckInModal((prev) => ({ ...prev, isSending: false }));
     }
   };
 
@@ -289,10 +481,43 @@ export default function ClientAdherencePanel() {
                   </div>
                 )}
 
+                {/* Recent Messages */}
+                {client.recentMessages && client.recentMessages.length > 0 && (
+                  <div className="pt-4 border-t border-current/20">
+                    <p className="font-paragraph text-sm font-bold text-charcoal-black mb-3">
+                      Recent Check-Ins ({client.recentMessages.length})
+                    </p>
+                    <div className="space-y-2">
+                      {client.recentMessages.map((msg, idx) => (
+                        <div key={idx} className="bg-white/50 rounded-lg p-3">
+                          <div className="flex items-start justify-between mb-1">
+                            <span className="text-xs font-medium text-charcoal-black/70">
+                              {msg.reason}
+                            </span>
+                            <span className="text-xs text-charcoal-black/50">
+                              {msg.sentAt.toLocaleDateString('en-GB', {
+                                month: 'short',
+                                day: 'numeric',
+                              })}
+                            </span>
+                          </div>
+                          <p className="font-paragraph text-xs text-charcoal-black/70 line-clamp-2">
+                            {msg.message}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Action Buttons */}
                 <div className="flex gap-3 pt-4">
-                  <button className="flex-1 py-2 rounded-lg font-medium text-sm bg-charcoal-black text-soft-white hover:bg-soft-bronze transition-colors">
-                    Message Client
+                  <button
+                    onClick={() => handleOpenCheckInModal(client.clientId, client.status)}
+                    className="flex-1 py-2 rounded-lg font-medium text-sm bg-charcoal-black text-soft-white hover:bg-soft-bronze transition-colors flex items-center justify-center gap-2"
+                  >
+                    <MessageSquare size={16} />
+                    Send Check-In
                   </button>
                   <button className="flex-1 py-2 rounded-lg font-medium text-sm border border-charcoal-black text-charcoal-black hover:bg-charcoal-black/5 transition-colors">
                     View Program
@@ -327,6 +552,144 @@ export default function ClientAdherencePanel() {
           </p>
         </div>
       </div>
+
+      {/* Check-In Modal */}
+      {checkInModal.isOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-soft-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="sticky top-0 bg-soft-white border-b border-warm-sand-beige p-6 flex items-center justify-between">
+              <h2 className="font-heading text-2xl font-bold text-charcoal-black">
+                Send Check-In Message
+              </h2>
+              <button
+                onClick={() =>
+                  setCheckInModal({
+                    isOpen: false,
+                    clientId: null,
+                    status: null,
+                    message: '',
+                    selectedTemplate: 'default',
+                    isSending: false,
+                  })
+                }
+                className="p-2 hover:bg-warm-sand-beige rounded-lg transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 space-y-6">
+              {/* Status Badge */}
+              <div>
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusBadgeColor(
+                    checkInModal.status || ''
+                  )}`}
+                >
+                  {checkInModal.status}
+                </span>
+              </div>
+
+              {/* Quick Templates Dropdown */}
+              <div>
+                <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-3">
+                  Quick Templates
+                </label>
+                <select
+                  value={checkInModal.selectedTemplate}
+                  onChange={(e) => {
+                    const templates = getQuickTemplates(checkInModal.status || '');
+                    const selectedIdx = parseInt(e.target.value);
+                    if (selectedIdx >= 0 && templates[selectedIdx]) {
+                      setCheckInModal((prev) => ({
+                        ...prev,
+                        message: templates[selectedIdx].text,
+                        selectedTemplate: e.target.value,
+                      }));
+                    }
+                  }}
+                  className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph text-sm"
+                >
+                  <option value="default">-- Select a template --</option>
+                  {getQuickTemplates(checkInModal.status || '').map((template, idx) => (
+                    <option key={idx} value={idx}>
+                      {template.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Message Editor */}
+              <div>
+                <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-3">
+                  Your Message
+                </label>
+                <textarea
+                  value={checkInModal.message}
+                  onChange={(e) =>
+                    setCheckInModal((prev) => ({
+                      ...prev,
+                      message: e.target.value,
+                    }))
+                  }
+                  rows={10}
+                  className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph text-sm resize-none"
+                  placeholder="Type your check-in message..."
+                />
+                <p className="text-xs text-warm-grey mt-2">
+                  {checkInModal.message.length} characters
+                </p>
+              </div>
+
+              {/* Info Box */}
+              <div className="bg-soft-bronze/10 border border-soft-bronze/30 rounded-lg p-4">
+                <p className="font-paragraph text-xs text-charcoal-black leading-relaxed">
+                  <span className="font-bold">💡 Tip:</span> Personalize this message to make it feel more genuine. The templates are just starting points.
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 pt-4 border-t border-warm-sand-beige">
+                <button
+                  onClick={() =>
+                    setCheckInModal({
+                      isOpen: false,
+                      clientId: null,
+                      status: null,
+                      message: '',
+                      selectedTemplate: 'default',
+                      isSending: false,
+                    })
+                  }
+                  disabled={checkInModal.isSending}
+                  className="flex-1 py-3 rounded-lg font-medium text-sm border border-warm-sand-beige text-charcoal-black hover:bg-warm-sand-beige/20 transition-colors disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSendCheckIn}
+                  disabled={checkInModal.isSending || !checkInModal.message.trim()}
+                  className="flex-1 py-3 rounded-lg font-medium text-sm bg-charcoal-black text-soft-white hover:bg-soft-bronze transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {checkInModal.isSending ? (
+                    <>
+                      <Loader className="w-4 h-4 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send size={16} />
+                      Send Message
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

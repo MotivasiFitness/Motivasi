@@ -314,24 +314,3 @@ export interface TrainerQualifications {
   /** @wixFieldType text */
   relevance?: string;
 }
-
-
-/**
- * Collection ID: clientcoachmessages
- * Interface for ClientCoachMessages
- */
-export interface ClientCoachMessages {
-  _id: string;
-  _createdDate?: Date;
-  _updatedDate?: Date;
-  /** @wixFieldType text */
-  clientId?: string;
-  /** @wixFieldType text */
-  trainerId?: string;
-  /** @wixFieldType text */
-  message?: string;
-  /** @wixFieldType text */
-  reason?: string;
-  /** @wixFieldType datetime */
-  sentAt?: Date | string;
-}
