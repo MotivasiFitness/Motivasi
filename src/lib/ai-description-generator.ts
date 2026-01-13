@@ -6,9 +6,8 @@
  * - 2-3 paragraph format
  * - Client-friendly language
  * - Error handling and fallback
+ * - Wix Velo backend integration
  */
-
-import { safeFetch, handleApiError } from './api-response-handler';
 
 export interface DescriptionGeneratorInput {
   programTitle: string;
@@ -17,6 +16,8 @@ export interface DescriptionGeneratorInput {
   trainingStyle?: string;
   clientGoals?: string;
   additionalContext?: string;
+  equipment?: string[];
+  level?: string;
 }
 
 export interface GeneratedDescription {
@@ -26,8 +27,27 @@ export interface GeneratedDescription {
   success: boolean;
 }
 
+interface WixFunctionResponse {
+  success: boolean;
+  description?: string;
+  error?: string;
+}
+
 /**
- * Generate a program description using AI
+ * Get the correct endpoint based on environment
+ * Uses /_functions-dev/ for Preview, /_functions/ for Production
+ */
+function getEndpoint(): string {
+  // Check if we're in preview/development environment
+  const isPreview = window.location.hostname.includes('preview') || 
+                   window.location.hostname.includes('localhost') ||
+                   window.location.hostname.includes('127.0.0.1');
+  
+  return isPreview ? '/_functions-dev/generateProgramDescription' : '/_functions/generateProgramDescription';
+}
+
+/**
+ * Generate a program description using Wix Velo backend
  * @param input - Program details for description generation
  * @returns Generated description
  */
@@ -48,33 +68,42 @@ export async function generateProgramDescription(
       throw new Error('Focus area is required');
     }
 
-    // Call backend API to generate description
-    const response = await safeFetch<GeneratedDescription>(
-      '/api/generate-program-description',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          programTitle: input.programTitle.trim(),
-          duration: input.duration.trim(),
-          focusArea: input.focusArea.trim(),
-          trainingStyle: input.trainingStyle?.trim() || '',
-          clientGoals: input.clientGoals?.trim() || '',
-          additionalContext: input.additionalContext?.trim() || '',
-        }),
-      },
-      'Program description generation'
-    );
+    // Get the correct endpoint
+    const endpoint = getEndpoint();
 
-    // Validate response
-    if (!response.description || response.description.trim().length === 0) {
+    // Call Wix Velo backend function
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: input.programTitle.trim(),
+        duration: input.duration.trim(),
+        focusArea: input.focusArea.trim(),
+        style: input.trainingStyle?.trim() || 'personalized and progressive',
+        equipment: input.equipment || [],
+        level: input.level?.toLowerCase() || undefined,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json() as WixFunctionResponse;
+      throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const data = await response.json() as WixFunctionResponse;
+
+    if (!data.success) {
+      throw new Error(data.error || 'Failed to generate description');
+    }
+
+    if (!data.description || data.description.trim().length === 0) {
       throw new Error('Generated description is empty');
     }
 
     // Ensure description is 2-3 paragraphs
-    const paragraphs = response.description
+    const paragraphs = data.description
       .split('\n\n')
       .filter(p => p.trim().length > 0);
 
@@ -83,7 +112,7 @@ export async function generateProgramDescription(
     }
 
     return {
-      description: response.description,
+      description: data.description,
       paragraphCount: paragraphs.length,
       generatedAt: new Date().toISOString(),
       success: true,
@@ -94,7 +123,6 @@ export async function generateProgramDescription(
     throw new Error(`Failed to generate description: ${errorMessage}`);
   }
 }
-
 /**
  * Generate a fallback description if AI generation fails
  * Used as a graceful fallback
