@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { FitnessPrograms, TrainerClientAssignments } from '@/entities';
+import { FitnessPrograms, TrainerClientAssignments, MemberRoles } from '@/entities';
 import { MessageSquare, Plus, AlertCircle, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getTrainerClients, assignClientToTrainer } from '@/lib/role-utils';
@@ -14,9 +14,15 @@ interface ClientInfo {
   assignmentStatus: string;
 }
 
+interface AvailableClient {
+  memberId: string;
+  role: string;
+}
+
 export default function TrainerClientsPage() {
   const { member } = useMember();
   const [clients, setClients] = useState<ClientInfo[]>([]);
+  const [availableClients, setAvailableClients] = useState<AvailableClient[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAssignForm, setShowAssignForm] = useState(false);
   const [newClientId, setNewClientId] = useState('');
@@ -62,6 +68,25 @@ export default function TrainerClientsPage() {
       });
 
       setClients(Array.from(clientMap.values()));
+
+      // Fetch all available clients (users with client role)
+      const { items: memberRoles } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+      const clientRoles = memberRoles.filter(
+        (mr) => mr.role === 'client' && mr.status === 'active'
+      );
+
+      // Filter out already assigned clients
+      const assignedClientIds = new Set(assignments.map(a => a.clientId));
+      const unassignedClients = clientRoles.filter(
+        (mr) => !assignedClientIds.has(mr.memberId)
+      );
+
+      setAvailableClients(
+        unassignedClients.map((mr) => ({
+          memberId: mr.memberId || '',
+          role: mr.role || 'client',
+        }))
+      );
     } catch (error) {
       console.error('Error fetching clients:', error);
     } finally {
@@ -158,24 +183,37 @@ export default function TrainerClientsPage() {
             <form onSubmit={handleAssignClient} className="space-y-6">
               <div>
                 <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
-                  Client ID *
+                  Select a Client *
                 </label>
-                <input
-                  type="text"
-                  value={newClientId}
-                  onChange={(e) => setNewClientId(e.target.value)}
-                  placeholder="Enter the client's member ID"
-                  className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
-                />
+                {availableClients.length === 0 ? (
+                  <div className="p-4 bg-warm-sand-beige/30 rounded-lg text-center">
+                    <p className="font-paragraph text-sm text-warm-grey">
+                      All available clients have been assigned. No new clients to assign.
+                    </p>
+                  </div>
+                ) : (
+                  <select
+                    value={newClientId}
+                    onChange={(e) => setNewClientId(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
+                  >
+                    <option value="">-- Select a client --</option>
+                    {availableClients.map((client) => (
+                      <option key={client.memberId} value={client.memberId}>
+                        {client.memberId}
+                      </option>
+                    ))}
+                  </select>
+                )}
                 <p className="text-xs text-warm-grey mt-2">
-                  The client must be registered on the platform. You can find their ID in their profile.
+                  Select from the list of available clients who are not yet assigned to a trainer.
                 </p>
               </div>
 
               <div className="flex gap-4">
                 <button
                   type="submit"
-                  disabled={isAssigning}
+                  disabled={isAssigning || availableClients.length === 0}
                   className="flex-1 bg-charcoal-black text-soft-white py-3 rounded-lg font-medium hover:bg-soft-bronze transition-colors disabled:opacity-50"
                 >
                   {isAssigning ? 'Assigning...' : 'Assign Client'}
