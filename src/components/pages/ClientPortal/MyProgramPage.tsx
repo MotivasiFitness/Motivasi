@@ -218,6 +218,12 @@ export default function MyProgramPage() {
   });
 
   const workoutDays = Object.keys(groupedPrograms).sort();
+  
+  // Create a mapping of day to workout number for display
+  const workoutNumberMap = new Map<string, number>();
+  workoutDays.forEach((day, index) => {
+    workoutNumberMap.set(day, index + 1);
+  });
 
   // Calculate workout overview stats
   const totalExercises = programs.length;
@@ -300,6 +306,7 @@ export default function MyProgramPage() {
             const isExpanded = expandedDay === day;
             const isActive = activeWorkoutDay === day;
             const isCompleted = completedWorkouts.has(day);
+            const workoutNumber = workoutNumberMap.get(day) || dayIndex + 1;
 
             return (
               <div
@@ -329,7 +336,7 @@ export default function MyProgramPage() {
                       <h3 className={`font-heading text-lg lg:text-xl font-bold ${
                         isActive ? 'text-soft-white' : 'text-charcoal-black'
                       }`}>
-                        {day}
+                        Workout {workoutNumber}
                       </h3>
                       {isCompleted && (
                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
@@ -339,6 +346,11 @@ export default function MyProgramPage() {
                     </div>
                     <p className={`text-sm ${isActive ? 'text-soft-white/80' : 'text-warm-grey'}`}>
                       {dayExercises.length} exercises • {estimatedSessionTime}–{estimatedSessionTime + 5} min
+                      {day !== 'Unassigned' && (
+                        <span className={`ml-2 ${isActive ? 'text-soft-white/60' : 'text-warm-grey/60'}`}>
+                          ({day})
+                        </span>
+                      )}
                     </p>
                   </div>
 
