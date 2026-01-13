@@ -2,14 +2,25 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientPrograms } from '@/entities';
-import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight } from 'lucide-react';
+import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight, Volume2, AlertCircle } from 'lucide-react';
 import { Image } from '@/components/ui/image';
+import PostWorkoutFeedbackPrompt from '@/components/ClientPortal/PostWorkoutFeedbackPrompt';
+import { recordWorkoutCompletion } from '@/lib/adherence-tracking';
 
 interface WorkoutSession {
   day: string;
   exercises: ClientPrograms[];
   estimatedTime: number;
   completed: boolean;
+}
+
+interface SetState {
+  setNumber: number;
+  completed: boolean;
+}
+
+interface ExerciseSetState {
+  [exerciseId: string]: SetState[];
 }
 
 export default function MyProgramPage() {
@@ -20,6 +31,29 @@ export default function MyProgramPage() {
   const [activeWorkoutDay, setActiveWorkoutDay] = useState<string | null>(null);
   const [completedWorkouts, setCompletedWorkouts] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
+  const [exerciseSetStates, setExerciseSetStates] = useState<ExerciseSetState>({});
+  const [restingExerciseId, setRestingExerciseId] = useState<string | null>(null);
+  const [restTimeRemaining, setRestTimeRemaining] = useState<number>(0);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [workoutActivityId, setWorkoutActivityId] = useState<string>('');
+  const [sessionCompleteMessage, setSessionCompleteMessage] = useState(false);
+
+  // Rest timer effect
+  useEffect(() => {
+    if (restingExerciseId === null || restTimeRemaining <= 0) return;
+
+    const timer = setInterval(() => {
+      setRestTimeRemaining(prev => {
+        if (prev <= 1) {
+          setRestingExerciseId(null);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [restingExerciseId, restTimeRemaining]);
 
   useEffect(() => {
     const fetchPrograms = async () => {
@@ -41,6 +75,18 @@ export default function MyProgramPage() {
         });
 
         setPrograms(items);
+
+        // Initialize set states for all exercises
+        const initialSetStates: ExerciseSetState = {};
+        items.forEach(exercise => {
+          if (exercise._id && exercise.sets) {
+            initialSetStates[exercise._id] = Array.from({ length: exercise.sets }, (_, i) => ({
+              setNumber: i + 1,
+              completed: false,
+            }));
+          }
+        });
+        setExerciseSetStates(initialSetStates);
       } catch (error) {
         console.error('Error fetching programs:', error);
       } finally {
@@ -50,6 +96,45 @@ export default function MyProgramPage() {
 
     fetchPrograms();
   }, [member?._id]);
+
+  const handleSetComplete = (exerciseId: string, setNumber: number, restTime: number) => {
+    // Mark set as completed
+    setExerciseSetStates(prev => ({
+      ...prev,
+      [exerciseId]: prev[exerciseId].map(s =>
+        s.setNumber === setNumber ? { ...s, completed: true } : s
+      ),
+    }));
+
+    // Start rest timer
+    setRestingExerciseId(exerciseId);
+    setRestTimeRemaining(restTime);
+  };
+
+  const handleWorkoutComplete = async (day: string) => {
+    try {
+      const activityId = crypto.randomUUID();
+      setWorkoutActivityId(activityId);
+
+      // Record workout completion
+      await recordWorkoutCompletion(
+        member?._id || '',
+        programs[0]?.programTitle || '',
+        day
+      );
+
+      setCompletedWorkouts(new Set([...completedWorkouts, day]));
+      setSessionCompleteMessage(true);
+
+      // Show feedback prompt after 1 second
+      setTimeout(() => {
+        setSessionCompleteMessage(false);
+        setShowFeedback(true);
+      }, 1000);
+    } catch (error) {
+      console.error('Error completing workout:', error);
+    }
+  };
 
   if (loading) {
     return (
@@ -250,131 +335,173 @@ export default function MyProgramPage() {
                       </span>
                     </div>
 
-                    {dayExercises.map((exercise, idx) => (
-                      <div
-                        key={exercise._id}
-                        className="pb-6 border-b border-warm-sand-beige last:border-b-0 last:pb-0"
-                      >
-                        {/* Exercise Header with Toggle */}
-                        <button
-                          onClick={() =>
-                            setExpandedExercise(
-                              expandedExercise === exercise._id ? null : exercise._id
-                            )
-                          }
-                          className="w-full text-left mb-4 group"
+                    {dayExercises.map((exercise, idx) => {
+                      const setStates = exerciseSetStates[exercise._id || ''] || [];
+                      const isResting = restingExerciseId === exercise._id;
+                      const repRange = exercise.reps ? `${Math.max(1, exercise.reps - 2)}-${exercise.reps}` : exercise.reps;
+
+                      return (
+                        <div
+                          key={exercise._id}
+                          className="pb-6 border-b border-warm-sand-beige last:border-b-0 last:pb-0"
                         >
-                          <div className="flex items-start justify-between gap-3">
-                            <div className="flex-1">
-                              <h4 className="font-heading text-lg font-bold text-charcoal-black mb-3 group-hover:text-soft-bronze transition-colors">
-                                {idx + 1}. {exercise.exerciseName}
-                              </h4>
+                          {/* Exercise Header */}
+                          <h4 className="font-heading text-lg font-bold text-charcoal-black mb-3">
+                            {idx + 1}. {exercise.exerciseName}
+                          </h4>
 
-                              {/* Core Exercise Info (Always Visible) */}
-                              <div className="flex flex-wrap gap-3 lg:gap-4 text-sm mb-3">
-                                {exercise.sets && exercise.reps && (
-                                  <div className="flex items-center gap-1">
-                                    <span className="text-warm-grey">Sets × Reps:</span>
-                                    <span className="font-bold text-charcoal-black">
-                                      {exercise.sets} × {exercise.reps}
-                                    </span>
-                                  </div>
-                                )}
-                                {exercise.weightOrResistance && (
-                                  <div className="flex items-center gap-1">
-                                    <span className="text-warm-grey">Weight:</span>
-                                    <span className="font-bold text-charcoal-black">
-                                      {exercise.weightOrResistance}
-                                    </span>
-                                  </div>
-                                )}
-                                {exercise.restTimeSeconds && (
-                                  <div className="flex items-center gap-1">
-                                    <span className="text-warm-grey">Rest:</span>
-                                    <span className="font-bold text-charcoal-black">
-                                      {exercise.restTimeSeconds}s
-                                    </span>
-                                  </div>
-                                )}
+                          {/* Core Exercise Info */}
+                          <div className="flex flex-wrap gap-3 lg:gap-4 text-sm mb-4">
+                            {exercise.sets && (
+                              <div className="flex items-center gap-1">
+                                <span className="text-warm-grey">Sets × Reps:</span>
+                                <span className="font-bold text-charcoal-black">
+                                  {exercise.sets} × {repRange}
+                                </span>
                               </div>
+                            )}
+                            {exercise.weightOrResistance && (
+                              <div className="flex items-center gap-1">
+                                <span className="text-warm-grey">Suggested weight:</span>
+                                <span className="font-bold text-charcoal-black">
+                                  {exercise.weightOrResistance}
+                                </span>
+                              </div>
+                            )}
+                          </div>
 
-                              {/* Reassurance Copy */}
-                              <p className="text-xs text-warm-grey italic">
-                                Don't worry — focus on control rather than perfection.
-                              </p>
+                          {/* Primary Coaching Cue */}
+                          <p className="text-sm text-charcoal-black mb-4 p-3 bg-soft-bronze/5 rounded-lg border border-soft-bronze/20">
+                            When you reach the top of the rep range on all sets with good form, increase weight next session.
+                          </p>
+
+                          {/* Video Demo Button */}
+                          {exercise.exerciseVideoUrl && (
+                            <div className="mb-4">
+                              <a
+                                href={exercise.exerciseVideoUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-charcoal-black text-soft-white px-4 py-3 rounded-lg font-medium text-sm hover:bg-soft-bronze transition-colors"
+                              >
+                                <Play size={16} />
+                                Watch demo (30s)
+                              </a>
                             </div>
+                          )}
 
-                            {/* Expand Toggle */}
-                            {(exercise.tempo || exercise.exerciseNotes) && (
-                              <ChevronDown
-                                size={20}
-                                className={`text-soft-bronze transition-transform flex-shrink-0 mt-1 ${
-                                  expandedExercise === exercise._id ? 'rotate-180' : ''
-                                }`}
-                              />
-                            )}
+                          {/* Interactive Sets Display */}
+                          <div className="mb-4">
+                            <p className="text-xs font-medium text-warm-grey mb-3 uppercase tracking-wide">Tap each set to mark complete</p>
+                            <div className="space-y-2">
+                              {setStates.map((set) => (
+                                <button
+                                  key={set.setNumber}
+                                  onClick={() => {
+                                    if (!set.completed && !isResting) {
+                                      handleSetComplete(exercise._id || '', set.setNumber, exercise.restTimeSeconds || 60);
+                                    }
+                                  }}
+                                  disabled={isResting || set.completed}
+                                  className={`w-full py-3 px-4 rounded-lg font-medium text-sm transition-all ${
+                                    set.completed
+                                      ? 'bg-green-100 text-green-700 border border-green-300'
+                                      : isResting
+                                      ? 'bg-warm-sand-beige/30 text-warm-grey border border-warm-sand-beige cursor-not-allowed'
+                                      : 'bg-soft-bronze text-soft-white border border-soft-bronze hover:bg-soft-bronze/90 active:scale-95'
+                                  }`}
+                                >
+                                  {set.completed ? (
+                                    <span className="flex items-center justify-center gap-2">
+                                      <CheckCircle2 size={16} />
+                                      Set {set.setNumber} Complete
+                                    </span>
+                                  ) : isResting ? (
+                                    <span className="flex items-center justify-center gap-2">
+                                      <Clock size={16} className="animate-spin" />
+                                      Rest {restTimeRemaining}s
+                                    </span>
+                                  ) : (
+                                    `Set ${set.setNumber}`
+                                  )}
+                                </button>
+                              ))}
+                            </div>
                           </div>
-                        </button>
 
-                        {/* Expandable Details */}
-                        {expandedExercise === exercise._id && (
-                          <div className="mt-4 pt-4 border-t border-warm-sand-beige/50 space-y-4">
-                            {exercise.tempo && (
-                              <div className="p-3 bg-warm-sand-beige/20 rounded-lg">
-                                <p className="text-xs text-warm-grey mb-1">Tempo (movement speed)</p>
-                                <p className="text-sm font-medium text-charcoal-black">
-                                  {exercise.tempo}
-                                </p>
-                              </div>
-                            )}
+                          {/* Technique Tips Collapsible */}
+                          {(exercise.tempo || exercise.exerciseNotes) && (
+                            <div className="mb-4">
+                              <button
+                                onClick={() =>
+                                  setExpandedExercise(
+                                    expandedExercise === exercise._id ? null : exercise._id
+                                  )
+                                }
+                                className="w-full flex items-center justify-between p-3 bg-warm-sand-beige/20 rounded-lg hover:bg-warm-sand-beige/30 transition-colors"
+                              >
+                                <span className="font-medium text-sm text-charcoal-black">Technique tips</span>
+                                <ChevronDown
+                                  size={16}
+                                  className={`text-soft-bronze transition-transform ${
+                                    expandedExercise === exercise._id ? 'rotate-180' : ''
+                                  }`}
+                                />
+                              </button>
 
-                            {exercise.exerciseNotes && (
-                              <div className="p-3 bg-soft-bronze/5 rounded-lg border border-soft-bronze/20">
-                                <p className="text-xs text-warm-grey mb-1 font-medium">Technique Tips</p>
-                                <p className="text-sm text-charcoal-black leading-relaxed">
-                                  {exercise.exerciseNotes}
-                                </p>
-                              </div>
-                            )}
-                          </div>
-                        )}
+                              {expandedExercise === exercise._id && (
+                                <div className="mt-3 space-y-3 pl-3 border-l-2 border-soft-bronze/30">
+                                  {exercise.tempo && (
+                                    <div>
+                                      <p className="text-xs text-warm-grey mb-1 font-medium">Tempo (movement speed)</p>
+                                      <p className="text-sm text-charcoal-black">
+                                        {exercise.tempo}
+                                      </p>
+                                    </div>
+                                  )}
 
-                        {/* Video Button */}
-                        {exercise.exerciseVideoUrl && (
-                          <div className="mt-4">
-                            <a
-                              href={exercise.exerciseVideoUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-charcoal-black text-soft-white px-4 py-3 rounded-lg font-medium text-sm hover:bg-soft-bronze transition-colors"
-                            >
-                              <Play size={16} />
-                              Watch Exercise Video (short)
-                            </a>
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                                  {exercise.exerciseNotes && (
+                                    <div>
+                                      <p className="text-xs text-warm-grey mb-1 font-medium">Form cues</p>
+                                      <p className="text-sm text-charcoal-black leading-relaxed">
+                                        {exercise.exerciseNotes}
+                                      </p>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
 
                     {/* Workout Completion Action */}
                     <div className="mt-8 pt-6 border-t border-warm-sand-beige">
-                      <button
-                        onClick={() => {
-                          setCompletedWorkouts(new Set([...completedWorkouts, day]));
-                          setActiveWorkoutDay(null);
-                          setExpandedDay(null);
-                        }}
-                        disabled={isCompleted}
-                        className={`w-full flex items-center justify-center gap-2 px-6 py-4 rounded-lg font-bold text-base transition-all ${
-                          isCompleted
-                            ? 'bg-green-100 text-green-700 cursor-not-allowed'
-                            : 'bg-soft-bronze text-soft-white hover:bg-soft-bronze/90'
-                        }`}
-                      >
-                        <CheckCircle2 size={20} />
-                        {isCompleted ? 'Workout Completed!' : '✓ Mark Workout Complete'}
-                      </button>
-                      {isCompleted && (
+                      {sessionCompleteMessage ? (
+                        <div className="text-center py-6">
+                          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <CheckCircle2 className="w-8 h-8 text-green-600" />
+                          </div>
+                          <p className="font-heading text-2xl font-bold text-charcoal-black">
+                            Session complete — nice work 💪
+                          </p>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => handleWorkoutComplete(day)}
+                          disabled={isCompleted}
+                          className={`w-full flex items-center justify-center gap-2 px-6 py-4 rounded-lg font-bold text-base transition-all ${
+                            isCompleted
+                              ? 'bg-green-100 text-green-700 cursor-not-allowed'
+                              : 'bg-soft-bronze text-soft-white hover:bg-soft-bronze/90'
+                          }`}
+                        >
+                          <CheckCircle2 size={20} />
+                          {isCompleted ? 'Workout Completed!' : '✓ Mark Workout Complete'}
+                        </button>
+                      )}
+                      {isCompleted && !sessionCompleteMessage && (
                         <p className="text-center text-sm text-green-700 font-medium mt-3">
                           Great job — consistency builds confidence! 🔥
                         </p>
@@ -426,6 +553,24 @@ export default function MyProgramPage() {
           </div>
         </div>
       </div>
+
+      {/* Post-Workout Feedback Modal */}
+      {showFeedback && (
+        <PostWorkoutFeedbackPrompt
+          clientId={member?._id || ''}
+          programId={programs[0]?.programTitle || ''}
+          workoutActivityId={workoutActivityId}
+          workoutTitle="Your Workout"
+          onClose={() => {
+            setShowFeedback(false);
+            setActiveWorkoutDay(null);
+            setExpandedDay(null);
+          }}
+          onSuccess={() => {
+            // Optionally handle success
+          }}
+        />
+      )}
     </div>
   );
 }
