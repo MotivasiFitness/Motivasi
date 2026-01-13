@@ -230,6 +230,11 @@ export default function MyProgramPage() {
     const weekStart = getWeekStartDate();
     const weekDisplay = formatWeekDisplay(weekStart);
     
+    // Find next incomplete workout
+    const nextWorkout = assignedWorkouts.find(w => !completedWorkouts.has(w._id || ''));
+    const nextWorkoutSlot = nextWorkout?.workoutSlot || null;
+    const allWorkoutsComplete = !nextWorkout;
+    
     return (
       <div className="space-y-8 bg-warm-sand-beige/40 min-h-screen p-6 lg:p-8 rounded-2xl">
         {/* Header */}
@@ -240,6 +245,57 @@ export default function MyProgramPage() {
           </p>
         </div>
 
+        {/* Next Workout Card */}
+        {allWorkoutsComplete ? (
+          <div className="bg-gradient-to-r from-green-50 to-green-50/80 border-2 border-green-200 rounded-2xl p-8 lg:p-10 text-center">
+            <div className="text-5xl mb-4">👏</div>
+            <h2 className="font-heading text-3xl lg:text-4xl font-bold text-charcoal-black mb-2">
+              You're All Caught Up!
+            </h2>
+            <p className="font-paragraph text-lg text-warm-grey">
+              Great work this week! You've completed all your workouts. Rest and recover, and check back next week for new assignments.
+            </p>
+          </div>
+        ) : nextWorkout ? (
+          <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/90 rounded-2xl p-6 lg:p-8 text-soft-white shadow-lg">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+              {/* Left Content */}
+              <div className="flex-1">
+                <p className="font-paragraph text-sm lg:text-base text-soft-white/80 mb-2">
+                  Your Next Workout
+                </p>
+                <h2 className="font-heading text-3xl lg:text-4xl font-bold mb-4">
+                  {nextWorkout.exerciseName}
+                </h2>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+                  <div className="flex items-center gap-2">
+                    <span className="font-heading text-2xl font-bold">
+                      Workout {nextWorkoutSlot} of 4
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock size={20} />
+                    <span className="font-paragraph text-base">
+                      Estimated time: 30–35 min
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Button */}
+              <button
+                onClick={() => {
+                  setActiveWorkoutDay(nextWorkout._id || null);
+                  setExpandedDay(nextWorkout._id || null);
+                }}
+                className="w-full lg:w-auto bg-soft-white text-soft-bronze px-8 py-4 rounded-lg font-heading text-lg font-bold hover:bg-soft-white/90 transition-all duration-300 shadow-md hover:shadow-lg"
+              >
+                [ Start Workout ]
+              </button>
+            </div>
+          </div>
+        ) : null}
+
         {/* Workout Overview Section */}
         {assignedWorkouts.length > 0 && (
           <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8">
@@ -249,22 +305,30 @@ export default function MyProgramPage() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
               {[1, 2, 3, 4].map((slot) => {
                 const workout = assignedWorkouts.find(w => w.workoutSlot === slot);
+                const isCompleted = workout && completedWorkouts.has(workout._id || '');
                 return (
                   <div
                     key={slot}
-                    className={`flex flex-col items-center text-center p-4 rounded-xl ${
-                      workout
+                    className={`flex flex-col items-center text-center p-4 rounded-xl transition-all ${
+                      isCompleted
+                        ? 'bg-green-50 border border-green-200'
+                        : workout
                         ? 'bg-soft-bronze/10 border border-soft-bronze/30'
                         : 'bg-warm-sand-beige/20 border border-warm-sand-beige'
                     }`}
                   >
-                    <div className="font-heading text-2xl font-bold text-charcoal-black mb-2">
-                      Workout {slot}
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <div className="font-heading text-2xl font-bold text-charcoal-black">
+                        Workout {slot}
+                      </div>
+                      {isCompleted && (
+                        <CheckCircle2 size={24} className="text-green-600" />
+                      )}
                     </div>
                     {workout ? (
                       <>
-                        <p className="text-sm text-warm-grey mb-2">
-                          {workout.exerciseName || 'Workout'}
+                        <p className={`text-sm mb-2 ${isCompleted ? 'text-green-700 font-medium' : 'text-warm-grey'}`}>
+                          {isCompleted ? '✓ Completed' : workout.exerciseName || 'Workout'}
                         </p>
                         <p className="text-xs text-warm-grey/60">
                           {getDaysSinceUpdate(workout._updatedDate)}
