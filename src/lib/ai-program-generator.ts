@@ -13,6 +13,7 @@
 
 import { BaseCrudService } from '@/integrations';
 import { FitnessPrograms } from '@/entities';
+import { safeFetch, handleApiError, safeJsonParse } from './api-response-handler';
 
 export interface ProgramGeneratorInput {
   programGoal: string;
@@ -138,24 +139,21 @@ export async function generateProgramWithAI(
     // Validate input
     validateProgramInput(input);
 
-    // Call backend API to generate program
-    const response = await fetch('/api/generate-program', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    // Call backend API to generate program with safe JSON parsing
+    const generatedProgram = await safeFetch<GeneratedProgram>(
+      '/api/generate-program',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...input,
+          trainerId,
+        }),
       },
-      body: JSON.stringify({
-        ...input,
-        trainerId,
-      }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Failed to generate program');
-    }
-
-    const generatedProgram: GeneratedProgram = await response.json();
+      'Program generation'
+    );
 
     // Validate generated program
     validateGeneratedProgram(generatedProgram);
@@ -615,25 +613,22 @@ export async function regenerateProgramSection(
         break;
     }
 
-    // Call backend API with section-specific prompt
-    const response = await fetch('/api/regenerate-program-section', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        section: request.section,
-        context,
-        prompt,
-        trainerPreferences: prefs,
-        currentProgram: program,
-      }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Failed to regenerate section');
-    }
-
-    const regeneratedData = await response.json();
+    // Call backend API with section-specific prompt using safe JSON parsing
+    const regeneratedData = await safeFetch<any>(
+      '/api/regenerate-program-section',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          section: request.section,
+          context,
+          prompt,
+          trainerPreferences: prefs,
+          currentProgram: program,
+        }),
+      },
+      'Program section regeneration'
+    );
 
     // Update program with regenerated section
     const updated = { ...program };
