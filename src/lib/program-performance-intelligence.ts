@@ -215,19 +215,29 @@ export async function analyzePerformance(trainerId: string): Promise<Performance
 }
 
 /**
- * Generate smart adjustment suggestions based on metrics
+ * Generate smart adjustment suggestions based on metrics and adherence data
  */
 export async function generateSmartAdjustments(
   programId: string,
   clientId: string,
   trainerId: string,
-  metrics: ProgramPerformanceMetrics
+  metrics: ProgramPerformanceMetrics,
+  adherenceData?: {
+    avgDifficulty?: number;
+    missedWorkoutsLast7Days?: number;
+    completionRate?: number;
+  }
 ): Promise<SmartAdjustmentSuggestion[]> {
   try {
     const suggestions: SmartAdjustmentSuggestion[] = [];
 
+    // Use adherence data if available, otherwise fall back to metrics
+    const avgDifficulty = adherenceData?.avgDifficulty ?? (metrics.clientDifficultyRating || 5);
+    const missedWorkouts = adherenceData?.missedWorkoutsLast7Days ?? (metrics.missedSessionCount || 0);
+    const completionRate = adherenceData?.completionRate ?? (metrics.workoutCompletionRate || 0);
+
     // Load increase suggestion
-    if ((metrics.workoutCompletionRate || 0) > 90 && (metrics.clientDifficultyRating || 5) <= 4) {
+    if (completionRate > 90 && avgDifficulty <= 3) {
       suggestions.push({
         _id: crypto.randomUUID(),
         programId,
@@ -236,23 +246,23 @@ export async function generateSmartAdjustments(
         adjustmentType: 'load-increase',
         rationale: 'Client is completing workouts consistently with low difficulty rating. Ready for increased load.',
         confidence: 85,
-        basedOnMetrics: ['workoutCompletionRate', 'clientDifficultyRating'],
+        basedOnMetrics: ['workoutCompletionRate', 'difficultyRating'],
         status: 'pending',
         createdAt: new Date(),
       });
     }
 
-    // Volume decrease suggestion
-    if ((metrics.missedSessionCount || 0) > 2 && (metrics.clientDifficultyRating || 5) >= 7) {
+    // Volume decrease suggestion (high difficulty + missed workouts)
+    if (missedWorkouts >= 2 && avgDifficulty >= 4) {
       suggestions.push({
         _id: crypto.randomUUID(),
         programId,
         clientId,
         trainerId,
         adjustmentType: 'volume-decrease',
-        rationale: 'Client is missing sessions and reporting high difficulty. Reduce volume to improve adherence.',
+        rationale: `Client has missed ${missedWorkouts} workouts and reports high difficulty (${avgDifficulty.toFixed(1)}/5). Reduce volume to improve adherence.`,
         confidence: 90,
-        basedOnMetrics: ['missedSessionCount', 'clientDifficultyRating'],
+        basedOnMetrics: ['missedWorkouts', 'difficultyRating'],
         status: 'pending',
         createdAt: new Date(),
       });
@@ -292,16 +302,32 @@ export async function generateSmartAdjustments(
     }
 
     // Frequency change suggestion
-    if ((metrics.workoutCompletionRate || 0) < 60 && (metrics.missedSessionCount || 0) > 3) {
+    if (completionRate < 60 && missedWorkouts > 2) {
       suggestions.push({
         _id: crypto.randomUUID(),
         programId,
         clientId,
         trainerId,
         adjustmentType: 'frequency-change',
-        rationale: 'Client is missing multiple sessions. Consider reducing training frequency to match their schedule.',
+        rationale: `Client is missing ${missedWorkouts} sessions. Consider reducing training frequency to match their schedule.`,
         confidence: 85,
-        basedOnMetrics: ['workoutCompletionRate', 'missedSessionCount'],
+        basedOnMetrics: ['completionRate', 'missedWorkouts'],
+        status: 'pending',
+        createdAt: new Date(),
+      });
+    }
+
+    // Too easy suggestion (low difficulty feedback)
+    if (avgDifficulty <= 2 && completionRate > 80) {
+      suggestions.push({
+        _id: crypto.randomUUID(),
+        programId,
+        clientId,
+        trainerId,
+        adjustmentType: 'load-increase',
+        rationale: `Client reports low difficulty (${avgDifficulty.toFixed(1)}/5) and high completion. Consider increasing intensity.`,
+        confidence: 75,
+        basedOnMetrics: ['difficultyRating', 'completionRate'],
         status: 'pending',
         createdAt: new Date(),
       });

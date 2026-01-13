@@ -317,70 +317,46 @@ export interface TrainerQualifications {
 
 
 /**
- * Collection ID: programperformancemetrics
- * Interface for ProgramPerformanceMetrics
+ * Collection ID: clientworkoutactivity
+ * Interface for ClientWorkoutActivity
  */
-export interface ProgramPerformanceMetrics {
+export interface ClientWorkoutActivity {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
   /** @wixFieldType text */
-  programId?: string;
-  /** @wixFieldType text */
   clientId?: string;
   /** @wixFieldType text */
-  trainerId?: string;
-  /** @wixFieldType number */
-  completionRate?: number;
-  /** @wixFieldType number */
-  workoutCompletionRate?: number;
-  /** @wixFieldType number */
-  exerciseSubstitutionCount?: number;
-  /** @wixFieldType number */
-  missedSessionCount?: number;
-  /** @wixFieldType number */
-  dropOffWeek?: number;
-  /** @wixFieldType number */
-  trainerEditsCount?: number;
-  /** @wixFieldType number */
-  aiGeneratedSectionsCount?: number;
-  /** @wixFieldType number */
-  clientDifficultyRating?: number;
+  programId?: string;
   /** @wixFieldType text */
-  performanceNotes?: string;
+  workoutDayId?: string;
+  /** @wixFieldType boolean */
+  completed?: boolean;
   /** @wixFieldType datetime */
-  lastUpdated?: Date | string;
+  completedAt?: Date | string;
   /** @wixFieldType text */
-  status?: string;
+  notes?: string;
 }
 
 
 /**
- * Collection ID: traineraisnippets
- * Interface for TrainerAISnippets
+ * Collection ID: clientworkoutfeedback
+ * Interface for ClientWorkoutFeedback
  */
-export interface TrainerAISnippets {
+export interface ClientWorkoutFeedback {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
   /** @wixFieldType text */
-  trainerId?: string;
+  clientId?: string;
   /** @wixFieldType text */
-  snippetName?: string;
+  programId?: string;
   /** @wixFieldType text */
-  snippetType?: string;
-  /** @wixFieldType text */
-  content?: string;
-  /** @wixFieldType text */
-  category?: string;
+  workoutActivityId?: string;
   /** @wixFieldType number */
-  usageCount?: number;
-  /** @wixFieldType boolean */
-  isShared?: boolean;
+  difficultyRating?: number;
   /** @wixFieldType text */
-  sharedWithTeamIds?: string;
-  /** @wixFieldType text */
-  tags?: string;
-  /** @wixFieldType text */
-  description?: string;
+  feedbackNote?: string;
+  /** @wixFieldType datetime */
+  submittedAt?: Date | string;
 }
