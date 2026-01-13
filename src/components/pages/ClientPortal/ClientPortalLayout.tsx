@@ -104,15 +104,15 @@ export default function ClientPortalLayout() {
   }
 
   const navItems = [
-    { path: '/portal', label: 'Dashboard', icon: LayoutDashboard },
-    { path: '/portal/program', label: 'My Program', icon: Dumbbell },
-    { path: '/portal/bookings', label: 'Bookings', icon: Calendar },
-    { path: '/portal/nutrition', label: 'Nutrition', icon: Apple },
-    { path: '/portal/messages', label: 'Messages', icon: MessageSquare },
-    { path: '/portal/progress', label: 'Progress', icon: TrendingUp },
-    { path: '/portal/video-library', label: 'Video Library', icon: Video },
-    { path: '/portal/my-submissions', label: 'My Submissions', icon: Video },
-    { path: '/exercise-video-review', label: 'Upload Video', icon: Video },
+    { path: '/portal', label: 'Dashboard', icon: LayoutDashboard, color: 'text-blue-400' },
+    { path: '/portal/program', label: 'My Program', icon: Dumbbell, color: 'text-emerald-400' },
+    { path: '/portal/bookings', label: 'Bookings', icon: Calendar, color: 'text-purple-400' },
+    { path: '/portal/nutrition', label: 'Nutrition', icon: Apple, color: 'text-yellow-400' },
+    { path: '/portal/messages', label: 'Messages', icon: MessageSquare, color: 'text-pink-400' },
+    { path: '/portal/progress', label: 'Progress', icon: TrendingUp, color: 'text-orange-400' },
+    { path: '/portal/video-library', label: 'Video Library', icon: Video, color: 'text-cyan-400' },
+    { path: '/portal/my-submissions', label: 'My Submissions', icon: Video, color: 'text-rose-400' },
+    { path: '/exercise-video-review', label: 'Upload Video', icon: Video, color: 'text-indigo-400' },
   ];
 
   const isActive = (path: string) => {
@@ -190,7 +190,7 @@ export default function ClientPortalLayout() {
                         : 'text-warm-grey hover:bg-soft-white/10'
                     }`}
                   >
-                    <Icon size={20} />
+                    <Icon size={20} className={item.color} />
                     <span className="font-paragraph font-medium">{item.label}</span>
                   </Link>
                 </div>
