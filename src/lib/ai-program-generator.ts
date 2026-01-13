@@ -1,7 +1,14 @@
 /**
- * AI Program Generator Service
+ * AI Program Generator Service - Enhanced
  * Generates training programs using OpenAI API
- * Handles program creation, validation, and storage
+ * Features:
+ * - Partial regeneration of specific sections
+ * - Trainer style memory and preferences
+ * - Client-aware program generation
+ * - Program versioning and history
+ * - Exercise library mapping
+ * - Quality & safety enhancements
+ * - UX improvements with section tracking
  */
 
 import { BaseCrudService } from '@/integrations';
@@ -17,6 +24,7 @@ export interface ProgramGeneratorInput {
   injuries: string; // comma-separated or description
   trainingStyle: string; // e.g., "strength", "hypertrophy", "endurance"
   additionalNotes?: string;
+  clientId?: string; // Optional: for client-aware generation
 }
 
 export interface WorkoutDay {
@@ -25,6 +33,8 @@ export interface WorkoutDay {
   warmUp: string;
   coolDown: string;
   notes: string;
+  aiGenerated?: boolean; // Track if this section was AI-generated
+  generatedAt?: string; // Timestamp of last AI generation
 }
 
 export interface Exercise {
@@ -35,6 +45,9 @@ export interface Exercise {
   restSeconds: number;
   notes: string;
   substitutions: string[];
+  exerciseId?: string; // Internal exercise library ID
+  aiGenerated?: boolean; // Track if AI-generated
+  generatedAt?: string; // Timestamp of last AI generation
 }
 
 export interface GeneratedProgram {
@@ -47,6 +60,68 @@ export interface GeneratedProgram {
   progressionGuidance: string;
   safetyNotes: string;
   aiGenerated: boolean;
+  aiGeneratedAt?: string; // Timestamp of last full generation
+  qualityScore?: number; // 0-100 quality assessment
+  qualityFlags?: QualityFlag[]; // Safety/quality issues
+}
+
+export interface QualityFlag {
+  type: 'excessive-volume' | 'repeated-movement' | 'missing-substitutions' | 'form-concern';
+  severity: 'low' | 'medium' | 'high';
+  message: string;
+  affectedExercises?: string[];
+}
+
+export interface TrainerPreferences {
+  _id: string;
+  trainerId: string;
+  repRanges: {
+    strength: string; // e.g., "3-5"
+    hypertrophy: string; // e.g., "8-12"
+    endurance: string; // e.g., "15-20"
+  };
+  restTimes: {
+    strength: number; // seconds
+    hypertrophy: number;
+    endurance: number;
+  };
+  favoriteExercises: string[];
+  avoidedExercises: string[];
+  coachingTone: 'motivational' | 'technical' | 'balanced';
+  defaultEquipment: string[];
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+}
+
+export interface ProgramVersion {
+  _id: string;
+  programId: string;
+  version: number;
+  parentProgramId?: string; // Reference to previous version
+  programData: GeneratedProgram;
+  trainerId: string;
+  clientId?: string;
+  editedAt: Date | string;
+  editSummary?: string; // What was changed
+  createdAt?: Date | string;
+}
+
+export interface ClientData {
+  goals: string[];
+  experienceLevel: 'beginner' | 'intermediate' | 'advanced';
+  injuries: string[];
+  equipment: string[];
+  availableDaysPerWeek: number;
+  timePerWorkout: number;
+  preferences?: string;
+}
+
+export interface PartialRegenerationRequest {
+  programId: string;
+  section: 'workout-day' | 'exercise-substitutions' | 'progression-guidance' | 'warm-up-cool-down';
+  dayIndex?: number; // For workout-day sections
+  exerciseIndex?: number; // For exercise-specific sections
+  context?: string; // Trainer notes or specific requests
 }
 
 /**
@@ -397,6 +472,371 @@ export function isSafeProgram(program: GeneratedProgram): boolean {
   return true;
 }
 
+/**
+ * ENHANCED FEATURES
+ */
+
+/**
+ * Get or create trainer preferences
+ * @param trainerId - ID of the trainer
+ * @returns Trainer preferences
+ */
+export async function getTrainerPreferences(trainerId: string): Promise<TrainerPreferences> {
+  try {
+    // In production, this would query a TrainerPreferences collection
+    // For now, return default preferences
+    const stored = localStorage.getItem(`trainer_prefs_${trainerId}`);
+    if (stored) {
+      return JSON.parse(stored);
+    }
+
+    const defaults: TrainerPreferences = {
+      _id: crypto.randomUUID(),
+      trainerId,
+      repRanges: {
+        strength: '3-5',
+        hypertrophy: '8-12',
+        endurance: '15-20',
+      },
+      restTimes: {
+        strength: 180,
+        hypertrophy: 90,
+        endurance: 45,
+      },
+      favoriteExercises: [],
+      avoidedExercises: [],
+      coachingTone: 'balanced',
+      defaultEquipment: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    localStorage.setItem(`trainer_prefs_${trainerId}`, JSON.stringify(defaults));
+    return defaults;
+  } catch (error) {
+    console.error('Error getting trainer preferences:', error);
+    throw new Error('Failed to get trainer preferences');
+  }
+}
+
+/**
+ * Update trainer preferences
+ * @param trainerId - ID of the trainer
+ * @param updates - Partial preference updates
+ */
+export async function updateTrainerPreferences(
+  trainerId: string,
+  updates: Partial<TrainerPreferences>
+): Promise<TrainerPreferences> {
+  try {
+    const current = await getTrainerPreferences(trainerId);
+    const updated: TrainerPreferences = {
+      ...current,
+      ...updates,
+      updatedAt: new Date().toISOString(),
+    };
+
+    localStorage.setItem(`trainer_prefs_${trainerId}`, JSON.stringify(updated));
+    return updated;
+  } catch (error) {
+    console.error('Error updating trainer preferences:', error);
+    throw new Error('Failed to update trainer preferences');
+  }
+}
+
+/**
+ * Fetch client data for context-aware program generation
+ * @param clientId - ID of the client
+ * @returns Client data
+ */
+export async function getClientContext(clientId: string): Promise<ClientData | null> {
+  try {
+    // In production, this would fetch from client profile/assignments
+    // For now, return null (trainer must provide context)
+    const stored = localStorage.getItem(`client_context_${clientId}`);
+    return stored ? JSON.parse(stored) : null;
+  } catch (error) {
+    console.error('Error getting client context:', error);
+    return null;
+  }
+}
+
+/**
+ * Regenerate a specific section of a program
+ * @param request - Partial regeneration request
+ * @param trainerId - ID of the trainer
+ * @returns Updated program section
+ */
+export async function regenerateProgramSection(
+  request: PartialRegenerationRequest,
+  trainerId: string
+): Promise<GeneratedProgram> {
+  try {
+    // Load current program
+    const program = await loadProgramDraft(request.programId);
+    if (!program) {
+      throw new Error('Program not found');
+    }
+
+    // Get trainer preferences for context
+    const prefs = await getTrainerPreferences(trainerId);
+
+    // Build regeneration prompt based on section type
+    let prompt = '';
+    let context = '';
+
+    switch (request.section) {
+      case 'workout-day':
+        if (request.dayIndex === undefined) throw new Error('dayIndex required for workout-day regeneration');
+        const day = program.workoutDays[request.dayIndex];
+        context = `Current day: ${day.day}\nCurrent exercises: ${day.exercises.map(e => `${e.name} (${e.sets}x${e.reps})`).join(', ')}`;
+        prompt = `Regenerate this workout day with the same focus but different exercises. ${request.context || ''}`;
+        break;
+
+      case 'exercise-substitutions':
+        if (request.dayIndex === undefined || request.exerciseIndex === undefined) {
+          throw new Error('dayIndex and exerciseIndex required for substitutions');
+        }
+        const exercise = program.workoutDays[request.dayIndex].exercises[request.exerciseIndex];
+        context = `Exercise: ${exercise.name} (${exercise.sets}x${exercise.reps}, ${exercise.restSeconds}s rest)`;
+        prompt = `Generate 3 alternative exercises for this movement pattern. ${request.context || ''}`;
+        break;
+
+      case 'progression-guidance':
+        context = `Program: ${program.programName}\nDuration: ${program.duration}\nFocus: ${program.focusArea}`;
+        prompt = `Regenerate progression guidance for this program. ${request.context || ''}`;
+        break;
+
+      case 'warm-up-cool-down':
+        if (request.dayIndex === undefined) throw new Error('dayIndex required for warm-up-cool-down');
+        const warmupDay = program.workoutDays[request.dayIndex];
+        context = `Day: ${warmupDay.day}\nExercises: ${warmupDay.exercises.map(e => e.name).join(', ')}`;
+        prompt = `Regenerate warm-up and cool-down for this workout day. ${request.context || ''}`;
+        break;
+    }
+
+    // Call backend API with section-specific prompt
+    const response = await fetch('/api/regenerate-program-section', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        section: request.section,
+        context,
+        prompt,
+        trainerPreferences: prefs,
+        currentProgram: program,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to regenerate section');
+    }
+
+    const regeneratedData = await response.json();
+
+    // Update program with regenerated section
+    const updated = { ...program };
+    const now = new Date().toISOString();
+
+    switch (request.section) {
+      case 'workout-day':
+        updated.workoutDays[request.dayIndex!] = {
+          ...regeneratedData,
+          aiGenerated: true,
+          generatedAt: now,
+        };
+        break;
+
+      case 'exercise-substitutions':
+        updated.workoutDays[request.dayIndex!].exercises[request.exerciseIndex!].substitutions =
+          regeneratedData.substitutions;
+        updated.workoutDays[request.dayIndex!].exercises[request.exerciseIndex!].generatedAt = now;
+        break;
+
+      case 'progression-guidance':
+        updated.progressionGuidance = regeneratedData.progressionGuidance;
+        break;
+
+      case 'warm-up-cool-down':
+        updated.workoutDays[request.dayIndex!].warmUp = regeneratedData.warmUp;
+        updated.workoutDays[request.dayIndex!].coolDown = regeneratedData.coolDown;
+        updated.workoutDays[request.dayIndex!].generatedAt = now;
+        break;
+    }
+
+    // Save updated program
+    sessionStorage.setItem(`program_${request.programId}`, JSON.stringify(updated));
+
+    return updated;
+  } catch (error) {
+    console.error('Error regenerating program section:', error);
+    throw new Error(`Failed to regenerate ${request.section}`);
+  }
+}
+
+/**
+ * Create a new version of a program
+ * @param programId - ID of the program to version
+ * @param program - Updated program data
+ * @param trainerId - ID of the trainer
+ * @param editSummary - Summary of changes
+ * @returns New program version
+ */
+export async function createProgramVersion(
+  programId: string,
+  program: GeneratedProgram,
+  trainerId: string,
+  editSummary?: string
+): Promise<ProgramVersion> {
+  try {
+    // In production, this would query version history
+    // For now, assume version 1
+    const version: ProgramVersion = {
+      _id: crypto.randomUUID(),
+      programId,
+      version: 2, // Would be incremented based on history
+      parentProgramId: programId,
+      programData: program,
+      trainerId,
+      editedAt: new Date().toISOString(),
+      editSummary,
+      createdAt: new Date().toISOString(),
+    };
+
+    // Store version in localStorage
+    localStorage.setItem(`program_version_${version._id}`, JSON.stringify(version));
+
+    return version;
+  } catch (error) {
+    console.error('Error creating program version:', error);
+    throw new Error('Failed to create program version');
+  }
+}
+
+/**
+ * Get program version history
+ * @param programId - ID of the program
+ * @returns Array of program versions
+ */
+export async function getProgramVersionHistory(programId: string): Promise<ProgramVersion[]> {
+  try {
+    // In production, this would query all versions from database
+    // For now, return empty array
+    const versions: ProgramVersion[] = [];
+    return versions;
+  } catch (error) {
+    console.error('Error getting program version history:', error);
+    return [];
+  }
+}
+
+/**
+ * Assess program quality and safety
+ * @param program - Program to assess
+ * @returns Quality assessment with flags
+ */
+export function assessProgramQuality(program: GeneratedProgram): { score: number; flags: QualityFlag[] } {
+  const flags: QualityFlag[] = [];
+  let score = 100;
+
+  // Check for excessive volume
+  let totalSets = 0;
+  const exerciseFrequency: Record<string, number> = {};
+
+  program.workoutDays.forEach(day => {
+    day.exercises.forEach(exercise => {
+      totalSets += exercise.sets;
+      exerciseFrequency[exercise.name] = (exerciseFrequency[exercise.name] || 0) + 1;
+    });
+  });
+
+  if (totalSets > 200) {
+    flags.push({
+      type: 'excessive-volume',
+      severity: 'high',
+      message: `Total volume is very high (${totalSets} sets). Consider reducing for recovery.`,
+    });
+    score -= 20;
+  } else if (totalSets > 150) {
+    flags.push({
+      type: 'excessive-volume',
+      severity: 'medium',
+      message: `Total volume is moderate-high (${totalSets} sets). Monitor client fatigue.`,
+    });
+    score -= 10;
+  }
+
+  // Check for repeated movements
+  Object.entries(exerciseFrequency).forEach(([exercise, count]) => {
+    if (count > 3) {
+      flags.push({
+        type: 'repeated-movement',
+        severity: 'medium',
+        message: `"${exercise}" appears ${count} times. Consider variation.`,
+        affectedExercises: [exercise],
+      });
+      score -= 5;
+    }
+  });
+
+  // Check for missing substitutions
+  const exercisesWithoutSubs: string[] = [];
+  program.workoutDays.forEach(day => {
+    day.exercises.forEach(exercise => {
+      if (!exercise.substitutions || exercise.substitutions.length === 0) {
+        exercisesWithoutSubs.push(exercise.name);
+      }
+    });
+  });
+
+  if (exercisesWithoutSubs.length > 0) {
+    flags.push({
+      type: 'missing-substitutions',
+      severity: 'low',
+      message: `${exercisesWithoutSubs.length} exercises lack substitutions.`,
+      affectedExercises: exercisesWithoutSubs,
+    });
+    score -= 5;
+  }
+
+  return {
+    score: Math.max(0, score),
+    flags,
+  };
+}
+
+/**
+ * Map exercise names to internal library IDs
+ * @param exerciseName - Name of the exercise
+ * @returns Exercise ID if found, null otherwise
+ */
+export async function mapExerciseToLibrary(exerciseName: string): Promise<string | null> {
+  try {
+    // In production, this would query an exercise library collection
+    // For now, return null (trainer must manually map)
+    const stored = localStorage.getItem(`exercise_map_${exerciseName}`);
+    return stored ? JSON.parse(stored) : null;
+  } catch (error) {
+    console.error('Error mapping exercise:', error);
+    return null;
+  }
+}
+
+/**
+ * Store exercise library mapping
+ * @param exerciseName - Display name
+ * @param exerciseId - Internal library ID
+ */
+export async function storeExerciseMapping(exerciseName: string, exerciseId: string): Promise<void> {
+  try {
+    localStorage.setItem(`exercise_map_${exerciseName}`, JSON.stringify(exerciseId));
+  } catch (error) {
+    console.error('Error storing exercise mapping:', error);
+    throw new Error('Failed to store exercise mapping');
+  }
+}
+
 export default {
   generateProgramWithAI,
   saveProgramDraft,
@@ -405,4 +845,13 @@ export default {
   saveProgramAsTemplate,
   assignProgramToClient,
   isSafeProgram,
+  getTrainerPreferences,
+  updateTrainerPreferences,
+  getClientContext,
+  regenerateProgramSection,
+  createProgramVersion,
+  getProgramVersionHistory,
+  assessProgramQuality,
+  mapExerciseToLibrary,
+  storeExerciseMapping,
 };

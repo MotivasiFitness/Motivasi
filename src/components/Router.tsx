@@ -49,6 +49,8 @@ import VideoReviewsPage from '@/components/pages/TrainerDashboard/VideoReviewsPa
 import ClientProgressPage from '@/components/pages/TrainerDashboard/ClientProgressPage';
 import AIAssistantPage from '@/components/pages/TrainerDashboard/AIAssistantPage';
 import ProgramEditorPage from '@/components/pages/TrainerDashboard/ProgramEditorPage';
+import ProgramEditorEnhanced from '@/components/pages/TrainerDashboard/ProgramEditorEnhanced';
+import TrainerPreferencesPage from '@/components/pages/TrainerDashboard/TrainerPreferencesPage';
 
 import AdminDashboard from '@/components/pages/AdminDashboard';
 import ExerciseVideoReviewPage from '@/components/pages/ExerciseVideoReviewPage';
@@ -267,6 +269,14 @@ const router = createBrowserRouter([
           {
             path: "program-editor",
             element: <ProgramEditorPage />,
+          },
+          {
+            path: "program-editor-enhanced",
+            element: <ProgramEditorEnhanced />,
+          },
+          {
+            path: "preferences",
+            element: <TrainerPreferencesPage />,
           },
           {
             path: "messages",
