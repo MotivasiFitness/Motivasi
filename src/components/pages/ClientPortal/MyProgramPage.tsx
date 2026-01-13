@@ -5,6 +5,7 @@ import { ClientPrograms } from '@/entities';
 import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight, Volume2, AlertCircle } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import PostWorkoutFeedbackPrompt from '@/components/ClientPortal/PostWorkoutFeedbackPrompt';
+import ProgramCompletionRing from '@/components/ClientPortal/ProgramCompletionRing';
 import { recordWorkoutCompletion } from '@/lib/adherence-tracking';
 
 interface WorkoutSession {
@@ -44,6 +45,8 @@ export default function MyProgramPage() {
   const [sessionCompleteMessage, setSessionCompleteMessage] = useState(false);
   const [exerciseCompleteStates, setExerciseCompleteStates] = useState<ExerciseCompleteState>({});
   const [expandedWeightInputs, setExpandedWeightInputs] = useState<Set<string>>(new Set());
+  const [showCompletionRing, setShowCompletionRing] = useState(false);
+  const [ringAnimationTrigger, setRingAnimationTrigger] = useState(false);
 
   // Rest timer effect
   useEffect(() => {
@@ -174,13 +177,20 @@ export default function MyProgramPage() {
       );
 
       setCompletedWorkouts(new Set([...completedWorkouts, day]));
+      
+      // Trigger completion ring animation
+      setShowCompletionRing(true);
+      setRingAnimationTrigger(true);
+      
       setSessionCompleteMessage(true);
 
-      // Show feedback prompt after 1 second
+      // Show feedback prompt after 2.5 seconds (after ring animation)
       setTimeout(() => {
         setSessionCompleteMessage(false);
         setShowFeedback(true);
-      }, 1000);
+        setShowCompletionRing(false);
+        setRingAnimationTrigger(false);
+      }, 2500);
     } catch (error) {
       console.error('Error completing workout:', error);
     }
@@ -578,6 +588,19 @@ export default function MyProgramPage() {
 
                     {/* Workout Completion Action */}
                     <div className="mt-8 pt-6 border-t border-warm-sand-beige">
+                      {showCompletionRing && (
+                        <div className="mb-8 bg-warm-sand-beige/20 border border-warm-sand-beige rounded-2xl p-6">
+                          <ProgramCompletionRing
+                            completedWorkouts={completedWorkouts.size}
+                            totalWorkouts={workoutDays.length}
+                            showAnimation={ringAnimationTrigger}
+                            onAnimationComplete={() => {
+                              // Animation complete callback
+                            }}
+                          />
+                        </div>
+                      )}
+                      
                       {sessionCompleteMessage ? (
                         <div className="text-center py-6">
                           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">

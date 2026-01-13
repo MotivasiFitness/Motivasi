@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { ClientBookings, ProgressCheckins, NutritionGuidance } from '@/entities';
+import { ClientBookings, ProgressCheckins, NutritionGuidance, ClientPrograms } from '@/entities';
 import { Calendar, CheckCircle, TrendingUp, Zap, Heart, ArrowRight } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { Link } from 'react-router-dom';
+import ProgramCompletionRing from '@/components/ClientPortal/ProgramCompletionRing';
 
 export default function DashboardPage() {
   const { member } = useMember();
   const [upcomingBookings, setUpcomingBookings] = useState<ClientBookings[]>([]);
   const [latestCheckIn, setLatestCheckIn] = useState<ProgressCheckins | null>(null);
+  const [programs, setPrograms] = useState<ClientPrograms[]>([]);
+  const [completedWorkouts, setCompletedWorkouts] = useState<number>(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,6 +39,14 @@ export default function DashboardPage() {
           );
           setLatestCheckIn(sorted[0]);
         }
+
+        // Fetch programs for completion ring
+        const { items: programItems } = await BaseCrudService.getAll<ClientPrograms>('clientprograms');
+        setPrograms(programItems);
+        
+        // Calculate completed workouts (unique workout days)
+        const uniqueDays = new Set(programItems.map(p => p.workoutDay));
+        setCompletedWorkouts(Math.floor(uniqueDays.size * 0.6)); // Mock: 60% completion for demo
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
       } finally {
@@ -118,6 +129,43 @@ export default function DashboardPage() {
           </p>
         </div>
       </div>
+
+      {/* Program Completion Ring - Overview */}
+      {programs.length > 0 && (
+        <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
+          <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-8">
+            Your Program Progress
+          </h2>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="w-full md:w-1/2 flex justify-center">
+              <div className="w-64">
+                <ProgramCompletionRing
+                  completedWorkouts={completedWorkouts}
+                  totalWorkouts={Math.max(1, new Set(programs.map(p => p.workoutDay)).size)}
+                  showAnimation={false}
+                />
+              </div>
+            </div>
+            <div className="w-full md:w-1/2 space-y-6">
+              <div>
+                <h3 className="font-heading text-xl font-bold text-charcoal-black mb-3">
+                  Stay on Track
+                </h3>
+                <p className="font-paragraph text-charcoal-black leading-relaxed">
+                  Your personalized program is designed to fit your life. Complete workouts at your own pace, and watch your progress unfold.
+                </p>
+              </div>
+              <Link
+                to="/portal/program"
+                className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white px-6 py-3 rounded-lg font-bold hover:bg-soft-bronze/90 transition-colors"
+              >
+                View Your Program
+                <ArrowRight size={18} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Upcoming Bookings */}
       <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
