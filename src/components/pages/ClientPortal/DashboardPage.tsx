@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientBookings, ProgressCheckins, NutritionGuidance, ClientPrograms, WeeklyCoachesNotes } from '@/entities';
-import { Calendar, CheckCircle, TrendingUp, Zap, Heart, ArrowRight, MessageCircle } from 'lucide-react';
+import { Calendar, CheckCircle, TrendingUp, Zap, Heart, ArrowRight, MessageCircle, Smile } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { Link } from 'react-router-dom';
 import ProgramCompletionRing from '@/components/ClientPortal/ProgramCompletionRing';
@@ -15,6 +15,8 @@ export default function DashboardPage() {
   const [completedWorkouts, setCompletedWorkouts] = useState<number>(0);
   const [weeklyCoachNote, setWeeklyCoachNote] = useState<WeeklyCoachesNotes | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isInactive, setIsInactive] = useState(false);
+  const [daysSinceActivity, setDaysSinceActivity] = useState<number>(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,6 +41,16 @@ export default function DashboardPage() {
             new Date(b.checkinDate || '').getTime() - new Date(a.checkinDate || '').getTime()
           );
           setLatestCheckIn(sorted[0]);
+
+          // Check for inactivity (7+ days since last check-in)
+          const lastCheckInDate = new Date(sorted[0].checkinDate || '');
+          const today = new Date();
+          const daysDiff = Math.floor((today.getTime() - lastCheckInDate.getTime()) / (1000 * 60 * 60 * 24));
+          
+          if (daysDiff >= 7) {
+            setIsInactive(true);
+            setDaysSinceActivity(daysDiff);
+          }
         }
 
         // Fetch programs for completion ring
@@ -86,6 +98,34 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8 bg-warm-sand-beige/40 min-h-screen p-8 rounded-2xl">
+      {/* Welcome Back State - Triggered by 7+ days of inactivity */}
+      {isInactive && (
+        <div className="bg-gradient-to-r from-soft-bronze via-soft-bronze/90 to-soft-bronze/80 rounded-2xl p-8 md:p-12 text-soft-white shadow-lg border border-soft-bronze/50">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-soft-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                <Smile className="w-6 h-6 text-soft-white" />
+              </div>
+              <div>
+                <h2 className="font-heading text-3xl md:text-4xl font-bold mb-2">
+                  Welcome back — let's pick up where you left off
+                </h2>
+                <p className="text-soft-white/90 font-paragraph text-lg">
+                  It's been {daysSinceActivity} days. Your program is ready for you, and your trainer is here to support your comeback.
+                </p>
+              </div>
+            </div>
+            <Link
+              to="/portal/program"
+              className="inline-flex items-center gap-2 bg-soft-white text-soft-bronze px-8 py-4 rounded-lg font-bold text-lg hover:bg-soft-white/95 transition-all duration-300 whitespace-nowrap shadow-lg flex-shrink-0"
+            >
+              Start Workout
+              <ArrowRight size={20} />
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* Weekly Coach Note - If Available */}
       {weeklyCoachNote && weeklyCoachNote.noteContent && (
         <div className="bg-gradient-to-r from-soft-bronze/10 to-soft-bronze/5 border-l-4 border-soft-bronze rounded-2xl p-6">
@@ -110,26 +150,28 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Welcome Section with Primary CTA */}
-      <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-          <div>
-            <h1 className="font-heading text-4xl font-bold mb-2">
-              Welcome back, {member?.profile?.nickname || member?.contact?.firstName}!
-            </h1>
-            <p className="text-soft-white/90">
-              You're making great progress. Keep up the momentum!
-            </p>
+      {/* Welcome Section with Primary CTA - Hidden when inactive */}
+      {!isInactive && (
+        <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div>
+              <h1 className="font-heading text-4xl font-bold mb-2">
+                Welcome back, {member?.profile?.nickname || member?.contact?.firstName}!
+              </h1>
+              <p className="text-soft-white/90">
+                You're making great progress. Keep up the momentum!
+              </p>
+            </div>
+            <Link
+              to="/portal/bookings"
+              className="inline-flex items-center gap-2 bg-soft-white text-soft-bronze px-10 py-5 rounded-lg font-bold text-lg hover:bg-soft-white/90 transition-colors whitespace-nowrap shadow-lg"
+            >
+              Book Your Next Session
+              <ArrowRight size={20} />
+            </Link>
           </div>
-          <Link
-            to="/portal/bookings"
-            className="inline-flex items-center gap-2 bg-soft-white text-soft-bronze px-10 py-5 rounded-lg font-bold text-lg hover:bg-soft-white/90 transition-colors whitespace-nowrap shadow-lg"
-          >
-            Book Your Next Session
-            <ArrowRight size={20} />
-          </Link>
         </div>
-      </div>
+      )}
 
       {/* Quick Stats */}
       <div className="grid md:grid-cols-3 gap-6">
