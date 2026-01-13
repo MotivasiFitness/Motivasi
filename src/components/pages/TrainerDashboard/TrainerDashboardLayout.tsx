@@ -1,6 +1,6 @@
 import { useMember } from '@/integrations';
 import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
-import { MessageSquare, Users, BookOpen, Settings, LogOut, Menu, X, Loader } from 'lucide-react';
+import { MessageSquare, Users, BookOpen, Settings, LogOut, Menu, X, Loader, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useRole } from '@/hooks/useRole';
 
@@ -28,6 +28,7 @@ export default function TrainerDashboardLayout() {
     { path: '/trainer', label: 'Dashboard', icon: Users },
     { path: '/trainer/clients', label: 'My Clients', icon: Users },
     { path: '/trainer/programs', label: 'Programs', icon: BookOpen },
+    { path: '/trainer/ai-assistant', label: 'AI Assistant', icon: Sparkles },
     { path: '/trainer/messages', label: 'Messages', icon: MessageSquare },
     { path: '/trainer/video-reviews', label: 'Video Reviews', icon: MessageSquare },
     { path: '/trainer/progress', label: 'Client Progress', icon: BookOpen },

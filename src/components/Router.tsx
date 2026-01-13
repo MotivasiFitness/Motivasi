@@ -47,6 +47,8 @@ import CreateProgramPage from '@/components/pages/TrainerDashboard/CreateProgram
 import TrainerMessagesPage from '@/components/pages/TrainerDashboard/TrainerMessagesPage';
 import VideoReviewsPage from '@/components/pages/TrainerDashboard/VideoReviewsPage';
 import ClientProgressPage from '@/components/pages/TrainerDashboard/ClientProgressPage';
+import AIAssistantPage from '@/components/pages/TrainerDashboard/AIAssistantPage';
+import ProgramEditorPage from '@/components/pages/TrainerDashboard/ProgramEditorPage';
 
 import AdminDashboard from '@/components/pages/AdminDashboard';
 import ExerciseVideoReviewPage from '@/components/pages/ExerciseVideoReviewPage';
@@ -257,6 +259,14 @@ const router = createBrowserRouter([
           {
             path: "programs",
             element: <CreateProgramPage />,
+          },
+          {
+            path: "ai-assistant",
+            element: <AIAssistantPage />,
+          },
+          {
+            path: "program-editor",
+            element: <ProgramEditorPage />,
           },
           {
             path: "messages",
