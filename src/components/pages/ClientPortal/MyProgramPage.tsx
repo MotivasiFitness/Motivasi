@@ -17,10 +17,15 @@ interface WorkoutSession {
 interface SetState {
   setNumber: number;
   completed: boolean;
+  usedWeight?: string;
 }
 
 interface ExerciseSetState {
   [exerciseId: string]: SetState[];
+}
+
+interface ExerciseCompleteState {
+  [exerciseId: string]: boolean;
 }
 
 export default function MyProgramPage() {
@@ -37,6 +42,8 @@ export default function MyProgramPage() {
   const [showFeedback, setShowFeedback] = useState(false);
   const [workoutActivityId, setWorkoutActivityId] = useState<string>('');
   const [sessionCompleteMessage, setSessionCompleteMessage] = useState(false);
+  const [exerciseCompleteStates, setExerciseCompleteStates] = useState<ExerciseCompleteState>({});
+  const [expandedWeightInputs, setExpandedWeightInputs] = useState<Set<string>>(new Set());
 
   // Rest timer effect
   useEffect(() => {
@@ -97,7 +104,7 @@ export default function MyProgramPage() {
     fetchPrograms();
   }, [member?._id]);
 
-  const handleSetComplete = (exerciseId: string, setNumber: number, restTime: number) => {
+  const handleSetComplete = (exerciseId: string, setNumber: number, restTime: number, totalSets: number) => {
     // Mark set as completed
     setExerciseSetStates(prev => ({
       ...prev,
@@ -106,9 +113,52 @@ export default function MyProgramPage() {
       ),
     }));
 
-    // Start rest timer
-    setRestingExerciseId(exerciseId);
-    setRestTimeRemaining(restTime);
+    // Check if all sets are complete
+    const updatedStates = exerciseSetStates[exerciseId].map(s =>
+      s.setNumber === setNumber ? { ...s, completed: true } : s
+    );
+    const allComplete = updatedStates.every(s => s.completed);
+    
+    if (allComplete) {
+      // Show exercise complete message
+      setExerciseCompleteStates(prev => ({
+        ...prev,
+        [exerciseId]: true,
+      }));
+      
+      // Auto-hide after 2 seconds
+      setTimeout(() => {
+        setExerciseCompleteStates(prev => ({
+          ...prev,
+          [exerciseId]: false,
+        }));
+      }, 2000);
+    } else {
+      // Start rest timer
+      setRestingExerciseId(exerciseId);
+      setRestTimeRemaining(restTime);
+    }
+  };
+
+  const handleWeightInputChange = (exerciseId: string, setNumber: number, weight: string) => {
+    setExerciseSetStates(prev => ({
+      ...prev,
+      [exerciseId]: prev[exerciseId].map(s =>
+        s.setNumber === setNumber ? { ...s, usedWeight: weight } : s
+      ),
+    }));
+  };
+
+  const toggleWeightInput = (weightKey: string) => {
+    setExpandedWeightInputs(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(weightKey)) {
+        newSet.delete(weightKey);
+      } else {
+        newSet.add(weightKey);
+      }
+      return newSet;
+    });
   };
 
   const handleWorkoutComplete = async (day: string) => {
@@ -161,7 +211,7 @@ export default function MyProgramPage() {
 
   // Calculate workout overview stats
   const totalExercises = programs.length;
-  const estimatedSessionTime = Math.ceil((totalExercises * 3 + 5) / 5) * 5; // Rough estimate: 3 mins per exercise + 5 min warmup
+  const estimatedSessionTime = Math.ceil((totalExercises * 3 + 5) / 5) * 5;
   const weeklyFrequency = workoutDays.length;
   
   // Get unique equipment from all exercises
@@ -335,6 +385,11 @@ export default function MyProgramPage() {
                       </span>
                     </div>
 
+                    {/* Instruction Text */}
+                    <p className="text-sm text-warm-grey italic px-3 py-2 bg-warm-sand-beige/20 rounded-lg">
+                      Complete each set to progress through the exercise
+                    </p>
+
                     {dayExercises.map((exercise, idx) => {
                       const setStates = exerciseSetStates[exercise._id || ''] || [];
                       const isResting = restingExerciseId === exercise._id;
@@ -375,6 +430,13 @@ export default function MyProgramPage() {
                             When you reach the top of the rep range on all sets with good form, increase weight next session.
                           </p>
 
+                          {/* Coach Note (if available) */}
+                          {exercise.exerciseNotes && (
+                            <div className="text-xs text-warm-grey italic mb-4 px-3 py-2 bg-warm-sand-beige/20 rounded-lg border-l-2 border-soft-bronze">
+                              💡 Coach note: {exercise.exerciseNotes}
+                            </div>
+                          )}
+
                           {/* Video Demo Button */}
                           {exercise.exerciseVideoUrl && (
                             <div className="mb-4">
@@ -395,39 +457,77 @@ export default function MyProgramPage() {
                             <p className="text-xs font-medium text-warm-grey mb-3 uppercase tracking-wide">Tap each set to mark complete</p>
                             <div className="space-y-2">
                               {setStates.map((set) => (
-                                <button
-                                  key={set.setNumber}
-                                  onClick={() => {
-                                    if (!set.completed && !isResting) {
-                                      handleSetComplete(exercise._id || '', set.setNumber, exercise.restTimeSeconds || 60);
-                                    }
-                                  }}
-                                  disabled={isResting || set.completed}
-                                  className={`w-full py-3 px-4 rounded-lg font-medium text-sm transition-all ${
-                                    set.completed
-                                      ? 'bg-green-100 text-green-700 border border-green-300'
-                                      : isResting
-                                      ? 'bg-warm-sand-beige/30 text-warm-grey border border-warm-sand-beige cursor-not-allowed'
-                                      : 'bg-soft-bronze text-soft-white border border-soft-bronze hover:bg-soft-bronze/90 active:scale-95'
-                                  }`}
-                                >
-                                  {set.completed ? (
-                                    <span className="flex items-center justify-center gap-2">
-                                      <CheckCircle2 size={16} />
-                                      Set {set.setNumber} Complete
-                                    </span>
-                                  ) : isResting ? (
-                                    <span className="flex items-center justify-center gap-2">
-                                      <Clock size={16} className="animate-spin" />
-                                      Rest {restTimeRemaining}s
-                                    </span>
-                                  ) : (
-                                    `Set ${set.setNumber}`
+                                <div key={set.setNumber}>
+                                  <button
+                                    onClick={() => {
+                                      if (!set.completed && !isResting) {
+                                        handleSetComplete(exercise._id || '', set.setNumber, exercise.restTimeSeconds || 60, exercise.sets || 0);
+                                      }
+                                    }}
+                                    disabled={isResting || set.completed}
+                                    className={`w-full py-3 px-4 rounded-lg font-medium text-sm transition-all ${
+                                      set.completed
+                                        ? 'bg-green-100 text-green-700 border border-green-300'
+                                        : isResting
+                                        ? 'bg-warm-sand-beige/30 text-warm-grey border border-warm-sand-beige cursor-not-allowed'
+                                        : 'bg-soft-bronze text-soft-white border border-soft-bronze hover:bg-soft-bronze/90 active:scale-95'
+                                    }`}
+                                  >
+                                    {set.completed ? (
+                                      <span className="flex items-center justify-center gap-2">
+                                        <CheckCircle2 size={16} />
+                                        Set {set.setNumber} Complete
+                                      </span>
+                                    ) : isResting ? (
+                                      <span className="flex items-center justify-center gap-2">
+                                        <Clock size={16} className="animate-spin" />
+                                        Rest {restTimeRemaining}s
+                                      </span>
+                                    ) : (
+                                      `Set ${set.setNumber}`
+                                    )}
+                                  </button>
+
+                                  {/* Optional Weight Input (collapsed by default) */}
+                                  {set.completed && (
+                                    <div className="mt-2 px-3 py-2 bg-green-50/50 rounded-lg border border-green-200/50">
+                                      <button
+                                        onClick={() => toggleWeightInput(`${exercise._id}-${set.setNumber}`)}
+                                        className="text-xs text-warm-grey hover:text-charcoal-black transition-colors flex items-center gap-1"
+                                      >
+                                        <span>💪 Log weight used</span>
+                                        <ChevronDown
+                                          size={12}
+                                          className={`transition-transform ${
+                                            expandedWeightInputs.has(`${exercise._id}-${set.setNumber}`) ? 'rotate-180' : ''
+                                          }`}
+                                        />
+                                      </button>
+
+                                      {expandedWeightInputs.has(`${exercise._id}-${set.setNumber}`) && (
+                                        <input
+                                          type="text"
+                                          value={set.usedWeight || exercise.weightOrResistance || ''}
+                                          onChange={(e) => handleWeightInputChange(exercise._id || '', set.setNumber, e.target.value)}
+                                          placeholder={exercise.weightOrResistance || 'e.g., 20kg'}
+                                          className="w-full mt-2 px-3 py-2 text-xs rounded border border-green-200 focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
+                                        />
+                                      )}
+                                    </div>
                                   )}
-                                </button>
+                                </div>
                               ))}
                             </div>
                           </div>
+
+                          {/* Exercise Complete Feedback */}
+                          {exerciseCompleteStates[exercise._id || ''] && (
+                            <div className="mb-4 text-center py-4 px-3 bg-green-50 border border-green-200 rounded-lg animate-in fade-in">
+                              <p className="font-heading text-lg font-bold text-green-700">
+                                Exercise complete — nice work 💪
+                              </p>
+                            </div>
+                          )}
 
                           {/* Technique Tips Collapsible */}
                           {(exercise.tempo || exercise.exerciseNotes) && (
