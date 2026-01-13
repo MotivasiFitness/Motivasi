@@ -81,12 +81,12 @@ export default function Header() {
                 </button>
               </>
             ) : (
-              <Link 
-                to="/portal" 
+              <button 
+                onClick={actions.login}
                 className="font-paragraph text-base bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors"
               >
                 Client Portal
-              </Link>
+              </button>
             )}
             <LanguageSwitcher />
             <MiniCart cartIconClassName="ml-2" />
@@ -168,13 +168,15 @@ export default function Header() {
                   </button>
                 </>
               ) : (
-                <Link 
-                  to="/portal" 
-                  className="font-paragraph text-base bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors text-center"
-                  onClick={() => setIsMenuOpen(false)}
+                <button 
+                  onClick={() => {
+                    actions.login();
+                    setIsMenuOpen(false);
+                  }}
+                  className="font-paragraph text-base bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors text-center w-full"
                 >
                   Client Portal
-                </Link>
+                </button>
               )}
             </div>
           </nav>

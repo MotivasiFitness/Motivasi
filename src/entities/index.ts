@@ -112,31 +112,6 @@ export interface ClientPrograms {
 
 
 /**
- * Collection ID: clientprofiles
- * Interface for ClientProfiles
- */
-export interface ClientProfiles {
-  _id: string;
-  _createdDate?: Date;
-  _updatedDate?: Date;
-  /** @wixFieldType text */
-  memberId?: string;
-  /** @wixFieldType text */
-  displayName?: string;
-  /** @wixFieldType text */
-  firstName?: string;
-  /** @wixFieldType text */
-  lastName?: string;
-  /** @wixFieldType text */
-  email?: string;
-  /** @wixFieldType image */
-  profilePhoto?: string;
-  /** @wixFieldType text */
-  bio?: string;
-}
-
-
-/**
  * Collection ID: clienttestimonials
  * Interface for ClientTestimonials
  */
