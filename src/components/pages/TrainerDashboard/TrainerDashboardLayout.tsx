@@ -1,6 +1,6 @@
 import { useMember } from '@/integrations';
 import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
-import { MessageSquare, Users, BookOpen, Settings, LogOut, Menu, X, Loader, Sparkles } from 'lucide-react';
+import { MessageSquare, Users, BookOpen, Settings, LogOut, Menu, X, Loader, Sparkles, Video } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useRole } from '@/hooks/useRole';
 import PortalHeader from '@/components/layout/PortalHeader';
@@ -32,6 +32,7 @@ export default function TrainerDashboardLayout() {
     { path: '/trainer/ai-assistant', label: 'AI Assistant', icon: Sparkles, color: 'text-yellow-400' },
     { path: '/trainer/messages', label: 'Messages', icon: MessageSquare, color: 'text-pink-400' },
     { path: '/trainer/video-reviews', label: 'Video Reviews', icon: MessageSquare, color: 'text-orange-400' },
+    { path: '/trainer/video-library', label: 'Video Library', icon: Video, color: 'text-indigo-400' },
     { path: '/trainer/progress', label: 'Client Progress', icon: BookOpen, color: 'text-cyan-400' },
   ];
 

@@ -53,6 +53,7 @@ import ProgramEditorPage from '@/components/pages/TrainerDashboard/ProgramEditor
 import ProgramEditorEnhanced from '@/components/pages/TrainerDashboard/ProgramEditorEnhanced';
 import TrainerPreferencesPage from '@/components/pages/TrainerDashboard/TrainerPreferencesPage';
 import WorkoutAssignmentPage from '@/components/pages/TrainerDashboard/WorkoutAssignmentPage';
+import VideoLibraryManagementPage from '@/components/pages/TrainerDashboard/VideoLibraryManagementPage';
 
 import AdminDashboard from '@/components/pages/AdminDashboard';
 import ExerciseVideoReviewPage from '@/components/pages/ExerciseVideoReviewPage';
@@ -291,6 +292,10 @@ const router = createBrowserRouter([
           {
             path: "video-reviews",
             element: <VideoReviewsPage />,
+          },
+          {
+            path: "video-library",
+            element: <VideoLibraryManagementPage />,
           },
           {
             path: "progress",

@@ -184,6 +184,8 @@ export interface PrivateVideoLibrary {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
+  /** @wixFieldType boolean */
+  isPublic?: boolean;
   /** @wixFieldType text */
   videoTitle?: string;
   /** @wixFieldType text */

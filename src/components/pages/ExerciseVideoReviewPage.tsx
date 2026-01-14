@@ -62,6 +62,7 @@ export default function ExerciseVideoReviewPage() {
         videoUrl: formData.videoUrl,
         category: formData.category,
         accessTags: member?._id || '', // Tag with member ID so trainers can find it
+        isPublic: false, // Default: private to client and their trainers
       };
 
       await BaseCrudService.create('privatevideolibrary', videoSubmission);
