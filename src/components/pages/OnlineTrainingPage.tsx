@@ -286,7 +286,7 @@ export default function OnlineTrainingPage() {
                   "2 custom workouts per week",
                   "Bi-weekly check-in calls",
                   "Nutrition guidance",
-                  "Platform access",
+                  "Premium Training Platform Access",
                   "Email support"
                 ],
                 cta: "Get Started"
@@ -300,7 +300,7 @@ export default function OnlineTrainingPage() {
                   "4 custom workouts per week",
                   "Weekly check-in calls",
                   "Detailed nutrition guidance",
-                  "Platform access",
+                  "Premium Training Platform Access",
                   "Priority support",
                   "Form video reviews"
                 ],
@@ -316,7 +316,7 @@ export default function OnlineTrainingPage() {
                   "5-6 custom workouts per week",
                   "Twice-weekly check-in calls",
                   "Meal planning & recipes",
-                  "Platform access",
+                  "Premium Training Platform Access",
                   "24/7 priority support",
                   "Form video reviews",
                   "Accountability texts"
@@ -376,6 +376,97 @@ export default function OnlineTrainingPage() {
           <div className="mt-12 p-6 bg-soft-bronze/10 border border-soft-bronze/30 rounded-2xl text-center">
             <p className="font-paragraph text-base text-charcoal-black">
               <span className="font-bold">All plans include:</span> 30-minute initial consultation, personalised program design, and 7-day money-back guarantee
+            </p>
+          </div>
+        </div>
+      </section>
+      {/* Monthly Coaching Section */}
+      <section className="py-24 px-8 lg:px-20 bg-soft-white">
+        <div className="max-w-[100rem] mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-6">
+              Monthly Coaching
+            </h2>
+            <p className="font-paragraph text-xl text-charcoal-black max-w-3xl mx-auto">
+              Flexible month-to-month coaching with no long-term commitment. Perfect for ongoing support and accountability.
+            </p>
+          </div>
+
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-warm-sand-beige/30 border-2 border-soft-bronze rounded-2xl p-10 md:p-12">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 mb-10">
+                <div>
+                  <h3 className="font-heading text-4xl font-bold text-charcoal-black mb-3">
+                    Monthly Coaching
+                  </h3>
+                  <p className="font-paragraph text-lg text-warm-grey">
+                    Ongoing support with flexibility to pause or cancel anytime
+                  </p>
+                </div>
+                <div className="text-center md:text-right">
+                  <div className="flex items-baseline gap-2 justify-center md:justify-end mb-2">
+                    <span className="font-heading text-6xl font-bold text-soft-bronze">£175</span>
+                    <span className="text-warm-grey text-xl">/ month</span>
+                  </div>
+                  <p className="font-paragraph text-sm text-warm-grey">
+                    No contract • Cancel anytime
+                  </p>
+                </div>
+              </div>
+
+              <div className="border-t border-soft-bronze/30 pt-8 mb-8">
+                <h4 className="font-heading text-xl font-bold text-charcoal-black mb-6">
+                  What's Included:
+                </h4>
+                <ul className="grid md:grid-cols-2 gap-4">
+                  {[
+                    "4 custom workouts per week",
+                    "Weekly check-in calls",
+                    "Detailed nutrition guidance",
+                    "Premium Training Platform Access",
+                    "Priority messaging support",
+                    "Form video reviews",
+                    "Progress tracking tools",
+                    "Workout modifications as needed"
+                  ].map((feature, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <CheckCircle size={20} className="flex-shrink-0 mt-0.5 text-soft-bronze" />
+                      <span className="font-paragraph text-base text-charcoal-black">
+                        {feature}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="bg-soft-white rounded-xl p-6 mb-8">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="text-soft-bronze flex-shrink-0 mt-1" size={20} />
+                  <div>
+                    <h5 className="font-heading text-lg font-bold text-charcoal-black mb-2">
+                      Perfect For:
+                    </h5>
+                    <ul className="font-paragraph text-base text-warm-grey space-y-1">
+                      <li>• Women who want flexibility without long-term commitment</li>
+                      <li>• Those transitioning from a program-based package</li>
+                      <li>• Anyone seeking ongoing accountability and support</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={scrollToForm}
+                className="w-full bg-charcoal-black text-soft-white py-4 rounded-lg font-medium text-lg hover:bg-soft-bronze transition-colors"
+              >
+                Start Monthly Coaching
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-12 text-center">
+            <p className="font-paragraph text-base text-warm-grey max-w-2xl mx-auto">
+              <span className="font-bold text-charcoal-black">Flexible billing:</span> Pay monthly with no long-term contract. Pause or cancel with 7 days notice. First month includes full onboarding and program setup.
             </p>
           </div>
         </div>
