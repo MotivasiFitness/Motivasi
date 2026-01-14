@@ -7,9 +7,29 @@
  * CRITICAL REQUIREMENTS:
  * 1. All endpoints MUST return JSON (never HTML)
  * 2. Authentication failures MUST return JSON 401/403 (never redirect)
- * 3. Errors MUST be returned as structured JSON objects
- * 4. Content-Type header MUST be 'application/json' for all responses
- * 5. No redirects should occur during program generation
+ * 3. Errors MUST be returned as structured JSON objects with { success, statusCode, error }
+ * 4. Success responses MUST include { success, statusCode, data }
+ * 5. Content-Type header MUST be 'application/json' for all responses
+ * 6. No redirects should occur during program generation
+ */
+
+/**
+ * GET /api/health
+ * 
+ * Health check endpoint for diagnostics
+ * 
+ * Success Response (200):
+ * {
+ *   "success": true,
+ *   "statusCode": 200,
+ *   "status": "healthy",
+ *   "timestamp": "2026-01-14T...",
+ *   "endpoints": {
+ *     "generateProgram": "/_functions/generateProgram",
+ *     "regenerateProgramSection": "/_functions/regenerateProgramSection",
+ *     "generateProgramDescription": "/_functions/generateProgramDescription"
+ *   }
+ * }
  */
 
 /**
@@ -35,6 +55,7 @@
  * Success Response (200):
  * {
  *   "success": true,
+ *   "statusCode": 200,
  *   "data": {
  *     "programName": string,
  *     "overview": string,
@@ -70,8 +91,8 @@
  * Error Response (400/401/403/500):
  * {
  *   "success": false,
- *   "error": "Descriptive error message",
- *   "statusCode": number
+ *   "statusCode": number,
+ *   "error": "Descriptive error message"
  * }
  * 
  * IMPORTANT:
@@ -101,6 +122,7 @@
  * Success Response (200):
  * {
  *   "success": true,
+ *   "statusCode": 200,
  *   "data": {
  *     // Response structure depends on section type
  *     // For workout-day: full WorkoutDay object
@@ -113,8 +135,8 @@
  * Error Response (400/401/403/500):
  * {
  *   "success": false,
- *   "error": "Descriptive error message",
- *   "statusCode": number
+ *   "statusCode": number,
+ *   "error": "Descriptive error message"
  * }
  * 
  * IMPORTANT:
@@ -149,8 +171,8 @@
  *   if (!token) {
  *     return res.status(401).json({
  *       success: false,
- *       error: 'Authentication required',
- *       statusCode: 401
+ *       statusCode: 401,
+ *       error: 'Authentication required'
  *     });
  *   }
  *   // Verify token...
@@ -166,8 +188,8 @@
  *     if (!programGoal || !trainerId) {
  *       return res.status(400).json({
  *         success: false,
- *         error: 'Missing required fields: programGoal, trainerId',
- *         statusCode: 400
+ *         statusCode: 400,
+ *         error: 'Missing required fields: programGoal, trainerId'
  *       });
  *     }
  *     
@@ -194,8 +216,8 @@
  *     // Return success response
  *     return res.status(200).json({
  *       success: true,
- *       data: program,
- *       statusCode: 200
+ *       statusCode: 200,
+ *       data: program
  *     });
  *   } catch (error) {
  *     console.error('Program generation error:', error);
@@ -203,8 +225,8 @@
  *     // IMPORTANT: Always return JSON, never HTML
  *     return res.status(500).json({
  *       success: false,
- *       error: error instanceof Error ? error.message : 'Failed to generate program',
- *       statusCode: 500
+ *       statusCode: 500,
+ *       error: error instanceof Error ? error.message : 'Failed to generate program'
  *     });
  *   }
  * });
@@ -214,8 +236,8 @@
  *   console.error('Unhandled error:', err);
  *   res.status(500).json({
  *     success: false,
- *     error: 'Internal server error',
- *     statusCode: 500
+ *     statusCode: 500,
+ *     error: 'Internal server error'
  *   });
  * });
  * 
@@ -223,8 +245,8 @@
  * app.use((req: express.Request, res: express.Response) => {
  *   res.status(404).json({
  *     success: false,
- *     error: `Endpoint not found: ${req.method} ${req.path}`,
- *     statusCode: 404
+ *     statusCode: 404,
+ *     error: `Endpoint not found: ${req.method} ${req.path}`
  *   });
  * });
  * ```
@@ -233,13 +255,15 @@
 export const API_ENDPOINTS = {
   GENERATE_PROGRAM: '/api/generate-program',
   REGENERATE_SECTION: '/api/regenerate-program-section',
+  HEALTH: '/api/health',
 } as const;
 
 export const API_REQUIREMENTS = {
   ALWAYS_JSON: 'All responses must be JSON, never HTML',
   NO_REDIRECTS: 'No redirects on authentication failure - return 401/403 JSON instead',
   CONTENT_TYPE: 'Content-Type header must be application/json',
-  ERROR_FORMAT: 'Errors must be structured JSON with error message',
+  ERROR_FORMAT: 'Errors must be structured JSON with { success: false, statusCode, error }',
+  SUCCESS_FORMAT: 'Success responses must include { success: true, statusCode, data }',
   VALIDATION: 'All input parameters must be validated',
 } as const;
 

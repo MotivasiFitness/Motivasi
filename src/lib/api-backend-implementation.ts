@@ -2,30 +2,53 @@
  * API Backend Implementation Guide
  * 
  * This file provides the COMPLETE backend implementation for the AI Program Assistant endpoints.
- * These endpoints MUST be implemented in your backend server (Node.js/Express, Python/Flask, etc.)
+ * These endpoints MUST be implemented in your backend server (Node.js/Express, Python/Flask, etc.),
+ * OR use the Wix Velo backend functions in /src/wix-verticals/backend/
  * 
  * CRITICAL REQUIREMENTS:
  * 1. ALL responses MUST be JSON (never HTML)
- * 2. ALL error responses MUST be JSON with proper status codes (401, 403, 500, etc.)
- * 3. Authentication failures MUST return JSON 401/403 (never redirect to login page)
- * 4. Content-Type header MUST be 'application/json' for ALL responses
- * 5. No redirects should occur during API calls
- * 6. All error responses must follow the standard error format
+ * 2. ALL error responses MUST be JSON with { success, statusCode, error }
+ * 3. ALL success responses MUST be JSON with { success, statusCode, data }
+ * 4. Authentication failures MUST return JSON 401/403 (never redirect to login page)
+ * 5. Content-Type header MUST be 'application/json' for ALL responses
+ * 6. No redirects should occur during API calls
  */
 
 /**
  * ============================================================================
- * ENDPOINT 1: GET /api/generate-program (Diagnostic)
+ * ENDPOINT 1: GET /api/health (Health Check)
  * ============================================================================
  * 
  * Purpose: Diagnostic endpoint to verify the API is working
- * Returns: { ok: true } JSON response
+ * 
+ * Success Response (200):
+ * {
+ *   "success": true,
+ *   "statusCode": 200,
+ *   "status": "healthy",
+ *   "timestamp": "2026-01-14T...",
+ *   "endpoints": {
+ *     "generateProgram": "/_functions/generateProgram",
+ *     "regenerateProgramSection": "/_functions/regenerateProgramSection",
+ *     "generateProgramDescription": "/_functions/generateProgramDescription"
+ *   }
+ * }
  * 
  * Implementation (Express.js):
  * 
- * app.get('/api/generate-program', (req, res) => {
+ * app.get('/api/health', (req, res) => {
  *   res.setHeader('Content-Type', 'application/json');
- *   res.status(200).json({ ok: true });
+ *   res.status(200).json({
+ *     success: true,
+ *     statusCode: 200,
+ *     status: 'healthy',
+ *     timestamp: new Date().toISOString(),
+ *     endpoints: {
+ *       generateProgram: '/_functions/generateProgram',
+ *       regenerateProgramSection: '/_functions/regenerateProgramSection',
+ *       generateProgramDescription: '/_functions/generateProgramDescription'
+ *     }
+ *   });
  * });
  */
 
@@ -53,6 +76,7 @@
  * Success Response (200):
  * {
  *   "success": true,
+ *   "statusCode": 200,
  *   "data": {
  *     "programName": string,
  *     "overview": string,
@@ -82,15 +106,14 @@
  *     "safetyNotes": string,
  *     "aiGenerated": true,
  *     "aiGeneratedAt": string (ISO timestamp)
- *   },
- *   "statusCode": 200
+ *   }
  * }
  * 
  * Error Response (400/401/403/500):
  * {
  *   "success": false,
- *   "error": "Descriptive error message",
- *   "statusCode": number
+ *   "statusCode": number,
+ *   "error": "Descriptive error message"
  * }
  * 
  * Implementation (Express.js with OpenAI):
@@ -115,8 +138,8 @@
  *   if (!token) {
  *     return res.status(401).json({
  *       success: false,
- *       error: 'Authentication required. Please provide a valid token.',
- *       statusCode: 401
+ *       statusCode: 401,
+ *       error: 'Authentication required. Please provide a valid token.'
  *     });
  *   }
  *   

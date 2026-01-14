@@ -195,6 +195,36 @@ function validateDescription(description: string): { valid: boolean; error?: str
 }
 
 /**
+ * Helper to create standardized JSON response
+ */
+function createResponse(status: number, success: boolean, data?: any, error?: string): any {
+  const responseBody: any = {
+    success,
+    statusCode: status,
+  };
+
+  if (data) {
+    Object.assign(responseBody, data);
+  }
+
+  if (error) {
+    responseBody.error = error;
+  }
+
+  const response = status === 200 ? ok(responseBody) :
+                   status === 400 ? badRequest(responseBody) :
+                   serverError(responseBody);
+
+  // Ensure Content-Type is application/json
+  response.headers = {
+    ...response.headers,
+    'Content-Type': 'application/json',
+  };
+
+  return response;
+}
+
+/**
  * Main HTTP function handler
  */
 export async function post_generateProgramDescription(request: any): Promise<any> {
@@ -204,19 +234,13 @@ export async function post_generateProgramDescription(request: any): Promise<any
     try {
       body = request.body ? JSON.parse(request.body) : {};
     } catch (error) {
-      return badRequest({
-        success: false,
-        error: 'Invalid JSON in request body',
-      } as GenerateDescriptionResponse);
+      return createResponse(400, false, null, 'Invalid JSON in request body');
     }
 
     // Validate input
     const validation = validateInput(body);
     if (!validation.valid) {
-      return badRequest({
-        success: false,
-        error: validation.error,
-      } as GenerateDescriptionResponse);
+      return createResponse(400, false, null, validation.error);
     }
 
     // Build prompt
@@ -228,24 +252,15 @@ export async function post_generateProgramDescription(request: any): Promise<any
     // Validate generated description
     const descValidation = validateDescription(description);
     if (!descValidation.valid) {
-      return badRequest({
-        success: false,
-        error: descValidation.error,
-      } as GenerateDescriptionResponse);
+      return createResponse(400, false, null, descValidation.error);
     }
 
     // Return success response
-    return ok({
-      success: true,
-      description,
-    } as GenerateDescriptionResponse);
+    return createResponse(200, true, { description });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error in generateProgramDescription:', errorMessage);
     
-    return serverError({
-      success: false,
-      error: errorMessage,
-    } as GenerateDescriptionResponse);
+    return createResponse(500, false, null, errorMessage);
   }
 }

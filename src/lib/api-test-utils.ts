@@ -174,16 +174,25 @@ export async function testProgramGeneration(
 export async function runApiDiagnostics(): Promise<ApiTestResult[]> {
   const results: ApiTestResult[] = [];
 
-  // Test main endpoints
-  const endpoints = [
-    { endpoint: '/api/generate-program', method: 'POST' },
-    { endpoint: '/api/regenerate-program-section', method: 'POST' },
-  ];
+  // Test health endpoint first
+  const healthResult = await testApiEndpoint('/api/health', 'GET');
+  results.push(healthResult);
 
-  for (const { endpoint, method } of endpoints) {
-    const result = await testApiEndpoint(endpoint, method);
-    results.push(result);
-  }
+  // Test program generation with sample data
+  const sampleProgramInput = {
+    programGoal: 'Build strength',
+    programLength: '8 weeks',
+    daysPerWeek: 3,
+    experienceLevel: 'intermediate',
+    equipment: ['dumbbells', 'barbell'],
+    timePerWorkout: 60,
+    injuries: 'None',
+    trainingStyle: 'strength',
+    additionalNotes: 'Test program generation',
+  };
+
+  const programResult = await testProgramGeneration(sampleProgramInput, 'test-trainer-id');
+  results.push(programResult);
 
   return results;
 }
