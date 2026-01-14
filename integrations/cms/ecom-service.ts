@@ -57,7 +57,8 @@ export async function buyNow(
 
 /**
  * Hook providing eCommerce API for catalog collections.
- * NOTE: Cart operations (addToCart, checkout) require the CurrentCart provider.
+ * NOTE: Cart operations (addToCart, checkout) require the CurrentCart provider
+ * which comes from @wix/ecom/providers and is set up in the app's router configuration.
  * If not available, use the standalone buyNow() function instead.
  */
 export function useEcomService() {
@@ -74,40 +75,42 @@ export function useEcomService() {
     );
   }
 
+  /**
+   * Add items to the cart
+   * @param items - Array of items with collectionId, itemId, and optional quantity
+   */
+  const addToCart = async (
+    items: Array<{ collectionId: string; itemId: string; quantity?: number }>
+  ): Promise<void> => {
+    if (!cartService) {
+      throw new Error("Cart service not available. Use buyNow() instead.");
+    }
+    const lineItems = items.map((item) => ({
+      catalogReference: {
+        catalogItemId: item.itemId,
+        appId: CMS_APP_ID,
+        options: { collectionId: item.collectionId },
+      },
+      quantity: item.quantity ?? 1,
+    }));
+    await cartService.addToCart(lineItems);
+  };
+
+  /**
+   * Proceed to checkout with current cart items.
+   * NOTE: This redirects to the checkout page - always show a loading state!
+   */
+  const checkout = async (): Promise<void> => {
+    if (!cartService) {
+      throw new Error("Cart service not available. Use buyNow() instead.");
+    }
+    await cartService.proceedToCheckout();
+  };
+
   return {
     /** Whether cart operations are available */
     isCartAvailable,
-
-    /**
-     * Add items to the cart
-     * @param items - Array of items with collectionId, itemId, and optional quantity
-     */
-    addToCart: async (
-      items: Array<{ collectionId: string; itemId: string; quantity?: number }>
-    ): Promise<void> => {
-      if (!cartService) {
-        throw new Error("Cart service not available. Use buyNow() instead.");
-      }
-      const lineItems = items.map((item) => ({
-        catalogReference: {
-          catalogItemId: item.itemId,
-          appId: CMS_APP_ID,
-          options: { collectionId: item.collectionId },
-        },
-        quantity: item.quantity ?? 1,
-      }));
-      await cartService.addToCart(lineItems);
-    },
-
-    /**
-     * Proceed to checkout with current cart items.
-     * NOTE: This redirects to the checkout page - always show a loading state!
-     */
-    checkout: async (): Promise<void> => {
-      if (!cartService) {
-        throw new Error("Cart service not available. Use buyNow() instead.");
-      }
-      await cartService.proceedToCheckout();
-    },
+    addToCart,
+    checkout,
   };
 }
