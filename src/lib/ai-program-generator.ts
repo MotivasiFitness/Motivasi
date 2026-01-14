@@ -13,7 +13,7 @@
 
 import { BaseCrudService } from '@/integrations';
 import { FitnessPrograms } from '@/entities';
-import { safeFetch, handleApiError, safeJsonParse } from './api-response-handler';
+import { safeFetch } from './api-response-handler';
 
 export interface ProgramGeneratorInput {
   programGoal: string;
@@ -140,7 +140,7 @@ export async function generateProgramWithAI(
     validateProgramInput(input);
 
     // Call backend API to generate program with safe JSON parsing
-    const response = await safeFetch<{ success: boolean; data: GeneratedProgram; statusCode: number }>(
+    const response = await safeFetch<{ success: boolean; data: GeneratedProgram; error?: string; statusCode: number }>(
       '/api/generate-program',
       {
         method: 'POST',
@@ -155,10 +155,13 @@ export async function generateProgramWithAI(
       'Program generation'
     );
 
-    // Extract data from wrapper response
-    const generatedProgram = response.data;
+    // Validate wrapper response structure
+    if (!response.success || !response.data) {
+      throw new Error(response.error || 'API returned unsuccessful response or missing data');
+    }
 
-    // Validate generated program
+    // Extract and validate generated program
+    const generatedProgram = response.data;
     validateGeneratedProgram(generatedProgram);
 
     return generatedProgram;
@@ -216,6 +219,9 @@ export async function saveProgramDraft(
 
     await BaseCrudService.create('programs', fitnessProgram);
 
+    // Cache in sessionStorage for quick access
+    sessionStorage.setItem(`program_draft_${programId}`, JSON.stringify(program));
+
     return programId;
   } catch (error) {
     console.error('Error saving program draft:', error);
@@ -230,6 +236,25 @@ export async function saveProgramDraft(
  */
 export async function loadProgramDraft(programId: string): Promise<GeneratedProgram & { _id: string; trainerId: string; clientId?: string; status: string }> {
   try {
+    // Check sessionStorage cache first
+    const cached = sessionStorage.getItem(`program_draft_${programId}`);
+    if (cached) {
+      const program = JSON.parse(cached);
+      // Still need to fetch metadata for trainerId, clientId, status
+      const results = await BaseCrudService.getAll<any>('programdrafts');
+      const draft = results.items.find((d: any) => d.programId === programId);
+      
+      if (draft) {
+        return {
+          ...program,
+          _id: draft.programId,
+          trainerId: draft.trainerId,
+          clientId: draft.clientId,
+          status: draft.status,
+        };
+      }
+    }
+
     // Load from programdrafts collection
     const results = await BaseCrudService.getAll<any>('programdrafts');
     const draft = results.items.find((d: any) => d.programId === programId);
@@ -240,6 +265,9 @@ export async function loadProgramDraft(programId: string): Promise<GeneratedProg
 
     // Parse the stored JSON
     const program = JSON.parse(draft.programJson);
+
+    // Cache in sessionStorage for future access
+    sessionStorage.setItem(`program_draft_${programId}`, JSON.stringify(program));
 
     return {
       ...program,
@@ -287,6 +315,9 @@ export async function updateProgramDraft(
       programJson: JSON.stringify(updatedProgram),
       updatedAt: new Date().toISOString(),
     });
+
+    // Update sessionStorage cache
+    sessionStorage.setItem(`program_draft_${programId}`, JSON.stringify(updatedProgram));
   } catch (error) {
     console.error('Error updating program draft:', error);
     throw new Error('Failed to update program draft');
@@ -390,6 +421,9 @@ export async function assignProgramToClient(
     };
 
     await BaseCrudService.create('programs', fitnessProgram);
+
+    // Cache in sessionStorage
+    sessionStorage.setItem(`program_draft_${clientProgramId}`, JSON.stringify(program));
 
     return clientProgramId;
   } catch (error) {
