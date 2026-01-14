@@ -9,7 +9,7 @@ import {
   updateProgramDraft,
   saveProgramAsTemplate,
   assignProgramToClient,
-} from '@/lib/ai-program-generator';
+} from '@/lib/ai/ai-program-generator';
 import { BaseCrudService } from '@/integrations';
 import { TrainerClientAssignments } from '@/entities';
 import { getTrainerClients } from '@/lib/role-utils';

@@ -6,7 +6,7 @@ import {
   getTrainerPreferences,
   updateTrainerPreferences,
   TrainerPreferences,
-} from '@/lib/ai-program-generator';
+} from '@/lib/ai/ai-program-generator';
 
 const EXERCISE_OPTIONS = [
   'Barbell Squat',
