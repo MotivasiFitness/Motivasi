@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { MapPin, Clock, Users, CheckCircle, ArrowRight, Mail, AlertCircle } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { BaseCrudService } from '@/integrations';
 
 export default function FaceToFaceTrainingPage() {
   const { t } = useLanguage();
@@ -44,28 +45,21 @@ export default function FaceToFaceTrainingPage() {
     setSubmitError('');
 
     try {
-      // Send email using Formspree
-      const response = await fetch('https://formspree.io/f/xyzpqrst', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-          _subject: `Face-to-Face Training Consultation Request from ${formData.name}`,
-          _replyto: formData.email
-        })
+      // Save form submission to CMS
+      await BaseCrudService.create('contactformsubmissions', {
+        _id: crypto.randomUUID(),
+        fullName: formData.name,
+        email: formData.email,
+        message: formData.message,
+        healthDataConsent: formData.healthDataConsent,
+        marketingConsent: formData.marketingConsent,
+        submittedAt: new Date().toISOString(),
+        source: 'Face-to-Face Training Page'
       });
 
-      if (response.ok) {
-        setIsSubmitted(true);
-        setFormData({ name: '', email: '', message: '', healthDataConsent: false, marketingConsent: false });
-        setTimeout(() => setIsSubmitted(false), 5000);
-      } else {
-        setSubmitError('Failed to send message. Please try again or contact us directly at hello@motivasi.co.uk');
-      }
+      setIsSubmitted(true);
+      setFormData({ name: '', email: '', message: '', healthDataConsent: false, marketingConsent: false });
+      setTimeout(() => setIsSubmitted(false), 5000);
     } catch (error) {
       setSubmitError('An error occurred. Please contact us directly at hello@motivasi.co.uk');
       console.error('Form submission error:', error);

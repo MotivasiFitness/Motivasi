@@ -135,6 +135,31 @@ export interface ClientTestimonials {
 
 
 /**
+ * Collection ID: contactformsubmissions
+ * Interface for ContactFormSubmissions
+ */
+export interface ContactFormSubmissions {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  fullName?: string;
+  /** @wixFieldType text */
+  email?: string;
+  /** @wixFieldType text */
+  message?: string;
+  /** @wixFieldType boolean */
+  healthDataConsent?: boolean;
+  /** @wixFieldType boolean */
+  marketingConsent?: boolean;
+  /** @wixFieldType datetime */
+  submittedAt?: Date | string;
+  /** @wixFieldType text */
+  source?: string;
+}
+
+
+/**
  * Collection ID: memberroles
  * Interface for MemberRoles
  */
