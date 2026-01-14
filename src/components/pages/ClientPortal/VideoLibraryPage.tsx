@@ -37,8 +37,31 @@ export default function VideoLibraryPage() {
       try {
         const { items } = await BaseCrudService.getAll<PrivateVideoLibrary>('privatevideolibrary');
         
+        // Filter videos based on isPublic and accessTags
+        const clientId = member._id;
+        const accessibleVideos = items.filter(video => {
+          // If video is public, show it
+          if (video.isPublic === true) {
+            return true;
+          }
+          
+          // If video is not public, check if client ID is in accessTags
+          if (video.accessTags) {
+            // Handle accessTags as comma-separated string or single value
+            const tags = video.accessTags.split(',').map(tag => tag.trim());
+            return tags.includes(clientId);
+          }
+          
+          // If isPublic is undefined/null and no accessTags, show it (backward compatibility)
+          if (video.isPublic === undefined || video.isPublic === null) {
+            return true;
+          }
+          
+          return false;
+        });
+        
         // Enrich videos with metadata
-        const enrichedVideos: VideoWithMetadata[] = items.map((video, idx) => ({
+        const enrichedVideos: VideoWithMetadata[] = accessibleVideos.map((video, idx) => ({
           ...video,
           duration: videoMetadata[video._id]?.duration || `${5 + (idx % 10)} mins`,
           benefit: videoMetadata[video._id]?.benefit || extractBenefit(video.description || ''),

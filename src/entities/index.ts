@@ -19,7 +19,7 @@ export interface BlogPosts {
   publishDate?: Date | string;
   /** @wixFieldType text */
   author?: string;
-  /** @wixFieldType image */
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
   featuredImage?: string;
   /** @wixFieldType text */
   excerpt?: string;
@@ -123,7 +123,7 @@ export interface ClientTestimonials {
   clientName?: string;
   /** @wixFieldType text */
   testimonialText?: string;
-  /** @wixFieldType image */
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
   transformationImage?: string;
   /** @wixFieldType text */
   clientAgeRange?: string;
@@ -236,11 +236,11 @@ export interface ProgressCheckins {
   clientNotes?: string;
   /** @wixFieldType number */
   currentWeight?: number;
-  /** @wixFieldType image */
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
   progressPhotoFront?: string;
-  /** @wixFieldType image */
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
   progressPhotoSide?: string;
-  /** @wixFieldType image */
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
   progressPhotoBack?: string;
   /** @wixFieldType text */
   bodyMeasurements?: string;
@@ -309,7 +309,7 @@ export interface TrainerQualifications {
   dateObtained?: Date | string;
   /** @wixFieldType text */
   description?: string;
-  /** @wixFieldType image */
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
   certificateImage?: string;
   /** @wixFieldType text */
   relevance?: string;
