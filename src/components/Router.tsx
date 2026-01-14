@@ -54,6 +54,7 @@ import ProgramEditorEnhanced from '@/components/pages/TrainerDashboard/ProgramEd
 import TrainerPreferencesPage from '@/components/pages/TrainerDashboard/TrainerPreferencesPage';
 import WorkoutAssignmentPage from '@/components/pages/TrainerDashboard/WorkoutAssignmentPage';
 import VideoLibraryManagementPage from '@/components/pages/TrainerDashboard/VideoLibraryManagementPage';
+import ClientNutritionPage from '@/components/pages/TrainerDashboard/ClientNutritionPage';
 
 import AdminDashboard from '@/components/pages/AdminDashboard';
 import ExerciseVideoReviewPage from '@/components/pages/ExerciseVideoReviewPage';
@@ -300,6 +301,10 @@ const router = createBrowserRouter([
           {
             path: "progress",
             element: <ClientProgressPage />,
+          },
+          {
+            path: "nutrition",
+            element: <ClientNutritionPage />,
           },
         ],
       },
