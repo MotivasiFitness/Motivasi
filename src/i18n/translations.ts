@@ -62,7 +62,6 @@ export interface Translations {
     monthlyCoaching: string;
     cancelAnytime: string;
     customTrainingPlatform: string;
-    customTrainingApp: string;
     formAnalysis: string;
     habitTracking: string;
     prioritySupport: string;

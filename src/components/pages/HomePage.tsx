@@ -360,7 +360,7 @@ export default function HomePage() {
 
                     <div className="space-y-4 mb-12">
                       {[
-                        t.home.customTrainingPlatform,
+                        t.home.customTrainingPlatformAccess,
                         t.home.formAnalysis,
                         t.home.habitTracking,
                         t.home.prioritySupport,
