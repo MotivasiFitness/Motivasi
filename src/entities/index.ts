@@ -200,6 +200,31 @@ export interface PrivateVideoLibrary {
 
 
 /**
+ * Collection ID: programdrafts
+ * Interface for ProgramDrafts
+ */
+export interface ProgramDrafts {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  programId?: string;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType text */
+  clientId?: string;
+  /** @wixFieldType text */
+  programJson?: string;
+  /** @wixFieldType text */
+  status?: string;
+  /** @wixFieldType datetime */
+  createdAt?: Date | string;
+  /** @wixFieldType datetime */
+  updatedAt?: Date | string;
+}
+
+
+/**
  * Collection ID: programs
  * Interface for FitnessPrograms
  */

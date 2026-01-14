@@ -42,13 +42,18 @@ export async function safeJsonParse<T = any>(
   }
 
   try {
-    const json = await response.json();
+    // Read response text ONCE to avoid 'body already read' errors
+    const text = await response.text();
+    
+    // Parse the text as JSON
+    const json = JSON.parse(text);
     return json as T;
   } catch (parseError) {
-    const text = await response.text();
+    // Text is already read above, so we can't read it again
+    // Use the error message instead
     console.error(`[${context}] JSON parse error:`, {
       error: parseError,
-      responsePreview: text.substring(0, 200),
+      status: response.status,
     });
 
     throw new Error(

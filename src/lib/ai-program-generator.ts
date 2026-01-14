@@ -140,7 +140,7 @@ export async function generateProgramWithAI(
     validateProgramInput(input);
 
     // Call backend API to generate program with safe JSON parsing
-    const generatedProgram = await safeFetch<GeneratedProgram>(
+    const response = await safeFetch<{ success: boolean; data: GeneratedProgram; statusCode: number }>(
       '/api/generate-program',
       {
         method: 'POST',
@@ -154,6 +154,9 @@ export async function generateProgramWithAI(
       },
       'Program generation'
     );
+
+    // Extract data from wrapper response
+    const generatedProgram = response.data;
 
     // Validate generated program
     validateGeneratedProgram(generatedProgram);
@@ -180,7 +183,26 @@ export async function saveProgramDraft(
 ): Promise<string> {
   try {
     const programId = crypto.randomUUID();
+    const now = new Date().toISOString();
 
+    // Standardized status: "draft", "assigned", or "template" (lowercase)
+    const status = clientId ? 'assigned' : 'draft';
+
+    // Save to programdrafts collection with full JSON
+    const programDraft = {
+      _id: crypto.randomUUID(),
+      programId,
+      trainerId,
+      clientId: clientId || undefined,
+      programJson: JSON.stringify(program),
+      status,
+      createdAt: now,
+      updatedAt: now,
+    };
+
+    await BaseCrudService.create('programdrafts', programDraft);
+
+    // Also save basic metadata to programs collection for backward compatibility
     const fitnessProgram: FitnessPrograms = {
       _id: programId,
       programName: program.programName,
@@ -189,28 +211,10 @@ export async function saveProgramDraft(
       focusArea: program.focusArea,
       trainerId,
       clientId: clientId || undefined,
-      status: clientId ? 'Assigned' : 'Draft',
-      // Store full program data as JSON in description or separate field
-      // For now, we'll extend the interface to support this
+      status: status.charAt(0).toUpperCase() + status.slice(1), // Capitalize for programs collection
     };
 
     await BaseCrudService.create('programs', fitnessProgram);
-
-    // Store full program details in a separate collection or field
-    // This would require extending the database schema
-    // For now, we'll store it in localStorage for the session
-    const programData = {
-      ...program,
-      _id: programId,
-      trainerId,
-      clientId: clientId || null,
-      status: clientId ? 'Assigned' : 'Draft',
-      createdAt: new Date().toISOString(),
-      aiGenerated: true,
-    };
-
-    // Store in session storage for editing
-    sessionStorage.setItem(`program_${programId}`, JSON.stringify(programData));
 
     return programId;
   } catch (error) {
@@ -226,15 +230,24 @@ export async function saveProgramDraft(
  */
 export async function loadProgramDraft(programId: string): Promise<GeneratedProgram & { _id: string; trainerId: string; clientId?: string; status: string }> {
   try {
-    // Try to load from session storage first
-    const sessionData = sessionStorage.getItem(`program_${programId}`);
-    if (sessionData) {
-      return JSON.parse(sessionData);
+    // Load from programdrafts collection
+    const results = await BaseCrudService.getAll<any>('programdrafts');
+    const draft = results.items.find((d: any) => d.programId === programId);
+
+    if (!draft) {
+      throw new Error('Program draft not found');
     }
 
-    // If not in session, would need to load from database
-    // This requires extending the database schema to store full program data
-    throw new Error('Program not found in session');
+    // Parse the stored JSON
+    const program = JSON.parse(draft.programJson);
+
+    return {
+      ...program,
+      _id: draft.programId,
+      trainerId: draft.trainerId,
+      clientId: draft.clientId,
+      status: draft.status,
+    };
   } catch (error) {
     console.error('Error loading program draft:', error);
     throw new Error('Failed to load program draft');
@@ -251,19 +264,29 @@ export async function updateProgramDraft(
   updates: Partial<GeneratedProgram>
 ): Promise<void> {
   try {
-    const sessionData = sessionStorage.getItem(`program_${programId}`);
-    if (!sessionData) {
-      throw new Error('Program not found');
+    // Load current draft
+    const results = await BaseCrudService.getAll<any>('programdrafts');
+    const draft = results.items.find((d: any) => d.programId === programId);
+
+    if (!draft) {
+      throw new Error('Program draft not found');
     }
 
-    const program = JSON.parse(sessionData);
-    const updated = { ...program, ...updates };
+    // Parse current program
+    const currentProgram = JSON.parse(draft.programJson);
+
+    // Merge updates
+    const updatedProgram = { ...currentProgram, ...updates };
 
     // Validate updated program
-    validateGeneratedProgram(updated);
+    validateGeneratedProgram(updatedProgram);
 
-    // Save back to session storage
-    sessionStorage.setItem(`program_${programId}`, JSON.stringify(updated));
+    // Update in database
+    await BaseCrudService.update('programdrafts', {
+      _id: draft._id,
+      programJson: JSON.stringify(updatedProgram),
+      updatedAt: new Date().toISOString(),
+    });
   } catch (error) {
     console.error('Error updating program draft:', error);
     throw new Error('Failed to update program draft');
@@ -280,26 +303,36 @@ export async function saveProgramAsTemplate(
   templateName: string
 ): Promise<void> {
   try {
-    const sessionData = sessionStorage.getItem(`program_${programId}`);
-    if (!sessionData) {
-      throw new Error('Program not found');
+    // Load current draft
+    const results = await BaseCrudService.getAll<any>('programdrafts');
+    const draft = results.items.find((d: any) => d.programId === programId);
+
+    if (!draft) {
+      throw new Error('Program draft not found');
     }
 
-    const program = JSON.parse(sessionData);
+    // Parse program
+    const program = JSON.parse(draft.programJson);
     const templateId = crypto.randomUUID();
+    const now = new Date().toISOString();
 
+    // Create template with new ID
     const template = {
-      ...program,
-      _id: templateId,
-      programName: templateName,
-      status: 'Template',
-      isTemplate: true,
+      _id: crypto.randomUUID(),
+      programId: templateId,
+      trainerId: draft.trainerId,
+      clientId: undefined,
+      programJson: JSON.stringify({
+        ...program,
+        programName: templateName,
+      }),
+      status: 'template',
+      createdAt: now,
+      updatedAt: now,
     };
 
-    // Save template to session storage
-    sessionStorage.setItem(`template_${templateId}`, JSON.stringify(template));
+    await BaseCrudService.create('programdrafts', template);
 
-    // In a full implementation, this would save to a separate templates collection
     console.log(`Template saved: ${templateId}`);
   } catch (error) {
     console.error('Error saving template:', error);
@@ -318,35 +351,40 @@ export async function assignProgramToClient(
   clientId: string
 ): Promise<string> {
   try {
-    // Load the program
-    const sessionData = sessionStorage.getItem(`program_${programId}`);
-    if (!sessionData) {
-      throw new Error('Program not found');
+    // Load the program draft
+    const results = await BaseCrudService.getAll<any>('programdrafts');
+    const draft = results.items.find((d: any) => d.programId === programId);
+
+    if (!draft) {
+      throw new Error('Program draft not found');
     }
 
-    const program = JSON.parse(sessionData);
-
-    // Create a client-specific copy
+    const program = JSON.parse(draft.programJson);
     const clientProgramId = crypto.randomUUID();
-    const clientProgram = {
-      ...program,
-      _id: clientProgramId,
+    const now = new Date().toISOString();
+
+    // Create a client-specific copy in programdrafts
+    const clientDraft = {
+      _id: crypto.randomUUID(),
+      programId: clientProgramId,
+      trainerId: draft.trainerId,
       clientId,
-      status: 'Assigned',
-      assignedAt: new Date().toISOString(),
+      programJson: draft.programJson,
+      status: 'assigned',
+      createdAt: now,
+      updatedAt: now,
     };
 
-    // Save client program
-    sessionStorage.setItem(`program_${clientProgramId}`, JSON.stringify(clientProgram));
+    await BaseCrudService.create('programdrafts', clientDraft);
 
-    // Update database
+    // Update programs collection for backward compatibility
     const fitnessProgram: FitnessPrograms = {
       _id: clientProgramId,
       programName: program.programName,
       description: program.overview,
       duration: program.duration,
       focusArea: program.focusArea,
-      trainerId: program.trainerId,
+      trainerId: draft.trainerId,
       clientId,
       status: 'Assigned',
     };
@@ -614,7 +652,7 @@ export async function regenerateProgramSection(
     }
 
     // Call backend API with section-specific prompt using safe JSON parsing
-    const regeneratedData = await safeFetch<any>(
+    const response = await safeFetch<{ success: boolean; data: any; statusCode: number }>(
       '/api/regenerate-program-section',
       {
         method: 'POST',
@@ -629,6 +667,9 @@ export async function regenerateProgramSection(
       },
       'Program section regeneration'
     );
+
+    // Extract data from wrapper response
+    const regeneratedData = response.data;
 
     // Update program with regenerated section
     const updated = { ...program };
@@ -660,8 +701,8 @@ export async function regenerateProgramSection(
         break;
     }
 
-    // Save updated program
-    sessionStorage.setItem(`program_${request.programId}`, JSON.stringify(updated));
+    // Save updated program to database
+    await updateProgramDraft(request.programId, updated);
 
     return updated;
   } catch (error) {
@@ -803,14 +844,18 @@ export function assessProgramQuality(program: GeneratedProgram): { score: number
 
 /**
  * Map exercise names to internal library IDs
+ * Normalizes exercise names (lowercase, trim) to prevent filtering issues
  * @param exerciseName - Name of the exercise
  * @returns Exercise ID if found, null otherwise
  */
 export async function mapExerciseToLibrary(exerciseName: string): Promise<string | null> {
   try {
+    // Normalize the exercise name: lowercase and trim
+    const normalizedName = exerciseName.toLowerCase().trim();
+    
     // In production, this would query an exercise library collection
     // For now, return null (trainer must manually map)
-    const stored = localStorage.getItem(`exercise_map_${exerciseName}`);
+    const stored = localStorage.getItem(`exercise_map_${normalizedName}`);
     return stored ? JSON.parse(stored) : null;
   } catch (error) {
     console.error('Error mapping exercise:', error);
@@ -820,12 +865,16 @@ export async function mapExerciseToLibrary(exerciseName: string): Promise<string
 
 /**
  * Store exercise library mapping
+ * Normalizes exercise names (lowercase, trim) to prevent filtering issues
  * @param exerciseName - Display name
  * @param exerciseId - Internal library ID
  */
 export async function storeExerciseMapping(exerciseName: string, exerciseId: string): Promise<void> {
   try {
-    localStorage.setItem(`exercise_map_${exerciseName}`, JSON.stringify(exerciseId));
+    // Normalize the exercise name: lowercase and trim
+    const normalizedName = exerciseName.toLowerCase().trim();
+    
+    localStorage.setItem(`exercise_map_${normalizedName}`, JSON.stringify(exerciseId));
   } catch (error) {
     console.error('Error storing exercise mapping:', error);
     throw new Error('Failed to store exercise mapping');
