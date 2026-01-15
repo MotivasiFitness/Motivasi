@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientAssignedWorkouts, TrainerClientAssignments } from '@/entities';
-import { MessageSquare, Save, CheckCircle, Calendar, User, Dumbbell, ChevronDown, Filter } from 'lucide-react';
+import { MessageSquare, Save, CheckCircle, Calendar, User, Dumbbell, ChevronDown, Filter, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getClientDisplayName } from '@/lib/client-display-name';
+import WeeklySummariesView from '@/components/pages/TrainerDashboard/WeeklySummariesView';
 
 interface CompletedWorkoutWithClient extends ClientAssignedWorkouts {
   clientName?: string;
@@ -183,39 +185,53 @@ export default function CompletedWorkoutsFeedbackPage() {
     <div className="space-y-6 p-6 lg:p-8">
       {/* Header */}
       <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
-        <h1 className="font-heading text-4xl font-bold mb-2">Workout Feedback</h1>
+        <h1 className="font-heading text-4xl font-bold mb-2">Workout Feedback & Summaries</h1>
         <p className="text-soft-white/90">
-          Leave feedback and encouragement on your clients' completed workouts
+          Leave feedback on completed workouts and view weekly progress summaries
         </p>
       </div>
 
-      {/* Filters */}
-      <Card className="p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <Filter className="w-5 h-5 text-soft-bronze" />
-          <h2 className="font-heading text-lg font-bold text-charcoal-black">Filters</h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="text-sm font-medium text-charcoal-black mb-2 block">
-              Client
-            </label>
-            <Select value={filterClient} onValueChange={setFilterClient}>
-              <SelectTrigger>
-                <SelectValue placeholder="All clients" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All clients</SelectItem>
-                {clients.map(client => (
-                  <SelectItem key={client.id} value={client.id}>
-                    {client.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label className="text-sm font-medium text-charcoal-black mb-2 block">
+      {/* Tabs for Feedback and Summaries */}
+      <Tabs defaultValue="feedback" className="w-full">
+        <TabsList className="grid w-full max-w-md grid-cols-2">
+          <TabsTrigger value="feedback" className="flex items-center gap-2">
+            <MessageSquare className="w-4 h-4" />
+            Workout Feedback
+          </TabsTrigger>
+          <TabsTrigger value="summaries" className="flex items-center gap-2">
+            <Trophy className="w-4 h-4" />
+            Weekly Summaries
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="feedback" className="space-y-6 mt-6">
+          {/* Filters */}
+          <Card className="p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Filter className="w-5 h-5 text-soft-bronze" />
+              <h2 className="font-heading text-lg font-bold text-charcoal-black">Filters</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium text-charcoal-black mb-2 block">
+                  Client
+                </label>
+                <Select value={filterClient} onValueChange={setFilterClient}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="All clients" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All clients</SelectItem>
+                    {clients.map(client => (
+                      <SelectItem key={client.id} value={client.id}>
+                        {client.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-charcoal-black mb-2 block">
               Feedback Status
             </label>
             <Select value={filterFeedback} onValueChange={(v) => setFilterFeedback(v as 'all' | 'with' | 'without')}>
@@ -487,6 +503,12 @@ export default function CompletedWorkoutsFeedbackPage() {
           })
         )}
       </div>
+        </TabsContent>
+
+        <TabsContent value="summaries" className="mt-6">
+          <WeeklySummariesView />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

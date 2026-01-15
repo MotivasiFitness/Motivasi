@@ -467,3 +467,34 @@ export interface WeeklyCoachesNotes {
   /** @wixFieldType boolean */
   isPublished?: boolean;
 }
+
+
+/**
+ * Collection ID: weeklysummaries
+ * Interface for WeeklySummaries
+ */
+export interface WeeklySummaries {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  clientId?: string;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType number */
+  weekNumber?: number;
+  /** @wixFieldType date */
+  startDate?: Date | string;
+  /** @wixFieldType text */
+  programTitle?: string;
+  /** @wixFieldType number */
+  workoutsAssigned?: number;
+  /** @wixFieldType number */
+  workoutsCompleted?: number;
+  /** @wixFieldType text */
+  completionStatus?: string;
+  /** @wixFieldType datetime */
+  completedAt?: Date | string;
+  /** @wixFieldType text */
+  encouragingMessage?: string;
+}

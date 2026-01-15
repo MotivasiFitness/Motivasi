@@ -5,6 +5,8 @@ import { ClientAssignedWorkouts, WeeklyCoachesNotes } from '@/entities';
 import { Calendar, ChevronDown, CheckCircle2, Clock, Dumbbell, MessageCircle, TrendingUp, Archive } from 'lucide-react';
 import { formatWeekDisplay, getWeekStartDate } from '@/lib/workout-assignment-service';
 import { getAllCycles, ProgramCycle } from '@/lib/program-cycle-service';
+import { getWeeklySummary, WeeklySummary } from '@/lib/weekly-summary-service';
+import WeeklySummaryCard from '@/components/ClientPortal/WeeklySummaryCard';
 
 interface CompletedWorkout {
   _id: string;
@@ -37,6 +39,7 @@ interface WeekGroup {
   weekStartDate: Date | string;
   workouts: CompletedWorkout[];
   coachNote?: WeeklyCoachesNotes;
+  weeklySummary?: WeeklySummary;
 }
 
 interface CycleGroup {
@@ -76,6 +79,12 @@ export default function WorkoutHistoryPage() {
           note => note.clientId === member._id && note.isPublished
         );
 
+        // Fetch weekly summaries
+        const { items: allSummaries } = await BaseCrudService.getAll<WeeklySummary>('weeklysummaries');
+        const clientSummaries = allSummaries.filter(
+          summary => summary.clientId === member._id
+        );
+
         // Group workouts by cycle
         const cycleGroupsData: CycleGroup[] = cycles
           .filter(cycle => cycle.status === 'completed' || cycle.status === 'archived')
@@ -94,13 +103,19 @@ export default function WorkoutHistoryPage() {
             const grouped = cycleWorkouts.reduce((acc, workout) => {
               const weekNum = workout.weekNumber || 1;
               if (!acc[weekNum]) {
+                const weekCoachNote = clientNotes.find(
+                  note => note.weekStartDate === workout.weekStartDate
+                );
+                const weekSummary = clientSummaries.find(
+                  summary => summary.weekNumber === weekNum && summary.programTitle === cycle.programTitle
+                );
+                
                 acc[weekNum] = {
                   weekNumber: weekNum,
                   weekStartDate: workout.weekStartDate || new Date(),
                   workouts: [],
-                  coachNote: clientNotes.find(
-                    note => note.weekStartDate === workout.weekStartDate
-                  ),
+                  coachNote: weekCoachNote,
+                  weeklySummary: weekSummary,
                 };
               }
               acc[weekNum].workouts.push(workout as CompletedWorkout);
@@ -310,6 +325,13 @@ export default function WorkoutHistoryPage() {
                         {/* Expanded Week Details */}
                         {isWeekExpanded && (
                           <div className="border-t border-warm-sand-beige px-4 lg:px-6 py-4 space-y-4">
+                            {/* Weekly Summary if available */}
+                            {weekGroup.weeklySummary && (
+                              <div className="mb-4">
+                                <WeeklySummaryCard summary={weekGroup.weeklySummary} showDetails={true} />
+                              </div>
+                            )}
+
                             {/* Coach Note if available */}
                             {weekGroup.coachNote && (
                               <div className="bg-warm-sand-beige/40 border-l-4 border-muted-rose rounded-r-lg p-3">

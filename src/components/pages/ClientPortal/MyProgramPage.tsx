@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import PostWorkoutFeedbackPrompt from '@/components/ClientPortal/PostWorkoutFeedbackPrompt';
 import ProgramCompletionRing from '@/components/ClientPortal/ProgramCompletionRing';
 import ProgramTimeline from '@/components/ClientPortal/ProgramTimeline';
+import WeeklySummaryCard from '@/components/ClientPortal/WeeklySummaryCard';
 import { recordWorkoutCompletion } from '@/lib/adherence-tracking';
 import { 
   getActiveWorkoutsForCurrentWeek, 
@@ -23,6 +24,11 @@ import {
   archiveAndResetCycle,
   ProgramCycle
 } from '@/lib/program-cycle-service';
+import { 
+  checkAndGenerateWeeklySummary, 
+  getWeeklySummary,
+  WeeklySummary 
+} from '@/lib/weekly-summary-service';
 
 interface WorkoutSession {
   day: string;
@@ -71,6 +77,8 @@ export default function MyProgramPage() {
   const [weeklyCoachNote, setWeeklyCoachNote] = useState<WeeklyCoachesNotes | null>(null);
   const [activeCycle, setActiveCycle] = useState<ProgramCycle | null>(null);
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
+  const [weeklySummary, setWeeklySummary] = useState<WeeklySummary | null>(null);
+  const [showWeeklySummary, setShowWeeklySummary] = useState(false);
 
   // Rest timer effect
   useEffect(() => {
@@ -299,6 +307,20 @@ export default function MyProgramPage() {
       // If all workouts in the week are completed, mark the week as complete in the cycle
       if (allWeekWorkoutsCompleted && activeCycle) {
         await completeWeek(activeCycle._id, weekNumber);
+        
+        // Generate weekly summary
+        const summary = await checkAndGenerateWeeklySummary(
+          member?._id || '',
+          activeCycle.trainerId || '',
+          weekNumber,
+          getWeekStartDate(weekNumber),
+          activeCycle.programTitle || 'Training Program'
+        );
+        
+        if (summary) {
+          setWeeklySummary(summary);
+          setShowWeeklySummary(true);
+        }
         
         // Refresh the active cycle
         const updatedCycle = await getActiveCycle(member?._id || '');
@@ -1470,6 +1492,26 @@ export default function MyProgramPage() {
             // Optionally handle success
           }}
         />
+      )}
+
+      {/* Weekly Summary Modal */}
+      {showWeeklySummary && weeklySummary && (
+        <div className="fixed inset-0 bg-charcoal-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-soft-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <WeeklySummaryCard summary={weeklySummary} showDetails={true} />
+              <button
+                onClick={() => {
+                  setShowWeeklySummary(false);
+                  setWeeklySummary(null);
+                }}
+                className="w-full mt-6 px-6 py-3 bg-primary text-soft-white rounded-lg font-medium hover:bg-primary/90 transition-colors"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
