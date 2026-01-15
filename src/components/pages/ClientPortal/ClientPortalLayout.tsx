@@ -5,6 +5,7 @@ import { Menu, X, LogOut, LayoutDashboard, Dumbbell, Apple, TrendingUp, Calendar
 import { Image } from '@/components/ui/image';
 import { useRole } from '@/hooks/useRole';
 import PortalHeader from '@/components/layout/PortalHeader';
+import MotivaChat from '@/components/ClientPortal/MotivaChat';
 
 export default function ClientPortalLayout() {
   const { member, actions } = useMember();
@@ -199,6 +200,9 @@ export default function ClientPortalLayout() {
           />
         )}
       </div>
+
+      {/* MotivaChat - Available on all client portal pages */}
+      <MotivaChat />
     </div>
   );
 }
