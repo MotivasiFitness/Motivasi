@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientPrograms, ClientAssignedWorkouts, WeeklyCoachesNotes } from '@/entities';
-import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight, Volume2, AlertCircle, MessageCircle } from 'lucide-react';
+import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight, Volume2, AlertCircle, MessageCircle, Zap, Info } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import PostWorkoutFeedbackPrompt from '@/components/ClientPortal/PostWorkoutFeedbackPrompt';
 import ProgramCompletionRing from '@/components/ClientPortal/ProgramCompletionRing';
@@ -443,34 +443,101 @@ export default function MyProgramPage() {
                 {/* Expanded Workout Details */}
                 {isExpanded && (
                   <div className="border-t border-warm-sand-beige px-6 lg:px-8 py-6 space-y-6">
+                    {/* Session Overview */}
+                    <div className="bg-soft-bronze/5 border border-soft-bronze/20 rounded-xl p-5 space-y-4">
+                      <h3 className="font-heading text-lg font-bold text-charcoal-black flex items-center gap-2">
+                        <Zap size={20} className="text-soft-bronze" />
+                        Session Overview
+                      </h3>
+                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div>
+                          <p className="text-xs text-warm-grey mb-1">Focus</p>
+                          <p className="font-bold text-sm text-charcoal-black">Full Body Strength</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-warm-grey mb-1">Duration</p>
+                          <p className="font-bold text-sm text-charcoal-black">30-35 min</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-warm-grey mb-1">Intensity</p>
+                          <p className="font-bold text-sm text-charcoal-black">Moderate</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-warm-grey mb-1">Equipment</p>
+                          <p className="font-bold text-sm text-charcoal-black">{workout.weightOrResistance || 'Bodyweight'}</p>
+                        </div>
+                      </div>
+                    </div>
+
                     {/* Exercise Details */}
                     <div className="space-y-4">
-                      <h4 className="font-heading text-lg font-bold text-charcoal-black">
-                        {workout.exerciseName}
-                      </h4>
+                      <div>
+                        <h4 className="font-heading text-xl font-bold text-charcoal-black mb-1">
+                          {workout.exerciseName}
+                        </h4>
+                        <p className="text-sm text-soft-bronze font-medium">
+                          Targets: Primary muscle groups
+                        </p>
+                      </div>
 
-                      <div className="flex flex-wrap gap-3 lg:gap-4 text-sm">
+                      {/* Clear Instruction Block */}
+                      <div className="bg-warm-sand-beige/30 border-l-4 border-soft-bronze rounded-r-lg p-4">
+                        <div className="flex items-start gap-2">
+                          <Info size={18} className="text-soft-bronze flex-shrink-0 mt-0.5" />
+                          <div>
+                            <p className="font-bold text-sm text-charcoal-black mb-1">How to perform:</p>
+                            <p className="text-sm text-charcoal-black leading-relaxed">
+                              Complete all sets with controlled movement. Rest between sets as indicated. Focus on form over speed.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Sets x Reps with Enhanced Visual Hierarchy */}
+                      <div className="flex flex-wrap gap-4 text-base">
                         {workout.sets && (
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-2">
                             <span className="text-warm-grey">Sets × Reps:</span>
-                            <span className="font-bold text-charcoal-black">
+                            <span className="font-bold text-xl text-charcoal-black">
                               {workout.sets} × {workout.reps}
                             </span>
                           </div>
                         )}
                         {workout.weightOrResistance && (
-                          <div className="flex items-center gap-1">
-                            <span className="text-warm-grey">Suggested weight:</span>
-                            <span className="font-bold text-charcoal-black">
+                          <div className="flex items-center gap-2">
+                            <span className="text-warm-grey">Weight:</span>
+                            <span className="font-bold text-lg text-charcoal-black">
                               {workout.weightOrResistance}
+                            </span>
+                          </div>
+                        )}
+                        {workout.restTimeSeconds && (
+                          <div className="flex items-center gap-2">
+                            <span className="text-warm-grey">Rest:</span>
+                            <span className="font-bold text-lg text-charcoal-black">
+                              {workout.restTimeSeconds}s
                             </span>
                           </div>
                         )}
                       </div>
 
+                      {/* Simplified Progression Text */}
+                      <div className="bg-soft-bronze/10 border border-soft-bronze/30 rounded-lg p-3">
+                        <p className="text-sm text-charcoal-black font-medium">
+                          <span className="font-bold">Progression:</span> When you complete all reps with good form, increase weight by 2.5-5kg next session.
+                        </p>
+                      </div>
+
+                      {/* Coach Guidance with Consistent Icon */}
                       {workout.exerciseNotes && (
-                        <div className="text-xs text-warm-grey italic px-3 py-2 bg-warm-sand-beige/20 rounded-lg border-l-2 border-soft-bronze">
-                          💡 Coach note: {workout.exerciseNotes}
+                        <div className="bg-warm-sand-beige/40 border-l-4 border-muted-rose rounded-r-lg p-4">
+                          <div className="flex items-start gap-2">
+                            <MessageCircle size={18} className="text-muted-rose flex-shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-bold text-sm text-charcoal-black mb-1">Coach's tip:</p>
+                              <p className="text-sm text-charcoal-black leading-relaxed">{workout.exerciseNotes}</p>
+                            </div>
+                          </div>
                         </div>
                       )}
 
@@ -479,10 +546,10 @@ export default function MyProgramPage() {
                           href={workout.exerciseVideoUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center gap-2 bg-charcoal-black text-soft-white px-4 py-3 rounded-lg font-medium text-sm hover:bg-soft-bronze transition-colors"
+                          className="inline-flex items-center justify-center gap-2 bg-charcoal-black text-soft-white px-5 py-3 rounded-lg font-bold text-sm hover:bg-soft-bronze transition-colors"
                         >
-                          <Play size={16} />
-                          Watch demo (30s)
+                          <Play size={18} />
+                          Watch Form Demo (30s)
                         </a>
                       )}
                     </div>
@@ -722,6 +789,32 @@ export default function MyProgramPage() {
                 {/* Exercises List */}
                 {isExpanded && (
                   <div className="border-t border-warm-sand-beige px-6 lg:px-8 py-6 space-y-6">
+                    {/* Session Overview */}
+                    <div className="bg-soft-bronze/5 border border-soft-bronze/20 rounded-xl p-5 space-y-4">
+                      <h3 className="font-heading text-lg font-bold text-charcoal-black flex items-center gap-2">
+                        <Zap size={20} className="text-soft-bronze" />
+                        Session Overview
+                      </h3>
+                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div>
+                          <p className="text-xs text-warm-grey mb-1">Focus</p>
+                          <p className="font-bold text-sm text-charcoal-black">{trainingFocus}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-warm-grey mb-1">Duration</p>
+                          <p className="font-bold text-sm text-charcoal-black">{estimatedSessionTime}-{estimatedSessionTime + 5} min</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-warm-grey mb-1">Intensity</p>
+                          <p className="font-bold text-sm text-charcoal-black">Moderate-High</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-warm-grey mb-1">Equipment</p>
+                          <p className="font-bold text-sm text-charcoal-black">{equipment}</p>
+                        </div>
+                      </div>
+                    </div>
+
                     {/* Workout Progress Indicator */}
                     <div className="flex items-center gap-3 pb-4 border-b border-warm-sand-beige">
                       <div className="flex-1 h-2 bg-warm-sand-beige rounded-full overflow-hidden">
@@ -735,11 +828,6 @@ export default function MyProgramPage() {
                       </span>
                     </div>
 
-                    {/* Instruction Text */}
-                    <p className="text-sm text-warm-grey italic px-3 py-2 bg-warm-sand-beige/20 rounded-lg">
-                      Complete each set to progress through the exercise
-                    </p>
-
                     {dayExercises.map((exercise, idx) => {
                       const setStates = exerciseSetStates[exercise._id || ''] || [];
                       const isResting = restingExerciseId === exercise._id;
@@ -751,39 +839,73 @@ export default function MyProgramPage() {
                           className="pb-6 border-b border-warm-sand-beige last:border-b-0 last:pb-0"
                         >
                           {/* Exercise Header */}
-                          <h4 className="font-heading text-lg font-bold text-charcoal-black mb-3">
-                            {idx + 1}. {exercise.exerciseName}
-                          </h4>
+                          <div className="mb-4">
+                            <h4 className="font-heading text-xl font-bold text-charcoal-black mb-1">
+                              {idx + 1}. {exercise.exerciseName}
+                            </h4>
+                            <p className="text-sm text-soft-bronze font-medium">
+                              Focus: {exercise.exerciseNotes?.split('.')[0] || 'Strength building'}
+                            </p>
+                          </div>
 
-                          {/* Core Exercise Info */}
-                          <div className="flex flex-wrap gap-3 lg:gap-4 text-sm mb-4">
+                          {/* Clear Instruction Block */}
+                          <div className="bg-warm-sand-beige/30 border-l-4 border-soft-bronze rounded-r-lg p-4 mb-4">
+                            <div className="flex items-start gap-2">
+                              <Info size={18} className="text-soft-bronze flex-shrink-0 mt-0.5" />
+                              <div>
+                                <p className="font-bold text-sm text-charcoal-black mb-1">How to perform:</p>
+                                <p className="text-sm text-charcoal-black leading-relaxed">
+                                  Complete all sets with controlled movement. Rest {exercise.restTimeSeconds || 60}s between sets. Focus on maintaining proper form throughout.
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Core Exercise Info with Enhanced Visual Hierarchy */}
+                          <div className="flex flex-wrap gap-4 text-base mb-4">
                             {exercise.sets && (
-                              <div className="flex items-center gap-1">
+                              <div className="flex items-center gap-2">
                                 <span className="text-warm-grey">Sets × Reps:</span>
-                                <span className="font-bold text-charcoal-black">
+                                <span className="font-bold text-xl text-charcoal-black">
                                   {exercise.sets} × {repRange}
                                 </span>
                               </div>
                             )}
                             {exercise.weightOrResistance && (
-                              <div className="flex items-center gap-1">
-                                <span className="text-warm-grey">Suggested weight:</span>
-                                <span className="font-bold text-charcoal-black">
+                              <div className="flex items-center gap-2">
+                                <span className="text-warm-grey">Weight:</span>
+                                <span className="font-bold text-lg text-charcoal-black">
                                   {exercise.weightOrResistance}
+                                </span>
+                              </div>
+                            )}
+                            {exercise.restTimeSeconds && (
+                              <div className="flex items-center gap-2">
+                                <span className="text-warm-grey">Rest:</span>
+                                <span className="font-bold text-lg text-charcoal-black">
+                                  {exercise.restTimeSeconds}s
                                 </span>
                               </div>
                             )}
                           </div>
 
-                          {/* Primary Coaching Cue */}
-                          <p className="text-sm text-charcoal-black mb-4 p-3 bg-soft-bronze/5 rounded-lg border border-soft-bronze/20">
-                            When you reach the top of the rep range on all sets with good form, increase weight next session.
-                          </p>
+                          {/* Simplified Progression Text */}
+                          <div className="bg-soft-bronze/10 border border-soft-bronze/30 rounded-lg p-3 mb-4">
+                            <p className="text-sm text-charcoal-black font-medium">
+                              <span className="font-bold">Progression:</span> When you complete all reps with good form, increase weight by 2.5-5kg next session.
+                            </p>
+                          </div>
 
-                          {/* Coach Note (if available) */}
+                          {/* Coach Note with Consistent Icon */}
                           {exercise.exerciseNotes && (
-                            <div className="text-xs text-warm-grey italic mb-4 px-3 py-2 bg-warm-sand-beige/20 rounded-lg border-l-2 border-soft-bronze">
-                              💡 Coach note: {exercise.exerciseNotes}
+                            <div className="bg-warm-sand-beige/40 border-l-4 border-muted-rose rounded-r-lg p-4 mb-4">
+                              <div className="flex items-start gap-2">
+                                <MessageCircle size={18} className="text-muted-rose flex-shrink-0 mt-0.5" />
+                                <div>
+                                  <p className="font-bold text-sm text-charcoal-black mb-1">Coach's tip:</p>
+                                  <p className="text-sm text-charcoal-black leading-relaxed">{exercise.exerciseNotes}</p>
+                                </div>
+                              </div>
                             </div>
                           )}
 
@@ -794,17 +916,38 @@ export default function MyProgramPage() {
                                 href={exercise.exerciseVideoUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-charcoal-black text-soft-white px-4 py-3 rounded-lg font-medium text-sm hover:bg-soft-bronze transition-colors"
+                                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-charcoal-black text-soft-white px-5 py-3 rounded-lg font-bold text-sm hover:bg-soft-bronze transition-colors"
                               >
-                                <Play size={16} />
-                                Watch demo (30s)
+                                <Play size={18} />
+                                Watch Form Demo (30s)
                               </a>
                             </div>
                           )}
 
-                          {/* Interactive Sets Display */}
+                          {/* Interactive Sets Display with Improved Weight Logging */}
                           <div className="mb-4">
                             <p className="text-xs font-medium text-warm-grey mb-3 uppercase tracking-wide">Tap each set to mark complete</p>
+                            
+                            {/* Optional: Log one weight for all sets */}
+                            {setStates.length > 0 && !setStates.every(s => s.completed) && (
+                              <div className="mb-3 p-3 bg-soft-bronze/5 border border-soft-bronze/20 rounded-lg">
+                                <label className="block text-xs font-medium text-warm-grey mb-2">
+                                  Weight used (applies to all sets):
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder={exercise.weightOrResistance || 'e.g., 20kg'}
+                                  onChange={(e) => {
+                                    // Auto-fill all sets with the same weight
+                                    setStates.forEach(set => {
+                                      handleWeightInputChange(exercise._id || '', set.setNumber, e.target.value);
+                                    });
+                                  }}
+                                  className="w-full px-3 py-2 text-sm rounded border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
+                                />
+                              </div>
+                            )}
+
                             <div className="space-y-2">
                               {setStates.map((set) => (
                                 <div key={set.setNumber}>
@@ -826,7 +969,7 @@ export default function MyProgramPage() {
                                     {set.completed ? (
                                       <span className="flex items-center justify-center gap-2">
                                         <CheckCircle2 size={16} />
-                                        Set {set.setNumber} Complete
+                                        Set {set.setNumber} Complete {set.usedWeight && `• ${set.usedWeight}`}
                                       </span>
                                     ) : isResting ? (
                                       <span className="flex items-center justify-center gap-2">
@@ -837,34 +980,6 @@ export default function MyProgramPage() {
                                       `Set ${set.setNumber}`
                                     )}
                                   </button>
-
-                                  {/* Optional Weight Input (collapsed by default) */}
-                                  {set.completed && (
-                                    <div className="mt-2 px-3 py-2 bg-green-50/50 rounded-lg border border-green-200/50">
-                                      <button
-                                        onClick={() => toggleWeightInput(`${exercise._id}-${set.setNumber}`)}
-                                        className="text-xs text-warm-grey hover:text-charcoal-black transition-colors flex items-center gap-1"
-                                      >
-                                        <span>💪 Log weight used</span>
-                                        <ChevronDown
-                                          size={12}
-                                          className={`transition-transform ${
-                                            expandedWeightInputs.has(`${exercise._id}-${set.setNumber}`) ? 'rotate-180' : ''
-                                          }`}
-                                        />
-                                      </button>
-
-                                      {expandedWeightInputs.has(`${exercise._id}-${set.setNumber}`) && (
-                                        <input
-                                          type="text"
-                                          value={set.usedWeight || exercise.weightOrResistance || ''}
-                                          onChange={(e) => handleWeightInputChange(exercise._id || '', set.setNumber, e.target.value)}
-                                          placeholder={exercise.weightOrResistance || 'e.g., 20kg'}
-                                          className="w-full mt-2 px-3 py-2 text-xs rounded border border-green-200 focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
-                                        />
-                                      )}
-                                    </div>
-                                  )}
                                 </div>
                               ))}
                             </div>
@@ -880,7 +995,7 @@ export default function MyProgramPage() {
                           )}
 
                           {/* Technique Tips Collapsible */}
-                          {(exercise.tempo || exercise.exerciseNotes) && (
+                          {exercise.tempo && (
                             <div className="mb-4">
                               <button
                                 onClick={() =>
@@ -890,7 +1005,10 @@ export default function MyProgramPage() {
                                 }
                                 className="w-full flex items-center justify-between p-3 bg-warm-sand-beige/20 rounded-lg hover:bg-warm-sand-beige/30 transition-colors"
                               >
-                                <span className="font-medium text-sm text-charcoal-black">Technique tips</span>
+                                <span className="font-medium text-sm text-charcoal-black flex items-center gap-2">
+                                  <AlertCircle size={16} className="text-soft-bronze" />
+                                  Advanced technique tips
+                                </span>
                                 <ChevronDown
                                   size={16}
                                   className={`text-soft-bronze transition-transform ${
@@ -906,15 +1024,6 @@ export default function MyProgramPage() {
                                       <p className="text-xs text-warm-grey mb-1 font-medium">Tempo (movement speed)</p>
                                       <p className="text-sm text-charcoal-black">
                                         {exercise.tempo}
-                                      </p>
-                                    </div>
-                                  )}
-
-                                  {exercise.exerciseNotes && (
-                                    <div>
-                                      <p className="text-xs text-warm-grey mb-1 font-medium">Form cues</p>
-                                      <p className="text-sm text-charcoal-black leading-relaxed">
-                                        {exercise.exerciseNotes}
                                       </p>
                                     </div>
                                   )}
