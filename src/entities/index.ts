@@ -266,6 +266,31 @@ export interface PrivateVideoLibrary {
 
 
 /**
+ * Collection ID: programcycles
+ * Interface for ProgramCycles
+ */
+export interface ProgramCycles {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType number */
+  cycleNumber?: number;
+  /** @wixFieldType date */
+  cycleStartDate?: Date | string;
+  /** @wixFieldType datetime */
+  cycleCompletedAt?: Date | string;
+  /** @wixFieldType number */
+  currentWeek?: number;
+  /** @wixFieldType number */
+  weeksCompleted?: number;
+  /** @wixFieldType text */
+  status?: string;
+  /** @wixFieldType text */
+  programTitle?: string;
+}
+
+
+/**
  * Collection ID: programdrafts
  * Interface for ProgramDrafts
  */

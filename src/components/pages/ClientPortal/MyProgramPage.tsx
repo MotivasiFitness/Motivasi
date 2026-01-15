@@ -7,6 +7,7 @@ import { Image } from '@/components/ui/image';
 import { Link } from 'react-router-dom';
 import PostWorkoutFeedbackPrompt from '@/components/ClientPortal/PostWorkoutFeedbackPrompt';
 import ProgramCompletionRing from '@/components/ClientPortal/ProgramCompletionRing';
+import ProgramTimeline from '@/components/ClientPortal/ProgramTimeline';
 import { recordWorkoutCompletion } from '@/lib/adherence-tracking';
 import { 
   getActiveWorkoutsForCurrentWeek, 
@@ -14,6 +15,14 @@ import {
   getDaysSinceUpdate,
   getWeekStartDate 
 } from '@/lib/workout-assignment-service';
+import { 
+  getActiveCycle, 
+  completeWeek, 
+  getCompletedWeeksArray,
+  shouldResetCycle,
+  archiveAndResetCycle,
+  ProgramCycle
+} from '@/lib/program-cycle-service';
 
 interface WorkoutSession {
   day: string;
@@ -57,6 +66,8 @@ export default function MyProgramPage() {
   const [ringAnimationTrigger, setRingAnimationTrigger] = useState(false);
   const [useNewSystem, setUseNewSystem] = useState(false);
   const [weeklyCoachNote, setWeeklyCoachNote] = useState<WeeklyCoachesNotes | null>(null);
+  const [activeCycle, setActiveCycle] = useState<ProgramCycle | null>(null);
+  const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
 
   // Rest timer effect
   useEffect(() => {
@@ -80,6 +91,10 @@ export default function MyProgramPage() {
       if (!member?._id) return;
 
       try {
+        // Fetch active program cycle
+        const cycle = await getActiveCycle(member._id);
+        setActiveCycle(cycle);
+
         // Try to fetch from new system first
         const { items: assignedItems } = await BaseCrudService.getAll<ClientAssignedWorkouts>('clientassignedworkouts');
         const activeWorkouts = await getActiveWorkoutsForCurrentWeek(member._id);
@@ -247,8 +262,26 @@ export default function MyProgramPage() {
         w._id === workoutId || completedWorkouts.has(w._id || '')
       );
 
-      // If all workouts in the week are completed, they will automatically appear in history
-      // The history page filters by status='completed'
+      // If all workouts in the week are completed, mark the week as complete in the cycle
+      if (allWeekWorkoutsCompleted && activeCycle) {
+        await completeWeek(activeCycle._id, weekNumber);
+        
+        // Refresh the active cycle
+        const updatedCycle = await getActiveCycle(member?._id || '');
+        setActiveCycle(updatedCycle);
+
+        // Check if cycle should be reset (all 4 weeks completed)
+        if (updatedCycle && shouldResetCycle(updatedCycle)) {
+          // Archive current cycle and create new one
+          const newCycle = await archiveAndResetCycle(
+            updatedCycle._id,
+            member?._id || '',
+            updatedCycle.trainerId || '',
+            updatedCycle.programTitle || 'Training Program'
+          );
+          setActiveCycle(newCycle);
+        }
+      }
       
       // Trigger completion ring animation
       setShowCompletionRing(true);
@@ -296,6 +329,20 @@ export default function MyProgramPage() {
     const nextWorkout = assignedWorkouts.find(w => !completedWorkouts.has(w._id || ''));
     const nextWorkoutSlot = nextWorkout?.workoutSlot || null;
     const allWorkoutsComplete = !nextWorkout;
+
+    // Handle week click from timeline
+    const handleWeekClick = (weekNumber: number) => {
+      const completedWeeks = getCompletedWeeksArray(activeCycle?.weeksCompleted || 0);
+      if (completedWeeks.includes(weekNumber)) {
+        // Navigate to history page for completed weeks
+        window.location.href = '/portal/history';
+      } else if (weekNumber === activeCycle?.currentWeek) {
+        // Scroll to current week's workouts
+        setSelectedWeek(weekNumber);
+        const weekElement = document.getElementById(`week-${weekNumber}`);
+        weekElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
     
     return (
       <div className="space-y-8 bg-warm-sand-beige/40 min-h-screen p-6 lg:p-8 rounded-2xl">
@@ -317,6 +364,16 @@ export default function MyProgramPage() {
             </Link>
           </div>
         </div>
+
+        {/* Program Timeline */}
+        {activeCycle && (
+          <ProgramTimeline
+            currentWeek={activeCycle.currentWeek || 1}
+            weeksCompleted={getCompletedWeeksArray(activeCycle.weeksCompleted || 0)}
+            totalWeeks={4}
+            onWeekClick={handleWeekClick}
+          />
+        )}
 
         {/* Next Workout Card */}
         {allWorkoutsComplete ? (
@@ -374,7 +431,7 @@ export default function MyProgramPage() {
           const weekWorkouts = workoutsByWeek[weekNum];
           
           return (
-            <div key={weekNum} className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8">
+            <div key={weekNum} id={`week-${weekNum}`} className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8">
               <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
                 Week {weekNum} Workouts
               </h2>
