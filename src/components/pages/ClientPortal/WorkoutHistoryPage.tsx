@@ -27,6 +27,9 @@ interface CompletedWorkout {
   trainerComment?: string;
   trainerCommentDate?: Date | string;
   trainerCommentBy?: string;
+  difficultyRating?: string;
+  clientReflectionNotes?: string;
+  reflectionSubmittedAt?: Date | string;
 }
 
 interface WeekGroup {
@@ -338,6 +341,36 @@ export default function WorkoutHistoryPage() {
                                   <p className="text-xs text-warm-grey mb-2">
                                     {workout.exerciseName} • {workout.sets}×{workout.reps}
                                   </p>
+                                  
+                                  {/* Client Reflection - Read-only view */}
+                                  {(workout.difficultyRating || workout.clientReflectionNotes) && (
+                                    <div className="mt-2 pt-2 border-t border-warm-sand-beige">
+                                      <div className="bg-soft-bronze/5 border-l-3 border-soft-bronze rounded-r p-2">
+                                        <p className="text-xs font-bold text-soft-bronze mb-1">
+                                          📝 Your Reflection
+                                        </p>
+                                        {workout.difficultyRating && (
+                                          <p className="text-xs text-charcoal-black mb-1">
+                                            <span className="font-medium">Difficulty:</span>{' '}
+                                            <span className={`font-bold ${
+                                              workout.difficultyRating === 'Easy' 
+                                                ? 'text-green-600'
+                                                : workout.difficultyRating === 'Moderate'
+                                                ? 'text-yellow-600'
+                                                : 'text-red-600'
+                                            }`}>
+                                              {workout.difficultyRating}
+                                            </span>
+                                          </p>
+                                        )}
+                                        {workout.clientReflectionNotes && (
+                                          <p className="text-xs text-charcoal-black leading-relaxed italic">
+                                            "{workout.clientReflectionNotes}"
+                                          </p>
+                                        )}
+                                      </div>
+                                    </div>
+                                  )}
                                   
                                   {/* Trainer Feedback */}
                                   {workout.trainerComment && workout.trainerComment.trim() !== '' && (

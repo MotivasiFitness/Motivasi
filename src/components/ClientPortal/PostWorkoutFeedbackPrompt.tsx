@@ -1,25 +1,22 @@
 import { useState } from 'react';
 import { X, CheckCircle, Loader, AlertCircle } from 'lucide-react';
-import { recordWorkoutFeedback } from '@/lib/adherence-tracking';
+import { BaseCrudService } from '@/integrations';
+import { ClientAssignedWorkouts } from '@/entities';
 
 interface PostWorkoutFeedbackPromptProps {
-  clientId: string;
-  programId: string;
-  workoutActivityId: string;
+  workoutId: string;
   workoutTitle?: string;
   onClose: () => void;
   onSuccess?: () => void;
 }
 
 export default function PostWorkoutFeedbackPrompt({
-  clientId,
-  programId,
-  workoutActivityId,
+  workoutId,
   workoutTitle = 'Today\'s Workout',
   onClose,
   onSuccess,
 }: PostWorkoutFeedbackPromptProps) {
-  const [difficultyRating, setDifficultyRating] = useState<number | null>(null);
+  const [difficultyRating, setDifficultyRating] = useState<'Easy' | 'Moderate' | 'Hard' | null>(null);
   const [feedbackNote, setFeedbackNote] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -29,21 +26,21 @@ export default function PostWorkoutFeedbackPrompt({
     e.preventDefault();
     setSubmitError('');
 
-    if (difficultyRating === null) {
-      setSubmitError('Please rate the difficulty');
+    if (!difficultyRating) {
+      setSubmitError('Please select a difficulty level');
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      await recordWorkoutFeedback(
-        clientId,
-        programId,
-        workoutActivityId,
+      // Update the workout record with reflection data
+      await BaseCrudService.update<ClientAssignedWorkouts>('clientassignedworkouts', {
+        _id: workoutId,
         difficultyRating,
-        feedbackNote || undefined
-      );
+        clientReflectionNotes: feedbackNote || undefined,
+        reflectionSubmittedAt: new Date().toISOString(),
+      });
 
       setIsSubmitted(true);
       onSuccess?.();
@@ -53,8 +50,8 @@ export default function PostWorkoutFeedbackPrompt({
         onClose();
       }, 2000);
     } catch (error) {
-      console.error('Error submitting feedback:', error);
-      setSubmitError('Failed to submit feedback. Please try again.');
+      console.error('Error submitting reflection:', error);
+      setSubmitError('Failed to submit reflection. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -73,10 +70,10 @@ export default function PostWorkoutFeedbackPrompt({
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
             <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-2">
-              Thanks for the feedback!
+              Thanks for your reflection!
             </h3>
             <p className="font-paragraph text-sm text-warm-grey">
-              Your trainer will use this to optimize your programme.
+              Your trainer will review this to optimize your program.
             </p>
           </div>
         </div>
@@ -113,15 +110,15 @@ export default function PostWorkoutFeedbackPrompt({
           {/* Difficulty Rating */}
           <div>
             <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-4">
-              How difficult was it?
+              How difficult was this workout?
             </label>
             <div className="flex gap-3">
-              {[1, 2, 3, 4, 5].map((rating) => (
+              {(['Easy', 'Moderate', 'Hard'] as const).map((rating) => (
                 <button
                   key={rating}
                   type="button"
                   onClick={() => setDifficultyRating(rating)}
-                  className={`flex-1 py-3 rounded-lg font-heading text-lg font-bold transition-all ${
+                  className={`flex-1 py-3 rounded-lg font-heading text-base font-bold transition-all ${
                     difficultyRating === rating
                       ? 'bg-soft-bronze text-soft-white shadow-lg'
                       : 'bg-warm-sand-beige text-charcoal-black hover:bg-soft-bronze/20'
@@ -131,27 +128,23 @@ export default function PostWorkoutFeedbackPrompt({
                 </button>
               ))}
             </div>
-            <div className="flex justify-between mt-2">
-              <span className="font-paragraph text-xs text-warm-grey">Easy</span>
-              <span className="font-paragraph text-xs text-warm-grey">Hard</span>
-            </div>
           </div>
 
           {/* Optional Feedback Note */}
           <div>
             <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
-              Any comments? (optional)
+              How did this workout feel? (optional)
             </label>
             <textarea
               value={feedbackNote}
               onChange={(e) => setFeedbackNote(e.target.value)}
-              placeholder="e.g., Felt strong today, or struggled with form..."
-              maxLength={200}
+              placeholder="Any issues or notes? e.g., Felt strong today, or struggled with form..."
+              maxLength={300}
               rows={3}
               className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph text-sm resize-none"
             />
             <p className="text-xs text-warm-grey mt-1">
-              {feedbackNote.length}/200 characters
+              {feedbackNote.length}/300 characters • This feedback is for your trainer
             </p>
           </div>
 
@@ -166,7 +159,7 @@ export default function PostWorkoutFeedbackPrompt({
             </button>
             <button
               type="submit"
-              disabled={isSubmitting || difficultyRating === null}
+              disabled={isSubmitting || !difficultyRating}
               className="flex-1 py-3 rounded-lg font-medium text-sm bg-charcoal-black text-soft-white hover:bg-soft-bronze transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
@@ -182,7 +175,7 @@ export default function PostWorkoutFeedbackPrompt({
 
           {/* Privacy Note */}
           <p className="text-xs text-warm-grey text-center">
-            Your feedback helps your trainer optimize your programme
+            💡 Your reflection helps your trainer optimize your program
           </p>
         </form>
       </div>

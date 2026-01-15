@@ -363,6 +363,43 @@ export default function CompletedWorkoutsFeedbackPage() {
                       </div>
                     )}
 
+                    {/* Client Reflection Section */}
+                    {(workout.difficultyRating || workout.clientReflectionNotes) && (
+                      <div className="p-4 bg-soft-bronze/5 border border-soft-bronze/20 rounded-lg">
+                        <h4 className="font-heading text-sm font-bold text-charcoal-black mb-3 flex items-center gap-2">
+                          <MessageSquare className="w-4 h-4 text-soft-bronze" />
+                          Client Reflection
+                        </h4>
+                        <div className="space-y-2">
+                          {workout.difficultyRating && (
+                            <div>
+                              <p className="text-xs text-warm-grey mb-1">Difficulty Rating</p>
+                              <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                                workout.difficultyRating === 'Easy' 
+                                  ? 'bg-green-100 text-green-700'
+                                  : workout.difficultyRating === 'Moderate'
+                                  ? 'bg-yellow-100 text-yellow-700'
+                                  : 'bg-red-100 text-red-700'
+                              }`}>
+                                {workout.difficultyRating}
+                              </span>
+                            </div>
+                          )}
+                          {workout.clientReflectionNotes && (
+                            <div>
+                              <p className="text-xs text-warm-grey mb-1">Client Notes</p>
+                              <p className="text-sm text-charcoal-black italic">"{workout.clientReflectionNotes}"</p>
+                            </div>
+                          )}
+                          {workout.reflectionSubmittedAt && (
+                            <p className="text-xs text-warm-grey mt-2">
+                              Submitted: {formatDateTime(workout.reflectionSubmittedAt)}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
                     {/* Trainer Feedback Section */}
                     <div className="border-t border-warm-sand-beige pt-4">
                       <div className="flex items-center justify-between mb-3">

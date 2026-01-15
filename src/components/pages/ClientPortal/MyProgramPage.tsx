@@ -61,7 +61,7 @@ export default function MyProgramPage() {
   const [restingExerciseId, setRestingExerciseId] = useState<string | null>(null);
   const [restTimeRemaining, setRestTimeRemaining] = useState<number>(0);
   const [showFeedback, setShowFeedback] = useState(false);
-  const [workoutActivityId, setWorkoutActivityId] = useState<string>('');
+  const [completedWorkoutId, setCompletedWorkoutId] = useState<string>('');
   const [sessionCompleteMessage, setSessionCompleteMessage] = useState(false);
   const [exerciseCompleteStates, setExerciseCompleteStates] = useState<ExerciseCompleteState>({});
   const [expandedWeightInputs, setExpandedWeightInputs] = useState<Set<string>>(new Set());
@@ -106,6 +106,18 @@ export default function MyProgramPage() {
           // Filter out completed workouts - only show active/pending ones
           const pendingWorkouts = activeWorkouts.filter(w => w.status !== 'completed');
           setAssignedWorkouts(pendingWorkouts);
+          
+          // Check if there are any completed workouts without reflections
+          const completedWithoutReflection = activeWorkouts.find(
+            w => w.status === 'completed' && !w.reflectionSubmittedAt
+          );
+          
+          // If there's a completed workout without reflection, show the feedback prompt
+          if (completedWithoutReflection) {
+            setCompletedWorkoutId(completedWithoutReflection._id || '');
+            setShowFeedback(true);
+          }
+          
           setUseNewSystem(true);
           setLoading(false);
           return;
@@ -237,10 +249,8 @@ export default function MyProgramPage() {
 
   const handleWorkoutComplete = async (day: string) => {
     try {
-      const activityId = crypto.randomUUID();
-      setWorkoutActivityId(activityId);
-
-      // Record workout completion
+      // For legacy system, we don't have a workout ID to store reflections
+      // Just record the completion
       await recordWorkoutCompletion(
         member?._id || '',
         programs[0]?.programTitle || '',
@@ -255,10 +265,9 @@ export default function MyProgramPage() {
       
       setSessionCompleteMessage(true);
 
-      // Show feedback prompt after 2.5 seconds (after ring animation)
+      // For legacy system, skip feedback prompt since we can't store it properly
       setTimeout(() => {
         setSessionCompleteMessage(false);
-        setShowFeedback(true);
         setShowCompletionRing(false);
         setRingAnimationTrigger(false);
       }, 2500);
@@ -274,6 +283,9 @@ export default function MyProgramPage() {
         _id: workoutId,
         status: 'completed',
       });
+
+      // Store the completed workout ID for the feedback prompt
+      setCompletedWorkoutId(workoutId);
 
       // Update local state
       setCompletedWorkouts(new Set([...completedWorkouts, workoutId]));
@@ -749,6 +761,38 @@ export default function MyProgramPage() {
 
                     {/* Completion Button */}
                     <div className="pt-6 border-t border-warm-sand-beige">
+                      {/* Show reflection if already submitted (read-only) */}
+                      {workout.reflectionSubmittedAt && (workout.difficultyRating || workout.clientReflectionNotes) && (
+                        <div className="mb-4 p-4 bg-soft-bronze/5 border border-soft-bronze/20 rounded-lg">
+                          <h4 className="font-heading text-sm font-bold text-charcoal-black mb-3 flex items-center gap-2">
+                            <MessageCircle className="w-4 h-4 text-soft-bronze" />
+                            Your Reflection
+                          </h4>
+                          <div className="space-y-2">
+                            {workout.difficultyRating && (
+                              <div>
+                                <p className="text-xs text-warm-grey mb-1">Difficulty</p>
+                                <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                                  workout.difficultyRating === 'Easy' 
+                                    ? 'bg-green-100 text-green-700'
+                                    : workout.difficultyRating === 'Moderate'
+                                    ? 'bg-yellow-100 text-yellow-700'
+                                    : 'bg-red-100 text-red-700'
+                                }`}>
+                                  {workout.difficultyRating}
+                                </span>
+                              </div>
+                            )}
+                            {workout.clientReflectionNotes && (
+                              <div>
+                                <p className="text-xs text-warm-grey mb-1">Your Notes</p>
+                                <p className="text-sm text-charcoal-black italic">"{workout.clientReflectionNotes}"</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      
                       <button
                         onClick={() => handleNewSystemWorkoutComplete(workout._id || '', workout.weekNumber || 1)}
                         disabled={isCompleted}
@@ -1387,15 +1431,14 @@ export default function MyProgramPage() {
         </div>
       </div>
 
-      {/* Post-Workout Feedback Modal */}
-      {showFeedback && (
+      {/* Post-Workout Reflection Modal */}
+      {showFeedback && completedWorkoutId && (
         <PostWorkoutFeedbackPrompt
-          clientId={member?._id || ''}
-          programId={programs[0]?.programTitle || ''}
-          workoutActivityId={workoutActivityId}
+          workoutId={completedWorkoutId}
           workoutTitle="Your Workout"
           onClose={() => {
             setShowFeedback(false);
+            setCompletedWorkoutId('');
             setActiveWorkoutDay(null);
             setExpandedDay(null);
           }}
