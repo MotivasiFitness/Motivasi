@@ -51,6 +51,9 @@ export default function MyProgramPage() {
   const [assignedWorkouts, setAssignedWorkouts] = useState<ClientAssignedWorkouts[]>([]);
   const [expandedDay, setExpandedDay] = useState<string | null>(null);
   const [expandedExercise, setExpandedExercise] = useState<string | null>(null);
+  const [expandedHowToPerform, setExpandedHowToPerform] = useState<Set<string>>(new Set());
+  const [expandedCoachTip, setExpandedCoachTip] = useState<Set<string>>(new Set());
+  const [expandedProgression, setExpandedProgression] = useState<Set<string>>(new Set());
   const [activeWorkoutDay, setActiveWorkoutDay] = useState<string | null>(null);
   const [completedWorkouts, setCompletedWorkouts] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
@@ -208,6 +211,25 @@ export default function MyProgramPage() {
         newSet.delete(weightKey);
       } else {
         newSet.add(weightKey);
+      }
+      return newSet;
+    });
+  };
+
+  const toggleSection = (exerciseId: string, section: 'howToPerform' | 'coachTip' | 'progression') => {
+    const setterMap = {
+      howToPerform: setExpandedHowToPerform,
+      coachTip: setExpandedCoachTip,
+      progression: setExpandedProgression,
+    };
+    
+    const setter = setterMap[section];
+    setter(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(exerciseId)) {
+        newSet.delete(exerciseId);
+      } else {
+        newSet.add(exerciseId);
       }
       return newSet;
     });
@@ -594,17 +616,30 @@ export default function MyProgramPage() {
                         </p>
                       </div>
 
-                      {/* Clear Instruction Block */}
-                      <div className="bg-warm-sand-beige/30 border-l-4 border-soft-bronze rounded-r-lg p-4">
-                        <div className="flex items-start gap-2">
-                          <Info size={18} className="text-soft-bronze flex-shrink-0 mt-0.5" />
-                          <div>
-                            <p className="font-bold text-sm text-charcoal-black mb-1">How to perform:</p>
+                      {/* Collapsible: How to perform */}
+                      <div className="border border-warm-sand-beige rounded-lg overflow-hidden">
+                        <button
+                          onClick={() => toggleSection(workout._id || '', 'howToPerform')}
+                          className="w-full flex items-center justify-between p-4 bg-warm-sand-beige/20 hover:bg-warm-sand-beige/30 transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <Info size={18} className="text-soft-bronze flex-shrink-0" />
+                            <span className="font-bold text-sm text-charcoal-black">How to perform</span>
+                          </div>
+                          <ChevronDown
+                            size={18}
+                            className={`text-soft-bronze transition-transform ${
+                              expandedHowToPerform.has(workout._id || '') ? 'rotate-180' : ''
+                            }`}
+                          />
+                        </button>
+                        {expandedHowToPerform.has(workout._id || '') && (
+                          <div className="p-4 bg-warm-sand-beige/10 border-t border-warm-sand-beige">
                             <p className="text-sm text-charcoal-black leading-relaxed">
                               Complete all sets with controlled movement. Rest between sets as indicated. Focus on form over speed.
                             </p>
                           </div>
-                        </div>
+                        )}
                       </div>
 
                       {/* Sets x Reps with Enhanced Visual Hierarchy */}
@@ -635,23 +670,55 @@ export default function MyProgramPage() {
                         )}
                       </div>
 
-                      {/* Simplified Progression Text */}
-                      <div className="bg-soft-bronze/10 border border-soft-bronze/30 rounded-lg p-3">
-                        <p className="text-sm text-charcoal-black font-medium">
-                          <span className="font-bold">Progression:</span> When you complete all reps with good form, increase weight by 2.5-5kg next session.
-                        </p>
+                      {/* Collapsible: Progression */}
+                      <div className="border border-warm-sand-beige rounded-lg overflow-hidden">
+                        <button
+                          onClick={() => toggleSection(workout._id || '', 'progression')}
+                          className="w-full flex items-center justify-between p-4 bg-warm-sand-beige/20 hover:bg-warm-sand-beige/30 transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <Target size={18} className="text-soft-bronze flex-shrink-0" />
+                            <span className="font-bold text-sm text-charcoal-black">Progression</span>
+                          </div>
+                          <ChevronDown
+                            size={18}
+                            className={`text-soft-bronze transition-transform ${
+                              expandedProgression.has(workout._id || '') ? 'rotate-180' : ''
+                            }`}
+                          />
+                        </button>
+                        {expandedProgression.has(workout._id || '') && (
+                          <div className="p-4 bg-warm-sand-beige/10 border-t border-warm-sand-beige">
+                            <p className="text-sm text-charcoal-black">
+                              When you complete all reps with good form, increase weight by 2.5-5kg next session.
+                            </p>
+                          </div>
+                        )}
                       </div>
 
-                      {/* Coach Guidance with Consistent Icon */}
+                      {/* Collapsible: Coach's tip */}
                       {workout.exerciseNotes && (
-                        <div className="bg-warm-sand-beige/40 border-l-4 border-muted-rose rounded-r-lg p-4">
-                          <div className="flex items-start gap-2">
-                            <MessageCircle size={18} className="text-muted-rose flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-bold text-sm text-charcoal-black mb-1">Coach's tip:</p>
+                        <div className="border border-warm-sand-beige rounded-lg overflow-hidden">
+                          <button
+                            onClick={() => toggleSection(workout._id || '', 'coachTip')}
+                            className="w-full flex items-center justify-between p-4 bg-warm-sand-beige/20 hover:bg-warm-sand-beige/30 transition-colors"
+                          >
+                            <div className="flex items-center gap-2">
+                              <MessageCircle size={18} className="text-muted-rose flex-shrink-0" />
+                              <span className="font-bold text-sm text-charcoal-black">Coach's tip</span>
+                            </div>
+                            <ChevronDown
+                              size={18}
+                              className={`text-muted-rose transition-transform ${
+                                expandedCoachTip.has(workout._id || '') ? 'rotate-180' : ''
+                              }`}
+                            />
+                          </button>
+                          {expandedCoachTip.has(workout._id || '') && (
+                            <div className="p-4 bg-warm-sand-beige/10 border-t border-warm-sand-beige">
                               <p className="text-sm text-charcoal-black leading-relaxed">{workout.exerciseNotes}</p>
                             </div>
-                          </div>
+                          )}
                         </div>
                       )}
 
@@ -961,17 +1028,30 @@ export default function MyProgramPage() {
                             </p>
                           </div>
 
-                          {/* Clear Instruction Block */}
-                          <div className="bg-warm-sand-beige/30 border-l-4 border-soft-bronze rounded-r-lg p-4 mb-4">
-                            <div className="flex items-start gap-2">
-                              <Info size={18} className="text-soft-bronze flex-shrink-0 mt-0.5" />
-                              <div>
-                                <p className="font-bold text-sm text-charcoal-black mb-1">How to perform:</p>
+                          {/* Collapsible: How to perform */}
+                          <div className="border border-warm-sand-beige rounded-lg overflow-hidden mb-4">
+                            <button
+                              onClick={() => toggleSection(exercise._id || '', 'howToPerform')}
+                              className="w-full flex items-center justify-between p-4 bg-warm-sand-beige/20 hover:bg-warm-sand-beige/30 transition-colors"
+                            >
+                              <div className="flex items-center gap-2">
+                                <Info size={18} className="text-soft-bronze flex-shrink-0" />
+                                <span className="font-bold text-sm text-charcoal-black">How to perform</span>
+                              </div>
+                              <ChevronDown
+                                size={18}
+                                className={`text-soft-bronze transition-transform ${
+                                  expandedHowToPerform.has(exercise._id || '') ? 'rotate-180' : ''
+                                }`}
+                              />
+                            </button>
+                            {expandedHowToPerform.has(exercise._id || '') && (
+                              <div className="p-4 bg-warm-sand-beige/10 border-t border-warm-sand-beige">
                                 <p className="text-sm text-charcoal-black leading-relaxed">
                                   Complete all sets with controlled movement. Rest {exercise.restTimeSeconds || 60}s between sets. Focus on maintaining proper form throughout.
                                 </p>
                               </div>
-                            </div>
+                            )}
                           </div>
 
                           {/* Core Exercise Info with Enhanced Visual Hierarchy */}
@@ -1002,23 +1082,55 @@ export default function MyProgramPage() {
                             )}
                           </div>
 
-                          {/* Simplified Progression Text */}
-                          <div className="bg-soft-bronze/10 border border-soft-bronze/30 rounded-lg p-3 mb-4">
-                            <p className="text-sm text-charcoal-black font-medium">
-                              <span className="font-bold">Progression:</span> When you complete all reps with good form, increase weight by 2.5-5kg next session.
-                            </p>
+                          {/* Collapsible: Progression */}
+                          <div className="border border-warm-sand-beige rounded-lg overflow-hidden mb-4">
+                            <button
+                              onClick={() => toggleSection(exercise._id || '', 'progression')}
+                              className="w-full flex items-center justify-between p-4 bg-warm-sand-beige/20 hover:bg-warm-sand-beige/30 transition-colors"
+                            >
+                              <div className="flex items-center gap-2">
+                                <Target size={18} className="text-soft-bronze flex-shrink-0" />
+                                <span className="font-bold text-sm text-charcoal-black">Progression</span>
+                              </div>
+                              <ChevronDown
+                                size={18}
+                                className={`text-soft-bronze transition-transform ${
+                                  expandedProgression.has(exercise._id || '') ? 'rotate-180' : ''
+                                }`}
+                              />
+                            </button>
+                            {expandedProgression.has(exercise._id || '') && (
+                              <div className="p-4 bg-warm-sand-beige/10 border-t border-warm-sand-beige">
+                                <p className="text-sm text-charcoal-black">
+                                  When you complete all reps with good form, increase weight by 2.5-5kg next session.
+                                </p>
+                              </div>
+                            )}
                           </div>
 
-                          {/* Coach Note with Consistent Icon */}
+                          {/* Collapsible: Coach's tip */}
                           {exercise.exerciseNotes && (
-                            <div className="bg-warm-sand-beige/40 border-l-4 border-muted-rose rounded-r-lg p-4 mb-4">
-                              <div className="flex items-start gap-2">
-                                <MessageCircle size={18} className="text-muted-rose flex-shrink-0 mt-0.5" />
-                                <div>
-                                  <p className="font-bold text-sm text-charcoal-black mb-1">Coach's tip:</p>
+                            <div className="border border-warm-sand-beige rounded-lg overflow-hidden mb-4">
+                              <button
+                                onClick={() => toggleSection(exercise._id || '', 'coachTip')}
+                                className="w-full flex items-center justify-between p-4 bg-warm-sand-beige/20 hover:bg-warm-sand-beige/30 transition-colors"
+                              >
+                                <div className="flex items-center gap-2">
+                                  <MessageCircle size={18} className="text-muted-rose flex-shrink-0" />
+                                  <span className="font-bold text-sm text-charcoal-black">Coach's tip</span>
+                                </div>
+                                <ChevronDown
+                                  size={18}
+                                  className={`text-muted-rose transition-transform ${
+                                    expandedCoachTip.has(exercise._id || '') ? 'rotate-180' : ''
+                                  }`}
+                                />
+                              </button>
+                              {expandedCoachTip.has(exercise._id || '') && (
+                                <div className="p-4 bg-warm-sand-beige/10 border-t border-warm-sand-beige">
                                   <p className="text-sm text-charcoal-black leading-relaxed">{exercise.exerciseNotes}</p>
                                 </div>
-                              </div>
+                              )}
                             </div>
                           )}
 

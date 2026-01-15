@@ -38,6 +38,12 @@ export interface ClientAssignedWorkouts {
   _updatedDate?: Date;
   /** @wixFieldType text */
   clientId?: string;
+  /** @wixFieldType text */
+  trainerCommentBy?: string;
+  /** @wixFieldType datetime */
+  trainerCommentDate?: Date | string;
+  /** @wixFieldType text */
+  trainerComment?: string;
   /** @wixFieldType number */
   weekNumber?: number;
   /** @wixFieldType text */
