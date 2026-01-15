@@ -8,7 +8,7 @@ import {
   ProgramGeneratorInput,
   GeneratedProgram,
   isSafeProgram,
-} from '@/lib/ai/ai-program-generator';
+} from '@/lib/ai-program-generator-mock';
 
 type Step = 'input' | 'generating' | 'review' | 'success';
 
