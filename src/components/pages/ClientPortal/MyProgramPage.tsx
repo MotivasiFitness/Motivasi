@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientPrograms, ClientAssignedWorkouts, WeeklyCoachesNotes } from '@/entities';
-import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight, Volume2, AlertCircle, MessageCircle, Zap, Info } from 'lucide-react';
+import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight, Volume2, AlertCircle, MessageCircle, Zap, Info, Archive } from 'lucide-react';
 import { Image } from '@/components/ui/image';
+import { Link } from 'react-router-dom';
 import PostWorkoutFeedbackPrompt from '@/components/ClientPortal/PostWorkoutFeedbackPrompt';
 import ProgramCompletionRing from '@/components/ClientPortal/ProgramCompletionRing';
 import { recordWorkoutCompletion } from '@/lib/adherence-tracking';
@@ -84,7 +85,9 @@ export default function MyProgramPage() {
         const activeWorkouts = await getActiveWorkoutsForCurrentWeek(member._id);
         
         if (activeWorkouts.length > 0) {
-          setAssignedWorkouts(activeWorkouts);
+          // Filter out completed workouts - only show active/pending ones
+          const pendingWorkouts = activeWorkouts.filter(w => w.status !== 'completed');
+          setAssignedWorkouts(pendingWorkouts);
           setUseNewSystem(true);
           setLoading(false);
           return;
@@ -227,6 +230,44 @@ export default function MyProgramPage() {
     }
   };
 
+  const handleNewSystemWorkoutComplete = async (workoutId: string, weekNumber: number) => {
+    try {
+      // Mark workout as completed in the database
+      await BaseCrudService.update<ClientAssignedWorkouts>('clientassignedworkouts', {
+        _id: workoutId,
+        status: 'completed',
+      });
+
+      // Update local state
+      setCompletedWorkouts(new Set([...completedWorkouts, workoutId]));
+      
+      // Check if all workouts in this week are now completed
+      const weekWorkouts = assignedWorkouts.filter(w => w.weekNumber === weekNumber);
+      const allWeekWorkoutsCompleted = weekWorkouts.every(w => 
+        w._id === workoutId || completedWorkouts.has(w._id || '')
+      );
+
+      // If all workouts in the week are completed, they will automatically appear in history
+      // The history page filters by status='completed'
+      
+      // Trigger completion ring animation
+      setShowCompletionRing(true);
+      setRingAnimationTrigger(true);
+      
+      setSessionCompleteMessage(true);
+
+      // Show feedback prompt after 2.5 seconds
+      setTimeout(() => {
+        setSessionCompleteMessage(false);
+        setShowFeedback(true);
+        setShowCompletionRing(false);
+        setRingAnimationTrigger(false);
+      }, 2500);
+    } catch (error) {
+      console.error('Error completing workout:', error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -260,10 +301,21 @@ export default function MyProgramPage() {
       <div className="space-y-8 bg-warm-sand-beige/40 min-h-screen p-6 lg:p-8 rounded-2xl">
         {/* Header */}
         <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
-          <h1 className="font-heading text-4xl font-bold mb-2">My Personalized Program</h1>
-          <p className="text-soft-white/90">
-            {weekDisplay} • Follow your customized workout plan designed specifically for your goals
-          </p>
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div>
+              <h1 className="font-heading text-4xl font-bold mb-2">My Personalized Program</h1>
+              <p className="text-soft-white/90">
+                {weekDisplay} • Follow your customized workout plan designed specifically for your goals
+              </p>
+            </div>
+            <Link
+              to="/portal/history"
+              className="inline-flex items-center gap-2 bg-soft-white text-soft-bronze px-6 py-3 rounded-lg font-heading text-base font-bold hover:bg-soft-white/90 transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap"
+            >
+              <Archive size={20} />
+              View History
+            </Link>
+          </div>
         </div>
 
         {/* Next Workout Card */}
@@ -562,11 +614,7 @@ export default function MyProgramPage() {
                     {/* Completion Button */}
                     <div className="pt-6 border-t border-warm-sand-beige">
                       <button
-                        onClick={() => {
-                          setCompletedWorkouts(new Set([...completedWorkouts, workout._id || '']));
-                          setShowCompletionRing(true);
-                          setRingAnimationTrigger(true);
-                        }}
+                        onClick={() => handleNewSystemWorkoutComplete(workout._id || '', workout.weekNumber || 1)}
                         disabled={isCompleted}
                         className={`w-full flex items-center justify-center gap-2 px-6 py-4 rounded-lg font-bold text-base transition-all ${
                           isCompleted

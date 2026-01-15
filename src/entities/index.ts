@@ -38,6 +38,8 @@ export interface ClientAssignedWorkouts {
   _updatedDate?: Date;
   /** @wixFieldType text */
   clientId?: string;
+  /** @wixFieldType number */
+  weekNumber?: number;
   /** @wixFieldType text */
   trainerId?: string;
   /** @wixFieldType date */
@@ -123,6 +125,8 @@ export interface ClientPrograms {
   _updatedDate?: Date;
   /** @wixFieldType text */
   programTitle?: string;
+  /** @wixFieldType number */
+  weekNumber?: number;
   /** @wixFieldType text */
   sessionTitle?: string;
   /** @wixFieldType text */
