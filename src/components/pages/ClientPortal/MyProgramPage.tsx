@@ -240,7 +240,18 @@ export default function MyProgramPage() {
     const weekStart = getWeekStartDate();
     const weekDisplay = formatWeekDisplay(weekStart);
     
-    // Find next incomplete workout
+    // Group workouts by week number
+    const workoutsByWeek = assignedWorkouts.reduce((acc, workout) => {
+      const week = workout.weekNumber || 1;
+      if (!acc[week]) acc[week] = [];
+      acc[week].push(workout);
+      return acc;
+    }, {} as Record<number, typeof assignedWorkouts>);
+    
+    // Sort weeks
+    const sortedWeeks = Object.keys(workoutsByWeek).map(Number).sort((a, b) => a - b);
+    
+    // Find next incomplete workout across all weeks
     const nextWorkout = assignedWorkouts.find(w => !completedWorkouts.has(w._id || ''));
     const nextWorkoutSlot = nextWorkout?.workoutSlot || null;
     const allWorkoutsComplete = !nextWorkout;
@@ -263,7 +274,7 @@ export default function MyProgramPage() {
               You're All Caught Up!
             </h2>
             <p className="font-paragraph text-lg text-warm-grey">
-              Great work this week! You've completed all your workouts. Rest and recover, and check back next week for new assignments.
+              Great work! You've completed all your assigned workouts. Rest and recover, and check back for new assignments.
             </p>
           </div>
         ) : nextWorkout ? (
@@ -272,7 +283,7 @@ export default function MyProgramPage() {
               {/* Left Content */}
               <div className="flex-1">
                 <p className="font-paragraph text-sm lg:text-base text-soft-white/80 mb-2">
-                  Your Next Workout
+                  Your Next Workout • Week {nextWorkout.weekNumber || 1}
                 </p>
                 <h2 className="font-heading text-3xl lg:text-4xl font-bold mb-4">
                   {nextWorkout.exerciseName}
@@ -280,7 +291,7 @@ export default function MyProgramPage() {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
                   <div className="flex items-center gap-2">
                     <span className="font-heading text-2xl font-bold">
-                      Workout {nextWorkoutSlot} of 4
+                      Workout {nextWorkoutSlot}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -306,73 +317,67 @@ export default function MyProgramPage() {
           </div>
         ) : null}
 
-        {/* Workout Overview Section */}
-        {assignedWorkouts.length > 0 && (
-          <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8">
-            <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-8">
-              This Week's Workouts
-            </h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-              {[1, 2, 3, 4].map((slot) => {
-                const workout = assignedWorkouts.find(w => w.workoutSlot === slot);
-                const isCompleted = workout && completedWorkouts.has(workout._id || '');
-                return (
-                  <div
-                    key={slot}
-                    className={`flex flex-col items-center text-center p-4 rounded-xl transition-all ${
-                      isCompleted
-                        ? 'bg-green-50 border border-green-200'
-                        : workout
-                        ? 'bg-soft-bronze/10 border border-soft-bronze/30'
-                        : 'bg-warm-sand-beige/20 border border-warm-sand-beige'
-                    }`}
-                  >
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                      <div className="font-heading text-2xl font-bold text-charcoal-black">
-                        Workout {slot}
+        {/* Workouts Organized by Week */}
+        {sortedWeeks.map((weekNum) => {
+          const weekWorkouts = workoutsByWeek[weekNum];
+          
+          return (
+            <div key={weekNum} className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8">
+              <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
+                Week {weekNum} Workouts
+              </h2>
+              
+              {/* Week Overview Grid */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6">
+                {weekWorkouts.map((workout) => {
+                  const isCompleted = completedWorkouts.has(workout._id || '');
+                  return (
+                    <div
+                      key={workout._id}
+                      className={`flex flex-col items-center text-center p-4 rounded-xl transition-all ${
+                        isCompleted
+                          ? 'bg-green-50 border border-green-200'
+                          : 'bg-soft-bronze/10 border border-soft-bronze/30'
+                      }`}
+                    >
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <div className="font-heading text-2xl font-bold text-charcoal-black">
+                          Workout {workout.workoutSlot}
+                        </div>
+                        {isCompleted && (
+                          <CheckCircle2 size={24} className="text-green-600" />
+                        )}
                       </div>
-                      {isCompleted && (
-                        <CheckCircle2 size={24} className="text-green-600" />
-                      )}
+                      <p className={`text-sm mb-2 ${isCompleted ? 'text-green-700 font-medium' : 'text-warm-grey'}`}>
+                        {isCompleted ? '✓ Completed' : workout.exerciseName || 'Workout'}
+                      </p>
+                      <p className="text-xs text-warm-grey/60">
+                        {getDaysSinceUpdate(workout._updatedDate)}
+                      </p>
                     </div>
-                    {workout ? (
-                      <>
-                        <p className={`text-sm mb-2 ${isCompleted ? 'text-green-700 font-medium' : 'text-warm-grey'}`}>
-                          {isCompleted ? '✓ Completed' : workout.exerciseName || 'Workout'}
-                        </p>
-                        <p className="text-xs text-warm-grey/60">
-                          {getDaysSinceUpdate(workout._updatedDate)}
-                        </p>
-                      </>
-                    ) : (
-                      <p className="text-sm text-warm-grey">Not assigned</p>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
+                  );
+                })}
+              </div>
 
-        {/* Workout Cards */}
-        <div className="space-y-4">
-          {assignedWorkouts.map((workout, idx) => {
-            const workoutSlot = workout.workoutSlot || idx + 1;
-            const isExpanded = expandedDay === workout._id;
-            const isActive = activeWorkoutDay === workout._id;
-            const isCompleted = completedWorkouts.has(workout._id || '');
+              {/* Workout Cards for this week */}
+              <div className="space-y-4">
+                {weekWorkouts.map((workout, idx) => {
+                  const workoutSlot = workout.workoutSlot || idx + 1;
+                  const isExpanded = expandedDay === workout._id;
+                  const isActive = activeWorkoutDay === workout._id;
+                  const isCompleted = completedWorkouts.has(workout._id || '');
 
-            return (
-              <div
-                key={workout._id}
-                className={`bg-soft-white border rounded-2xl overflow-hidden transition-all duration-300 ${
-                  isActive
-                    ? 'border-soft-bronze shadow-lg'
-                    : isCompleted
-                    ? 'border-green-200 bg-green-50/30'
-                    : 'border-warm-sand-beige'
-                }`}
-              >
+                  return (
+                    <div
+                      key={workout._id}
+                      className={`bg-soft-white border rounded-2xl overflow-hidden transition-all duration-300 ${
+                        isActive
+                          ? 'border-soft-bronze shadow-lg'
+                          : isCompleted
+                          ? 'border-green-200 bg-green-50/30'
+                          : 'border-warm-sand-beige'
+                      }`}
+                    >
                 {/* Workout Card Header */}
                 <button
                   onClick={() => {
@@ -579,6 +584,9 @@ export default function MyProgramPage() {
             );
           })}
         </div>
+            </div>
+          );
+        })}
       </div>
     );
   }

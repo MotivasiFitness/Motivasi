@@ -182,14 +182,22 @@ export async function assignWorkout(
   // Create new assignment
   const weekStart = typeof weekStartDate === 'string' ? parseISO(weekStartDate) : weekStartDate;
   
-  const newAssignment: ClientAssignedWorkouts = {
+  const newAssignment = {
     _id: crypto.randomUUID(),
     clientId,
     trainerId,
     weekStartDate: weekStart,
     workoutSlot,
     status: 'active',
-    ...workoutData,
+    weekNumber: workoutData.weekNumber || 1,
+    exerciseName: workoutData.exerciseName,
+    sets: workoutData.sets,
+    reps: workoutData.reps,
+    weightOrResistance: workoutData.weightOrResistance,
+    tempo: workoutData.tempo,
+    restTimeSeconds: workoutData.restTimeSeconds,
+    exerciseNotes: workoutData.exerciseNotes,
+    exerciseVideoUrl: workoutData.exerciseVideoUrl,
   };
   
   await BaseCrudService.create('clientassignedworkouts', newAssignment);
@@ -208,10 +216,22 @@ export async function updateWorkout(
   workoutId: string,
   updates: Partial<ClientAssignedWorkouts>
 ): Promise<void> {
-  await BaseCrudService.update<ClientAssignedWorkouts>('clientassignedworkouts', {
+  const updateData: any = {
     _id: workoutId,
-    ...updates,
-  });
+  };
+  
+  // Only include fields that are provided
+  if (updates.exerciseName !== undefined) updateData.exerciseName = updates.exerciseName;
+  if (updates.sets !== undefined) updateData.sets = updates.sets;
+  if (updates.reps !== undefined) updateData.reps = updates.reps;
+  if (updates.weightOrResistance !== undefined) updateData.weightOrResistance = updates.weightOrResistance;
+  if (updates.tempo !== undefined) updateData.tempo = updates.tempo;
+  if (updates.restTimeSeconds !== undefined) updateData.restTimeSeconds = updates.restTimeSeconds;
+  if (updates.exerciseNotes !== undefined) updateData.exerciseNotes = updates.exerciseNotes;
+  if (updates.exerciseVideoUrl !== undefined) updateData.exerciseVideoUrl = updates.exerciseVideoUrl;
+  if (updates.weekNumber !== undefined) updateData.weekNumber = updates.weekNumber;
+  
+  await BaseCrudService.update('clientassignedworkouts', updateData);
 }
 
 /**

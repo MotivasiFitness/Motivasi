@@ -20,6 +20,7 @@ import {
 interface WorkoutForm {
   clientId: string;
   workoutSlot: number;
+  weekNumber: number;
   exerciseName: string;
   sets: number;
   reps: number;
@@ -47,6 +48,7 @@ export default function WorkoutAssignmentPage() {
   const [formData, setFormData] = useState<WorkoutForm>({
     clientId: '',
     workoutSlot: 1,
+    weekNumber: 1,
     exerciseName: '',
     sets: 4,
     reps: 8,
@@ -135,6 +137,7 @@ export default function WorkoutAssignmentPage() {
           restTimeSeconds: formData.restTimeSeconds,
           exerciseNotes: formData.exerciseNotes,
           exerciseVideoUrl: formData.exerciseVideoUrl,
+          weekNumber: formData.weekNumber,
         });
         
         setMessage({ type: 'success', text: 'Workout updated successfully' });
@@ -171,6 +174,7 @@ export default function WorkoutAssignmentPage() {
             restTimeSeconds: formData.restTimeSeconds,
             exerciseNotes: formData.exerciseNotes,
             exerciseVideoUrl: formData.exerciseVideoUrl,
+            weekNumber: formData.weekNumber,
           }
         );
 
@@ -179,6 +183,7 @@ export default function WorkoutAssignmentPage() {
           setFormData({
             clientId: formData.clientId,
             workoutSlot: formData.workoutSlot,
+            weekNumber: formData.weekNumber,
             exerciseName: '',
             sets: 4,
             reps: 8,
@@ -229,6 +234,7 @@ export default function WorkoutAssignmentPage() {
           restTimeSeconds: formData.restTimeSeconds,
           exerciseNotes: formData.exerciseNotes,
           exerciseVideoUrl: formData.exerciseVideoUrl,
+          weekNumber: formData.weekNumber,
         },
         true
       );
@@ -270,6 +276,7 @@ export default function WorkoutAssignmentPage() {
     setFormData({
       clientId: workout.clientId || '',
       workoutSlot: workout.workoutSlot || 1,
+      weekNumber: workout.weekNumber || 1,
       exerciseName: workout.exerciseName || '',
       sets: workout.sets || 4,
       reps: workout.reps || 8,
@@ -393,6 +400,27 @@ export default function WorkoutAssignmentPage() {
                       </option>
                     ))}
                   </select>
+                </div>
+
+                {/* Week Number */}
+                <div>
+                  <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
+                    Week Number *
+                  </label>
+                  <input
+                    type="number"
+                    name="weekNumber"
+                    value={formData.weekNumber}
+                    onChange={handleInputChange}
+                    min="1"
+                    max="52"
+                    required
+                    className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
+                    placeholder="e.g., 1 for Week 1, 2 for Week 2"
+                  />
+                  <p className="text-xs text-warm-grey mt-1">
+                    Assign this workout to a specific week of the program (1-52)
+                  </p>
                 </div>
 
                 {/* Exercise Name */}

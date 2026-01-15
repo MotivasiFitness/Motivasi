@@ -225,6 +225,7 @@ export default function CreateProgramPage() {
           programTitle: formData.programName,
           sessionTitle: 'Program Overview',
           workoutDay: 'Day 1',
+          weekNumber: 1,
           exerciseName: 'Program created - exercises to be added',
           sets: 0,
           reps: 0,
