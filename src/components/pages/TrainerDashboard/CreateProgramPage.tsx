@@ -217,6 +217,28 @@ export default function CreateProgramPage() {
 
       await BaseCrudService.create('programdrafts', programDraft);
 
+      // CRITICAL FIX: If program is assigned to a client, create placeholder entry in clientprograms
+      // This ensures the program shows up in the client portal immediately
+      if (!isTemplate && formData.clientId) {
+        const placeholderExercise = {
+          _id: crypto.randomUUID(),
+          programTitle: formData.programName,
+          sessionTitle: 'Program Overview',
+          workoutDay: 'Day 1',
+          exerciseName: 'Program created - exercises to be added',
+          sets: 0,
+          reps: 0,
+          weightOrResistance: '',
+          tempo: '',
+          restTimeSeconds: 0,
+          exerciseNotes: `This program has been created and assigned to you. Your trainer will add specific exercises soon. Program focus: ${formData.focusArea}. Duration: ${formData.duration}.`,
+          exerciseOrder: 1,
+          exerciseVideoUrl: '',
+        };
+
+        await BaseCrudService.create('clientprograms', placeholderExercise);
+      }
+
       setSubmitSuccess(true);
       setFormData({
         programName: '',

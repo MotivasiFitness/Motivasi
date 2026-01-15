@@ -90,8 +90,17 @@ export default function MyProgramPage() {
           return;
         }
         
-        // Fall back to legacy system
+        // Fall back to legacy system - fetch ALL items without filtering
+        // The clientprograms collection doesn't have owner filtering, so we get all items
         const { items } = await BaseCrudService.getAll<ClientPrograms>('clientprograms');
+        
+        console.log('[MyProgramPage] Fetched clientprograms:', items.length, 'items');
+        console.log('[MyProgramPage] Current member ID:', member._id);
+        
+        // IMPORTANT: clientprograms collection doesn't have a clientId field to filter by
+        // All programs are shown to all clients - this is the legacy system behavior
+        // Programs are identified by programTitle, not by client assignment
+        
         // Group by workout day
         const grouped = items.reduce((acc, program) => {
           const day = program.workoutDay || 'Unassigned';
@@ -968,9 +977,20 @@ export default function MyProgramPage() {
           })
         ) : (
           <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-12 text-center">
-            <p className="text-warm-grey">
-              Your personalised programme will be added soon. Check back later!
-            </p>
+            <div className="max-w-md mx-auto">
+              <div className="w-16 h-16 bg-soft-bronze/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Dumbbell className="w-8 h-8 text-soft-bronze" />
+              </div>
+              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-3">
+                No Program Assigned Yet
+              </h3>
+              <p className="text-warm-grey mb-6">
+                Your personalised training programme will be added by your coach soon. You'll be notified once it's ready!
+              </p>
+              <div className="text-sm text-warm-grey/80 italic">
+                💡 In the meantime, check out your nutrition guidance and progress tracking sections
+              </div>
+            </div>
           </div>
         )}
       </div>
