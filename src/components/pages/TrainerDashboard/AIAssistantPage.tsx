@@ -134,9 +134,9 @@ export default function AIAssistantPage() {
       const programId = await saveProgramDraft(generatedProgram, member?._id || '');
       setStep('success');
 
-      // Redirect after 2 seconds to programs list
+      // Redirect after 2 seconds to programs created list
       setTimeout(() => {
-        navigate('/trainer/programs');
+        navigate('/trainer/programs-created');
       }, 2000);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to save program';
