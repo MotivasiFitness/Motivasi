@@ -616,6 +616,18 @@ export default function MyProgramPage() {
                         </p>
                       </div>
 
+                      {/* Your Task Summary Line */}
+                      <div className="bg-soft-bronze/10 border-l-4 border-soft-bronze rounded-lg p-4 mb-4">
+                        <p className="text-sm">
+                          <span className="font-bold text-charcoal-black">Your Task:</span>{' '}
+                          <span className="text-charcoal-black">
+                            Complete {workout.sets || 0} sets of {workout.reps || 0} reps
+                            {workout.weightOrResistance && ` using ${workout.weightOrResistance}`}
+                            {workout.restTimeSeconds && `, resting ${workout.restTimeSeconds}s between sets`}
+                          </span>
+                        </p>
+                      </div>
+
                       {/* Collapsible: How to perform */}
                       <div className="border border-warm-sand-beige rounded-lg overflow-hidden">
                         <button
@@ -1025,6 +1037,18 @@ export default function MyProgramPage() {
                             </h4>
                             <p className="text-sm text-soft-bronze font-medium">
                               Focus: {exercise.exerciseNotes?.split('.')[0] || 'Strength building'}
+                            </p>
+                          </div>
+
+                          {/* Your Task Summary Line */}
+                          <div className="bg-soft-bronze/10 border-l-4 border-soft-bronze rounded-lg p-4 mb-4">
+                            <p className="text-sm">
+                              <span className="font-bold text-charcoal-black">Your Task:</span>{' '}
+                              <span className="text-charcoal-black">
+                                Complete {exercise.sets || 0} sets of {repRange || exercise.reps || 0} reps
+                                {exercise.weightOrResistance && ` using ${exercise.weightOrResistance}`}
+                                {exercise.restTimeSeconds && `, resting ${exercise.restTimeSeconds}s between sets`}
+                              </span>
                             </p>
                           </div>
 
