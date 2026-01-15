@@ -184,3 +184,67 @@ Please log in to your Trainer Hub to read the full message and reply.
     return false;
   }
 }
+
+/**
+ * Send email notification when contact form is submitted
+ */
+export async function sendContactFormNotification(
+  fullName: string,
+  email: string,
+  message: string,
+  healthDataConsent: boolean,
+  marketingConsent: boolean,
+  source: string
+): Promise<boolean> {
+  try {
+    const submittedDate = new Date().toLocaleString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+    const response = await fetch('https://formspree.io/f/xyzpqrst', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        _subject: `New Contact Form Submission - ${source}`,
+        _replyto: email,
+        _to: 'hello@motivasi.co.uk',
+        message: `
+New Contact Form Submission
+
+Name: ${fullName}
+Email: ${email}
+Source: ${source}
+Submitted: ${submittedDate}
+
+Message:
+${message}
+
+Consent Information:
+- Health Data Consent: ${healthDataConsent ? 'Yes' : 'No'}
+- Marketing Consent: ${marketingConsent ? 'Yes' : 'No'}
+
+---
+This form submission has been saved to the CMS database.
+        `,
+        full_name: fullName,
+        email: email,
+        user_message: message,
+        health_data_consent: healthDataConsent,
+        marketing_consent: marketingConsent,
+        source: source,
+        submitted_date: submittedDate,
+      })
+    });
+
+    return response.ok;
+  } catch (error) {
+    console.error('Error sending contact form notification:', error);
+    return false;
+  }
+}

@@ -4,6 +4,7 @@ import { MapPin, Clock, Users, CheckCircle, ArrowRight, Mail, AlertCircle } from
 import { Image } from '@/components/ui/image';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { BaseCrudService } from '@/integrations';
+import { sendContactFormNotification } from '@/lib/email-service';
 
 export default function FaceToFaceTrainingPage() {
   const { t } = useLanguage();
@@ -56,6 +57,16 @@ export default function FaceToFaceTrainingPage() {
         submittedAt: new Date().toISOString(),
         source: 'Face-to-Face Training Page'
       });
+
+      // Send email notification
+      await sendContactFormNotification(
+        formData.name,
+        formData.email,
+        formData.message,
+        formData.healthDataConsent,
+        formData.marketingConsent,
+        'Face-to-Face Training Page'
+      );
 
       setIsSubmitted(true);
       setFormData({ name: '', email: '', message: '', healthDataConsent: false, marketingConsent: false });
