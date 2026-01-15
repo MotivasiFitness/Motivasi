@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { getDisplayName } from '@/lib/client-display-name';
+import { getClientDisplayName } from '@/lib/client-display-name';
 
 interface CompletedWorkoutWithClient extends ClientAssignedWorkouts {
   clientName?: string;
@@ -42,7 +42,7 @@ export default function CompletedWorkoutsFeedbackPage() {
         const clientsWithNames = await Promise.all(
           clientIds.map(async (clientId) => ({
             id: clientId,
-            name: await getDisplayName(clientId),
+            name: await getClientDisplayName(clientId),
           }))
         );
         setClients(clientsWithNames);
@@ -58,7 +58,7 @@ export default function CompletedWorkoutsFeedbackPage() {
         const workoutsWithNames = await Promise.all(
           completed.map(async (workout) => ({
             ...workout,
-            clientName: await getDisplayName(workout.clientId || ''),
+            clientName: await getClientDisplayName(workout.clientId || ''),
           }))
         );
 
