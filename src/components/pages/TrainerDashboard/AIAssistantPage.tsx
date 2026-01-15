@@ -134,10 +134,10 @@ export default function AIAssistantPage() {
       const programId = await saveProgramDraft(generatedProgram, member?._id || '');
       setStep('success');
 
-      // Redirect after 3 seconds
+      // Redirect after 2 seconds to programs list
       setTimeout(() => {
-        navigate(`/trainer/programs/${programId}`);
-      }, 3000);
+        navigate('/trainer/programs');
+      }, 2000);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to save program';
       setError(errorMessage);
@@ -536,10 +536,10 @@ export default function AIAssistantPage() {
             Program Saved!
           </h2>
           <p className="font-paragraph text-lg text-warm-grey mb-8">
-            Your AI-generated program has been saved as a draft. You can now edit it, save it as a template, or assign it to a client.
+            Your AI-generated program has been saved successfully. You can view it in your Programs Created section.
           </p>
           <p className="font-paragraph text-sm text-warm-grey">
-            Redirecting to program editor...
+            Redirecting to programs list...
           </p>
           <Loader className="w-6 h-6 animate-spin mx-auto mt-6 text-soft-bronze" />
         </div>

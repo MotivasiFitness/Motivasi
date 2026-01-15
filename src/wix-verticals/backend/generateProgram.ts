@@ -147,40 +147,58 @@ Injuries/Limitations: ${input.injuries || 'None'}
 Training style: ${input.trainingStyle || 'balanced'}
 ${input.additionalNotes ? `Additional notes: ${input.additionalNotes}` : ''}
 
-Return ONLY a valid JSON object with this exact structure (no markdown, no code blocks):
+CRITICAL: You MUST return ONLY a valid JSON object. Do NOT include any markdown formatting, code blocks, or explanatory text.
+
+Return this exact structure:
 
 {
   "programName": "Descriptive program name",
-  "overview": "2-3 paragraph overview of the program",
+  "overview": "2-3 paragraph overview of the program explaining the approach, benefits, and what the client can expect",
   "duration": "${input.programLength || '8 weeks'}",
   "focusArea": "${input.programGoal}",
-  "weeklySplit": "Description of weekly training split",
+  "weeklySplit": "Description of weekly training split (e.g., 'Upper/Lower split with 4 training days')",
   "workoutDays": [
     {
-      "day": "Day 1 - Upper Body",
+      "day": "Day 1 - Upper Body Push",
       "exercises": [
         {
-          "name": "Exercise name",
+          "name": "Bench Press",
           "sets": 3,
           "reps": "8-12",
+          "weight": "Moderate to Heavy",
+          "restSeconds": 90,
+          "notes": "Focus on controlled eccentric, explosive concentric. Keep shoulder blades retracted.",
+          "substitutions": ["Dumbbell Press", "Push-ups"]
+        },
+        {
+          "name": "Overhead Press",
+          "sets": 3,
+          "reps": "8-10",
           "weight": "Moderate",
           "restSeconds": 90,
-          "notes": "Form cues and tips",
-          "substitutions": ["Alternative exercise 1", "Alternative exercise 2"]
+          "notes": "Maintain core stability. Avoid excessive back arch.",
+          "substitutions": ["Dumbbell Shoulder Press", "Arnold Press"]
         }
       ],
-      "warmUp": "5-10 minute warm-up description",
-      "coolDown": "5-10 minute cool-down description",
-      "notes": "Day-specific notes"
+      "warmUp": "5-10 minutes of light cardio followed by dynamic stretches for shoulders and chest. Include arm circles, band pull-aparts, and light sets of the main exercises.",
+      "coolDown": "5-10 minutes of static stretching focusing on chest, shoulders, and triceps. Include doorway chest stretch and overhead tricep stretch.",
+      "notes": "Focus on form over weight. Rest 2-3 minutes between compound movements if needed."
     }
   ],
-  "progressionGuidance": "How to progress over time",
-  "safetyNotes": "Important safety considerations",
+  "progressionGuidance": "Week 1-2: Focus on form and technique. Week 3-4: Increase weight by 5-10% when able to complete all reps with good form. Week 5-6: Add an extra set to main lifts. Week 7-8: Increase weight again or reduce rest periods.",
+  "safetyNotes": "Always warm up properly. Stop immediately if you experience sharp pain. Maintain proper form throughout all exercises. Stay hydrated and listen to your body.",
   "aiGenerated": true,
   "aiGeneratedAt": "${new Date().toISOString()}"
 }
 
-IMPORTANT: Return ONLY the JSON object, no other text.`;
+IMPORTANT REQUIREMENTS:
+1. Return ONLY the JSON object - no markdown, no code blocks, no extra text
+2. Include ${input.daysPerWeek || 3} workout days in the workoutDays array
+3. Each workout should have 4-6 exercises appropriate for the ${input.timePerWorkout || 60} minute duration
+4. All exercises must include substitutions array with at least 2 alternatives
+5. Consider the injuries/limitations: ${input.injuries || 'None'}
+6. Match the training style: ${input.trainingStyle || 'balanced'}
+7. Use equipment available: ${equipmentList}`;
 }
 
 /**
@@ -205,7 +223,7 @@ async function callOpenAI(prompt: string): Promise<any> {
         messages: [
           {
             role: 'system',
-            content: 'You are a professional fitness coach. Always respond with valid JSON only.',
+            content: 'You are a professional fitness coach. You MUST respond with ONLY valid JSON - no markdown formatting, no code blocks, no explanatory text. Just pure JSON.',
           },
           {
             role: 'user',
@@ -213,7 +231,8 @@ async function callOpenAI(prompt: string): Promise<any> {
           },
         ],
         temperature: 0.7,
-        max_tokens: 3000,
+        max_tokens: 4000,
+        response_format: { type: "json_object" },
       }),
     });
 

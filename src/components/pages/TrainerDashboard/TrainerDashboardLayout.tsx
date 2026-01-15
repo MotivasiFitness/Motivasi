@@ -28,7 +28,8 @@ export default function TrainerDashboardLayout() {
   const navItems = [
     { path: '/trainer', label: 'Dashboard', icon: Users, color: 'text-blue-400' },
     { path: '/trainer/clients', label: 'My Clients', icon: Users, color: 'text-emerald-400' },
-    { path: '/trainer/programs', label: 'Programs', icon: BookOpen, color: 'text-purple-400' },
+    { path: '/trainer/programs', label: 'Create Program', icon: BookOpen, color: 'text-purple-400' },
+    { path: '/trainer/programs-created', label: 'Programs Created', icon: BookOpen, color: 'text-purple-400' },
     { path: '/trainer/nutrition', label: 'Nutrition', icon: Apple, color: 'text-green-400' },
     { path: '/trainer/ai-assistant', label: 'AI Assistant', icon: Sparkles, color: 'text-yellow-400' },
     { path: '/trainer/messages', label: 'Messages', icon: MessageSquare, color: 'text-pink-400' },
