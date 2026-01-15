@@ -7,6 +7,7 @@ import {
   updateTrainerPreferences,
   TrainerPreferences,
 } from '@/lib/ai/ai-program-generator';
+import TrainerNotificationSettings from './TrainerNotificationSettings';
 
 const EXERCISE_OPTIONS = [
   'Barbell Squat',
@@ -172,6 +173,11 @@ export default function TrainerPreferencesPage() {
             <p className="font-paragraph text-sm text-green-800">{success}</p>
           </div>
         )}
+
+        {/* Notification Settings */}
+        <div className="mb-8">
+          <TrainerNotificationSettings />
+        </div>
 
         {/* Coaching Tone */}
         <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 mb-8">

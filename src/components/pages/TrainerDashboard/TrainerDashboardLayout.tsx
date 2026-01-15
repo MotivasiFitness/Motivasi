@@ -4,6 +4,7 @@ import { Users, BookOpen, Settings, LogOut, Menu, X, Loader, Sparkles, Video, Ap
 import { useState, useEffect } from 'react';
 import { useRole } from '@/hooks/useRole';
 import PortalHeader from '@/components/layout/PortalHeader';
+import NotificationsPanel from './NotificationsPanel';
 
 export default function TrainerDashboardLayout() {
   const { member, actions } = useMember();
@@ -63,10 +64,15 @@ export default function TrainerDashboardLayout() {
         >
           {/* Logo/Header */}
           <div className="p-6 border-b border-soft-bronze/20">
-            <h1 className="font-heading text-2xl font-bold text-soft-white">Trainer Hub</h1>
-            <p className="text-sm text-warm-grey mt-2">
-              {member?.profile?.nickname || member?.loginEmail}
-            </p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="font-heading text-2xl font-bold text-soft-white">Trainer Hub</h1>
+                <p className="text-sm text-warm-grey mt-2">
+                  {member?.profile?.nickname || member?.loginEmail}
+                </p>
+              </div>
+              <NotificationsPanel />
+            </div>
           </div>
 
           {/* Navigation */}
@@ -94,7 +100,7 @@ export default function TrainerDashboardLayout() {
           {/* Footer */}
           <div className="p-6 border-t border-soft-bronze/20 space-y-3">
             <Link
-              to="/trainer/settings"
+              to="/trainer/preferences"
               className="flex items-center gap-3 px-4 py-3 rounded-lg text-warm-grey hover:bg-soft-bronze/10 transition-colors"
             >
               <Settings size={20} />

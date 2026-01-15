@@ -424,6 +424,37 @@ export interface TrainerClientMessages {
 
 
 /**
+ * Collection ID: trainernotifications
+ * Interface for TrainerNotifications
+ */
+export interface TrainerNotifications {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType text */
+  clientId?: string;
+  /** @wixFieldType text */
+  notificationType?: string;
+  /** @wixFieldType text */
+  message?: string;
+  /** @wixFieldType url */
+  linkUrl?: string;
+  /** @wixFieldType boolean */
+  isRead?: boolean;
+  /** @wixFieldType boolean */
+  isDismissed?: boolean;
+  /** @wixFieldType datetime */
+  createdAt?: Date | string;
+  /** @wixFieldType text */
+  relatedWorkoutId?: string;
+  /** @wixFieldType number */
+  relatedWeekNumber?: number;
+}
+
+
+/**
  * Collection ID: trainerqualifications
  * Interface for TrainerQualifications
  */
