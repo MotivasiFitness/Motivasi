@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, Outlet, useLocation, Navigate } from 'react-router-dom';
 import { useMember } from '@/integrations';
-import { Menu, X, LogOut, LayoutDashboard, Dumbbell, Apple, TrendingUp, Calendar, MessageSquare, Video, User, Loader, AlertCircle } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, Dumbbell, Apple, TrendingUp, Calendar, Video, User, Loader, AlertCircle } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { useRole } from '@/hooks/useRole';
 import PortalHeader from '@/components/layout/PortalHeader';
@@ -84,7 +84,6 @@ export default function ClientPortalLayout() {
     { path: '/portal/program', label: 'My Program', icon: Dumbbell, color: 'text-emerald-400' },
     { path: '/portal/bookings', label: 'Bookings', icon: Calendar, color: 'text-purple-400' },
     { path: '/portal/nutrition', label: 'Nutrition', icon: Apple, color: 'text-yellow-400' },
-    { path: '/portal/messages', label: 'Messages', icon: MessageSquare, color: 'text-pink-400' },
     { path: '/portal/progress', label: 'Progress', icon: TrendingUp, color: 'text-orange-400' },
     { path: '/portal/video-library', label: 'Video Library', icon: Video, color: 'text-cyan-400' },
     { path: '/portal/my-submissions', label: 'My Submissions', icon: Video, color: 'text-rose-400' },

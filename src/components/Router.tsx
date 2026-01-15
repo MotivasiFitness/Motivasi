@@ -36,7 +36,6 @@ import MyProgramPage from '@/components/pages/ClientPortal/MyProgramPage';
 import NutritionPage from '@/components/pages/ClientPortal/NutritionPage';
 import ProgressPage from '@/components/pages/ClientPortal/ProgressPage';
 import BookingsPage from '@/components/pages/ClientPortal/BookingsPage';
-import MessagesPage from '@/components/pages/ClientPortal/MessagesPage';
 import VideoLibraryPage from '@/components/pages/ClientPortal/VideoLibraryPage';
 import MyVideoSubmissionsPage from '@/components/pages/ClientPortal/MyVideoSubmissionsPage';
 
@@ -45,7 +44,6 @@ import TrainerDashboardLayout from '@/components/pages/TrainerDashboard/TrainerD
 import TrainerDashboardPage from '@/components/pages/TrainerDashboard/TrainerDashboardPage';
 import TrainerClientsPage from '@/components/pages/TrainerDashboard/TrainerClientsPage';
 import CreateProgramPage from '@/components/pages/TrainerDashboard/CreateProgramPage';
-import TrainerMessagesPage from '@/components/pages/TrainerDashboard/TrainerMessagesPage';
 import VideoReviewsPage from '@/components/pages/TrainerDashboard/VideoReviewsPage';
 import ClientProgressPage from '@/components/pages/TrainerDashboard/ClientProgressPage';
 import AIAssistantPage from '@/components/pages/TrainerDashboard/AIAssistantPage';
@@ -234,10 +232,6 @@ const router = createBrowserRouter([
             element: <BookingsPage />,
           },
           {
-            path: "messages",
-            element: <MessagesPage />,
-          },
-          {
             path: "video-library",
             element: <VideoLibraryPage />,
           },
@@ -290,10 +284,6 @@ const router = createBrowserRouter([
           {
             path: "workout-assignment",
             element: <WorkoutAssignmentPage />,
-          },
-          {
-            path: "messages",
-            element: <TrainerMessagesPage />,
           },
           {
             path: "video-reviews",
