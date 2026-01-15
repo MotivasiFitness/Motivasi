@@ -3,14 +3,19 @@ import { Instagram, Mail } from 'lucide-react';
 import { useState } from 'react';
 import { Image } from '@/components/ui/image';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { sendNewsletterSubscriptionNotification } from '@/lib/email-service';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { t } = useLanguage();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Send notification email to hello@motivasi.co.uk
+    await sendNewsletterSubscriptionNotification(email);
+    
     setIsSubmitted(true);
     setEmail('');
     setTimeout(() => setIsSubmitted(false), 3000);
