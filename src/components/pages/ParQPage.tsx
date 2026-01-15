@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -63,7 +63,7 @@ export default function ParQPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     if (type === 'checkbox') {
       const checked = (e.target as HTMLInputElement).checked;
@@ -87,7 +87,7 @@ export default function ParQPage() {
         [name]: value
       }));
     }
-  };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -268,7 +268,7 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
           type={type}
           id={name}
           name={name}
-          value={formData[name as keyof typeof formData]}
+          value={formData[name as keyof typeof formData] as string}
           onChange={handleInputChange}
           placeholder={placeholder}
           required={required}
@@ -310,7 +310,7 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       {showDetails && formData[name as keyof typeof formData] === 'yes' && (
         <textarea
           name={`${name}Details`}
-          value={formData[`${name}Details` as keyof typeof formData]}
+          value={formData[`${name}Details` as keyof typeof formData] as string}
           onChange={handleInputChange}
           placeholder="Please provide details..."
           rows={3}
