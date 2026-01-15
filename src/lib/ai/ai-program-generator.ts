@@ -390,7 +390,7 @@ export async function assignProgramToClient(
       throw new Error('Program draft not found');
     }
 
-    const program = JSON.parse(draft.programJson);
+    const program: GeneratedProgram = JSON.parse(draft.programJson);
     const clientProgramId = crypto.randomUUID();
     const now = new Date().toISOString();
 
@@ -422,8 +422,40 @@ export async function assignProgramToClient(
 
     await BaseCrudService.create('programs', fitnessProgram);
 
+    // CRITICAL: Populate clientprograms collection with workout exercises
+    // This is what the client portal uses to display the program
+    const clientProgramEntries: any[] = [];
+    
+    program.workoutDays.forEach((day, dayIndex) => {
+      day.exercises.forEach((exercise, exerciseIndex) => {
+        const entry = {
+          _id: crypto.randomUUID(),
+          programTitle: program.programName,
+          sessionTitle: day.day,
+          workoutDay: day.day,
+          exerciseName: exercise.name,
+          sets: exercise.sets,
+          reps: exercise.reps,
+          weightOrResistance: exercise.weight || '',
+          tempo: '',
+          restTimeSeconds: exercise.restSeconds,
+          exerciseNotes: exercise.notes,
+          exerciseOrder: exerciseIndex + 1,
+          exerciseVideoUrl: '',
+        };
+        clientProgramEntries.push(entry);
+      });
+    });
+
+    // Create all client program entries
+    for (const entry of clientProgramEntries) {
+      await BaseCrudService.create('clientprograms', entry);
+    }
+
     // Cache in sessionStorage
     sessionStorage.setItem(`program_draft_${clientProgramId}`, JSON.stringify(program));
+
+    console.log(`Program assigned to client: ${clientProgramId}, created ${clientProgramEntries.length} exercises`);
 
     return clientProgramId;
   } catch (error) {
