@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { Programs, TrainerClientAssignments } from '@/entities';
+import { FitnessPrograms, ProgramDrafts, TrainerClientAssignments } from '@/entities';
 import { useNavigate } from 'react-router-dom';
 import { AlertCircle, CheckCircle, Sparkles, Loader, X } from 'lucide-react';
 import { getTrainerClients } from '@/lib/role-utils';
@@ -171,24 +171,51 @@ export default function CreateProgramPage() {
     setSubmitError('');
 
     try {
-      if (!formData.programName || !formData.clientId || !formData.duration || !formData.focusArea) {
+      if (!formData.programName || !formData.duration || !formData.focusArea) {
         setSubmitError('Please fill in all required fields');
         setIsSubmitting(false);
         return;
       }
 
-      const newProgram: Programs = {
-        _id: crypto.randomUUID(),
+      const programId = crypto.randomUUID();
+      const now = new Date().toISOString();
+
+      // Determine if this is a template (no client assigned) or assigned program
+      const isTemplate = !formData.clientId || formData.clientId === '';
+      const finalStatus = isTemplate ? 'Template' : formData.status;
+
+      // Create program in programs collection
+      const newProgram: FitnessPrograms = {
+        _id: programId,
         programName: formData.programName,
         description: formData.description,
         trainerId: member?._id,
-        clientId: formData.clientId,
+        clientId: formData.clientId || undefined,
         duration: formData.duration,
         focusArea: formData.focusArea,
-        status: formData.status,
+        status: finalStatus,
       };
 
       await BaseCrudService.create('programs', newProgram);
+
+      // Also create a draft entry for tracking
+      const programDraft: ProgramDrafts = {
+        _id: crypto.randomUUID(),
+        programId: programId,
+        trainerId: member?._id,
+        clientId: formData.clientId || undefined,
+        programJson: JSON.stringify({
+          programName: formData.programName,
+          overview: formData.description,
+          duration: formData.duration,
+          focusArea: formData.focusArea,
+        }),
+        status: finalStatus.toLowerCase(),
+        createdAt: now,
+        updatedAt: now,
+      };
+
+      await BaseCrudService.create('programdrafts', programDraft);
 
       setSubmitSuccess(true);
       setFormData({
@@ -201,7 +228,7 @@ export default function CreateProgramPage() {
       });
 
       setTimeout(() => {
-        navigate('/trainer');
+        navigate('/trainer/programs-created');
       }, 2000);
     } catch (error) {
       setSubmitError('Failed to create program. Please try again.');
@@ -350,27 +377,20 @@ export default function CreateProgramPage() {
             {/* Client Selection */}
             <div>
               <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
-                Select Client *
+                Select Client (Optional - Leave blank for template)
               </label>
               {loadingClients ? (
                 <div className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige bg-warm-sand-beige/30 text-warm-grey">
                   Loading assigned clients...
-                </div>
-              ) : assignedClients.length === 0 ? (
-                <div className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige bg-warm-sand-beige/30">
-                  <p className="text-warm-grey text-sm">
-                    No clients assigned yet. <a href="/trainer/clients" className="text-soft-bronze hover:underline">Assign a client first</a>
-                  </p>
                 </div>
               ) : (
                 <select
                   name="clientId"
                   value={formData.clientId}
                   onChange={handleInputChange}
-                  required
                   className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
                 >
-                  <option value="">Select a client</option>
+                  <option value="">No client (Save as template)</option>
                   {assignedClients.map((assignment) => (
                     <option key={assignment._id} value={assignment.clientId}>
                       Client {assignment.clientId?.slice(0, 8)}
@@ -379,7 +399,7 @@ export default function CreateProgramPage() {
                 </select>
               )}
               <p className="text-xs text-warm-grey mt-2">
-                Only clients assigned to you will appear in this list
+                Leave blank to save as a reusable template, or select a client to assign directly
               </p>
             </div>
 
