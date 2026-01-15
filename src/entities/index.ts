@@ -29,6 +29,43 @@ export interface BlogPosts {
 
 
 /**
+ * Collection ID: clientassignedworkouts
+ * Interface for ClientAssignedWorkouts
+ */
+export interface ClientAssignedWorkouts {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  clientId?: string;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType date */
+  weekStartDate?: Date | string;
+  /** @wixFieldType number */
+  workoutSlot?: number;
+  /** @wixFieldType text */
+  status?: string;
+  /** @wixFieldType text */
+  exerciseName?: string;
+  /** @wixFieldType number */
+  sets?: number;
+  /** @wixFieldType number */
+  reps?: number;
+  /** @wixFieldType text */
+  weightOrResistance?: string;
+  /** @wixFieldType text */
+  tempo?: string;
+  /** @wixFieldType number */
+  restTimeSeconds?: number;
+  /** @wixFieldType text */
+  exerciseNotes?: string;
+  /** @wixFieldType url */
+  exerciseVideoUrl?: string;
+}
+
+
+/**
  * Collection ID: clientbookings
  * Interface for ClientBookings
  */
