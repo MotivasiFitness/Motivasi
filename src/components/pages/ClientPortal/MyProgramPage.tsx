@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientPrograms, ClientAssignedWorkouts, WeeklyCoachesNotes } from '@/entities';
-import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight, Volume2, AlertCircle, MessageCircle, Zap, Info, Archive } from 'lucide-react';
+import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight, Volume2, AlertCircle, MessageCircle, Zap, Info, Archive, Star } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { Link } from 'react-router-dom';
 import PostWorkoutFeedbackPrompt from '@/components/ClientPortal/PostWorkoutFeedbackPrompt';
@@ -359,8 +359,13 @@ export default function MyProgramPage() {
     // Sort weeks
     const sortedWeeks = Object.keys(workoutsByWeek).map(Number).sort((a, b) => a - b);
     
-    // Find next incomplete workout across all weeks
-    const nextWorkout = assignedWorkouts.find(w => !completedWorkouts.has(w._id || ''));
+    // Find next incomplete workout across all weeks (sorted by week, then slot)
+    const sortedWorkouts = [...assignedWorkouts].sort((a, b) => {
+      const weekDiff = (a.weekNumber || 0) - (b.weekNumber || 0);
+      if (weekDiff !== 0) return weekDiff;
+      return (a.workoutSlot || 0) - (b.workoutSlot || 0);
+    });
+    const nextWorkout = sortedWorkouts.find(w => !completedWorkouts.has(w._id || ''));
     const nextWorkoutSlot = nextWorkout?.workoutSlot || null;
     const allWorkoutsComplete = !nextWorkout;
 
@@ -509,6 +514,7 @@ export default function MyProgramPage() {
                   const isExpanded = expandedDay === workout._id;
                   const isActive = activeWorkoutDay === workout._id;
                   const isCompleted = completedWorkouts.has(workout._id || '');
+                  const isNextRecommended = nextWorkout?._id === workout._id;
 
                   return (
                     <div
@@ -518,6 +524,8 @@ export default function MyProgramPage() {
                           ? 'border-soft-bronze shadow-lg'
                           : isCompleted
                           ? 'border-green-200 bg-green-50/30'
+                          : isNextRecommended
+                          ? 'border-soft-bronze/60 shadow-md'
                           : 'border-warm-sand-beige'
                       }`}
                     >
@@ -540,6 +548,11 @@ export default function MyProgramPage() {
                       }`}>
                         Workout {workoutSlot}
                       </h3>
+                      {isNextRecommended && !isCompleted && (
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-soft-bronze/20 text-soft-bronze rounded-full text-xs font-medium border border-soft-bronze/40">
+                          <Star size={12} className="fill-current" /> Next up
+                        </span>
+                      )}
                       {isCompleted && (
                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
                           <CheckCircle2 size={14} /> Completed
@@ -840,6 +853,9 @@ export default function MyProgramPage() {
     workoutNumberMap.set(day, index + 1);
   });
 
+  // Find next incomplete workout in legacy system (sorted by workout number)
+  const nextIncompleteDay = workoutDays.find(day => !completedWorkouts.has(day));
+
   // Calculate workout overview stats
   const totalExercises = programs.length;
   const estimatedSessionTime = Math.ceil((totalExercises * 3 + 5) / 5) * 5;
@@ -938,6 +954,7 @@ export default function MyProgramPage() {
             const isActive = activeWorkoutDay === day;
             const isCompleted = completedWorkouts.has(day);
             const workoutNumber = workoutNumberMap.get(day) || dayIndex + 1;
+            const isNextRecommended = nextIncompleteDay === day;
 
             return (
               <div
@@ -947,6 +964,8 @@ export default function MyProgramPage() {
                     ? 'border-soft-bronze shadow-lg'
                     : isCompleted
                     ? 'border-green-200 bg-green-50/30'
+                    : isNextRecommended
+                    ? 'border-soft-bronze/60 shadow-md'
                     : 'border-warm-sand-beige'
                 }`}
               >
@@ -969,6 +988,11 @@ export default function MyProgramPage() {
                       }`}>
                         Workout {workoutNumber}
                       </h3>
+                      {isNextRecommended && !isCompleted && (
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-soft-bronze/20 text-soft-bronze rounded-full text-xs font-medium border border-soft-bronze/40">
+                          <Star size={12} className="fill-current" /> Next up
+                        </span>
+                      )}
                       {isCompleted && (
                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
                           <CheckCircle2 size={14} /> Completed
