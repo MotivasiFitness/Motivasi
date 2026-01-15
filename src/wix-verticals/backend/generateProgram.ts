@@ -159,7 +159,7 @@ Return this exact structure:
   "weeklySplit": "Description of weekly training split (e.g., 'Upper/Lower split with 4 training days')",
   "workoutDays": [
     {
-      "day": "Day 1 - Upper Body Push",
+      "day": "Workout 1 - Upper Body Push",
       "exercises": [
         {
           "name": "Bench Press",

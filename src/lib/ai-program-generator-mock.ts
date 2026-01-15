@@ -134,7 +134,7 @@ function generateWorkoutDay(template: string, input: ProgramGeneratorInput, dayN
   const exercises = generateExercises(template, input);
   
   return {
-    day: `Day ${dayNumber} - ${template}`,
+    day: `Workout ${dayNumber} - ${template}`,
     exercises,
     warmUp: generateWarmUp(template),
     coolDown: generateCoolDown(template),
