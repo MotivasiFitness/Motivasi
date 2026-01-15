@@ -238,20 +238,26 @@ export default function MessagesPage() {
 
       {/* Message Input */}
       <form onSubmit={handleSendMessage} className="flex gap-3">
-        <input
-          type="text"
+        <textarea
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type your message..."
-          className="flex-1 px-5 py-3 rounded-full border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph text-sm"
+          rows={4}
+          className="flex-1 px-5 py-4 rounded-2xl border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph text-sm resize-none"
           disabled={isSending}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              handleSendMessage(e);
+            }
+          }}
         />
         <button
           type="submit"
           disabled={isSending || !newMessage.trim()}
-          className="bg-soft-bronze text-soft-white px-5 py-3 rounded-full hover:bg-soft-bronze/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center flex-shrink-0"
+          className="bg-soft-bronze text-soft-white px-6 py-4 rounded-2xl hover:bg-soft-bronze/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center flex-shrink-0 self-end"
         >
-          <Send size={18} />
+          <Send size={20} />
         </button>
       </form>
     </div>
