@@ -4,7 +4,6 @@ import { useMember } from '@/integrations';
 import { Menu, X, LogOut, LayoutDashboard, Dumbbell, Apple, TrendingUp, Calendar, MessageSquare, Video, User, Loader, AlertCircle } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { useRole } from '@/hooks/useRole';
-import DebugPanel from '@/components/DebugPanel';
 import PortalHeader from '@/components/layout/PortalHeader';
 
 export default function ClientPortalLayout() {
@@ -56,18 +55,6 @@ export default function ClientPortalLayout() {
               If this problem persists, please contact support at hello@motivasi.co.uk
             </p>
           </div>
-
-          {/* Debug Panel */}
-          <DebugPanel
-            memberId={member?._id}
-            memberEmail={member?.loginEmail}
-            roleRecordFound={debugInfo?.roleRecordFound}
-            roleValue={debugInfo?.roleValue}
-            isLoading={isLoading}
-            setupError={setupError}
-            debugInfo={debugInfo}
-            redirectReason={redirectReason}
-          />
         </div>
       </div>
     );
@@ -88,18 +75,6 @@ export default function ClientPortalLayout() {
             Setting up your account…
           </p>
         </div>
-
-        {/* Debug Panel */}
-        <DebugPanel
-          memberId={member?._id}
-          memberEmail={member?.loginEmail}
-          roleRecordFound={debugInfo?.roleRecordFound}
-          roleValue={debugInfo?.roleValue}
-          isLoading={isLoading}
-          setupError={setupError}
-          debugInfo={debugInfo}
-          redirectReason="Loading..."
-        />
       </div>
     );
   }
@@ -127,18 +102,6 @@ export default function ClientPortalLayout() {
     <div className="min-h-screen bg-soft-white flex flex-col">
       {/* Portal Header - Replaces Global Header */}
       <PortalHeader portalType="client" />
-
-      {/* Debug Panel */}
-      <DebugPanel
-        memberId={member?._id}
-        memberEmail={member?.loginEmail}
-        roleRecordFound={debugInfo?.roleRecordFound}
-        roleValue={debugInfo?.roleValue}
-        isLoading={isLoading}
-        setupError={setupError}
-        debugInfo={debugInfo}
-        redirectReason={redirectReason}
-      />
 
       {/* Main Content Area */}
       <div className="flex-1 flex">
