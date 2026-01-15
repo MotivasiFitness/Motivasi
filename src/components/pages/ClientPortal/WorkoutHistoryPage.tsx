@@ -24,6 +24,9 @@ interface CompletedWorkout {
   exerciseVideoUrl?: string;
   completedDate?: Date | string;
   _updatedDate?: Date;
+  trainerComment?: string;
+  trainerCommentDate?: Date | string;
+  trainerCommentBy?: string;
 }
 
 interface WeekGroup {
@@ -332,9 +335,23 @@ export default function WorkoutHistoryPage() {
                                     </h5>
                                     <span className="text-xs text-green-600 font-medium">✓</span>
                                   </div>
-                                  <p className="text-xs text-warm-grey">
+                                  <p className="text-xs text-warm-grey mb-2">
                                     {workout.exerciseName} • {workout.sets}×{workout.reps}
                                   </p>
+                                  
+                                  {/* Trainer Feedback */}
+                                  {workout.trainerComment && workout.trainerComment.trim() !== '' && (
+                                    <div className="mt-2 pt-2 border-t border-warm-sand-beige">
+                                      <div className="bg-soft-bronze/5 border-l-3 border-soft-bronze rounded-r p-2">
+                                        <p className="text-xs font-bold text-soft-bronze mb-1">
+                                          💬 Trainer Feedback
+                                        </p>
+                                        <p className="text-xs text-charcoal-black leading-relaxed">
+                                          {workout.trainerComment}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  )}
                                 </div>
                               ))}
                             </div>

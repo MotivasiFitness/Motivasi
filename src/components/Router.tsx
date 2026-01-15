@@ -55,6 +55,7 @@ import WorkoutAssignmentPage from '@/components/pages/TrainerDashboard/WorkoutAs
 import VideoLibraryManagementPage from '@/components/pages/TrainerDashboard/VideoLibraryManagementPage';
 import ClientNutritionPage from '@/components/pages/TrainerDashboard/ClientNutritionPage';
 import ProgramsCreatedPage from '@/components/pages/TrainerDashboard/ProgramsCreatedPage';
+import CompletedWorkoutsFeedbackPage from '@/components/pages/TrainerDashboard/CompletedWorkoutsFeedbackPage';
 
 import AdminDashboard from '@/components/pages/AdminDashboard';
 import ExerciseVideoReviewPage from '@/components/pages/ExerciseVideoReviewPage';
@@ -305,6 +306,10 @@ const router = createBrowserRouter([
           {
             path: "nutrition",
             element: <ClientNutritionPage />,
+          },
+          {
+            path: "workout-feedback",
+            element: <CompletedWorkoutsFeedbackPage />,
           },
         ],
       },
