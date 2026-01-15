@@ -181,13 +181,13 @@ export default function MyProgramPage() {
         [exerciseId]: true,
       }));
       
-      // Auto-hide after 2 seconds
+      // Auto-hide after 3 seconds
       setTimeout(() => {
         setExerciseCompleteStates(prev => ({
           ...prev,
           [exerciseId]: false,
         }));
-      }, 2000);
+      }, 3000);
     } else {
       // Start rest timer
       setRestingExerciseId(exerciseId);
@@ -1236,9 +1236,10 @@ export default function MyProgramPage() {
 
                           {/* Exercise Complete Feedback */}
                           {exerciseCompleteStates[exercise._id || ''] && (
-                            <div className="mb-4 text-center py-4 px-3 bg-green-50 border border-green-200 rounded-lg animate-in fade-in">
-                              <p className="font-heading text-lg font-bold text-green-700">
-                                Exercise complete — nice work 💪
+                            <div className="mb-4 text-center py-4 px-4 bg-gradient-to-r from-green-50 to-green-100 border-2 border-green-300 rounded-xl shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-500">
+                              <p className="font-heading text-lg font-bold text-green-700 flex items-center justify-center gap-2">
+                                <CheckCircle2 size={22} className="text-green-600" />
+                                Exercise complete — great work!
                               </p>
                             </div>
                           )}
