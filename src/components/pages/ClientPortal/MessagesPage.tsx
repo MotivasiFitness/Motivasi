@@ -111,7 +111,7 @@ export default function MessagesPage() {
       </div>
 
       {/* Messages Container */}
-      <div className="flex-1 bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8 overflow-y-auto flex flex-col">
+      <div className="flex-1 min-h-[600px] bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8 overflow-y-auto flex flex-col">
         {messages.length > 0 ? (
           <div className="space-y-6 flex-1">
             {/* Proactive System Message */}
