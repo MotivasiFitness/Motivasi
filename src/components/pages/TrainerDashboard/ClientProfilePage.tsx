@@ -683,100 +683,105 @@ export default function ClientProfilePage() {
                     All Check-Ins History
                   </h4>
                   <div className="space-y-4">
-                {weeklyCheckIns.map((checkIn) => (
-                  <div
-                    key={checkIn._id}
-                    className="bg-warm-sand-beige/20 border border-warm-sand-beige rounded-xl p-6"
-                  >
-                    {/* Header */}
-                    <div className="flex items-center justify-between mb-4 pb-3 border-b border-warm-sand-beige">
-                      <div className="flex items-center gap-3">
-                        <Calendar className="w-5 h-5 text-soft-bronze" />
-                        <div>
-                          <h4 className="font-heading text-lg font-bold text-charcoal-black">
-                            Week {checkIn.weekNumber}
-                          </h4>
-                          <p className="text-xs text-warm-grey">
-                            Week of {formatCheckInDate(checkIn.weekStartDate)}
-                          </p>
+                    {weeklyCheckIns.map((checkIn) => (
+                      <div
+                        key={checkIn._id}
+                        className="bg-warm-sand-beige/20 border border-warm-sand-beige rounded-xl p-6"
+                      >
+                        {/* Header */}
+                        <div className="flex items-center justify-between mb-4 pb-3 border-b border-warm-sand-beige">
+                          <div className="flex items-center gap-3">
+                            <Calendar className="w-5 h-5 text-soft-bronze" />
+                            <div>
+                              <h4 className="font-heading text-lg font-bold text-charcoal-black">
+                                Week {checkIn.weekNumber}
+                              </h4>
+                              <p className="text-xs text-warm-grey">
+                                Week of {formatCheckInDate(checkIn.weekStartDate)}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-xs text-warm-grey">Submitted</p>
+                            <p className="text-sm font-medium text-charcoal-black">
+                              {formatCheckInDate(checkIn.createdAt)}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-xs text-warm-grey">Submitted</p>
-                        <p className="text-sm font-medium text-charcoal-black">
-                          {formatCheckInDate(checkIn.createdAt)}
-                        </p>
-                      </div>
-                    </div>
 
-                    {/* Ratings Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                      <div className="bg-soft-white rounded-lg p-4">
-                        <p className="text-xs text-warm-grey mb-2 font-medium">Overall Difficulty</p>
-                        <p className={`text-lg font-bold ${
-                          checkIn.difficultyRating === 'Easy' 
-                            ? 'text-green-600'
-                            : checkIn.difficultyRating === 'Moderate'
-                            ? 'text-yellow-600'
-                            : 'text-red-600'
-                        }`}>
-                          {checkIn.difficultyRating}
-                        </p>
-                      </div>
-                      <div className="bg-soft-white rounded-lg p-4">
-                        <p className="text-xs text-warm-grey mb-2 font-medium">Energy Levels</p>
-                        <p className={`text-lg font-bold ${
-                          checkIn.energyRating === 'High' 
-                            ? 'text-green-600'
-                            : checkIn.energyRating === 'OK'
-                            ? 'text-yellow-600'
-                            : 'text-red-600'
-                        }`}>
-                          {checkIn.energyRating}
-                        </p>
-                      </div>
-                      <div className="bg-soft-white rounded-lg p-4">
-                        <p className="text-xs text-warm-grey mb-2 font-medium">Soreness</p>
-                        <p className={`text-lg font-bold ${
-                          checkIn.sorenessRating === 'None' 
-                            ? 'text-green-600'
-                            : checkIn.sorenessRating === 'Mild'
-                            ? 'text-yellow-600'
-                            : 'text-red-600'
-                        }`}>
-                          {checkIn.sorenessRating}
-                        </p>
-                      </div>
-                    </div>
+                        {/* Ratings Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                          <div className="bg-soft-white rounded-lg p-4">
+                            <p className="text-xs text-warm-grey mb-2 font-medium">Overall Difficulty</p>
+                            <p className={`text-lg font-bold ${
+                              checkIn.difficultyRating === 'Easy' 
+                                ? 'text-green-600'
+                                : checkIn.difficultyRating === 'Moderate'
+                                ? 'text-yellow-600'
+                                : 'text-red-600'
+                            }`}>
+                              {checkIn.difficultyRating}
+                            </p>
+                          </div>
+                          <div className="bg-soft-white rounded-lg p-4">
+                            <p className="text-xs text-warm-grey mb-2 font-medium">Energy Levels</p>
+                            <p className={`text-lg font-bold ${
+                              checkIn.energyRating === 'High' 
+                                ? 'text-green-600'
+                                : checkIn.energyRating === 'OK'
+                                ? 'text-yellow-600'
+                                : 'text-red-600'
+                            }`}>
+                              {checkIn.energyRating}
+                            </p>
+                          </div>
+                          <div className="bg-soft-white rounded-lg p-4">
+                            <p className="text-xs text-warm-grey mb-2 font-medium">Soreness</p>
+                            <p className={`text-lg font-bold ${
+                              checkIn.sorenessRating === 'None' 
+                                ? 'text-green-600'
+                                : checkIn.sorenessRating === 'Mild'
+                                ? 'text-yellow-600'
+                                : 'text-red-600'
+                            }`}>
+                              {checkIn.sorenessRating}
+                            </p>
+                          </div>
+                        </div>
 
-                    {/* Soreness Notes */}
-                    {checkIn.sorenessNotes && checkIn.sorenessNotes.trim() !== '' && (
-                      <div className="bg-soft-white rounded-lg p-4 mb-3">
-                        <p className="text-xs text-warm-grey font-medium mb-2">Soreness Notes</p>
-                        <p className="text-sm text-charcoal-black leading-relaxed">
-                          {checkIn.sorenessNotes}
-                        </p>
-                      </div>
-                    )}
+                        {/* Soreness Notes */}
+                        {checkIn.sorenessNotes && checkIn.sorenessNotes.trim() !== '' && (
+                          <div className="bg-soft-white rounded-lg p-4 mb-3">
+                            <p className="text-xs text-warm-grey font-medium mb-2">Soreness Notes</p>
+                            <p className="text-sm text-charcoal-black leading-relaxed">
+                              {checkIn.sorenessNotes}
+                            </p>
+                          </div>
+                        )}
 
-                    {/* Client Notes */}
-                    {checkIn.clientNotes && checkIn.clientNotes.trim() !== '' && (
-                      <div className="bg-soft-bronze/10 border-l-4 border-soft-bronze rounded-r-lg p-4">
-                        <p className="text-xs text-soft-bronze font-bold mb-2">
-                          💬 Notes for Coach
-                        </p>
-                        <p className="text-sm text-charcoal-black leading-relaxed italic">
-                          "{checkIn.clientNotes}"
-                        </p>
+                        {/* Client Notes */}
+                        {checkIn.clientNotes && checkIn.clientNotes.trim() !== '' && (
+                          <div className="bg-soft-bronze/10 border-l-4 border-soft-bronze rounded-r-lg p-4">
+                            <p className="text-xs text-soft-bronze font-bold mb-2">
+                              💬 Notes for Coach
+                            </p>
+                            <p className="text-sm text-charcoal-black leading-relaxed italic">
+                              "{checkIn.clientNotes}"
+                            </p>
+                          </div>
+                        )}
                       </div>
-                    )}
+                    ))}
                   </div>
-                ))}
+                </div>
+              </div>
+            )}
               </div>
             </div>
             )}
           </div>
         </div>
+
         <div className="mt-8 flex gap-4">
           <button
             onClick={() => navigate('/trainer/clients')}
@@ -792,6 +797,6 @@ export default function ClientProfilePage() {
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 }

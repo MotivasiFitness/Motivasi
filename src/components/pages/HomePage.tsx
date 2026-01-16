@@ -10,43 +10,6 @@ import { useLanguage } from '@/i18n/LanguageContext';
 
 // --- Utility Components ---
 
-type RevealProps = {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-  width?: "fit-content" | "100%";
-};
-
-const Reveal: React.FC<RevealProps> = ({ children, className = "", delay = 0.25, width = "fit-content" }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-75px" });
-  const mainControls = useAnimation();
-  const slideControls = useAnimation();
-
-  useEffect(() => {
-    if (isInView) {
-      mainControls.start("visible");
-      slideControls.start("visible");
-    }
-  }, [isInView, mainControls, slideControls]);
-
-  return (
-    <div ref={ref} style={{ position: "relative", width, overflow: "hidden" }} className={className}>
-      <motion.div
-        variants={{
-          hidden: { opacity: 0, y: 75 },
-          visible: { opacity: 1, y: 0 },
-        }}
-        initial="hidden"
-        animate={mainControls}
-        transition={{ duration: 0.8, delay: delay, ease: [0.25, 0.25, 0.25, 0.75] }}
-      >
-        {children}
-      </motion.div>
-    </div>
-  );
-};
-
 // Mandatory Intersection Observer Component for Scroll Reveals
 type AnimatedElementProps = {
   children: React.ReactNode;
@@ -74,8 +37,6 @@ const AnimatedElement: React.FC<AnimatedElementProps> = ({ children, className, 
 
     return <div ref={ref} className={`${className || ''} opacity-0 translate-y-8 transition-all duration-1000 ease-out motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:translate-y-0 [&.is-visible]:opacity-100 [&.is-visible]:translate-y-0`}>{children}</div>;
 };
-
-import { useAnimation } from 'framer-motion';
 
 // --- Main Component ---
 
