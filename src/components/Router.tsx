@@ -39,6 +39,7 @@ import BookingsPage from '@/components/pages/ClientPortal/BookingsPage';
 import VideoLibraryPage from '@/components/pages/ClientPortal/VideoLibraryPage';
 import MyVideoSubmissionsPage from '@/components/pages/ClientPortal/MyVideoSubmissionsPage';
 import WorkoutHistoryPage from '@/components/pages/ClientPortal/WorkoutHistoryPage';
+import ProfilePage from '@/components/pages/ClientPortal/ProfilePage';
 
 // Trainer Dashboard Pages
 import TrainerDashboardLayout from '@/components/pages/TrainerDashboard/TrainerDashboardLayout';
@@ -244,6 +245,10 @@ const router = createBrowserRouter([
           {
             path: "history",
             element: <WorkoutHistoryPage />,
+          },
+          {
+            path: "profile",
+            element: <ProfilePage />,
           },
         ],
       },

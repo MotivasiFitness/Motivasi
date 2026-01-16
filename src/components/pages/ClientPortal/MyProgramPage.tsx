@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { ClientPrograms, ClientAssignedWorkouts, WeeklyCoachesNotes } from '@/entities';
+import { ClientPrograms, ClientAssignedWorkouts, WeeklyCoachesNotes, ClientProfiles } from '@/entities';
 import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight, Volume2, AlertCircle, MessageCircle, Zap, Info, Archive, Star, HelpCircle, Lightbulb } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { Link } from 'react-router-dom';
@@ -34,6 +34,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { getClientDisplayName } from '@/lib/client-name-service';
 
 interface WorkoutSession {
   day: string;
@@ -78,6 +79,7 @@ export default function MyProgramPage() {
   const [exerciseCompleteStates, setExerciseCompleteStates] = useState<ExerciseCompleteState>({});
   const [expandedWeightInputs, setExpandedWeightInputs] = useState<Set<string>>(new Set());
   const [showCompletionRing, setShowCompletionRing] = useState(false);
+  const [clientProfile, setClientProfile] = useState<ClientProfiles | null>(null);
   const [ringAnimationTrigger, setRingAnimationTrigger] = useState(false);
   const [useNewSystem, setUseNewSystem] = useState(false);
   const [weeklyCoachNote, setWeeklyCoachNote] = useState<WeeklyCoachesNotes | null>(null);
@@ -110,11 +112,16 @@ export default function MyProgramPage() {
 
   useEffect(() => {
     const fetchPrograms = async () => {
-      if (!member?._id) return;
+      if (!member?.loginEmail) return;
 
       try {
+        // Fetch client profile
+        const { items: profiles } = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
+        const profile = profiles.find(p => p.memberId === member.loginEmail);
+        setClientProfile(profile || null);
+
         // Fetch active program cycle
-        const cycle = await getActiveCycle(member._id);
+        const cycle = await getActiveCycle(member.loginEmail);
         setActiveCycle(cycle);
 
         // Try to fetch from new system first

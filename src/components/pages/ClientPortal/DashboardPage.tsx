@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { ClientBookings, ProgressCheckins, NutritionGuidance, ClientPrograms, WeeklyCoachesNotes } from '@/entities';
+import { ClientBookings, ProgressCheckins, NutritionGuidance, ClientPrograms, WeeklyCoachesNotes, ClientProfiles } from '@/entities';
 import { Calendar, CheckCircle, TrendingUp, Zap, Heart, ArrowRight, MessageCircle, Smile } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { Link } from 'react-router-dom';
 import ProgramCompletionRing from '@/components/ClientPortal/ProgramCompletionRing';
+import { getClientDisplayName, isProfileIncomplete } from '@/lib/client-name-service';
 
 export default function DashboardPage() {
   const { member } = useMember();
@@ -17,12 +18,19 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [isInactive, setIsInactive] = useState(false);
   const [daysSinceActivity, setDaysSinceActivity] = useState<number>(0);
+  const [clientProfile, setClientProfile] = useState<ClientProfiles | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!member?._id) return;
+      if (!member?.loginEmail) return;
 
       try {
+        // Fetch client profile
+        const { items: profiles } = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
+        const profile = profiles.find(p => p.memberId === member.loginEmail);
+        setClientProfile(profile || null);
+
+        // ... keep existing code (bookings, check-ins, programs, coach notes)
         // Fetch upcoming bookings
         const { items: bookings } = await BaseCrudService.getAll<ClientBookings>('clientbookings');
         const upcomingFiltered = bookings
@@ -86,7 +94,7 @@ export default function DashboardPage() {
     };
 
     fetchData();
-  }, [member?._id]);
+  }, [member?.loginEmail]);
 
   if (loading) {
     return (
@@ -96,8 +104,37 @@ export default function DashboardPage() {
     );
   }
 
+  const displayName = getClientDisplayName(clientProfile, member?.loginEmail);
+  const showProfilePrompt = isProfileIncomplete(clientProfile);
+
   return (
     <div className="space-y-8 bg-warm-sand-beige/40 min-h-screen p-8 rounded-2xl">
+      {/* Profile Completion Prompt */}
+      {showProfilePrompt && (
+        <div className="bg-blue-50 border-l-4 border-blue-400 rounded-2xl p-6">
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+              <Smile className="w-5 h-5 text-blue-600" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-heading text-lg font-bold text-charcoal-black mb-2">
+                Complete Your Profile
+              </h3>
+              <p className="font-paragraph text-charcoal-black mb-4">
+                Help us personalize your experience by adding your name and details.
+              </p>
+              <Link
+                to="/portal/profile"
+                className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+              >
+                Complete Profile
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Welcome Back State - Triggered by 7+ days of inactivity */}
       {isInactive && (
         <div className="bg-gradient-to-r from-soft-bronze via-soft-bronze/90 to-soft-bronze/80 rounded-2xl p-8 md:p-12 text-soft-white shadow-lg border border-soft-bronze/50">
@@ -108,7 +145,7 @@ export default function DashboardPage() {
               </div>
               <div>
                 <h2 className="font-heading text-3xl md:text-4xl font-bold mb-2">
-                  Welcome back — let's pick up where you left off
+                  Welcome back, {displayName} — let's pick up where you left off
                 </h2>
                 <p className="text-soft-white/90 font-paragraph text-lg">
                   It's been {daysSinceActivity} days. Your program is ready for you, and your trainer is here to support your comeback.
@@ -156,7 +193,7 @@ export default function DashboardPage() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
               <h1 className="font-heading text-4xl font-bold mb-2">
-                Welcome back, {member?.profile?.nickname || member?.contact?.firstName}!
+                Welcome back, {displayName}!
               </h1>
               <p className="text-soft-white/90">
                 You're making great progress. Keep up the momentum!

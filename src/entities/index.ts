@@ -140,6 +140,31 @@ export interface ClientMessages {
 
 
 /**
+ * Collection ID: clientprofiles
+ * Interface for ClientProfiles
+ */
+export interface ClientProfiles {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  memberId?: string;
+  /** @wixFieldType text */
+  firstName?: string;
+  /** @wixFieldType text */
+  lastName?: string;
+  /** @wixFieldType text */
+  phoneNumber?: string;
+  /** @wixFieldType text */
+  emergencyContact?: string;
+  /** @wixFieldType text */
+  fitnessGoals?: string;
+  /** @wixFieldType text */
+  medicalNotes?: string;
+}
+
+
+/**
  * Collection ID: clientprograms
  * Interface for ClientPrograms
  */

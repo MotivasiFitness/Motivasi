@@ -1,18 +1,39 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation, Navigate } from 'react-router-dom';
 import { useMember } from '@/integrations';
+import { BaseCrudService } from '@/integrations';
+import { ClientProfiles } from '@/entities';
 import { Menu, X, LogOut, LayoutDashboard, Dumbbell, Apple, TrendingUp, Calendar, Video, User, Loader, AlertCircle, Archive } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { useRole } from '@/hooks/useRole';
 import PortalHeader from '@/components/layout/PortalHeader';
 import MotivaChat from '@/components/ClientPortal/MotivaChat';
+import { getClientDisplayName } from '@/lib/client-name-service';
 
 export default function ClientPortalLayout() {
   const { member, actions } = useMember();
   const { isClient, isAdmin, isLoading, setupError, debugInfo, role } = useRole();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
+  const [clientProfile, setClientProfile] = useState<ClientProfiles | null>(null);
   const location = useLocation();
+
+  // Fetch client profile
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!member?.loginEmail) return;
+      
+      try {
+        const { items: profiles } = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
+        const profile = profiles.find(p => p.memberId === member.loginEmail);
+        setClientProfile(profile || null);
+      } catch (error) {
+        console.error('Error fetching client profile:', error);
+      }
+    };
+
+    fetchProfile();
+  }, [member?.loginEmail]);
 
   // Determine redirect reason
   let redirectReason = '';
@@ -90,6 +111,7 @@ export default function ClientPortalLayout() {
     { path: '/portal/video-library', label: 'Video Library', icon: Video, color: 'text-cyan-400' },
     { path: '/portal/my-submissions', label: 'My Submissions', icon: Video, color: 'text-rose-400' },
     { path: '/exercise-video-review', label: 'Upload Video', icon: Video, color: 'text-indigo-400' },
+    { path: '/portal/profile', label: 'My Profile', icon: User, color: 'text-pink-400' },
   ];
 
   const isActive = (path: string) => {
@@ -132,7 +154,7 @@ export default function ClientPortalLayout() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-paragraph font-bold text-sm truncate">
-                    {member?.profile?.nickname || member?.contact?.firstName || 'Client'}
+                    {getClientDisplayName(clientProfile, member?.loginEmail)}
                   </p>
                   <p className="text-warm-grey text-xs truncate">
                     {member?.loginEmail}

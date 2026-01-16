@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { ClientBookings } from '@/entities';
+import { ClientBookings, ClientProfiles } from '@/entities';
 import { Calendar, Clock, Video, MapPin, Plus, Trash2, Lightbulb, CheckCircle2, ArrowRight } from 'lucide-react';
+import { getClientFullName } from '@/lib/client-name-service';
 
 export default function BookingsPage() {
   const { member } = useMember();
   const [bookings, setBookings] = useState<ClientBookings[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [clientProfile, setClientProfile] = useState<ClientProfiles | null>(null);
   const [formData, setFormData] = useState({
     serviceType: 'consultation',
     appointmentDate: '',
@@ -18,9 +20,14 @@ export default function BookingsPage() {
 
   useEffect(() => {
     const fetchBookings = async () => {
-      if (!member?._id) return;
+      if (!member?.loginEmail) return;
 
       try {
+        // Fetch client profile
+        const { items: profiles } = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
+        const profile = profiles.find(p => p.memberId === member.loginEmail);
+        setClientProfile(profile || null);
+
         const { items } = await BaseCrudService.getAll<ClientBookings>('clientbookings');
         // Sort by date (upcoming first)
         const sorted = items.sort((a, b) => 
@@ -35,7 +42,7 @@ export default function BookingsPage() {
     };
 
     fetchBookings();
-  }, [member?._id]);
+  }, [member?.loginEmail]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -48,12 +55,14 @@ export default function BookingsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!member?._id) return;
+    if (!member?.loginEmail) return;
 
     try {
+      const clientName = getClientFullName(clientProfile, member.loginEmail);
+      
       const newBooking: ClientBookings = {
         _id: crypto.randomUUID(),
-        clientName: member?.contact?.firstName || member?.profile?.nickname || 'Client',
+        clientName,
         serviceType: formData.serviceType,
         appointmentDate: formData.appointmentDate,
         appointmentTime: formData.appointmentTime,
