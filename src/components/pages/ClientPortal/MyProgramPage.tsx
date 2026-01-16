@@ -92,6 +92,7 @@ export default function MyProgramPage() {
   const [modificationReason, setModificationReason] = useState('');
   const [modificationNotes, setModificationNotes] = useState('');
   const [submittingModification, setSubmittingModification] = useState(false);
+  const [showFirstWorkoutReassurance, setShowFirstWorkoutReassurance] = useState(false);
 
   // Rest timer effect
   useEffect(() => {
@@ -119,6 +120,12 @@ export default function MyProgramPage() {
         const { items: profiles } = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
         const profile = profiles.find(p => p.memberId === member.loginEmail);
         setClientProfile(profile || null);
+
+        // Check if this is the first workout view
+        const hasSeenFirstWorkout = localStorage.getItem(`firstWorkoutSeen_${member.loginEmail}`);
+        if (!hasSeenFirstWorkout) {
+          setShowFirstWorkoutReassurance(true);
+        }
 
         // Fetch active program cycle
         const cycle = await getActiveCycle(member.loginEmail);
@@ -327,6 +334,12 @@ export default function MyProgramPage() {
 
   const handleNewSystemWorkoutComplete = async (workoutId: string, weekNumber: number) => {
     try {
+      // Hide first workout reassurance after first completion
+      if (showFirstWorkoutReassurance && member?.loginEmail) {
+        localStorage.setItem(`firstWorkoutSeen_${member.loginEmail}`, 'true');
+        setShowFirstWorkoutReassurance(false);
+      }
+
       // Mark workout as completed in the database
       await BaseCrudService.update<ClientAssignedWorkouts>('clientassignedworkouts', {
         _id: workoutId,
@@ -386,11 +399,23 @@ export default function MyProgramPage() {
       
       setSessionCompleteMessage(true);
 
+      // Check if this is the first workout ever completed
+      const hasCompletedFirstWorkout = localStorage.getItem(`firstWorkoutCompleted_${member?._id}`);
+      const isFirstWorkout = !hasCompletedFirstWorkout;
+
       // Show feedback prompt after a brief celebration
       setTimeout(() => {
         setSessionCompleteMessage(false);
         setShowCompletionRing(false);
         setRingAnimationTrigger(false);
+        
+        // Show first workout reinforcement if applicable
+        if (isFirstWorkout && member?._id) {
+          localStorage.setItem(`firstWorkoutCompleted_${member._id}`, 'true');
+          // Show subtle reinforcement before feedback prompt
+          alert('✓ First workout complete! You\'re on track. Consistency is what builds results, and logging your workouts helps your coach support you better. Keep going!');
+        }
+        
         setShowFeedback(true);
       }, 2500);
     } catch (error) {
@@ -512,6 +537,46 @@ export default function MyProgramPage() {
             </Link>
           </div>
         </div>
+
+        {/* Inline Guidance - How the program works */}
+        <div className="bg-soft-white border-l-4 border-soft-bronze rounded-r-xl p-6">
+          <h3 className="font-heading text-lg font-bold text-charcoal-black mb-3">
+            📖 How your program works
+          </h3>
+          <div className="space-y-2 font-paragraph text-charcoal-black leading-relaxed">
+            <p>
+              • <strong>This is your current training week.</strong> Complete workouts in any order that suits your schedule.
+            </p>
+            <p>
+              • <strong>Completed weeks move to history automatically</strong> once all workouts are done.
+            </p>
+            <p>
+              • Focus on consistency, not perfection. Your coach is here to support you every step of the way.
+            </p>
+          </div>
+        </div>
+
+        {/* First Workout Reassurance - Shows only once */}
+        {showFirstWorkoutReassurance && (
+          <div className="bg-gradient-to-r from-blue-50 to-blue-50/80 border-2 border-blue-200 rounded-2xl p-6 lg:p-8">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <Smile className="w-5 h-5 text-blue-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2">
+                  Starting your first workout?
+                </h3>
+                <p className="font-paragraph text-charcoal-black leading-relaxed mb-3">
+                  Focus on good effort and learning the movements. Don't overthink it—perfection isn't the goal, progress is. Your coach will see your work and can adjust things as you go.
+                </p>
+                <p className="font-paragraph text-sm text-warm-grey italic">
+                  This message will disappear after your first workout completion.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Program Timeline */}
         {activeCycle && (

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -34,6 +34,15 @@ export default function WeeklyCheckInModal({
   const [sorenessNotes, setSorenessNotes] = useState<string>('');
   const [clientNotes, setClientNotes] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isFirstCheckIn, setIsFirstCheckIn] = useState(false);
+
+  // Check if this is the first check-in
+  useEffect(() => {
+    if (isOpen && clientId) {
+      const hasCompletedCheckIn = localStorage.getItem(`firstCheckInCompleted_${clientId}`);
+      setIsFirstCheckIn(!hasCompletedCheckIn);
+    }
+  }, [isOpen, clientId]);
 
   const handleSubmit = async () => {
     if (!difficultyRating || !energyRating || !sorenessRating) {
@@ -59,6 +68,11 @@ export default function WeeklyCheckInModal({
         createdAt: new Date().toISOString()
       });
 
+      // Mark first check-in as completed
+      if (isFirstCheckIn) {
+        localStorage.setItem(`firstCheckInCompleted_${clientId}`, 'true');
+      }
+
       onSubmitSuccess?.();
       onClose();
     } catch (error) {
@@ -81,6 +95,15 @@ export default function WeeklyCheckInModal({
             Share your feedback to help your coach support you better. Your responses help us personalize your program and ensure you're progressing safely and effectively.
           </DialogDescription>
         </DialogHeader>
+
+        {/* First-time education message */}
+        {isFirstCheckIn && (
+          <div className="bg-blue-50 border-l-4 border-blue-400 rounded-r-lg p-4 my-4">
+            <p className="font-paragraph text-sm text-charcoal-black leading-relaxed">
+              <strong>First check-in?</strong> There are no right or wrong answers here. This helps your coach understand how training <em>feels</em> for you, not just what you completed. Be honest—it's how we make your program work better for you.
+            </p>
+          </div>
+        )}
 
         <div className="space-y-6 py-4">
           {/* Difficulty Rating */}

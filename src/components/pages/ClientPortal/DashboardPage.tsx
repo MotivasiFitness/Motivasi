@@ -7,6 +7,7 @@ import { Image } from '@/components/ui/image';
 import { Link } from 'react-router-dom';
 import ProgramCompletionRing from '@/components/ClientPortal/ProgramCompletionRing';
 import { getClientDisplayName, isProfileIncomplete } from '@/lib/client-name-service';
+import WelcomeMessage from '@/components/ClientPortal/WelcomeMessage';
 
 export default function DashboardPage() {
   const { member } = useMember();
@@ -19,6 +20,7 @@ export default function DashboardPage() {
   const [isInactive, setIsInactive] = useState(false);
   const [daysSinceActivity, setDaysSinceActivity] = useState<number>(0);
   const [clientProfile, setClientProfile] = useState<ClientProfiles | null>(null);
+  const [showWelcomeMessage, setShowWelcomeMessage] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +31,12 @@ export default function DashboardPage() {
         const { items: profiles } = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
         const profile = profiles.find(p => p.memberId === member.loginEmail);
         setClientProfile(profile || null);
+
+        // Check if this is the first login (profile complete but no welcome shown)
+        const hasSeenWelcome = localStorage.getItem(`welcomeShown_${member.loginEmail}`);
+        if (profile && !isProfileIncomplete(profile) && !hasSeenWelcome) {
+          setShowWelcomeMessage(true);
+        }
 
         // ... keep existing code (bookings, check-ins, programs, coach notes)
         // Fetch upcoming bookings
@@ -107,8 +115,24 @@ export default function DashboardPage() {
   const displayName = getClientDisplayName(clientProfile, member?.loginEmail);
   const showProfilePrompt = isProfileIncomplete(clientProfile);
 
+  const handleDismissWelcome = () => {
+    if (member?.loginEmail) {
+      localStorage.setItem(`welcomeShown_${member.loginEmail}`, 'true');
+    }
+    setShowWelcomeMessage(false);
+  };
+
   return (
-    <div className="space-y-8 bg-warm-sand-beige/40 min-h-screen p-8 rounded-2xl">
+    <>
+      {/* One-time welcome message */}
+      {showWelcomeMessage && (
+        <WelcomeMessage
+          clientName={displayName}
+          onDismiss={handleDismissWelcome}
+        />
+      )}
+
+      <div className="space-y-8 bg-warm-sand-beige/40 min-h-screen p-8 rounded-2xl">
       {/* Profile Completion Prompt */}
       {showProfilePrompt && (
         <div className="bg-blue-50 border-l-4 border-blue-400 rounded-2xl p-6">
@@ -466,6 +490,7 @@ export default function DashboardPage() {
           <p className="text-warm-grey group-hover:text-soft-white/80 transition-colors duration-300">Access exercise demos and guidance videos</p>
         </Link>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

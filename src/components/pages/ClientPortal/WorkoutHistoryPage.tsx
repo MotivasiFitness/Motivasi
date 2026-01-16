@@ -271,6 +271,16 @@ export default function WorkoutHistoryPage() {
         </p>
       </div>
 
+      {/* Context Framing Message */}
+      <div className="bg-soft-white border-l-4 border-soft-bronze rounded-r-xl p-6">
+        <h3 className="font-heading text-lg font-bold text-charcoal-black mb-2">
+          📚 What is this page?
+        </h3>
+        <p className="font-paragraph text-charcoal-black leading-relaxed">
+          This area shows your past workouts, notes, and progress. It's a reference point to see how far you've come—not a scorecard. Your coach uses this to understand your journey and adjust your program to keep you moving forward.
+        </p>
+      </div>
+
       {/* Overall Stats Card */}
       <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8">
         <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
