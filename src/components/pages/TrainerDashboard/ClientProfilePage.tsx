@@ -3,9 +3,27 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientProfiles, TrainerClientAssignments } from '@/entities';
-import { ArrowLeft, User, Phone, Target, AlertCircle, CheckCircle, Info } from 'lucide-react';
+import { ArrowLeft, User, Phone, Target, AlertCircle, CheckCircle, Info, Edit2, Save, X, Flag } from 'lucide-react';
 import { getClientDisplayName } from '@/lib/client-name-service';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { Textarea } from '@/components/ui/textarea';
+
+interface TrainerClientNotes {
+  _id: string;
+  trainerId?: string;
+  clientId?: string;
+  notes?: string;
+  flags?: string;
+  updatedAt?: Date | string;
+}
+
+const AVAILABLE_FLAGS = [
+  'Knee sensitivity',
+  'Back sensitivity',
+  'Home workouts only',
+  'Low confidence / needs encouragement',
+  'High adherence'
+];
 
 export default function ClientProfilePage() {
   const { clientId } = useParams<{ clientId: string }>();
@@ -16,6 +34,13 @@ export default function ClientProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
   const [isAuthorized, setIsAuthorized] = useState(false);
+  
+  // Trainer notes state
+  const [trainerNotes, setTrainerNotes] = useState<TrainerClientNotes | null>(null);
+  const [isEditingNotes, setIsEditingNotes] = useState(false);
+  const [notesText, setNotesText] = useState('');
+  const [selectedFlags, setSelectedFlags] = useState<string[]>([]);
+  const [savingNotes, setSavingNotes] = useState(false);
 
   useEffect(() => {
     const fetchClientProfile = async () => {
@@ -56,6 +81,16 @@ export default function ClientProfilePage() {
         const displayName = await getClientDisplayName(clientId);
         setClientDisplayName(displayName);
 
+        // Fetch trainer notes
+        const { items: notes } = await BaseCrudService.getAll<TrainerClientNotes>('trainerclientnotes');
+        const existingNotes = notes.find(n => n.trainerId === member._id && n.clientId === clientId);
+        
+        if (existingNotes) {
+          setTrainerNotes(existingNotes);
+          setNotesText(existingNotes.notes || '');
+          setSelectedFlags(existingNotes.flags ? JSON.parse(existingNotes.flags) : []);
+        }
+
       } catch (err) {
         console.error('Error fetching client profile:', err);
         setError('Failed to load client profile');
@@ -66,6 +101,79 @@ export default function ClientProfilePage() {
 
     fetchClientProfile();
   }, [member?._id, clientId]);
+
+  const handleSaveNotes = async () => {
+    if (!member?._id || !clientId) return;
+
+    setSavingNotes(true);
+    try {
+      const flagsJson = JSON.stringify(selectedFlags);
+      const now = new Date().toISOString();
+
+      if (trainerNotes?._id) {
+        // Update existing notes
+        await BaseCrudService.update<TrainerClientNotes>('trainerclientnotes', {
+          _id: trainerNotes._id,
+          notes: notesText,
+          flags: flagsJson,
+          updatedAt: now
+        });
+        
+        setTrainerNotes({
+          ...trainerNotes,
+          notes: notesText,
+          flags: flagsJson,
+          updatedAt: now
+        });
+      } else {
+        // Create new notes
+        const newNotes: TrainerClientNotes = {
+          _id: crypto.randomUUID(),
+          trainerId: member._id,
+          clientId: clientId,
+          notes: notesText,
+          flags: flagsJson,
+          updatedAt: now
+        };
+        
+        await BaseCrudService.create('trainerclientnotes', newNotes);
+        setTrainerNotes(newNotes);
+      }
+
+      setIsEditingNotes(false);
+    } catch (err) {
+      console.error('Error saving trainer notes:', err);
+      alert('Failed to save notes. Please try again.');
+    } finally {
+      setSavingNotes(false);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setNotesText(trainerNotes?.notes || '');
+    setSelectedFlags(trainerNotes?.flags ? JSON.parse(trainerNotes.flags) : []);
+    setIsEditingNotes(false);
+  };
+
+  const toggleFlag = (flag: string) => {
+    setSelectedFlags(prev => 
+      prev.includes(flag) 
+        ? prev.filter(f => f !== flag)
+        : [...prev, flag]
+    );
+  };
+
+  const formatLastUpdated = (date?: Date | string) => {
+    if (!date) return 'Never';
+    const d = new Date(date);
+    return d.toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric', 
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
 
   // Calculate profile completion percentage
   const calculateProfileCompletion = (): number => {
@@ -179,8 +287,8 @@ export default function ClientProfilePage() {
           <Info className="text-blue-600 flex-shrink-0" size={20} />
           <div>
             <p className="font-paragraph text-sm text-blue-900">
-              <strong>Read-Only View:</strong> This information was provided by the client and cannot be edited by trainers. 
-              Future updates will include trainer-only notes and flags.
+              <strong>Client Information:</strong> The information below was provided by the client and is read-only. 
+              Use the Trainer Notes section to add your private observations and flags.
             </p>
           </div>
         </div>
@@ -323,29 +431,123 @@ export default function ClientProfilePage() {
           </div>
         </div>
 
-        {/* Future Features Placeholder */}
-        <div className="mt-8 bg-warm-sand-beige/30 border border-warm-sand-beige rounded-xl p-6">
-          <h3 className="font-heading text-lg font-bold text-charcoal-black mb-3">
-            Coming Soon
-          </h3>
-          <ul className="space-y-2 text-sm text-warm-grey">
-            <li className="flex items-start gap-2">
-              <CheckCircle size={16} className="flex-shrink-0 mt-0.5 text-soft-bronze" />
-              <span>Trainer-only notes section for private observations</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <CheckCircle size={16} className="flex-shrink-0 mt-0.5 text-soft-bronze" />
-              <span>Risk flags and alerts for client safety</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <CheckCircle size={16} className="flex-shrink-0 mt-0.5 text-soft-bronze" />
-              <span>Progress tracking integration</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <CheckCircle size={16} className="flex-shrink-0 mt-0.5 text-soft-bronze" />
-              <span>Program history and adherence metrics</span>
-            </li>
-          </ul>
+        {/* Trainer Notes Section - Private to Trainers */}
+        <div className="mt-8 bg-soft-bronze/10 border-2 border-soft-bronze rounded-2xl overflow-hidden">
+          {/* Header */}
+          <div className="bg-soft-bronze/20 px-8 py-4 border-b border-soft-bronze flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-soft-bronze rounded-full flex items-center justify-center">
+                <Flag className="text-soft-white" size={20} />
+              </div>
+              <div>
+                <h3 className="font-heading text-xl font-bold text-charcoal-black">
+                  Trainer Notes & Flags
+                </h3>
+                <p className="text-xs text-warm-grey">
+                  Private to trainers only • Not visible to clients
+                </p>
+              </div>
+            </div>
+            
+            {!isEditingNotes && (
+              <button
+                onClick={() => setIsEditingNotes(true)}
+                className="flex items-center gap-2 bg-soft-bronze text-soft-white px-4 py-2 rounded-lg hover:bg-soft-bronze/80 transition-colors"
+              >
+                <Edit2 size={16} />
+                <span className="font-medium">Edit</span>
+              </button>
+            )}
+          </div>
+
+          {/* Content */}
+          <div className="p-8 space-y-6">
+            {/* Quick Flags */}
+            <div>
+              <label className="block text-sm font-medium text-charcoal-black mb-3">
+                Quick Flags
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {AVAILABLE_FLAGS.map(flag => {
+                  const isSelected = selectedFlags.includes(flag);
+                  return (
+                    <button
+                      key={flag}
+                      onClick={() => isEditingNotes && toggleFlag(flag)}
+                      disabled={!isEditingNotes}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                        isSelected
+                          ? 'bg-soft-bronze text-soft-white'
+                          : 'bg-warm-sand-beige text-charcoal-black hover:bg-warm-sand-beige/70'
+                      } ${!isEditingNotes ? 'cursor-default' : 'cursor-pointer'}`}
+                    >
+                      {flag}
+                    </button>
+                  );
+                })}
+              </div>
+              {selectedFlags.length === 0 && !isEditingNotes && (
+                <p className="text-sm text-warm-grey italic mt-2">No flags set</p>
+              )}
+            </div>
+
+            {/* Notes Text Area */}
+            <div>
+              <label className="block text-sm font-medium text-charcoal-black mb-2">
+                Private Notes
+              </label>
+              {isEditingNotes ? (
+                <Textarea
+                  value={notesText}
+                  onChange={(e) => setNotesText(e.target.value)}
+                  placeholder="Add your private observations, training considerations, or any other notes about this client..."
+                  className="min-h-[150px] font-paragraph text-charcoal-black bg-soft-white border-warm-sand-beige focus:border-soft-bronze"
+                />
+              ) : (
+                <div className="px-4 py-3 bg-soft-white rounded-lg border border-warm-sand-beige min-h-[150px]">
+                  <p className="font-paragraph text-charcoal-black whitespace-pre-wrap">
+                    {notesText || (
+                      <span className="text-warm-grey italic">No notes added yet. Click Edit to add your observations.</span>
+                    )}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Last Updated */}
+            <div className="flex items-center justify-between text-xs text-warm-grey pt-2 border-t border-warm-sand-beige">
+              <span>Last updated: {formatLastUpdated(trainerNotes?.updatedAt)}</span>
+              {isEditingNotes && (
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleCancelEdit}
+                    disabled={savingNotes}
+                    className="flex items-center gap-1 px-3 py-1.5 bg-warm-grey/20 text-charcoal-black rounded hover:bg-warm-grey/30 transition-colors disabled:opacity-50"
+                  >
+                    <X size={14} />
+                    <span>Cancel</span>
+                  </button>
+                  <button
+                    onClick={handleSaveNotes}
+                    disabled={savingNotes}
+                    className="flex items-center gap-1 px-3 py-1.5 bg-soft-bronze text-soft-white rounded hover:bg-soft-bronze/80 transition-colors disabled:opacity-50"
+                  >
+                    {savingNotes ? (
+                      <>
+                        <LoadingSpinner />
+                        <span>Saving...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Save size={14} />
+                        <span>Save Notes</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Action Buttons */}

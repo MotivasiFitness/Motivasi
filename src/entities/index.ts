@@ -508,6 +508,27 @@ export interface TrainerClientMessages {
 
 
 /**
+ * Collection ID: trainerclientnotes
+ * Interface for TrainerClientNotes
+ */
+export interface TrainerClientNotes {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType text */
+  clientId?: string;
+  /** @wixFieldType text */
+  notes?: string;
+  /** @wixFieldType text */
+  flags?: string;
+  /** @wixFieldType datetime */
+  updatedAt?: Date | string;
+}
+
+
+/**
  * Collection ID: trainernotificationpreferences
  * Interface for TrainerNotificationPreferences
  */
