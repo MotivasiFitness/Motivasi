@@ -37,6 +37,18 @@ export interface ClientAssignedWorkouts {
   _createdDate?: Date;
   _updatedDate?: Date;
   /** @wixFieldType text */
+  modification1Description?: string;
+  /** @wixFieldType text */
+  modification3Description?: string;
+  /** @wixFieldType text */
+  modification3Title?: string;
+  /** @wixFieldType text */
+  modification2Description?: string;
+  /** @wixFieldType text */
+  modification2Title?: string;
+  /** @wixFieldType text */
+  modification1Title?: string;
+  /** @wixFieldType text */
   clientId?: string;
   /** @wixFieldType datetime */
   reflectionSubmittedAt?: Date | string;
@@ -135,6 +147,18 @@ export interface ClientPrograms {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
+  /** @wixFieldType text */
+  modification1Description?: string;
+  /** @wixFieldType text */
+  modification3Description?: string;
+  /** @wixFieldType text */
+  modification3Title?: string;
+  /** @wixFieldType text */
+  modification2Description?: string;
+  /** @wixFieldType text */
+  modification2Title?: string;
+  /** @wixFieldType text */
+  modification1Title?: string;
   /** @wixFieldType text */
   programTitle?: string;
   /** @wixFieldType number */

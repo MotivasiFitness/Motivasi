@@ -4,7 +4,7 @@ import { BaseCrudService } from '@/integrations';
 import { ClientAssignedWorkouts, WeeklyCoachesNotes } from '@/entities';
 import { Calendar, ChevronDown, CheckCircle2, Clock, Dumbbell, MessageCircle, TrendingUp, Archive } from 'lucide-react';
 import { formatWeekDisplay, getWeekStartDate } from '@/lib/workout-assignment-service';
-import { getAllCycles, ProgramCycle } from '@/lib/program-cycle-service';
+import { getAllCycles, ProgramCycle, getCompletedWeeksArray } from '@/lib/program-cycle-service';
 import { getWeeklySummary, WeeklySummary } from '@/lib/weekly-summary-service';
 import WeeklySummaryCard from '@/components/ClientPortal/WeeklySummaryCard';
 
@@ -62,7 +62,7 @@ export default function WorkoutHistoryPage() {
       if (!member?._id) return;
 
       try {
-        // Fetch all program cycles for the client
+        // Fetch all program cycles for the client (including active cycle with completed weeks)
         const cycles = await getAllCycles(member._id);
         
         // Fetch all assigned workouts for the client
@@ -85,12 +85,28 @@ export default function WorkoutHistoryPage() {
           summary => summary.clientId === member._id
         );
 
-        // Group workouts by cycle
+        // Group workouts by cycle - include active cycle if it has completed weeks
         const cycleGroupsData: CycleGroup[] = cycles
-          .filter(cycle => cycle.status === 'completed' || cycle.status === 'archived')
+          .filter(cycle => {
+            // Include completed/archived cycles
+            if (cycle.status === 'completed' || cycle.status === 'archived') return true;
+            
+            // Include active cycle if it has completed weeks
+            if (cycle.status === 'active' && (cycle.weeksCompleted || 0) > 0) return true;
+            
+            return false;
+          })
           .map(cycle => {
-            // Get workouts for this cycle (filter by cycle start date range)
+            const completedWeeks = getCompletedWeeksArray(cycle.weeksCompleted || 0);
+            
+            // Get workouts for this cycle
             const cycleWorkouts = completed.filter(workout => {
+              // For active cycles, only show workouts from completed weeks
+              if (cycle.status === 'active') {
+                return workout.weekNumber && completedWeeks.includes(workout.weekNumber);
+              }
+              
+              // For completed/archived cycles, show all workouts in date range
               const workoutDate = new Date(workout.weekStartDate || '');
               const cycleStart = new Date(cycle.cycleStartDate || '');
               const cycleEnd = cycle.cycleCompletedAt 
@@ -131,7 +147,8 @@ export default function WorkoutHistoryPage() {
               cycle,
               weekGroups: weekGroupsArray,
             };
-          });
+          })
+          .filter(cycleGroup => cycleGroup.weekGroups.length > 0); // Only include cycles with completed weeks
 
         setCompletedWorkouts(completed as CompletedWorkout[]);
         setCycleGroups(cycleGroupsData);
@@ -269,12 +286,18 @@ export default function WorkoutHistoryPage() {
                     <h3 className="font-heading text-lg lg:text-xl font-bold text-charcoal-black">
                       Cycle {cycleGroup.cycle.cycleNumber} - {cycleGroup.cycle.programTitle}
                     </h3>
-                    <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
-                      <CheckCircle2 size={14} /> Complete
-                    </span>
+                    {cycleGroup.cycle.status === 'active' ? (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-soft-bronze/20 text-soft-bronze rounded-full text-xs font-medium">
+                        <Clock size={14} /> In Progress
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                        <CheckCircle2 size={14} /> Complete
+                      </span>
+                    )}
                   </div>
                   <p className="text-sm text-warm-grey">
-                    {formatDate(cycleGroup.cycle.cycleStartDate)} - {formatDate(cycleGroup.cycle.cycleCompletedAt)} • {cycleGroup.weekGroups.length} weeks
+                    {formatDate(cycleGroup.cycle.cycleStartDate)} - {cycleGroup.cycle.cycleCompletedAt ? formatDate(cycleGroup.cycle.cycleCompletedAt) : 'Ongoing'} • {cycleGroup.weekGroups.length} week{cycleGroup.weekGroups.length !== 1 ? 's' : ''} completed
                   </p>
                 </div>
 

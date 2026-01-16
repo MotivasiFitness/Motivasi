@@ -118,22 +118,44 @@ export default function MyProgramPage() {
         setActiveCycle(cycle);
 
         // Try to fetch from new system first
-        const { items: assignedItems } = await BaseCrudService.getAll<ClientAssignedWorkouts>('clientassignedworkouts');
-        const activeWorkouts = await getActiveWorkoutsForCurrentWeek(member._id);
+        const { items: allAssignedWorkouts } = await BaseCrudService.getAll<ClientAssignedWorkouts>('clientassignedworkouts');
         
-        if (activeWorkouts.length > 0) {
-          // Filter out completed workouts - only show active/pending ones
-          const pendingWorkouts = activeWorkouts.filter(w => w.status !== 'completed');
-          setAssignedWorkouts(pendingWorkouts);
+        // Filter for this client's workouts
+        const clientWorkouts = allAssignedWorkouts.filter(w => w.clientId === member._id);
+        
+        // Get completed weeks from the active cycle
+        const completedWeeks = getCompletedWeeksArray(cycle?.weeksCompleted || 0);
+        
+        // Filter workouts: only show active/pending from current week (not completed weeks)
+        const currentWeek = cycle?.currentWeek || 1;
+        const activeWorkouts = clientWorkouts.filter(w => {
+          // Exclude workouts from completed weeks
+          if (w.weekNumber && completedWeeks.includes(w.weekNumber)) {
+            return false;
+          }
           
-          // Check if there are any completed workouts without reflections
-          const completedWithoutReflection = activeWorkouts.find(
-            w => w.status === 'completed' && !w.reflectionSubmittedAt
+          // Only show workouts from current week or future weeks
+          if (w.weekNumber && w.weekNumber < currentWeek) {
+            return false;
+          }
+          
+          // Only show active or pending workouts (not completed)
+          return w.status === 'active' || w.status === 'pending';
+        });
+        
+        if (activeWorkouts.length > 0 || clientWorkouts.length > 0) {
+          setAssignedWorkouts(activeWorkouts);
+          
+          // Check if there are any completed workouts without reflections from current week
+          const currentWeekCompleted = clientWorkouts.filter(
+            w => w.weekNumber === currentWeek && 
+                 w.status === 'completed' && 
+                 !w.reflectionSubmittedAt
           );
           
           // If there's a completed workout without reflection, show the feedback prompt
-          if (completedWithoutReflection) {
-            setCompletedWorkoutId(completedWithoutReflection._id || '');
+          if (currentWeekCompleted.length > 0) {
+            setCompletedWorkoutId(currentWeekCompleted[0]._id || '');
             setShowFeedback(true);
           }
           
