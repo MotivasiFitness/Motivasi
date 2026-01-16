@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientAssignedWorkouts, WeeklyCoachesNotes } from '@/entities';
-import { Calendar, ChevronDown, CheckCircle2, Clock, Dumbbell, MessageCircle, TrendingUp, Archive } from 'lucide-react';
+import { Calendar, ChevronDown, CheckCircle2, Clock, Dumbbell, MessageCircle, TrendingUp, Archive, ClipboardCheck, AlertCircle } from 'lucide-react';
 import { formatWeekDisplay, getWeekStartDate } from '@/lib/workout-assignment-service';
 import { getAllCycles, ProgramCycle, getCompletedWeeksArray } from '@/lib/program-cycle-service';
 import { getWeeklySummary, WeeklySummary } from '@/lib/weekly-summary-service';
 import WeeklySummaryCard from '@/components/ClientPortal/WeeklySummaryCard';
+import WeeklyCheckInModal from '@/components/ClientPortal/WeeklyCheckInModal';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 interface CompletedWorkout {
   _id: string;
@@ -40,6 +43,22 @@ interface WeekGroup {
   workouts: CompletedWorkout[];
   coachNote?: WeeklyCoachesNotes;
   weeklySummary?: WeeklySummary;
+  weeklyCheckIn?: WeeklyCheckIn;
+}
+
+interface WeeklyCheckIn {
+  _id: string;
+  clientId?: string;
+  trainerId?: string;
+  programCycleId?: string;
+  weekNumber?: number;
+  weekStartDate?: Date | string;
+  difficultyRating?: string;
+  energyRating?: string;
+  sorenessRating?: string;
+  sorenessNotes?: string;
+  clientNotes?: string;
+  createdAt?: Date | string;
 }
 
 interface CycleGroup {
@@ -56,6 +75,13 @@ export default function WorkoutHistoryPage() {
   const [expandedCycle, setExpandedCycle] = useState<string | null>(null);
   const [expandedWorkout, setExpandedWorkout] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [checkInModalOpen, setCheckInModalOpen] = useState(false);
+  const [selectedWeekForCheckIn, setSelectedWeekForCheckIn] = useState<{
+    weekNumber: number;
+    weekStartDate: string;
+    trainerId: string;
+    programCycleId?: string;
+  } | null>(null);
 
   useEffect(() => {
     const fetchCompletedWorkouts = async () => {
@@ -83,6 +109,12 @@ export default function WorkoutHistoryPage() {
         const { items: allSummaries } = await BaseCrudService.getAll<WeeklySummary>('weeklysummaries');
         const clientSummaries = allSummaries.filter(
           summary => summary.clientId === member._id
+        );
+
+        // Fetch weekly check-ins
+        const { items: allCheckIns } = await BaseCrudService.getAll<WeeklyCheckIn>('weeklycheckins');
+        const clientCheckIns = allCheckIns.filter(
+          checkIn => checkIn.clientId === member._id
         );
 
         // Group workouts by cycle - include active cycle if it has completed weeks
@@ -125,6 +157,9 @@ export default function WorkoutHistoryPage() {
                 const weekSummary = clientSummaries.find(
                   summary => summary.weekNumber === weekNum && summary.programTitle === cycle.programTitle
                 );
+                const weekCheckIn = clientCheckIns.find(
+                  checkIn => checkIn.weekNumber === weekNum && checkIn.weekStartDate === workout.weekStartDate
+                );
                 
                 acc[weekNum] = {
                   weekNumber: weekNum,
@@ -132,6 +167,7 @@ export default function WorkoutHistoryPage() {
                   workouts: [],
                   coachNote: weekCoachNote,
                   weeklySummary: weekSummary,
+                  weeklyCheckIn: weekCheckIn,
                 };
               }
               acc[weekNum].workouts.push(workout as CompletedWorkout);
@@ -161,6 +197,16 @@ export default function WorkoutHistoryPage() {
 
     fetchCompletedWorkouts();
   }, [member?._id]);
+
+  const handleOpenCheckInModal = (weekNumber: number, weekStartDate: string, trainerId: string, programCycleId?: string) => {
+    setSelectedWeekForCheckIn({ weekNumber, weekStartDate, trainerId, programCycleId });
+    setCheckInModalOpen(true);
+  };
+
+  const handleCheckInSubmitSuccess = () => {
+    // Refresh the data to show the newly submitted check-in
+    window.location.reload();
+  };
 
   const formatDate = (date: Date | string | undefined) => {
     if (!date) return 'N/A';
@@ -348,6 +394,103 @@ export default function WorkoutHistoryPage() {
                         {/* Expanded Week Details */}
                         {isWeekExpanded && (
                           <div className="border-t border-warm-sand-beige px-4 lg:px-6 py-4 space-y-4">
+                            {/* Weekly Check-In Section */}
+                            <div className="mb-4">
+                              {weekGroup.weeklyCheckIn ? (
+                                <div className="bg-soft-bronze/10 border border-soft-bronze rounded-xl p-4">
+                                  <div className="flex items-center gap-2 mb-3">
+                                    <ClipboardCheck className="w-5 h-5 text-soft-bronze" />
+                                    <h5 className="font-heading text-base font-bold text-charcoal-black">
+                                      Weekly Check-In
+                                    </h5>
+                                    <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                                      Submitted
+                                    </Badge>
+                                  </div>
+                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+                                    <div className="bg-soft-white rounded-lg p-3">
+                                      <p className="text-xs text-warm-grey mb-1">Overall Difficulty</p>
+                                      <p className={`text-sm font-bold ${
+                                        weekGroup.weeklyCheckIn.difficultyRating === 'Easy' 
+                                          ? 'text-green-600'
+                                          : weekGroup.weeklyCheckIn.difficultyRating === 'Moderate'
+                                          ? 'text-yellow-600'
+                                          : 'text-red-600'
+                                      }`}>
+                                        {weekGroup.weeklyCheckIn.difficultyRating}
+                                      </p>
+                                    </div>
+                                    <div className="bg-soft-white rounded-lg p-3">
+                                      <p className="text-xs text-warm-grey mb-1">Energy Levels</p>
+                                      <p className={`text-sm font-bold ${
+                                        weekGroup.weeklyCheckIn.energyRating === 'High' 
+                                          ? 'text-green-600'
+                                          : weekGroup.weeklyCheckIn.energyRating === 'OK'
+                                          ? 'text-yellow-600'
+                                          : 'text-red-600'
+                                      }`}>
+                                        {weekGroup.weeklyCheckIn.energyRating}
+                                      </p>
+                                    </div>
+                                    <div className="bg-soft-white rounded-lg p-3">
+                                      <p className="text-xs text-warm-grey mb-1">Soreness</p>
+                                      <p className={`text-sm font-bold ${
+                                        weekGroup.weeklyCheckIn.sorenessRating === 'None' 
+                                          ? 'text-green-600'
+                                          : weekGroup.weeklyCheckIn.sorenessRating === 'Mild'
+                                          ? 'text-yellow-600'
+                                          : 'text-red-600'
+                                      }`}>
+                                        {weekGroup.weeklyCheckIn.sorenessRating}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  {weekGroup.weeklyCheckIn.sorenessNotes && (
+                                    <div className="bg-soft-white rounded-lg p-3 mb-2">
+                                      <p className="text-xs text-warm-grey mb-1">Soreness Notes</p>
+                                      <p className="text-sm text-charcoal-black">{weekGroup.weeklyCheckIn.sorenessNotes}</p>
+                                    </div>
+                                  )}
+                                  {weekGroup.weeklyCheckIn.clientNotes && (
+                                    <div className="bg-soft-white rounded-lg p-3">
+                                      <p className="text-xs text-warm-grey mb-1">Notes for Coach</p>
+                                      <p className="text-sm text-charcoal-black italic">"{weekGroup.weeklyCheckIn.clientNotes}"</p>
+                                    </div>
+                                  )}
+                                </div>
+                              ) : (
+                                <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-xl p-4">
+                                  <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                      <AlertCircle className="w-5 h-5 text-muted-rose" />
+                                      <div>
+                                        <h5 className="font-heading text-sm font-bold text-charcoal-black">
+                                          Weekly Check-In Pending
+                                        </h5>
+                                        <p className="text-xs text-warm-grey">
+                                          Share how this week went to help your coach support you better
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <Button
+                                      onClick={() => handleOpenCheckInModal(
+                                        weekGroup.weekNumber,
+                                        typeof weekGroup.weekStartDate === 'string' 
+                                          ? weekGroup.weekStartDate 
+                                          : weekGroup.weekStartDate.toISOString(),
+                                        weekGroup.workouts[0]?.trainerId || '',
+                                        cycleGroup.cycle._id
+                                      )}
+                                      size="sm"
+                                      className="bg-soft-bronze hover:bg-soft-bronze/90 text-soft-white"
+                                    >
+                                      Complete Check-In
+                                    </Button>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+
                             {/* Weekly Summary if available */}
                             {weekGroup.weeklySummary && (
                               <div className="mb-4">
@@ -454,6 +597,23 @@ export default function WorkoutHistoryPage() {
           Every workout completed is a step closer to your goals. Stay consistent and watch your progress grow!
         </p>
       </div>
+
+      {/* Weekly Check-In Modal */}
+      {selectedWeekForCheckIn && (
+        <WeeklyCheckInModal
+          isOpen={checkInModalOpen}
+          onClose={() => {
+            setCheckInModalOpen(false);
+            setSelectedWeekForCheckIn(null);
+          }}
+          weekNumber={selectedWeekForCheckIn.weekNumber}
+          weekStartDate={selectedWeekForCheckIn.weekStartDate}
+          clientId={member?._id || ''}
+          trainerId={selectedWeekForCheckIn.trainerId}
+          programCycleId={selectedWeekForCheckIn.programCycleId}
+          onSubmitSuccess={handleCheckInSubmitSuccess}
+        />
+      )}
     </div>
   );
 }

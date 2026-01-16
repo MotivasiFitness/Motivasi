@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientProfiles, TrainerClientAssignments } from '@/entities';
-import { ArrowLeft, User, Phone, Target, AlertCircle, CheckCircle, Info, Edit2, Save, X, Flag } from 'lucide-react';
+import { ArrowLeft, User, Phone, Target, AlertCircle, CheckCircle, Info, Edit2, Save, X, Flag, ClipboardCheck, Calendar } from 'lucide-react';
 import { getClientDisplayName } from '@/lib/client-name-service';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Textarea } from '@/components/ui/textarea';
@@ -15,6 +15,21 @@ interface TrainerClientNotes {
   notes?: string;
   flags?: string;
   updatedAt?: Date | string;
+}
+
+interface WeeklyCheckIn {
+  _id: string;
+  clientId?: string;
+  trainerId?: string;
+  programCycleId?: string;
+  weekNumber?: number;
+  weekStartDate?: Date | string;
+  difficultyRating?: string;
+  energyRating?: string;
+  sorenessRating?: string;
+  sorenessNotes?: string;
+  clientNotes?: string;
+  createdAt?: Date | string;
 }
 
 const AVAILABLE_FLAGS = [
@@ -41,6 +56,9 @@ export default function ClientProfilePage() {
   const [notesText, setNotesText] = useState('');
   const [selectedFlags, setSelectedFlags] = useState<string[]>([]);
   const [savingNotes, setSavingNotes] = useState(false);
+  
+  // Weekly check-ins state
+  const [weeklyCheckIns, setWeeklyCheckIns] = useState<WeeklyCheckIn[]>([]);
 
   useEffect(() => {
     const fetchClientProfile = async () => {
@@ -90,6 +108,17 @@ export default function ClientProfilePage() {
           setNotesText(existingNotes.notes || '');
           setSelectedFlags(existingNotes.flags ? JSON.parse(existingNotes.flags) : []);
         }
+
+        // Fetch weekly check-ins for this client
+        const { items: checkIns } = await BaseCrudService.getAll<WeeklyCheckIn>('weeklycheckins');
+        const clientCheckIns = checkIns
+          .filter(c => c.clientId === clientId && c.trainerId === member._id)
+          .sort((a, b) => {
+            const dateA = new Date(a.createdAt || 0).getTime();
+            const dateB = new Date(b.createdAt || 0).getTime();
+            return dateB - dateA; // Newest first
+          });
+        setWeeklyCheckIns(clientCheckIns);
 
       } catch (err) {
         console.error('Error fetching client profile:', err);
@@ -172,6 +201,16 @@ export default function ClientProfilePage() {
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
+    });
+  };
+
+  const formatCheckInDate = (date?: Date | string) => {
+    if (!date) return 'N/A';
+    const d = new Date(date);
+    return d.toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric', 
+      year: 'numeric'
     });
   };
 
@@ -547,6 +586,133 @@ export default function ClientProfilePage() {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+
+        {/* Weekly Check-Ins Section - Read-only for Trainers */}
+        <div className="mt-8 bg-soft-white border border-warm-sand-beige rounded-2xl overflow-hidden">
+          {/* Header */}
+          <div className="bg-warm-sand-beige/30 px-8 py-4 border-b border-warm-sand-beige">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-soft-bronze rounded-full flex items-center justify-center">
+                <ClipboardCheck className="text-soft-white" size={20} />
+              </div>
+              <div>
+                <h3 className="font-heading text-xl font-bold text-charcoal-black">
+                  Weekly Check-Ins
+                </h3>
+                <p className="text-xs text-warm-grey">
+                  Client feedback after completing each week • Read-only
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="p-8">
+            {weeklyCheckIns.length === 0 ? (
+              <div className="text-center py-8">
+                <ClipboardCheck className="w-12 h-12 text-warm-grey/40 mx-auto mb-3" />
+                <p className="text-warm-grey italic">
+                  No weekly check-ins submitted yet
+                </p>
+                <p className="text-sm text-warm-grey mt-2">
+                  Check-ins will appear here after the client completes a week and submits their feedback
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {weeklyCheckIns.map((checkIn) => (
+                  <div
+                    key={checkIn._id}
+                    className="bg-warm-sand-beige/20 border border-warm-sand-beige rounded-xl p-6"
+                  >
+                    {/* Header */}
+                    <div className="flex items-center justify-between mb-4 pb-3 border-b border-warm-sand-beige">
+                      <div className="flex items-center gap-3">
+                        <Calendar className="w-5 h-5 text-soft-bronze" />
+                        <div>
+                          <h4 className="font-heading text-lg font-bold text-charcoal-black">
+                            Week {checkIn.weekNumber}
+                          </h4>
+                          <p className="text-xs text-warm-grey">
+                            Week of {formatCheckInDate(checkIn.weekStartDate)}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs text-warm-grey">Submitted</p>
+                        <p className="text-sm font-medium text-charcoal-black">
+                          {formatCheckInDate(checkIn.createdAt)}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Ratings Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                      <div className="bg-soft-white rounded-lg p-4">
+                        <p className="text-xs text-warm-grey mb-2 font-medium">Overall Difficulty</p>
+                        <p className={`text-lg font-bold ${
+                          checkIn.difficultyRating === 'Easy' 
+                            ? 'text-green-600'
+                            : checkIn.difficultyRating === 'Moderate'
+                            ? 'text-yellow-600'
+                            : 'text-red-600'
+                        }`}>
+                          {checkIn.difficultyRating}
+                        </p>
+                      </div>
+                      <div className="bg-soft-white rounded-lg p-4">
+                        <p className="text-xs text-warm-grey mb-2 font-medium">Energy Levels</p>
+                        <p className={`text-lg font-bold ${
+                          checkIn.energyRating === 'High' 
+                            ? 'text-green-600'
+                            : checkIn.energyRating === 'OK'
+                            ? 'text-yellow-600'
+                            : 'text-red-600'
+                        }`}>
+                          {checkIn.energyRating}
+                        </p>
+                      </div>
+                      <div className="bg-soft-white rounded-lg p-4">
+                        <p className="text-xs text-warm-grey mb-2 font-medium">Soreness</p>
+                        <p className={`text-lg font-bold ${
+                          checkIn.sorenessRating === 'None' 
+                            ? 'text-green-600'
+                            : checkIn.sorenessRating === 'Mild'
+                            ? 'text-yellow-600'
+                            : 'text-red-600'
+                        }`}>
+                          {checkIn.sorenessRating}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Soreness Notes */}
+                    {checkIn.sorenessNotes && checkIn.sorenessNotes.trim() !== '' && (
+                      <div className="bg-soft-white rounded-lg p-4 mb-3">
+                        <p className="text-xs text-warm-grey font-medium mb-2">Soreness Notes</p>
+                        <p className="text-sm text-charcoal-black leading-relaxed">
+                          {checkIn.sorenessNotes}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Client Notes */}
+                    {checkIn.clientNotes && checkIn.clientNotes.trim() !== '' && (
+                      <div className="bg-soft-bronze/10 border-l-4 border-soft-bronze rounded-r-lg p-4">
+                        <p className="text-xs text-soft-bronze font-bold mb-2">
+                          💬 Notes for Coach
+                        </p>
+                        <p className="text-sm text-charcoal-black leading-relaxed italic">
+                          "{checkIn.clientNotes}"
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

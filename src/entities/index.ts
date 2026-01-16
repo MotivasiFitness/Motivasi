@@ -604,6 +604,39 @@ export interface TrainerQualifications {
 
 
 /**
+ * Collection ID: weeklycheckins
+ * Interface for WeeklyCheckins
+ */
+export interface WeeklyCheckins {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  clientId?: string;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType text */
+  programCycleId?: string;
+  /** @wixFieldType number */
+  weekNumber?: number;
+  /** @wixFieldType date */
+  weekStartDate?: Date | string;
+  /** @wixFieldType text */
+  difficultyRating?: string;
+  /** @wixFieldType text */
+  energyRating?: string;
+  /** @wixFieldType text */
+  sorenessRating?: string;
+  /** @wixFieldType text */
+  sorenessNotes?: string;
+  /** @wixFieldType text */
+  clientNotes?: string;
+  /** @wixFieldType datetime */
+  createdAt?: Date | string;
+}
+
+
+/**
  * Collection ID: weeklycoachesnotes
  * Interface for WeeklyCoachesNotes
  */
