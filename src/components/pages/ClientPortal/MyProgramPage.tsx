@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientPrograms, ClientAssignedWorkouts, WeeklyCoachesNotes } from '@/entities';
-import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight, Volume2, AlertCircle, MessageCircle, Zap, Info, Archive, Star } from 'lucide-react';
+import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight, Volume2, AlertCircle, MessageCircle, Zap, Info, Archive, Star, HelpCircle } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { Link } from 'react-router-dom';
 import PostWorkoutFeedbackPrompt from '@/components/ClientPortal/PostWorkoutFeedbackPrompt';
@@ -29,6 +29,11 @@ import {
   getWeeklySummary,
   WeeklySummary 
 } from '@/lib/weekly-summary-service';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface WorkoutSession {
   day: string;
@@ -79,6 +84,11 @@ export default function MyProgramPage() {
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
   const [weeklySummary, setWeeklySummary] = useState<WeeklySummary | null>(null);
   const [showWeeklySummary, setShowWeeklySummary] = useState(false);
+  const [showModificationDialog, setShowModificationDialog] = useState(false);
+  const [selectedExercise, setSelectedExercise] = useState<ClientPrograms | ClientAssignedWorkouts | null>(null);
+  const [modificationReason, setModificationReason] = useState('');
+  const [modificationNotes, setModificationNotes] = useState('');
+  const [submittingModification, setSubmittingModification] = useState(false);
 
   // Rest timer effect
   useEffect(() => {
@@ -338,22 +348,68 @@ export default function MyProgramPage() {
           setActiveCycle(newCycle);
         }
       }
-      
+
       // Trigger completion ring animation
       setShowCompletionRing(true);
       setRingAnimationTrigger(true);
       
       setSessionCompleteMessage(true);
 
-      // Show feedback prompt after 2.5 seconds
+      // Show feedback prompt after a brief celebration
       setTimeout(() => {
         setSessionCompleteMessage(false);
-        setShowFeedback(true);
         setShowCompletionRing(false);
         setRingAnimationTrigger(false);
+        setShowFeedback(true);
       }, 2500);
     } catch (error) {
       console.error('Error completing workout:', error);
+    }
+  };
+
+  const handleRequestModification = (exercise: ClientPrograms | ClientAssignedWorkouts) => {
+    setSelectedExercise(exercise);
+    setModificationReason('');
+    setModificationNotes('');
+    setShowModificationDialog(true);
+  };
+
+  const handleSubmitModification = async () => {
+    if (!selectedExercise || !modificationReason) return;
+
+    setSubmittingModification(true);
+    try {
+      // Get trainer ID from assignments
+      const { items: assignments } = await BaseCrudService.getAll('trainerclientassignments');
+      const assignment = assignments.find((a: any) => a.clientId === member?._id && a.status === 'active');
+
+      const modificationRequest = {
+        _id: crypto.randomUUID(),
+        clientId: member?._id || '',
+        trainerId: assignment?.trainerId || '',
+        exerciseName: selectedExercise.exerciseName || '',
+        workoutId: (selectedExercise as ClientAssignedWorkouts)._id || '',
+        weekNumber: selectedExercise.weekNumber || 1,
+        reason: modificationReason,
+        notes: modificationNotes,
+        status: 'Pending',
+        requestedAt: new Date().toISOString(),
+      };
+
+      await BaseCrudService.create('exercisemodificationrequests', modificationRequest);
+
+      // Show success message
+      alert('Your modification request has been sent to your trainer. They will review it and provide alternatives soon.');
+      
+      setShowModificationDialog(false);
+      setSelectedExercise(null);
+      setModificationReason('');
+      setModificationNotes('');
+    } catch (error) {
+      console.error('Error submitting modification request:', error);
+      alert('Failed to submit modification request. Please try again.');
+    } finally {
+      setSubmittingModification(false);
     }
   };
 
@@ -1513,6 +1569,77 @@ export default function MyProgramPage() {
           </div>
         </div>
       )}
+
+      {/* Exercise Modification Request Dialog */}
+      <Dialog open={showModificationDialog} onOpenChange={setShowModificationDialog}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="font-heading text-2xl">Request Exercise Modification</DialogTitle>
+            <DialogDescription className="text-warm-grey">
+              Let your trainer know why you need an alternative for this exercise. They'll provide suitable options.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            {selectedExercise && (
+              <div className="bg-soft-bronze/10 border border-soft-bronze/20 rounded-lg p-4">
+                <p className="text-sm text-warm-grey mb-1">Exercise</p>
+                <p className="font-bold text-charcoal-black">{selectedExercise.exerciseName}</p>
+              </div>
+            )}
+
+            <div className="space-y-2">
+              <Label htmlFor="reason" className="text-charcoal-black font-medium">
+                Reason for modification *
+              </Label>
+              <Select value={modificationReason} onValueChange={setModificationReason}>
+                <SelectTrigger id="reason" className="w-full">
+                  <SelectValue placeholder="Select a reason..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="No equipment">No equipment available</SelectItem>
+                  <SelectItem value="Injury concern">Injury or pain concern</SelectItem>
+                  <SelectItem value="Too difficult">Too difficult</SelectItem>
+                  <SelectItem value="Too easy">Too easy</SelectItem>
+                  <SelectItem value="Space limitations">Not enough space</SelectItem>
+                  <SelectItem value="Other">Other reason</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="notes" className="text-charcoal-black font-medium">
+                Additional details (optional)
+              </Label>
+              <Textarea
+                id="notes"
+                placeholder="Tell your trainer more about your situation..."
+                value={modificationNotes}
+                onChange={(e) => setModificationNotes(e.target.value)}
+                className="min-h-[100px] resize-none"
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-3">
+            <Button
+              variant="outline"
+              onClick={() => setShowModificationDialog(false)}
+              className="flex-1"
+              disabled={submittingModification}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSubmitModification}
+              className="flex-1 bg-soft-bronze hover:bg-soft-bronze/90"
+              disabled={!modificationReason || submittingModification}
+            >
+              {submittingModification ? 'Sending...' : 'Send Request'}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

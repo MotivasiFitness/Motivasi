@@ -213,6 +213,41 @@ export interface ContactFormSubmissions {
 
 
 /**
+ * Collection ID: exercisemodificationrequests
+ * Interface for ExerciseModificationRequests
+ */
+export interface ExerciseModificationRequests {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  clientId?: string;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType text */
+  exerciseName?: string;
+  /** @wixFieldType text */
+  workoutId?: string;
+  /** @wixFieldType number */
+  weekNumber?: number;
+  /** @wixFieldType text */
+  reason?: string;
+  /** @wixFieldType text */
+  notes?: string;
+  /** @wixFieldType text */
+  status?: string;
+  /** @wixFieldType datetime */
+  requestedAt?: Date | string;
+  /** @wixFieldType datetime */
+  reviewedAt?: Date | string;
+  /** @wixFieldType datetime */
+  resolvedAt?: Date | string;
+  /** @wixFieldType text */
+  trainerResponse?: string;
+}
+
+
+/**
  * Collection ID: memberroles
  * Interface for MemberRoles
  */
@@ -420,6 +455,27 @@ export interface TrainerClientMessages {
   sentAt?: Date | string;
   /** @wixFieldType boolean */
   isRead?: boolean;
+}
+
+
+/**
+ * Collection ID: trainernotificationpreferences
+ * Interface for TrainerNotificationPreferences
+ */
+export interface TrainerNotificationPreferences {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType boolean */
+  workoutCompletedEnabled?: boolean;
+  /** @wixFieldType boolean */
+  weekCompletedEnabled?: boolean;
+  /** @wixFieldType boolean */
+  reflectionSubmittedEnabled?: boolean;
+  /** @wixFieldType datetime */
+  lastUpdatedDate?: Date | string;
 }
 
 
