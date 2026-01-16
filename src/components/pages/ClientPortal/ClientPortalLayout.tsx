@@ -3,21 +3,29 @@ import { Link, Outlet, useLocation, Navigate } from 'react-router-dom';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientProfiles } from '@/entities';
-import { Menu, X, LogOut, LayoutDashboard, Dumbbell, Apple, TrendingUp, Calendar, Video, User, Loader, AlertCircle, Archive } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, Dumbbell, Apple, TrendingUp, Calendar, Video, User, Loader, AlertCircle, Archive, MoreHorizontal } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { useRole } from '@/hooks/useRole';
 import PortalHeader from '@/components/layout/PortalHeader';
 import MotivaChat from '@/components/ClientPortal/MotivaChat';
 import { getClientDisplayName } from '@/lib/client-name-service';
 import { ProfileCompletionGuard } from '@/components/ClientPortal/ProfileCompletionGuard';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 
 export default function ClientPortalLayout() {
   const { member, actions } = useMember();
   const { isClient, isAdmin, isLoading, setupError, debugInfo, role } = useRole();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMoreDrawerOpen, setIsMoreDrawerOpen] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [clientProfile, setClientProfile] = useState<ClientProfiles | null>(null);
   const location = useLocation();
+
+  // Close drawers on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+    setIsMoreDrawerOpen(false);
+  }, [location.pathname]);
 
   // Fetch client profile
   useEffect(() => {
@@ -102,18 +110,26 @@ export default function ClientPortalLayout() {
     );
   }
 
-  const navItems = [
+  // Primary navigation items for bottom bar (mobile)
+  const primaryNavItems = [
     { path: '/portal', label: 'Dashboard', icon: LayoutDashboard, color: 'text-blue-400' },
     { path: '/portal/program', label: 'My Program', icon: Dumbbell, color: 'text-emerald-400' },
-    { path: '/portal/history', label: 'Workout History', icon: Archive, color: 'text-slate-400' },
+    { path: '/portal/history', label: 'History', icon: Archive, color: 'text-slate-400' },
+    { path: '/portal/profile', label: 'Profile', icon: User, color: 'text-pink-400' },
+  ];
+
+  // Secondary navigation items for "More" drawer (mobile)
+  const secondaryNavItems = [
     { path: '/portal/bookings', label: 'Bookings', icon: Calendar, color: 'text-purple-400' },
     { path: '/portal/nutrition', label: 'Nutrition', icon: Apple, color: 'text-yellow-400' },
     { path: '/portal/progress', label: 'Progress', icon: TrendingUp, color: 'text-orange-400' },
     { path: '/portal/video-library', label: 'Video Library', icon: Video, color: 'text-cyan-400' },
     { path: '/portal/my-submissions', label: 'My Submissions', icon: Video, color: 'text-rose-400' },
     { path: '/exercise-video-review', label: 'Upload Video', icon: Video, color: 'text-indigo-400' },
-    { path: '/portal/profile', label: 'My Profile', icon: User, color: 'text-pink-400' },
   ];
+
+  // All navigation items for desktop sidebar
+  const allNavItems = [...primaryNavItems.slice(0, -1), ...secondaryNavItems, primaryNavItems[primaryNavItems.length - 1]];
 
   const isActive = (path: string) => {
     if (path === '/portal') {
@@ -124,16 +140,14 @@ export default function ClientPortalLayout() {
 
   return (
     <ProfileCompletionGuard>
-      <div className="min-h-screen bg-soft-white flex flex-col">
+      <div className="min-h-screen bg-soft-white flex flex-col pb-20 lg:pb-0">
         {/* Portal Header - Replaces Global Header */}
         <PortalHeader portalType="client" />
 
         {/* Main Content Area */}
         <div className="flex-1 flex">
-          {/* Sidebar */}
-          <aside className={`fixed lg:static inset-y-0 left-0 z-40 w-64 bg-charcoal-black text-soft-white transform transition-transform duration-300 mt-16 lg:mt-0 ${
-            isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-          }`}>
+          {/* Desktop Sidebar - Hidden on mobile */}
+          <aside className="hidden lg:block w-64 bg-charcoal-black text-soft-white">
             <div className="h-full flex flex-col">
               {/* Logo */}
               <div className="p-8 border-b border-soft-bronze/20">
@@ -167,7 +181,7 @@ export default function ClientPortalLayout() {
 
               {/* Navigation */}
               <nav className="flex-1 px-4 py-8 space-y-2 overflow-y-auto">
-                {navItems.map((item) => {
+                {allNavItems.map((item) => {
                   const Icon = item.icon;
                   const active = isActive(item.path);
                   
@@ -178,7 +192,6 @@ export default function ClientPortalLayout() {
                       )}
                       <Link
                         to={item.path}
-                        onClick={() => setIsMobileMenuOpen(false)}
                         className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                           active
                             ? 'bg-soft-bronze text-soft-white'
@@ -196,10 +209,7 @@ export default function ClientPortalLayout() {
               {/* Logout Button */}
               <div className="p-8 border-t border-soft-bronze/20">
                 <button
-                  onClick={() => {
-                    actions.logout();
-                    setIsMobileMenuOpen(false);
-                  }}
+                  onClick={() => actions.logout()}
                   className="w-full flex items-center justify-center gap-2 bg-soft-bronze/20 text-soft-bronze hover:bg-soft-bronze/30 transition-colors px-4 py-3 rounded-lg font-medium"
                 >
                   <LogOut size={20} />
@@ -216,15 +226,105 @@ export default function ClientPortalLayout() {
               <Outlet />
             </main>
           </div>
-
-          {/* Mobile Menu Overlay */}
-          {isMobileMenuOpen && (
-            <div
-              className="fixed inset-0 bg-black/50 z-30 lg:hidden"
-              onClick={() => setIsMobileMenuOpen(false)}
-            />
-          )}
         </div>
+
+        {/* Mobile Bottom Navigation - Only visible on mobile */}
+        <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-charcoal-black border-t border-soft-bronze/20 z-50">
+          <div className="flex items-center justify-around px-2 py-3">
+            {primaryNavItems.map((item) => {
+              const Icon = item.icon;
+              const active = isActive(item.path);
+              
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors min-w-0 flex-1 ${
+                    active ? 'text-soft-bronze' : 'text-warm-grey'
+                  }`}
+                >
+                  <Icon size={22} className={active ? 'text-soft-bronze' : item.color} />
+                  <span className="font-paragraph text-xs font-medium truncate w-full text-center">
+                    {item.label}
+                  </span>
+                </Link>
+              );
+            })}
+            
+            {/* More Button */}
+            <button
+              onClick={() => setIsMoreDrawerOpen(true)}
+              className="flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors text-warm-grey min-w-0 flex-1"
+            >
+              <MoreHorizontal size={22} className="text-warm-grey" />
+              <span className="font-paragraph text-xs font-medium truncate w-full text-center">
+                More
+              </span>
+            </button>
+          </div>
+        </nav>
+
+        {/* More Drawer - Mobile Only */}
+        <Sheet open={isMoreDrawerOpen} onOpenChange={setIsMoreDrawerOpen}>
+          <SheetContent side="bottom" className="bg-charcoal-black text-soft-white border-t border-soft-bronze/20 rounded-t-3xl">
+            <SheetHeader className="mb-6">
+              <SheetTitle className="font-heading text-2xl font-bold text-soft-white">
+                More Options
+              </SheetTitle>
+            </SheetHeader>
+            
+            <div className="space-y-2 mb-6">
+              {secondaryNavItems.map((item) => {
+                const Icon = item.icon;
+                const active = isActive(item.path);
+                
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={() => setIsMoreDrawerOpen(false)}
+                    className={`flex items-center gap-4 px-4 py-4 rounded-lg transition-colors ${
+                      active
+                        ? 'bg-soft-bronze text-soft-white'
+                        : 'text-warm-grey hover:bg-soft-white/10'
+                    }`}
+                  >
+                    <Icon size={22} className={item.color} />
+                    <span className="font-paragraph font-medium text-base">{item.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* User Info & Logout in More Drawer */}
+            <div className="border-t border-soft-bronze/20 pt-6 space-y-4">
+              <div className="flex items-center gap-3 px-4">
+                <div className="w-12 h-12 rounded-full bg-soft-bronze flex items-center justify-center">
+                  <User size={24} className="text-charcoal-black" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-paragraph font-bold text-sm truncate text-soft-white">
+                    {getClientDisplayName(clientProfile, member?.loginEmail)}
+                  </p>
+                  <p className="text-warm-grey text-xs truncate">
+                    {member?.loginEmail}
+                  </p>
+                </div>
+              </div>
+              
+              <button
+                onClick={() => {
+                  actions.logout();
+                  setIsMoreDrawerOpen(false);
+                }}
+                className="w-full flex items-center justify-center gap-2 bg-soft-bronze/20 text-soft-bronze hover:bg-soft-bronze/30 transition-colors px-4 py-3 rounded-lg font-medium"
+              >
+                <LogOut size={20} />
+                Sign Out
+              </button>
+            </div>
+          </SheetContent>
+        </Sheet>
 
         {/* MotivaChat - Available on all client portal pages */}
         <MotivaChat />
