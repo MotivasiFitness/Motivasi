@@ -266,10 +266,11 @@ export default function ClientProfilePage() {
   }
 
   return (
-    <div className="p-8 lg:p-12">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
+    <>
+      <div className="p-8 lg:p-12">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="mb-8">
           <button
             onClick={() => navigate('/trainer/clients')}
             className="flex items-center gap-2 text-warm-grey hover:text-charcoal-black transition-colors mb-6"
@@ -682,7 +683,7 @@ export default function ClientProfilePage() {
                     All Check-Ins History
                   </h4>
                   <div className="space-y-4">
-                {weeklyCheckIns.map((checkIn) => (
+                    {weeklyCheckIns.map((checkIn) => (
                   <div
                     key={checkIn._id}
                     className="bg-warm-sand-beige/20 border border-warm-sand-beige rounded-xl p-6"
@@ -771,26 +772,26 @@ export default function ClientProfilePage() {
                     )}
                   </div>
                 ))}
-              </div>
+                  </div>
+                </div>
+              )}
             </div>
-            )}
           </div>
-        </div>
-        <div className="mt-8 flex gap-4">
-          <button
-            onClick={() => navigate('/trainer/clients')}
-            className="flex-1 bg-warm-sand-beige text-charcoal-black px-6 py-3 rounded-lg hover:bg-warm-sand-beige/80 transition-colors font-medium"
-          >
-            Back to Clients
-          </button>
-          <button
-            onClick={() => navigate(`/trainer/workout-assignment?clientId=${clientId}`)}
-            className="flex-1 bg-charcoal-black text-soft-white px-6 py-3 rounded-lg hover:bg-soft-bronze transition-colors font-medium"
-          >
-            Assign Workouts
-          </button>
-        </div>
       </div>
-    </div>
+      <div className="mt-8 flex gap-4">
+        <button
+          onClick={() => navigate('/trainer/clients')}
+          className="flex-1 bg-warm-sand-beige text-charcoal-black px-6 py-3 rounded-lg hover:bg-warm-sand-beige/80 transition-colors font-medium"
+        >
+          Back to Clients
+        </button>
+        <button
+          onClick={() => navigate(`/trainer/workout-assignment?clientId=${clientId}`)}
+          className="flex-1 bg-charcoal-black text-soft-white px-6 py-3 rounded-lg hover:bg-soft-bronze transition-colors font-medium"
+        >
+          Assign Workouts
+        </button>
+      </div>
+    </>
   );
 }
