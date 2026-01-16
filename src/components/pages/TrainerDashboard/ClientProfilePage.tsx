@@ -274,201 +274,201 @@ export default function ClientProfilePage() {
             <button
               onClick={() => navigate('/trainer/clients')}
               className="flex items-center gap-2 text-warm-grey hover:text-charcoal-black transition-colors mb-6"
-          >
-            <ArrowLeft size={20} />
-            <span className="font-paragraph">Back to Clients</span>
-          </button>
+            >
+              <ArrowLeft size={20} />
+              <span className="font-paragraph">Back to Clients</span>
+            </button>
 
-          <div className="flex items-start justify-between">
+            <div className="flex items-start justify-between">
+              <div>
+                <h1 className="font-heading text-5xl font-bold text-charcoal-black mb-2">
+                  Client Profile
+                </h1>
+                <p className="text-lg text-warm-grey">
+                  Read-only view of client information
+                </p>
+              </div>
+              
+              {/* Profile Completion Indicator */}
+              <div className="text-center">
+                <div className="relative inline-flex items-center justify-center w-20 h-20 mb-2">
+                  <svg className="w-20 h-20 transform -rotate-90">
+                    <circle
+                      cx="40"
+                      cy="40"
+                      r="34"
+                      stroke="#E8DED3"
+                      strokeWidth="6"
+                      fill="none"
+                    />
+                    <circle
+                      cx="40"
+                      cy="40"
+                      r="34"
+                      stroke="#B08D57"
+                      strokeWidth="6"
+                      fill="none"
+                      strokeDasharray={`${2 * Math.PI * 34}`}
+                      strokeDashoffset={`${2 * Math.PI * 34 * (1 - profileCompletion / 100)}`}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <span className="absolute font-heading text-lg font-bold text-charcoal-black">
+                    {profileCompletion}%
+                  </span>
+                </div>
+                <p className="text-xs text-warm-grey">Profile Complete</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Info Banner */}
+          <div className="mb-8 bg-blue-50 border border-blue-200 rounded-xl p-4 flex gap-3">
+            <Info className="text-blue-600 flex-shrink-0" size={20} />
             <div>
-              <h1 className="font-heading text-5xl font-bold text-charcoal-black mb-2">
-                Client Profile
-              </h1>
-              <p className="text-lg text-warm-grey">
-                Read-only view of client information
+              <p className="font-paragraph text-sm text-blue-900">
+                <strong>Client Information:</strong> The information below was provided by the client and is read-only. 
+                Use the Trainer Notes section to add your private observations and flags.
               </p>
             </div>
-            
-            {/* Profile Completion Indicator */}
-            <div className="text-center">
-              <div className="relative inline-flex items-center justify-center w-20 h-20 mb-2">
-                <svg className="w-20 h-20 transform -rotate-90">
-                  <circle
-                    cx="40"
-                    cy="40"
-                    r="34"
-                    stroke="#E8DED3"
-                    strokeWidth="6"
-                    fill="none"
-                  />
-                  <circle
-                    cx="40"
-                    cy="40"
-                    r="34"
-                    stroke="#B08D57"
-                    strokeWidth="6"
-                    fill="none"
-                    strokeDasharray={`${2 * Math.PI * 34}`}
-                    strokeDashoffset={`${2 * Math.PI * 34 * (1 - profileCompletion / 100)}`}
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <span className="absolute font-heading text-lg font-bold text-charcoal-black">
-                  {profileCompletion}%
-                </span>
+          </div>
+
+          {/* Client Information Card */}
+          <div className="bg-soft-white border border-warm-sand-beige rounded-2xl overflow-hidden">
+            {/* Header Section */}
+            <div className="bg-warm-sand-beige/30 px-8 py-6 border-b border-warm-sand-beige">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-soft-bronze rounded-full flex items-center justify-center">
+                  <User className="text-soft-white" size={32} />
+                </div>
+                <div>
+                  <h2 className="font-heading text-3xl font-bold text-charcoal-black">
+                    {clientDisplayName}
+                  </h2>
+                  <p className="text-sm text-warm-grey mt-1">
+                    Member ID: {clientId?.slice(-8).toUpperCase()}
+                  </p>
+                </div>
               </div>
-              <p className="text-xs text-warm-grey">Profile Complete</p>
             </div>
-          </div>
-        </div>
 
-        {/* Info Banner */}
-        <div className="mb-8 bg-blue-50 border border-blue-200 rounded-xl p-4 flex gap-3">
-          <Info className="text-blue-600 flex-shrink-0" size={20} />
-          <div>
-            <p className="font-paragraph text-sm text-blue-900">
-              <strong>Client Information:</strong> The information below was provided by the client and is read-only. 
-              Use the Trainer Notes section to add your private observations and flags.
-            </p>
-          </div>
-        </div>
-
-        {/* Client Information Card */}
-        <div className="bg-soft-white border border-warm-sand-beige rounded-2xl overflow-hidden">
-          {/* Header Section */}
-          <div className="bg-warm-sand-beige/30 px-8 py-6 border-b border-warm-sand-beige">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-soft-bronze rounded-full flex items-center justify-center">
-                <User className="text-soft-white" size={32} />
-              </div>
+            {/* Profile Fields */}
+            <div className="p-8 space-y-6">
+              {/* Basic Information */}
               <div>
-                <h2 className="font-heading text-3xl font-bold text-charcoal-black">
-                  {clientDisplayName}
-                </h2>
-                <p className="text-sm text-warm-grey mt-1">
-                  Member ID: {clientId?.slice(-8).toUpperCase()}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Profile Fields */}
-          <div className="p-8 space-y-6">
-            {/* Basic Information */}
-            <div>
-              <h3 className="font-heading text-xl font-bold text-charcoal-black mb-4 flex items-center gap-2">
-                <User size={20} className="text-soft-bronze" />
-                Basic Information
-              </h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-warm-grey">
-                    First Name
-                  </label>
-                  <div className="px-4 py-3 bg-warm-sand-beige/20 rounded-lg border border-warm-sand-beige">
-                    <p className="font-paragraph text-charcoal-black">
-                      {clientProfile?.firstName || (
-                        <span className="text-warm-grey italic">Not provided</span>
-                      )}
-                    </p>
+                <h3 className="font-heading text-xl font-bold text-charcoal-black mb-4 flex items-center gap-2">
+                  <User size={20} className="text-soft-bronze" />
+                  Basic Information
+                </h3>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-warm-grey">
+                      First Name
+                    </label>
+                    <div className="px-4 py-3 bg-warm-sand-beige/20 rounded-lg border border-warm-sand-beige">
+                      <p className="font-paragraph text-charcoal-black">
+                        {clientProfile?.firstName || (
+                          <span className="text-warm-grey italic">Not provided</span>
+                        )}
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-warm-grey">
-                    Last Name
-                  </label>
-                  <div className="px-4 py-3 bg-warm-sand-beige/20 rounded-lg border border-warm-sand-beige">
-                    <p className="font-paragraph text-charcoal-black">
-                      {clientProfile?.lastName || (
-                        <span className="text-warm-grey italic">Not provided</span>
-                      )}
-                    </p>
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-warm-grey">
+                      Last Name
+                    </label>
+                    <div className="px-4 py-3 bg-warm-sand-beige/20 rounded-lg border border-warm-sand-beige">
+                      <p className="font-paragraph text-charcoal-black">
+                        {clientProfile?.lastName || (
+                          <span className="text-warm-grey italic">Not provided</span>
+                        )}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Contact Information */}
-            <div>
-              <h3 className="font-heading text-xl font-bold text-charcoal-black mb-4 flex items-center gap-2">
-                <Phone size={20} className="text-soft-bronze" />
-                Contact Information
-              </h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-warm-grey">
-                    Phone Number
-                  </label>
-                  <div className="px-4 py-3 bg-warm-sand-beige/20 rounded-lg border border-warm-sand-beige">
-                    <p className="font-paragraph text-charcoal-black">
-                      {clientProfile?.phoneNumber || (
-                        <span className="text-warm-grey italic">Not provided</span>
-                      )}
-                    </p>
+              {/* Contact Information */}
+              <div>
+                <h3 className="font-heading text-xl font-bold text-charcoal-black mb-4 flex items-center gap-2">
+                  <Phone size={20} className="text-soft-bronze" />
+                  Contact Information
+                </h3>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-warm-grey">
+                      Phone Number
+                    </label>
+                    <div className="px-4 py-3 bg-warm-sand-beige/20 rounded-lg border border-warm-sand-beige">
+                      <p className="font-paragraph text-charcoal-black">
+                        {clientProfile?.phoneNumber || (
+                          <span className="text-warm-grey italic">Not provided</span>
+                        )}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-warm-grey">
+                      Emergency Contact
+                    </label>
+                    <div className="px-4 py-3 bg-warm-sand-beige/20 rounded-lg border border-warm-sand-beige">
+                      <p className="font-paragraph text-charcoal-black">
+                        {clientProfile?.emergencyContact || (
+                          <span className="text-warm-grey italic">Not provided</span>
+                        )}
+                      </p>
+                    </div>
                   </div>
                 </div>
+              </div>
 
+              {/* Fitness Goals */}
+              <div>
+                <h3 className="font-heading text-xl font-bold text-charcoal-black mb-4 flex items-center gap-2">
+                  <Target size={20} className="text-soft-bronze" />
+                  Fitness Goals
+                </h3>
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-warm-grey">
-                    Emergency Contact
+                    Client-Provided Goals
                   </label>
-                  <div className="px-4 py-3 bg-warm-sand-beige/20 rounded-lg border border-warm-sand-beige">
-                    <p className="font-paragraph text-charcoal-black">
-                      {clientProfile?.emergencyContact || (
-                        <span className="text-warm-grey italic">Not provided</span>
+                  <div className="px-4 py-3 bg-warm-sand-beige/20 rounded-lg border border-warm-sand-beige min-h-[100px]">
+                    <p className="font-paragraph text-charcoal-black whitespace-pre-wrap">
+                      {clientProfile?.fitnessGoals || (
+                        <span className="text-warm-grey italic">No fitness goals provided yet</span>
                       )}
                     </p>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Fitness Goals */}
-            <div>
-              <h3 className="font-heading text-xl font-bold text-charcoal-black mb-4 flex items-center gap-2">
-                <Target size={20} className="text-soft-bronze" />
-                Fitness Goals
-              </h3>
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-warm-grey">
-                  Client-Provided Goals
-                </label>
-                <div className="px-4 py-3 bg-warm-sand-beige/20 rounded-lg border border-warm-sand-beige min-h-[100px]">
-                  <p className="font-paragraph text-charcoal-black whitespace-pre-wrap">
-                    {clientProfile?.fitnessGoals || (
-                      <span className="text-warm-grey italic">No fitness goals provided yet</span>
-                    )}
+              {/* Medical Notes */}
+              <div>
+                <h3 className="font-heading text-xl font-bold text-charcoal-black mb-4 flex items-center gap-2">
+                  <AlertCircle size={20} className="text-muted-rose" />
+                  🩺 Medical Notes (Client-Provided)
+                </h3>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-warm-grey">
+                    Read-Only Information
+                  </label>
+                  <div className="px-4 py-3 bg-muted-rose/10 rounded-lg border border-muted-rose/30 min-h-[100px]">
+                    <p className="font-paragraph text-charcoal-black whitespace-pre-wrap">
+                      {clientProfile?.medicalNotes || (
+                        <span className="text-warm-grey italic">No medical notes provided</span>
+                      )}
+                    </p>
+                  </div>
+                  <p className="text-xs text-warm-grey italic flex items-start gap-2 mt-2">
+                    <AlertCircle size={14} className="flex-shrink-0 mt-0.5" />
+                    This information is entered by your client and is read-only. Please review carefully for programming considerations.
                   </p>
                 </div>
               </div>
             </div>
-
-            {/* Medical Notes */}
-            <div>
-              <h3 className="font-heading text-xl font-bold text-charcoal-black mb-4 flex items-center gap-2">
-                <AlertCircle size={20} className="text-muted-rose" />
-                🩺 Medical Notes (Client-Provided)
-              </h3>
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-warm-grey">
-                  Read-Only Information
-                </label>
-                <div className="px-4 py-3 bg-muted-rose/10 rounded-lg border border-muted-rose/30 min-h-[100px]">
-                  <p className="font-paragraph text-charcoal-black whitespace-pre-wrap">
-                    {clientProfile?.medicalNotes || (
-                      <span className="text-warm-grey italic">No medical notes provided</span>
-                    )}
-                  </p>
-                </div>
-                <p className="text-xs text-warm-grey italic flex items-start gap-2 mt-2">
-                  <AlertCircle size={14} className="flex-shrink-0 mt-0.5" />
-                  This information is entered by your client and is read-only. Please review carefully for programming considerations.
-                </p>
-              </div>
-            </div>
           </div>
-        </div>
 
         {/* Trainer Notes Section - Private to Trainers */}
         <div className="mt-8 bg-soft-bronze/10 border-2 border-soft-bronze rounded-2xl overflow-hidden">
@@ -792,6 +792,7 @@ export default function ClientProfilePage() {
           >
             Assign Workouts
           </button>
+        </div>
         </div>
       </div>
     </>
