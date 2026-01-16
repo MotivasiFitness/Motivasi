@@ -266,13 +266,14 @@ export default function ClientProfilePage() {
   }
 
   return (
-    <div className="p-8 lg:p-12">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <button
-            onClick={() => navigate('/trainer/clients')}
-            className="flex items-center gap-2 text-warm-grey hover:text-charcoal-black transition-colors mb-6"
+    <>
+      <div className="p-8 lg:p-12">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="mb-8">
+            <button
+              onClick={() => navigate('/trainer/clients')}
+              className="flex items-center gap-2 text-warm-grey hover:text-charcoal-black transition-colors mb-6"
           >
             <ArrowLeft size={20} />
             <span className="font-paragraph">Back to Clients</span>
