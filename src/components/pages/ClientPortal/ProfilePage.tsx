@@ -151,7 +151,7 @@ export default function ProfilePage() {
         <Alert className="bg-blue-50 border-blue-200">
           <AlertCircle className="h-4 w-4 text-blue-600" />
           <AlertDescription className="text-blue-800">
-            Welcome! Please complete your profile to access your dashboard.
+            👋 Welcome! Let's personalize your experience. Please tell us your name so we can greet you properly. This information is private and only shared with your assigned coach.
           </AlertDescription>
         </Alert>
       )}

@@ -75,10 +75,10 @@ export default function WeeklyCheckInModal({
         <DialogHeader>
           <DialogTitle className="font-heading text-3xl text-charcoal-black flex items-center gap-2">
             <CheckCircle2 className="w-8 h-8 text-soft-bronze" />
-            Week {weekNumber} Complete!
+            ✨ How was your week?
           </DialogTitle>
           <DialogDescription className="font-paragraph text-base text-warm-grey">
-            Great work completing this week! Take a moment to share how it went. Your feedback helps your coach support you better.
+            Share your feedback to help your coach support you better. Your responses help us personalize your program and ensure you're progressing safely and effectively.
           </DialogDescription>
         </DialogHeader>
 

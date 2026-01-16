@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientProfiles, TrainerClientAssignments } from '@/entities';
-import { ArrowLeft, User, Phone, Target, AlertCircle, CheckCircle, Info, Edit2, Save, X, Flag, ClipboardCheck, Calendar } from 'lucide-react';
+import { ArrowLeft, User, Phone, Target, AlertCircle, CheckCircle, Info, Edit2, Save, X, Flag, ClipboardCheck, Calendar, Star } from 'lucide-react';
 import { getClientDisplayName } from '@/lib/client-name-service';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Textarea } from '@/components/ui/textarea';
@@ -447,11 +447,11 @@ export default function ClientProfilePage() {
             <div>
               <h3 className="font-heading text-xl font-bold text-charcoal-black mb-4 flex items-center gap-2">
                 <AlertCircle size={20} className="text-muted-rose" />
-                Medical Notes
+                🩺 Medical Notes (Client-Provided)
               </h3>
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-warm-grey">
-                  Client-Provided Medical Information
+                  Read-Only Information
                 </label>
                 <div className="px-4 py-3 bg-muted-rose/10 rounded-lg border border-muted-rose/30 min-h-[100px]">
                   <p className="font-paragraph text-charcoal-black whitespace-pre-wrap">
@@ -462,8 +462,7 @@ export default function ClientProfilePage() {
                 </div>
                 <p className="text-xs text-warm-grey italic flex items-start gap-2 mt-2">
                   <AlertCircle size={14} className="flex-shrink-0 mt-0.5" />
-                  This information is client-provided and should be considered when designing programs. 
-                  Always consult with healthcare professionals for medical advice.
+                  This information is entered by your client and is read-only. Please review carefully for programming considerations.
                 </p>
               </div>
             </div>
@@ -621,7 +620,68 @@ export default function ClientProfilePage() {
                 </p>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-6">
+                {/* Most Recent Check-In Summary Card */}
+                {weeklyCheckIns[0] && (
+                  <div className="bg-gradient-to-r from-soft-bronze/10 to-soft-bronze/5 border-2 border-soft-bronze rounded-xl p-6 mb-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Star className="w-5 h-5 text-soft-bronze" />
+                      <h4 className="font-heading text-lg font-bold text-charcoal-black">
+                        Most Recent Check-In Summary
+                      </h4>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="bg-soft-white rounded-lg p-4">
+                        <p className="text-xs text-warm-grey mb-2 font-medium">Overall Difficulty</p>
+                        <p className={`text-xl font-bold ${
+                          weeklyCheckIns[0].difficultyRating === 'Easy' 
+                            ? 'text-green-600'
+                            : weeklyCheckIns[0].difficultyRating === 'Moderate'
+                            ? 'text-yellow-600'
+                            : 'text-red-600'
+                        }`}>
+                          {weeklyCheckIns[0].difficultyRating}
+                        </p>
+                      </div>
+                      <div className="bg-soft-white rounded-lg p-4">
+                        <p className="text-xs text-warm-grey mb-2 font-medium">Energy Levels</p>
+                        <p className={`text-xl font-bold ${
+                          weeklyCheckIns[0].energyRating === 'High' 
+                            ? 'text-green-600'
+                            : weeklyCheckIns[0].energyRating === 'OK'
+                            ? 'text-yellow-600'
+                            : 'text-red-600'
+                        }`}>
+                          {weeklyCheckIns[0].energyRating}
+                        </p>
+                      </div>
+                      <div className="bg-soft-white rounded-lg p-4">
+                        <p className="text-xs text-warm-grey mb-2 font-medium">Soreness</p>
+                        <p className={`text-xl font-bold ${
+                          weeklyCheckIns[0].sorenessRating === 'None' 
+                            ? 'text-green-600'
+                            : weeklyCheckIns[0].sorenessRating === 'Mild'
+                            ? 'text-yellow-600'
+                            : 'text-red-600'
+                        }`}>
+                          {weeklyCheckIns[0].sorenessRating}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4 text-xs text-warm-grey">
+                      Week {weeklyCheckIns[0].weekNumber} • Submitted {formatCheckInDate(weeklyCheckIns[0].createdAt)}
+                    </div>
+                  </div>
+                )}
+
+                {/* All Check-Ins */}
+                <div>
+                  <h4 className="font-heading text-base font-bold text-charcoal-black mb-4">
+                    All Check-Ins History
+                  </h4>
+                  <div className="space-y-4">
                 {weeklyCheckIns.map((checkIn) => (
                   <div
                     key={checkIn._id}
@@ -712,11 +772,10 @@ export default function ClientProfilePage() {
                   </div>
                 ))}
               </div>
+            </div>
             )}
           </div>
         </div>
-
-        {/* Action Buttons */}
         <div className="mt-8 flex gap-4">
           <button
             onClick={() => navigate('/trainer/clients')}
