@@ -776,9 +776,6 @@ export default function ClientProfilePage() {
                 </div>
               </div>
             )}
-              </div>
-            </div>
-            )}
           </div>
         </div>
 
@@ -800,3 +797,4 @@ export default function ClientProfilePage() {
     </>
   );
 }
+
