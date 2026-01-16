@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientPrograms, ClientAssignedWorkouts, WeeklyCoachesNotes } from '@/entities';
-import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight, Volume2, AlertCircle, MessageCircle, Zap, Info, Archive, Star, HelpCircle } from 'lucide-react';
+import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight, Volume2, AlertCircle, MessageCircle, Zap, Info, Archive, Star, HelpCircle, Lightbulb } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { Link } from 'react-router-dom';
 import PostWorkoutFeedbackPrompt from '@/components/ClientPortal/PostWorkoutFeedbackPrompt';
@@ -65,6 +65,7 @@ export default function MyProgramPage() {
   const [expandedHowToPerform, setExpandedHowToPerform] = useState<Set<string>>(new Set());
   const [expandedCoachTip, setExpandedCoachTip] = useState<Set<string>>(new Set());
   const [expandedProgression, setExpandedProgression] = useState<Set<string>>(new Set());
+  const [expandedModifications, setExpandedModifications] = useState<Set<string>>(new Set());
   const [activeWorkoutDay, setActiveWorkoutDay] = useState<string | null>(null);
   const [completedWorkouts, setCompletedWorkouts] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
@@ -246,11 +247,12 @@ export default function MyProgramPage() {
     });
   };
 
-  const toggleSection = (exerciseId: string, section: 'howToPerform' | 'coachTip' | 'progression') => {
+  const toggleSection = (exerciseId: string, section: 'howToPerform' | 'coachTip' | 'progression' | 'modifications') => {
     const setterMap = {
       howToPerform: setExpandedHowToPerform,
       coachTip: setExpandedCoachTip,
       progression: setExpandedProgression,
+      modifications: setExpandedModifications,
     };
     
     const setter = setterMap[section];
@@ -837,6 +839,64 @@ export default function MyProgramPage() {
                         </div>
                       )}
 
+                      {/* Collapsible: Modifications */}
+                      {((workout as any).modification1Title || (workout as any).modification2Title || (workout as any).modification3Title) && (
+                        <div className="border border-warm-sand-beige rounded-lg overflow-hidden">
+                          <button
+                            onClick={() => toggleSection(workout._id || '', 'modifications')}
+                            className="w-full flex items-center justify-between p-4 bg-warm-sand-beige/20 hover:bg-warm-sand-beige/30 transition-colors"
+                          >
+                            <div className="flex items-center gap-2">
+                              <Lightbulb size={18} className="text-soft-bronze flex-shrink-0" />
+                              <span className="font-bold text-sm text-charcoal-black">Exercise Modifications</span>
+                            </div>
+                            <ChevronDown
+                              size={18}
+                              className={`text-soft-bronze transition-transform ${
+                                expandedModifications.has(workout._id || '') ? 'rotate-180' : ''
+                              }`}
+                            />
+                          </button>
+                          {expandedModifications.has(workout._id || '') && (
+                            <div className="p-4 bg-warm-sand-beige/10 border-t border-warm-sand-beige space-y-3">
+                              <p className="text-xs text-warm-grey mb-3">
+                                Alternative options for this exercise if needed:
+                              </p>
+                              {(workout as any).modification1Title && (
+                                <div className="bg-soft-white border border-soft-bronze/20 rounded-lg p-3">
+                                  <p className="font-bold text-sm text-soft-bronze mb-1">
+                                    {(workout as any).modification1Title}
+                                  </p>
+                                  <p className="text-sm text-charcoal-black leading-relaxed">
+                                    {(workout as any).modification1Description}
+                                  </p>
+                                </div>
+                              )}
+                              {(workout as any).modification2Title && (
+                                <div className="bg-soft-white border border-soft-bronze/20 rounded-lg p-3">
+                                  <p className="font-bold text-sm text-soft-bronze mb-1">
+                                    {(workout as any).modification2Title}
+                                  </p>
+                                  <p className="text-sm text-charcoal-black leading-relaxed">
+                                    {(workout as any).modification2Description}
+                                  </p>
+                                </div>
+                              )}
+                              {(workout as any).modification3Title && (
+                                <div className="bg-soft-white border border-soft-bronze/20 rounded-lg p-3">
+                                  <p className="font-bold text-sm text-soft-bronze mb-1">
+                                    {(workout as any).modification3Title}
+                                  </p>
+                                  <p className="text-sm text-charcoal-black leading-relaxed">
+                                    {(workout as any).modification3Description}
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
+
                       {workout.exerciseVideoUrl && (
                         <a
                           href={workout.exerciseVideoUrl}
@@ -1299,6 +1359,64 @@ export default function MyProgramPage() {
                               {expandedCoachTip.has(exercise._id || '') && (
                                 <div className="p-4 bg-warm-sand-beige/10 border-t border-warm-sand-beige">
                                   <p className="text-sm text-charcoal-black leading-relaxed">{exercise.exerciseNotes}</p>
+                                </div>
+                              )}
+                            </div>
+                          )}
+
+                          {/* Collapsible: Modifications */}
+                          {((exercise as any).modification1Title || (exercise as any).modification2Title || (exercise as any).modification3Title) && (
+                            <div className="border border-warm-sand-beige rounded-lg overflow-hidden mb-4">
+                              <button
+                                onClick={() => toggleSection(exercise._id || '', 'modifications')}
+                                className="w-full flex items-center justify-between p-4 bg-warm-sand-beige/20 hover:bg-warm-sand-beige/30 transition-colors"
+                              >
+                                <div className="flex items-center gap-2">
+                                  <Lightbulb size={18} className="text-soft-bronze flex-shrink-0" />
+                                  <span className="font-bold text-sm text-charcoal-black">Exercise Modifications</span>
+                                </div>
+                                <ChevronDown
+                                  size={18}
+                                  className={`text-soft-bronze transition-transform ${
+                                    expandedModifications.has(exercise._id || '') ? 'rotate-180' : ''
+                                  }`}
+                                />
+                              </button>
+                              {expandedModifications.has(exercise._id || '') && (
+                                <div className="p-4 bg-warm-sand-beige/10 border-t border-warm-sand-beige space-y-3">
+                                  <p className="text-xs text-warm-grey mb-3">
+                                    Alternative options for this exercise if needed:
+                                  </p>
+                                  {(exercise as any).modification1Title && (
+                                    <div className="bg-soft-white border border-soft-bronze/20 rounded-lg p-3">
+                                      <p className="font-bold text-sm text-soft-bronze mb-1">
+                                        {(exercise as any).modification1Title}
+                                      </p>
+                                      <p className="text-sm text-charcoal-black leading-relaxed">
+                                        {(exercise as any).modification1Description}
+                                      </p>
+                                    </div>
+                                  )}
+                                  {(exercise as any).modification2Title && (
+                                    <div className="bg-soft-white border border-soft-bronze/20 rounded-lg p-3">
+                                      <p className="font-bold text-sm text-soft-bronze mb-1">
+                                        {(exercise as any).modification2Title}
+                                      </p>
+                                      <p className="text-sm text-charcoal-black leading-relaxed">
+                                        {(exercise as any).modification2Description}
+                                      </p>
+                                    </div>
+                                  )}
+                                  {(exercise as any).modification3Title && (
+                                    <div className="bg-soft-white border border-soft-bronze/20 rounded-lg p-3">
+                                      <p className="font-bold text-sm text-soft-bronze mb-1">
+                                        {(exercise as any).modification3Title}
+                                      </p>
+                                      <p className="text-sm text-charcoal-black leading-relaxed">
+                                        {(exercise as any).modification3Description}
+                                      </p>
+                                    </div>
+                                  )}
                                 </div>
                               )}
                             </div>

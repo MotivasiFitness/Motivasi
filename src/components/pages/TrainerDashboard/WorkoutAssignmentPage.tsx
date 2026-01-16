@@ -29,6 +29,12 @@ interface WorkoutForm {
   restTimeSeconds: number;
   exerciseNotes: string;
   exerciseVideoUrl: string;
+  modification1Title: string;
+  modification1Description: string;
+  modification2Title: string;
+  modification2Description: string;
+  modification3Title: string;
+  modification3Description: string;
 }
 
 export default function WorkoutAssignmentPage() {
@@ -57,6 +63,12 @@ export default function WorkoutAssignmentPage() {
     restTimeSeconds: 60,
     exerciseNotes: '',
     exerciseVideoUrl: '',
+    modification1Title: '',
+    modification1Description: '',
+    modification2Title: '',
+    modification2Description: '',
+    modification3Title: '',
+    modification3Description: '',
   });
 
   // Load trainer's clients
@@ -138,6 +150,12 @@ export default function WorkoutAssignmentPage() {
           exerciseNotes: formData.exerciseNotes,
           exerciseVideoUrl: formData.exerciseVideoUrl,
           weekNumber: formData.weekNumber,
+          modification1Title: formData.modification1Title,
+          modification1Description: formData.modification1Description,
+          modification2Title: formData.modification2Title,
+          modification2Description: formData.modification2Description,
+          modification3Title: formData.modification3Title,
+          modification3Description: formData.modification3Description,
         });
         
         setMessage({ type: 'success', text: 'Workout updated successfully' });
@@ -175,6 +193,12 @@ export default function WorkoutAssignmentPage() {
             exerciseNotes: formData.exerciseNotes,
             exerciseVideoUrl: formData.exerciseVideoUrl,
             weekNumber: formData.weekNumber,
+            modification1Title: formData.modification1Title,
+            modification1Description: formData.modification1Description,
+            modification2Title: formData.modification2Title,
+            modification2Description: formData.modification2Description,
+            modification3Title: formData.modification3Title,
+            modification3Description: formData.modification3Description,
           }
         );
 
@@ -192,6 +216,12 @@ export default function WorkoutAssignmentPage() {
             restTimeSeconds: 60,
             exerciseNotes: '',
             exerciseVideoUrl: '',
+            modification1Title: '',
+            modification1Description: '',
+            modification2Title: '',
+            modification2Description: '',
+            modification3Title: '',
+            modification3Description: '',
           });
           
           // Reload workouts
@@ -235,6 +265,12 @@ export default function WorkoutAssignmentPage() {
           exerciseNotes: formData.exerciseNotes,
           exerciseVideoUrl: formData.exerciseVideoUrl,
           weekNumber: formData.weekNumber,
+          modification1Title: formData.modification1Title,
+          modification1Description: formData.modification1Description,
+          modification2Title: formData.modification2Title,
+          modification2Description: formData.modification2Description,
+          modification3Title: formData.modification3Title,
+          modification3Description: formData.modification3Description,
         },
         true
       );
@@ -285,6 +321,12 @@ export default function WorkoutAssignmentPage() {
       restTimeSeconds: workout.restTimeSeconds || 60,
       exerciseNotes: workout.exerciseNotes || '',
       exerciseVideoUrl: workout.exerciseVideoUrl || '',
+      modification1Title: (workout as any).modification1Title || '',
+      modification1Description: (workout as any).modification1Description || '',
+      modification2Title: (workout as any).modification2Title || '',
+      modification2Description: (workout as any).modification2Description || '',
+      modification3Title: (workout as any).modification3Title || '',
+      modification3Description: (workout as any).modification3Description || '',
     });
     setEditingWorkoutId(workout._id || null);
     setSelectedClient(workout.clientId || '');
@@ -546,6 +588,106 @@ export default function WorkoutAssignmentPage() {
                   />
                 </div>
 
+                {/* Exercise Modifications Section */}
+                <div className="border-t border-warm-sand-beige pt-6 mt-6">
+                  <h3 className="font-heading text-lg font-bold text-charcoal-black mb-4">
+                    Exercise Modifications (Optional)
+                  </h3>
+                  <p className="text-xs text-warm-grey mb-4">
+                    Provide 2-3 alternative options for this exercise (e.g., Easier, No equipment, Joint-friendly)
+                  </p>
+
+                  {/* Modification 1 */}
+                  <div className="space-y-3 mb-4 p-4 bg-soft-white rounded-lg border border-warm-sand-beige">
+                    <div>
+                      <label className="block font-paragraph text-xs font-medium text-charcoal-black mb-2">
+                        Modification 1 Title
+                      </label>
+                      <input
+                        type="text"
+                        name="modification1Title"
+                        value={formData.modification1Title}
+                        onChange={handleInputChange}
+                        placeholder="e.g., Easier Version"
+                        className="w-full px-3 py-2 text-sm rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-paragraph text-xs font-medium text-charcoal-black mb-2">
+                        Modification 1 Description
+                      </label>
+                      <textarea
+                        name="modification1Description"
+                        value={formData.modification1Description}
+                        onChange={handleInputChange}
+                        placeholder="Describe the modification..."
+                        rows={2}
+                        className="w-full px-3 py-2 text-sm rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph resize-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Modification 2 */}
+                  <div className="space-y-3 mb-4 p-4 bg-soft-white rounded-lg border border-warm-sand-beige">
+                    <div>
+                      <label className="block font-paragraph text-xs font-medium text-charcoal-black mb-2">
+                        Modification 2 Title
+                      </label>
+                      <input
+                        type="text"
+                        name="modification2Title"
+                        value={formData.modification2Title}
+                        onChange={handleInputChange}
+                        placeholder="e.g., No Equipment"
+                        className="w-full px-3 py-2 text-sm rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-paragraph text-xs font-medium text-charcoal-black mb-2">
+                        Modification 2 Description
+                      </label>
+                      <textarea
+                        name="modification2Description"
+                        value={formData.modification2Description}
+                        onChange={handleInputChange}
+                        placeholder="Describe the modification..."
+                        rows={2}
+                        className="w-full px-3 py-2 text-sm rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph resize-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Modification 3 */}
+                  <div className="space-y-3 p-4 bg-soft-white rounded-lg border border-warm-sand-beige">
+                    <div>
+                      <label className="block font-paragraph text-xs font-medium text-charcoal-black mb-2">
+                        Modification 3 Title
+                      </label>
+                      <input
+                        type="text"
+                        name="modification3Title"
+                        value={formData.modification3Title}
+                        onChange={handleInputChange}
+                        placeholder="e.g., Joint-Friendly"
+                        className="w-full px-3 py-2 text-sm rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-paragraph text-xs font-medium text-charcoal-black mb-2">
+                        Modification 3 Description
+                      </label>
+                      <textarea
+                        name="modification3Description"
+                        value={formData.modification3Description}
+                        onChange={handleInputChange}
+                        placeholder="Describe the modification..."
+                        rows={2}
+                        className="w-full px-3 py-2 text-sm rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph resize-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+
                 {/* Submit Buttons */}
                 <div className="flex gap-3 pt-4">
                   <button
@@ -578,6 +720,7 @@ export default function WorkoutAssignmentPage() {
                         setFormData({
                           clientId: selectedClient,
                           workoutSlot: 1,
+                          weekNumber: 1,
                           exerciseName: '',
                           sets: 4,
                           reps: 8,
@@ -586,6 +729,12 @@ export default function WorkoutAssignmentPage() {
                           restTimeSeconds: 60,
                           exerciseNotes: '',
                           exerciseVideoUrl: '',
+                          modification1Title: '',
+                          modification1Description: '',
+                          modification2Title: '',
+                          modification2Description: '',
+                          modification3Title: '',
+                          modification3Description: '',
                         });
                       }}
                       className="px-6 py-3 rounded-lg font-medium border border-warm-sand-beige hover:bg-warm-sand-beige/20 transition-colors flex items-center justify-center gap-2"
