@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientAssignedWorkouts, TrainerClientAssignments } from '@/entities';
-import { AlertCircle, CheckCircle, Loader, Plus, Trash2, Edit2, Save, X } from 'lucide-react';
+import { AlertCircle, CheckCircle, Loader, Plus, Trash2, Edit2, Save, X, User } from 'lucide-react';
 import { useRole } from '@/hooks/useRole';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   getActiveWorkoutsForWeek,
   getTrainerWorkoutsForCurrentWeek,
@@ -39,6 +39,8 @@ interface WorkoutForm {
 
 export default function WorkoutAssignmentPage() {
   const { member } = useMember();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { isTrainer, isLoading: roleLoading } = useRole();
   const [clients, setClients] = useState<TrainerClientAssignments[]>([]);
   const [currentWorkouts, setCurrentWorkouts] = useState<ClientAssignedWorkouts[]>([]);
@@ -83,8 +85,15 @@ export default function WorkoutAssignmentPage() {
         );
         setClients(trainerClients);
         
-        if (trainerClients.length > 0) {
+        // Check if clientId is in URL params
+        const clientIdFromUrl = searchParams.get('clientId');
+        
+        if (clientIdFromUrl && trainerClients.some(c => c.clientId === clientIdFromUrl)) {
+          setSelectedClient(clientIdFromUrl);
+          setFormData(prev => ({ ...prev, clientId: clientIdFromUrl }));
+        } else if (trainerClients.length > 0) {
           setSelectedClient(trainerClients[0].clientId || '');
+          setFormData(prev => ({ ...prev, clientId: trainerClients[0].clientId || '' }));
         }
       } catch (error) {
         console.error('Error loading clients:', error);
@@ -93,7 +102,7 @@ export default function WorkoutAssignmentPage() {
     };
 
     loadClients();
-  }, [member?._id]);
+  }, [member?._id, searchParams]);
 
   // Load current week's workouts
   useEffect(() => {
@@ -404,21 +413,34 @@ export default function WorkoutAssignmentPage() {
                   <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
                     Select Client *
                   </label>
-                  <select
-                    value={selectedClient}
-                    onChange={(e) => {
-                      setSelectedClient(e.target.value);
-                      setFormData(prev => ({ ...prev, clientId: e.target.value }));
-                    }}
-                    className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
-                  >
-                    <option value="">Choose a client...</option>
-                    {clients.map(client => (
-                      <option key={client._id} value={client.clientId}>
-                        {client.clientId}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="flex gap-3">
+                    <select
+                      value={selectedClient}
+                      onChange={(e) => {
+                        setSelectedClient(e.target.value);
+                        setFormData(prev => ({ ...prev, clientId: e.target.value }));
+                      }}
+                      className="flex-1 px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
+                    >
+                      <option value="">Choose a client...</option>
+                      {clients.map(client => (
+                        <option key={client._id} value={client.clientId}>
+                          {client.clientId}
+                        </option>
+                      ))}
+                    </select>
+                    {selectedClient && (
+                      <button
+                        type="button"
+                        onClick={() => navigate(`/trainer/client-profile/${selectedClient}`)}
+                        className="px-4 py-3 bg-soft-bronze text-soft-white rounded-lg hover:bg-charcoal-black transition-colors flex items-center gap-2"
+                        title="View client profile"
+                      >
+                        <User size={18} />
+                        Profile
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {/* Workout Slot */}

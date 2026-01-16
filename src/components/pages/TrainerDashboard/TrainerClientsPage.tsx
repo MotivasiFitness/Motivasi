@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { FitnessPrograms, TrainerClientAssignments, MemberRoles, TrainerClientMessages } from '@/entities';
-import { MessageSquare, Plus, AlertCircle, CheckCircle } from 'lucide-react';
+import { MessageSquare, Plus, AlertCircle, CheckCircle, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getTrainerClients, assignClientToTrainer } from '@/lib/role-utils';
 import { getClientDisplayNames } from '@/lib/client-display-name';
@@ -361,15 +361,26 @@ export default function TrainerClientsPage() {
                   </div>
                 )}
 
-                <button
-                  onClick={() => handleMessageClient(client.clientId, client.conversationId || `${member?._id}-${client.clientId}`)}
-                  disabled={messagingClientId === client.clientId}
-                  className="w-full flex items-center justify-center gap-2 bg-charcoal-black text-soft-white px-4 py-3 rounded-lg hover:bg-soft-bronze transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  title="Open messaging with this client"
-                >
-                  <MessageSquare size={18} />
-                  {messagingClientId === client.clientId ? 'Opening...' : 'Message Client'}
-                </button>
+                <div className="space-y-3">
+                  <button
+                    onClick={() => navigate(`/trainer/client-profile/${client.clientId}`)}
+                    className="w-full flex items-center justify-center gap-2 bg-soft-bronze text-soft-white px-4 py-3 rounded-lg hover:bg-charcoal-black transition-colors"
+                    title="View client profile"
+                  >
+                    <User size={18} />
+                    View Profile
+                  </button>
+
+                  <button
+                    onClick={() => handleMessageClient(client.clientId, client.conversationId || `${member?._id}-${client.clientId}`)}
+                    disabled={messagingClientId === client.clientId}
+                    className="w-full flex items-center justify-center gap-2 bg-charcoal-black text-soft-white px-4 py-3 rounded-lg hover:bg-soft-bronze transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="Open messaging with this client"
+                  >
+                    <MessageSquare size={18} />
+                    {messagingClientId === client.clientId ? 'Opening...' : 'Message Client'}
+                  </button>
+                </div>
               </div>
             ))}
           </div>
