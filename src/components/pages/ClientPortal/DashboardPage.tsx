@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { ClientBookings, ProgressCheckins, NutritionGuidance, ClientPrograms, ClientAssignedWorkouts, WeeklyCoachesNotes, ClientProfiles } from '@/entities';
-import { Calendar, CheckCircle, TrendingUp, Zap, Heart, ArrowRight, MessageCircle, Smile } from 'lucide-react';
+import { ClientBookings, ProgressCheckins, NutritionGuidance, ClientPrograms, ClientAssignedWorkouts, WeeklyCoachesNotes, ClientProfiles, WeeklyCheckins } from '@/entities';
+import { Calendar, CheckCircle, TrendingUp, Zap, Heart, ArrowRight, MessageCircle, Smile, Activity, AlertCircle, Eye } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { Link } from 'react-router-dom';
 import ProgramCompletionRing from '@/components/ClientPortal/ProgramCompletionRing';
 import { getClientDisplayName, isProfileIncomplete } from '@/lib/client-name-service';
 import WelcomeMessage from '@/components/ClientPortal/WelcomeMessage';
 import { getActiveCycle, getCompletedWeeksArray } from '@/lib/program-cycle-service';
+import WeeklyCheckInModal from '@/components/ClientPortal/WeeklyCheckInModal';
+import { Badge } from '@/components/ui/badge';
 
 export default function DashboardPage() {
   const { member } = useMember();
   const [upcomingBookings, setUpcomingBookings] = useState<ClientBookings[]>([]);
   const [latestCheckIn, setLatestCheckIn] = useState<ProgressCheckins | null>(null);
+  const [latestWeeklyCheckIn, setLatestWeeklyCheckIn] = useState<WeeklyCheckins | null>(null);
   const [programs, setPrograms] = useState<ClientPrograms[]>([]);
   const [assignedWorkouts, setAssignedWorkouts] = useState<ClientAssignedWorkouts[]>([]);
   const [completedWorkouts, setCompletedWorkouts] = useState<number>(0);
@@ -25,6 +28,11 @@ export default function DashboardPage() {
   const [clientProfile, setClientProfile] = useState<ClientProfiles | null>(null);
   const [showWelcomeMessage, setShowWelcomeMessage] = useState(false);
   const [useNewSystem, setUseNewSystem] = useState(false);
+  const [showCheckInModal, setShowCheckInModal] = useState(false);
+  const [currentWeekNumber, setCurrentWeekNumber] = useState(1);
+  const [currentWeekStartDate, setCurrentWeekStartDate] = useState('');
+  const [trainerId, setTrainerId] = useState('');
+  const [activeCycleId, setActiveCycleId] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,6 +82,17 @@ export default function DashboardPage() {
 
         // Fetch active program cycle
         const cycle = await getActiveCycle(member.loginEmail);
+        setActiveCycleId(cycle?._id || '');
+        
+        // Calculate current week start date
+        const today = new Date();
+        const day = today.getDay();
+        const diff = today.getDate() - day + (day === 0 ? -6 : 1);
+        const weekStart = new Date(today.setDate(diff));
+        weekStart.setHours(0, 0, 0, 0);
+        const weekStartStr = weekStart.toISOString().split('T')[0];
+        setCurrentWeekStartDate(weekStartStr);
+        setCurrentWeekNumber(cycle?.currentWeek || 1);
         
         // Try to fetch from new system first (assigned workouts)
         const { items: allAssignedWorkouts } = await BaseCrudService.getAll<ClientAssignedWorkouts>('clientassignedworkouts');
@@ -82,6 +101,10 @@ export default function DashboardPage() {
         if (clientWorkouts.length > 0) {
           // NEW SYSTEM: Use assigned workouts
           setUseNewSystem(true);
+          
+          // Get trainer ID from first workout
+          const firstWorkout = clientWorkouts[0];
+          setTrainerId(firstWorkout.trainerId || '');
           
           // Get completed weeks from the active cycle
           const completedWeeks = getCompletedWeeksArray(cycle?.weeksCompleted || 0);
@@ -123,14 +146,18 @@ export default function DashboardPage() {
           setCompletedWorkouts(Math.floor(uniqueDays.size * 0.6)); // Mock: 60% completion for demo
         }
 
+        // Fetch latest weekly check-in
+        const { items: weeklyCheckins } = await BaseCrudService.getAll<WeeklyCheckins>('weeklycheckins');
+        const clientWeeklyCheckins = weeklyCheckins.filter(c => c.clientId === member._id);
+        if (clientWeeklyCheckins.length > 0) {
+          const sortedWeekly = clientWeeklyCheckins.sort((a, b) => 
+            new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime()
+          );
+          setLatestWeeklyCheckIn(sortedWeekly[0]);
+        }
+
         // Fetch current week's coach note
         const { items: coachNotes } = await BaseCrudService.getAll<WeeklyCoachesNotes>('weeklycoachesnotes');
-        const today = new Date();
-        const day = today.getDay();
-        const diff = today.getDate() - day + (day === 0 ? -6 : 1);
-        const weekStart = new Date(today.setDate(diff));
-        weekStart.setHours(0, 0, 0, 0);
-        const weekStartStr = weekStart.toISOString().split('T')[0];
 
         const currentWeekNote = coachNotes.find(
           n =>
@@ -167,6 +194,31 @@ export default function DashboardPage() {
     }
     setShowWelcomeMessage(false);
   };
+
+  const handleCheckInSuccess = async () => {
+    // Refresh weekly check-ins after submission
+    if (!member?._id) return;
+    
+    try {
+      const { items: weeklyCheckins } = await BaseCrudService.getAll<WeeklyCheckins>('weeklycheckins');
+      const clientWeeklyCheckins = weeklyCheckins.filter(c => c.clientId === member._id);
+      if (clientWeeklyCheckins.length > 0) {
+        const sortedWeekly = clientWeeklyCheckins.sort((a, b) => 
+          new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime()
+        );
+        setLatestWeeklyCheckIn(sortedWeekly[0]);
+      }
+    } catch (error) {
+      console.error('Error refreshing check-ins:', error);
+    }
+  };
+
+  // Check if current week check-in exists
+  const hasCurrentWeekCheckIn = latestWeeklyCheckIn && 
+    latestWeeklyCheckIn.weekStartDate === currentWeekStartDate;
+
+  // Determine check-in status
+  const checkInStatus = hasCurrentWeekCheckIn ? 'completed' : 'due';
 
   return (
     <>
@@ -416,67 +468,130 @@ export default function DashboardPage() {
       </div>
 
       {/* Latest Check-in */}
-      {latestCheckIn && (
+      {latestWeeklyCheckIn && (
         <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="font-heading text-2xl font-bold text-charcoal-black">Latest Progress Check-in</h2>
+            <div className="flex items-center gap-3">
+              <h2 className="font-heading text-2xl font-bold text-charcoal-black">Latest Progress Check-In</h2>
+              <Badge 
+                variant={checkInStatus === 'completed' ? 'default' : 'secondary'}
+                className={checkInStatus === 'completed' 
+                  ? 'bg-green-100 text-green-800 hover:bg-green-100' 
+                  : 'bg-amber-100 text-amber-800 hover:bg-amber-100'
+                }
+              >
+                {checkInStatus === 'completed' ? '✓ Check-in completed' : 'Check-in due'}
+              </Badge>
+            </div>
             <Link to="/portal/progress" className="text-soft-bronze hover:underline text-sm font-medium">
               View all
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <div className="space-y-4">
-                <div>
-                  <p className="text-warm-grey text-sm mb-1">Check-in Date</p>
-                  <p className="font-paragraph font-bold text-charcoal-black">
-                    {new Date(latestCheckIn.checkinDate || '').toLocaleDateString('en-GB', {
-                      weekday: 'long',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </p>
+          <div className="space-y-6">
+            {/* Primary metrics - Energy and Effort */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-warm-sand-beige/30 rounded-xl p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 bg-soft-bronze/20 rounded-full flex items-center justify-center">
+                    <Zap className="w-5 h-5 text-soft-bronze" />
+                  </div>
+                  <div>
+                    <p className="text-warm-grey text-sm">Energy levels</p>
+                    <p className="font-heading text-2xl font-bold text-charcoal-black">
+                      {latestWeeklyCheckIn.energyRating || 'N/A'}
+                    </p>
+                  </div>
                 </div>
-                {latestCheckIn.currentWeight && (
+              </div>
+
+              <div className="bg-warm-sand-beige/30 rounded-xl p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 bg-soft-bronze/20 rounded-full flex items-center justify-center">
+                    <Activity className="w-5 h-5 text-soft-bronze" />
+                  </div>
                   <div>
-                    <p className="text-warm-grey text-sm mb-1">Current Weight</p>
-                    <p className="font-heading text-3xl font-bold text-soft-bronze">
-                      {latestCheckIn.currentWeight} kg
+                    <p className="text-warm-grey text-sm">Overall difficulty</p>
+                    <p className="font-heading text-2xl font-bold text-charcoal-black">
+                      {latestWeeklyCheckIn.difficultyRating || 'N/A'}
                     </p>
                   </div>
-                )}
-                {latestCheckIn.energyLevel && (
-                  <div>
-                    <p className="text-warm-grey text-sm mb-1">Energy Level</p>
-                    <p className="font-paragraph font-bold text-charcoal-black">
-                      {latestCheckIn.energyLevel}/10
-                    </p>
-                  </div>
-                )}
-                {latestCheckIn.clientNotes && (
-                  <div>
-                    <p className="text-warm-grey text-sm mb-1">Your Notes</p>
-                    <p className="font-paragraph text-charcoal-black">
-                      {latestCheckIn.clientNotes}
-                    </p>
-                  </div>
-                )}
+                </div>
               </div>
             </div>
 
-            {latestCheckIn.progressPhotoFront && (
-              <div className="aspect-square rounded-xl overflow-hidden">
-                <Image
-                  src={latestCheckIn.progressPhotoFront}
-                  alt="Progress photo"
-                  className="w-full h-full object-cover"
-                  width={400}
-                />
+            {/* Secondary info - Soreness */}
+            {latestWeeklyCheckIn.sorenessRating && (
+              <div className="flex items-start gap-3 p-4 bg-warm-sand-beige/20 rounded-lg">
+                <AlertCircle className="w-5 h-5 text-warm-grey flex-shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-warm-grey text-sm mb-1">Soreness / aches</p>
+                  <p className="font-paragraph font-medium text-charcoal-black">
+                    {latestWeeklyCheckIn.sorenessRating}
+                  </p>
+                  {latestWeeklyCheckIn.sorenessNotes && (
+                    <p className="text-sm text-warm-grey mt-1 line-clamp-2">
+                      {latestWeeklyCheckIn.sorenessNotes}
+                    </p>
+                  )}
+                </div>
               </div>
             )}
+
+            {/* Client notes - truncated */}
+            {latestWeeklyCheckIn.clientNotes && (
+              <div className="p-4 bg-warm-sand-beige/20 rounded-lg">
+                <p className="text-warm-grey text-sm mb-2">Your notes</p>
+                <p className="font-paragraph text-charcoal-black line-clamp-3">
+                  {latestWeeklyCheckIn.clientNotes}
+                </p>
+              </div>
+            )}
+
+            {/* Coach involvement reinforcement */}
+            <div className="flex items-start gap-3 p-4 bg-soft-bronze/10 rounded-lg border border-soft-bronze/20">
+              <MessageCircle className="w-5 h-5 text-soft-bronze flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-charcoal-black">
+                Your coach reviews every check-in to ensure your program stays aligned with how you're feeling.
+              </p>
+            </div>
+
+            {/* CTA Button - Conditional */}
+            <div className="flex justify-end pt-2">
+              {hasCurrentWeekCheckIn ? (
+                <Link
+                  to="/portal/progress"
+                  className="inline-flex items-center gap-2 bg-soft-white border-2 border-soft-bronze text-soft-bronze px-6 py-3 rounded-lg font-bold hover:bg-soft-bronze hover:text-soft-white transition-all duration-200"
+                >
+                  <Eye size={18} />
+                  View check-in history
+                </Link>
+              ) : (
+                <button
+                  onClick={() => setShowCheckInModal(true)}
+                  className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white px-6 py-3 rounded-lg font-bold hover:bg-soft-bronze/90 transition-colors"
+                >
+                  <CheckCircle size={18} />
+                  Complete weekly check-in
+                </button>
+              )}
+            </div>
           </div>
         </div>
+      )}
+
+      {/* Weekly Check-In Modal */}
+      {showCheckInModal && member?._id && (
+        <WeeklyCheckInModal
+          isOpen={showCheckInModal}
+          onClose={() => setShowCheckInModal(false)}
+          weekNumber={currentWeekNumber}
+          weekStartDate={currentWeekStartDate}
+          clientId={member._id}
+          trainerId={trainerId}
+          programCycleId={activeCycleId}
+          onSubmitSuccess={handleCheckInSuccess}
+        />
       )}
 
       {/* Coach Support Block */}
