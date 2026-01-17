@@ -29,6 +29,8 @@ export default function TrainerDashboardLayout() {
   const navSections = [
     {
       title: 'Core',
+      color: 'text-soft-bronze',
+      hoverColor: 'hover:text-soft-bronze',
       items: [
         { path: '/trainer', label: 'Dashboard', icon: LayoutDashboard },
         { path: '/trainer/clients', label: 'My Clients', icon: Users },
@@ -36,6 +38,8 @@ export default function TrainerDashboardLayout() {
     },
     {
       title: 'Programs & Work',
+      color: 'text-blue-400',
+      hoverColor: 'hover:text-blue-400',
       items: [
         { path: '/trainer/programs', label: 'Create Program', icon: BookOpen },
         { path: '/trainer/programs-created', label: 'My Programs', icon: FolderOpen },
@@ -44,6 +48,8 @@ export default function TrainerDashboardLayout() {
     },
     {
       title: 'Content & Media',
+      color: 'text-purple-400',
+      hoverColor: 'hover:text-purple-400',
       items: [
         { path: '/trainer/video-reviews', label: 'Client Video Reviews', icon: Video },
         { path: '/trainer/video-library', label: 'Video Library', icon: Video },
@@ -51,6 +57,8 @@ export default function TrainerDashboardLayout() {
     },
     {
       title: 'Insights',
+      color: 'text-emerald-400',
+      hoverColor: 'hover:text-emerald-400',
       items: [
         { path: '/trainer/workout-feedback', label: 'Client Feedback', icon: MessageSquare },
         { path: '/trainer/progress', label: 'Client Progress', icon: TrendingUp },
@@ -59,6 +67,8 @@ export default function TrainerDashboardLayout() {
     },
     {
       title: 'Tools',
+      color: 'text-amber-400',
+      hoverColor: 'hover:text-amber-400',
       items: [
         { path: '/trainer/ai-assistant', label: 'AI Assistant', icon: Sparkles },
       ]
@@ -128,7 +138,7 @@ export default function TrainerDashboardLayout() {
                       >
                         <Icon 
                           size={20} 
-                          className={active ? 'text-soft-bronze' : 'text-warm-grey group-hover:text-soft-white'} 
+                          className={active ? 'text-soft-bronze' : `${section.color} ${section.hoverColor} transition-colors`} 
                         />
                         <span className="font-paragraph text-sm">{item.label}</span>
                       </Link>
