@@ -1,10 +1,12 @@
 import { useMember } from '@/integrations';
 import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
-import { Users, BookOpen, Settings, LogOut, Menu, X, Loader, Sparkles, Video, Apple, MessageSquare, LayoutDashboard, FolderOpen, Dumbbell, TrendingUp } from 'lucide-react';
+import { Users, BookOpen, Settings, LogOut, Menu, X, Loader, Sparkles, Video, Apple, MessageSquare, LayoutDashboard, FolderOpen, Dumbbell, TrendingUp, ChevronDown, User } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useRole } from '@/hooks/useRole';
 import PortalHeader from '@/components/layout/PortalHeader';
 import NotificationsPanel from './NotificationsPanel';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 export default function TrainerDashboardLayout() {
   const { member, actions } = useMember();
@@ -100,15 +102,64 @@ export default function TrainerDashboardLayout() {
         >
           {/* Logo/Header */}
           <div className="p-6 border-b border-soft-bronze/20">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="font-heading text-2xl font-bold text-soft-white">Trainer Hub</h1>
-                <p className="text-sm text-warm-grey mt-2">
-                  {member?.profile?.nickname || member?.loginEmail}
-                </p>
-              </div>
+            <div className="flex items-center justify-between mb-4">
+              <h1 className="font-heading text-2xl font-bold text-soft-white">Trainer Hub</h1>
               <NotificationsPanel />
             </div>
+            
+            {/* Trainer Profile Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger className="w-full">
+                <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-soft-white/5 transition-colors cursor-pointer group">
+                  <Avatar className="w-10 h-10">
+                    <AvatarImage src={member?.profile?.photo?.url} alt={member?.profile?.nickname || 'Trainer'} />
+                    <AvatarFallback className="bg-soft-bronze text-soft-white font-heading">
+                      {(member?.profile?.nickname || member?.loginEmail)?.charAt(0).toUpperCase() || 'T'}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 text-left">
+                    <p className="text-sm font-medium text-soft-white">
+                      {member?.profile?.nickname || member?.contact?.firstName || 'Trainer'}
+                    </p>
+                    <p className="text-xs text-warm-grey">
+                      {member?.loginEmail}
+                    </p>
+                  </div>
+                  <ChevronDown size={16} className="text-warm-grey group-hover:text-soft-white transition-colors" />
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                align="start" 
+                className="w-56 bg-charcoal-black border-soft-bronze/20 text-soft-white"
+              >
+                <DropdownMenuItem asChild>
+                  <Link 
+                    to="/trainer/profile" 
+                    className="flex items-center gap-2 cursor-pointer hover:bg-soft-white/5"
+                  >
+                    <User size={16} className="text-soft-bronze" />
+                    <span className="font-paragraph">Profile</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link 
+                    to="/trainer/preferences" 
+                    className="flex items-center gap-2 cursor-pointer hover:bg-soft-white/5"
+                  >
+                    <Settings size={16} className="text-soft-bronze" />
+                    <span className="font-paragraph">Settings</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-soft-bronze/20" />
+                <DropdownMenuItem 
+                  onClick={actions.logout}
+                  className="flex items-center gap-2 cursor-pointer hover:bg-red-500/10 text-red-400"
+                >
+                  <LogOut size={16} />
+                  <span className="font-paragraph">Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           {/* Navigation */}
@@ -150,21 +201,10 @@ export default function TrainerDashboardLayout() {
           </nav>
 
           {/* Footer */}
-          <div className="p-6 border-t border-soft-bronze/20 space-y-3">
-            <Link
-              to="/trainer/preferences"
-              className="flex items-center gap-3 px-4 py-3 rounded-lg text-warm-grey hover:bg-soft-bronze/10 transition-colors"
-            >
-              <Settings size={20} />
-              <span className="font-paragraph">Settings</span>
-            </Link>
-            <button
-              onClick={actions.logout}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-warm-grey hover:bg-red-500/10 hover:text-red-400 transition-colors"
-            >
-              <LogOut size={20} />
-              <span className="font-paragraph">Sign Out</span>
-            </button>
+          <div className="p-6 border-t border-soft-bronze/20">
+            <p className="text-xs text-warm-grey text-center">
+              Trainer Hub v1.0
+            </p>
           </div>
         </aside>
 

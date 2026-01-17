@@ -587,6 +587,33 @@ export interface TrainerNotifications {
 
 
 /**
+ * Collection ID: trainerprofiles
+ * Interface for TrainerProfiles
+ */
+export interface TrainerProfiles {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  profilePhoto?: string;
+  /** @wixFieldType text */
+  displayName?: string;
+  /** @wixFieldType text */
+  bio?: string;
+  /** @wixFieldType text */
+  specialisms?: string;
+  /** @wixFieldType text */
+  certifications?: string;
+  /** @wixFieldType text */
+  timeZone?: string;
+  /** @wixFieldType text */
+  contactEmail?: string;
+  /** @wixFieldType text */
+  memberId?: string;
+}
+
+
+/**
  * Collection ID: trainerqualifications
  * Interface for TrainerQualifications
  */
