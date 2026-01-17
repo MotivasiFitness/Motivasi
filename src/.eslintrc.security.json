@@ -1,0 +1,27 @@
+{
+  "rules": {
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "CallExpression[callee.object.name='BaseCrudService'][callee.property.name='getAll'] > Literal[value='clientassignedworkouts']",
+        "message": "SECURITY: Direct BaseCrudService.getAll('clientassignedworkouts') is prohibited. Use getClientWorkouts() or getAuthorizedClientWorkouts() from @/lib/client-workout-access-control instead to ensure proper access control."
+      },
+      {
+        "selector": "CallExpression[callee.object.name='BaseCrudService'][callee.property.name='getAll'] > Literal[value='clientprograms']",
+        "message": "SECURITY: Direct BaseCrudService.getAll('clientprograms') should be reviewed. Consider using access-controlled methods if this collection contains client-specific data."
+      },
+      {
+        "selector": "CallExpression[callee.object.name='BaseCrudService'][callee.property.name='getAll'] > Literal[value='weeklycheckins']",
+        "message": "SECURITY: Direct BaseCrudService.getAll('weeklycheckins') should be reviewed. Ensure proper clientId filtering is applied after fetching."
+      },
+      {
+        "selector": "CallExpression[callee.object.name='BaseCrudService'][callee.property.name='getAll'] > Literal[value='weeklysummaries']",
+        "message": "SECURITY: Direct BaseCrudService.getAll('weeklysummaries') should be reviewed. Ensure proper clientId filtering is applied after fetching."
+      },
+      {
+        "selector": "CallExpression[callee.object.name='BaseCrudService'][callee.property.name='getAll'] > Literal[value='programassignments']",
+        "message": "SECURITY: Direct BaseCrudService.getAll('programassignments') should be reviewed. Ensure proper clientId/trainerId filtering is applied after fetching."
+      }
+    ]
+  }
+}

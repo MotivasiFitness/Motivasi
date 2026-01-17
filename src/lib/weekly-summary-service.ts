@@ -1,9 +1,13 @@
 /**
  * Weekly Summary Service
  * Handles automatic generation and management of end-of-week workout summaries
+ * 
+ * SECURITY: This service uses access-controlled workout fetching to ensure
+ * proper data isolation between clients and trainers.
  */
 
 import { BaseCrudService } from '@/integrations';
+import { getClientWorkouts } from './client-workout-access-control';
 
 export interface WeeklySummary {
   _id: string;
@@ -36,6 +40,8 @@ const ENCOURAGING_MESSAGES = [
 
 /**
  * Check if all workouts for a week are completed and generate summary if needed
+ * 
+ * SECURITY: Uses access-controlled workout fetching to ensure proper data isolation
  */
 export async function checkAndGenerateWeeklySummary(
   clientId: string,
@@ -55,9 +61,17 @@ export async function checkAndGenerateWeeklySummary(
       return existingSummary;
     }
 
-    // Get all workouts for this week
-    const allWorkouts = await BaseCrudService.getAll('clientassignedworkouts');
-    const weekWorkouts = allWorkouts.items.filter(
+    // SECURITY: Get workouts using access-controlled method
+    // This ensures we only access workouts for the specified client
+    const allWorkouts = await getClientWorkouts(
+      clientId,
+      trainerId,
+      'trainer',
+      { weekNumber }
+    );
+    
+    // Filter to this specific week (already filtered by access control, but double-check)
+    const weekWorkouts = allWorkouts.filter(
       (w: any) => 
         w.clientId === clientId && 
         w.weekNumber === weekNumber &&
@@ -182,6 +196,8 @@ export async function updateWeeklySummaryProgress(
 
 /**
  * Calculate current week progress without creating a summary
+ * 
+ * SECURITY: Uses access-controlled workout fetching to ensure proper data isolation
  */
 export async function calculateWeekProgress(
   clientId: string,
@@ -189,8 +205,16 @@ export async function calculateWeekProgress(
   trainerId: string
 ): Promise<{ completed: number; total: number; percentage: number }> {
   try {
-    const allWorkouts = await BaseCrudService.getAll('clientassignedworkouts');
-    const weekWorkouts = allWorkouts.items.filter(
+    // SECURITY: Get workouts using access-controlled method
+    const allWorkouts = await getClientWorkouts(
+      clientId,
+      trainerId,
+      'trainer',
+      { weekNumber }
+    );
+    
+    // Filter to this specific week (already filtered by access control, but double-check)
+    const weekWorkouts = allWorkouts.filter(
       (w: any) => 
         w.clientId === clientId && 
         w.weekNumber === weekNumber &&
