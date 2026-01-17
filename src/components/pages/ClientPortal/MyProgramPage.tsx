@@ -545,10 +545,10 @@ export default function MyProgramPage() {
           </h3>
           <div className="space-y-2 font-paragraph text-charcoal-black leading-relaxed">
             <p>
-              • <strong>This is your current training week.</strong> Complete sessions in any order that suits your schedule.
+              • <strong>This is your current training week.</strong> Complete trainings in any order that suits your schedule.
             </p>
             <p>
-              • <strong>Completed weeks move to history automatically</strong> once all sessions are done.
+              • <strong>Completed weeks move to history automatically</strong> once all trainings are done.
             </p>
             <p>
               • Focus on consistency, not perfection. Your coach is here to support you every step of the way.
@@ -565,13 +565,13 @@ export default function MyProgramPage() {
               </div>
               <div className="flex-1">
                 <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2">
-                  Starting your first session?
+                  Starting your first training?
                 </h3>
                 <p className="font-paragraph text-charcoal-black leading-relaxed mb-3">
                   Focus on good effort and learning the movements. Don't overthink it—perfection isn't the goal, progress is. Your coach will see your work and can adjust things as you go.
                 </p>
                 <p className="font-paragraph text-sm text-warm-grey italic">
-                  This message will disappear after your first session completion.
+                  This message will disappear after your first training completion.
                 </p>
               </div>
             </div>
@@ -596,7 +596,7 @@ export default function MyProgramPage() {
               You're All Caught Up!
             </h2>
             <p className="font-paragraph text-lg text-warm-grey">
-              Great work! You've completed all your assigned sessions. Rest and recover, and check back for new assignments.
+              Great work! You've completed all your assigned trainings. Rest and recover, and check back for new assignments.
             </p>
           </div>
         ) : nextWorkout ? (
@@ -605,7 +605,7 @@ export default function MyProgramPage() {
               {/* Left Content */}
               <div className="flex-1">
                 <p className="font-paragraph text-sm lg:text-base text-soft-white/80 mb-2">
-                  Your Next Session • Week {nextWorkout.weekNumber || 1}
+                  Your Next Training • Week {nextWorkout.weekNumber || 1}
                 </p>
                 <h2 className="font-heading text-3xl lg:text-4xl font-bold mb-4">
                   {nextWorkout.exerciseName}
@@ -613,7 +613,7 @@ export default function MyProgramPage() {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
                   <div className="flex items-center gap-2">
                     <span className="font-heading text-2xl font-bold">
-                      Session {nextWorkoutSlot}
+                      Training {nextWorkoutSlot}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -633,7 +633,7 @@ export default function MyProgramPage() {
                 }}
                 className="w-full lg:w-auto bg-soft-white text-soft-bronze px-8 py-4 rounded-lg font-heading text-lg font-bold hover:bg-soft-white/90 transition-all duration-300 shadow-md hover:shadow-lg"
               >
-                [ Start Session ]
+                [ Start Training ]
               </button>
             </div>
           </div>
@@ -646,7 +646,7 @@ export default function MyProgramPage() {
           return (
             <div key={weekNum} id={`week-${weekNum}`} className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8">
               <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
-                Week {weekNum} Sessions
+                Week {weekNum} Trainings
               </h2>
               
               {/* Week Overview Grid */}
@@ -664,14 +664,14 @@ export default function MyProgramPage() {
                     >
                       <div className="flex items-center justify-center gap-2 mb-2">
                         <div className="font-heading text-2xl font-bold text-charcoal-black">
-                          Session {workout.workoutSlot}
+                          Training {workout.workoutSlot}
                         </div>
                         {isCompleted && (
                           <CheckCircle2 size={24} className="text-green-600" />
                         )}
                       </div>
                       <p className={`text-sm mb-2 ${isCompleted ? 'text-green-700 font-medium' : 'text-warm-grey'}`}>
-                        {isCompleted ? '✓ Completed' : workout.exerciseName || 'Session'}
+                        {isCompleted ? '✓ Completed' : workout.exerciseName || 'Training'}
                       </p>
                       <p className="text-xs text-warm-grey/60">
                         {getDaysSinceUpdate(workout._updatedDate)}
@@ -720,7 +720,7 @@ export default function MyProgramPage() {
                       <h3 className={`font-heading text-lg lg:text-xl font-bold ${
                         isActive ? 'text-soft-white' : 'text-charcoal-black'
                       }`}>
-                        Session {workoutSlot}
+                        Training {workoutSlot}
                       </h3>
                       {isNextRecommended && !isCompleted && (
                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-soft-bronze/20 text-soft-bronze rounded-full text-xs font-medium border border-soft-bronze/40">
@@ -748,7 +748,7 @@ export default function MyProgramPage() {
                         }}
                         className="hidden sm:flex items-center gap-2 bg-soft-bronze text-soft-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-soft-bronze/90 transition-colors whitespace-nowrap"
                       >
-                        Start Session <ArrowRight size={16} />
+                        Start Training <ArrowRight size={16} />
                       </button>
                     )}
                     <ChevronDown
@@ -770,7 +770,7 @@ export default function MyProgramPage() {
                       }}
                       className="w-full flex items-center justify-center gap-2 bg-soft-bronze text-soft-white px-4 py-3 rounded-lg font-bold text-base hover:bg-soft-bronze/90 transition-colors"
                     >
-                      Start Session <ArrowRight size={18} />
+                      Start Training <ArrowRight size={18} />
                     </button>
                   </div>
                 )}
@@ -778,11 +778,11 @@ export default function MyProgramPage() {
                 {/* Expanded Workout Details */}
                 {isExpanded && (
                   <div className="border-t border-warm-sand-beige px-6 lg:px-8 py-6 space-y-6">
-                    {/* Session Overview */}
+                    {/* Training Overview */}
                     <div className="bg-soft-bronze/5 border border-soft-bronze/20 rounded-xl p-5 space-y-4">
                       <h3 className="font-heading text-lg font-bold text-charcoal-black flex items-center gap-2">
                         <Zap size={20} className="text-soft-bronze" />
-                        Session Overview
+                        Training Overview
                       </h3>
                       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                         <div>
@@ -1048,7 +1048,7 @@ export default function MyProgramPage() {
                         }`}
                       >
                         <CheckCircle2 size={20} />
-                        {isCompleted ? 'Session Completed!' : '✓ Mark Session Complete'}
+                        {isCompleted ? 'Training Completed!' : '✓ Mark Training Complete'}
                       </button>
                     </div>
                   </div>
@@ -1136,10 +1136,10 @@ export default function MyProgramPage() {
                 Programme Overview
               </h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-                {/* Session Length */}
+                {/* Training Length */}
                 <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
                   <Clock className="w-6 h-6 text-soft-bronze mb-2" />
-                  <p className="text-sm text-warm-grey mb-1">Session Length</p>
+                  <p className="text-sm text-warm-grey mb-1">Training Length</p>
                   <p className="font-heading text-2xl font-bold text-charcoal-black">
                     {estimatedSessionTime}–{estimatedSessionTime + 5} min
                   </p>
@@ -1218,7 +1218,7 @@ export default function MyProgramPage() {
                       <h3 className={`font-heading text-lg lg:text-xl font-bold ${
                         isActive ? 'text-soft-white' : 'text-charcoal-black'
                       }`}>
-                        Session {workoutNumber}
+                        Training {workoutNumber}
                       </h3>
                       {isNextRecommended && !isCompleted && (
                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-soft-bronze/20 text-soft-bronze rounded-full text-xs font-medium border border-soft-bronze/40">
@@ -1246,7 +1246,7 @@ export default function MyProgramPage() {
                         }}
                         className="hidden sm:flex items-center gap-2 bg-soft-bronze text-soft-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-soft-bronze/90 transition-colors whitespace-nowrap"
                       >
-                        Start Session <ArrowRight size={16} />
+                        Start Training <ArrowRight size={16} />
                       </button>
                     )}
                     <ChevronDown
@@ -1268,7 +1268,7 @@ export default function MyProgramPage() {
                       }}
                       className="w-full flex items-center justify-center gap-2 bg-soft-bronze text-soft-white px-4 py-3 rounded-lg font-bold text-base hover:bg-soft-bronze/90 transition-colors"
                     >
-                      Start Session <ArrowRight size={18} />
+                      Start Training <ArrowRight size={18} />
                     </button>
                   </div>
                 )}
@@ -1276,11 +1276,11 @@ export default function MyProgramPage() {
                 {/* Exercises List */}
                 {isExpanded && (
                   <div className="border-t border-warm-sand-beige px-6 lg:px-8 py-6 space-y-6">
-                    {/* Session Overview */}
+                    {/* Training Overview */}
                     <div className="bg-soft-bronze/5 border border-soft-bronze/20 rounded-xl p-5 space-y-4">
                       <h3 className="font-heading text-lg font-bold text-charcoal-black flex items-center gap-2">
                         <Zap size={20} className="text-soft-bronze" />
-                        Session Overview
+                        Training Overview
                       </h3>
                       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                         <div>
@@ -1659,7 +1659,7 @@ export default function MyProgramPage() {
                             <CheckCircle2 className="w-8 h-8 text-green-600" />
                           </div>
                           <p className="font-heading text-2xl font-bold text-charcoal-black">
-                            Session complete — nice work 💪
+                            Training complete — nice work 💪
                           </p>
                         </div>
                       ) : (
@@ -1673,7 +1673,7 @@ export default function MyProgramPage() {
                           }`}
                         >
                           <CheckCircle2 size={20} />
-                          {isCompleted ? 'Session Completed!' : '✓ Mark Session Complete'}
+                          {isCompleted ? 'Training Completed!' : '✓ Mark Training Complete'}
                         </button>
                       )}
                       {isCompleted && !sessionCompleteMessage && (
@@ -1732,7 +1732,7 @@ export default function MyProgramPage() {
             </p>
           </div>
           <div>
-            <h4 className="font-paragraph font-bold text-charcoal-black mb-2">✓ Track Your Sessions</h4>
+            <h4 className="font-paragraph font-bold text-charcoal-black mb-2">✓ Track Your Trainings</h4>
             <p className="text-warm-grey">
               Keep notes on how you felt and any modifications. This helps us adjust your programme.
             </p>
@@ -1744,7 +1744,7 @@ export default function MyProgramPage() {
       {showFeedback && completedWorkoutId && (
         <PostWorkoutFeedbackPrompt
           workoutId={completedWorkoutId}
-          workoutTitle="Your Session"
+          workoutTitle="Your Training"
           onClose={() => {
             setShowFeedback(false);
             setCompletedWorkoutId('');
