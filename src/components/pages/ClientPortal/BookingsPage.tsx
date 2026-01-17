@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientBookings, ClientProfiles } from '@/entities';
-import { Calendar, Clock, Video, MapPin, Plus, Trash2, Lightbulb, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Calendar, Clock, Video, MapPin, Plus, Trash2, Lightbulb, ArrowRight } from 'lucide-react';
 import { getClientFullName } from '@/lib/client-name-service';
 
 export default function BookingsPage() {
@@ -29,8 +29,11 @@ export default function BookingsPage() {
         setClientProfile(profile || null);
 
         const { items } = await BaseCrudService.getAll<ClientBookings>('clientbookings');
+        // Filter to only show future bookings
+        const now = new Date();
+        const futureBookings = items.filter(b => new Date(b.appointmentDate || '') > now);
         // Sort by date (upcoming first)
-        const sorted = items.sort((a, b) => 
+        const sorted = futureBookings.sort((a, b) => 
           new Date(a.appointmentDate || '').getTime() - new Date(b.appointmentDate || '').getTime()
         );
         setBookings(sorted);
@@ -72,9 +75,11 @@ export default function BookingsPage() {
 
       await BaseCrudService.create('clientbookings', newBooking);
 
-      // Refresh bookings
+      // Refresh bookings - only future bookings
       const { items } = await BaseCrudService.getAll<ClientBookings>('clientbookings');
-      const sorted = items.sort((a, b) => 
+      const now = new Date();
+      const futureBookings = items.filter(b => new Date(b.appointmentDate || '') > now);
+      const sorted = futureBookings.sort((a, b) => 
         new Date(a.appointmentDate || '').getTime() - new Date(b.appointmentDate || '').getTime()
       );
       setBookings(sorted);
@@ -111,26 +116,8 @@ export default function BookingsPage() {
     );
   }
 
-  const upcomingBookings = bookings.filter(b => new Date(b.appointmentDate || '') > new Date());
-  const pastBookings = bookings.filter(b => new Date(b.appointmentDate || '') <= new Date());
-
-  // Calculate last session date
-  const lastSessionDate = pastBookings.length > 0 
-    ? new Date(pastBookings[pastBookings.length - 1].appointmentDate || '')
-    : null;
-
-  const getLastSessionText = () => {
-    if (!lastSessionDate) return 'No previous sessions yet';
-    const now = new Date();
-    const diffTime = now.getTime() - lastSessionDate.getTime();
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays === 0) return 'Last session: Today';
-    if (diffDays === 1) return 'Last session: Yesterday';
-    if (diffDays < 7) return `Last session: ${diffDays} days ago`;
-    if (diffDays < 30) return `Last session: ${Math.floor(diffDays / 7)} weeks ago`;
-    return `Last session: ${Math.floor(diffDays / 30)} months ago`;
-  };
+  // All bookings are already filtered to be future bookings only
+  const upcomingBookings = bookings;
 
   return (
     <div className="space-y-8 bg-warm-sand-beige/20 min-h-screen p-6 lg:p-8 rounded-2xl">
@@ -159,7 +146,7 @@ export default function BookingsPage() {
 
       {/* Booking Context Info Block */}
       <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8 space-y-4">
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
           {/* Recommended Frequency */}
           <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
             <p className="text-xs lg:text-sm text-warm-grey mb-1 uppercase tracking-wide font-medium">
@@ -171,19 +158,8 @@ export default function BookingsPage() {
             <p className="text-xs text-warm-grey mt-1">for best results</p>
           </div>
 
-          {/* Last Session */}
-          <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
-            <p className="text-xs lg:text-sm text-warm-grey mb-1 uppercase tracking-wide font-medium">
-              Last Session
-            </p>
-            <p className="font-heading text-lg lg:text-2xl font-bold text-charcoal-black">
-              {getLastSessionText().split(': ')[1] || 'None yet'}
-            </p>
-            <p className="text-xs text-warm-grey mt-1">stay consistent</p>
-          </div>
-
           {/* Upcoming Sessions Count */}
-          <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl col-span-2 lg:col-span-1">
+          <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
             <p className="text-xs lg:text-sm text-warm-grey mb-1 uppercase tracking-wide font-medium">
               Upcoming
             </p>
@@ -412,66 +388,6 @@ export default function BookingsPage() {
           <p className="text-sm text-charcoal-black leading-relaxed">
             <span className="font-bold">💡 Clients who book ahead are more likely to stay consistent.</span> Having sessions in your calendar makes it easier to prioritize your health alongside family commitments.
           </p>
-        </div>
-      )}
-
-      {/* Past Sessions */}
-      {pastBookings.length > 0 && (
-        <div>
-          <h2 className="font-heading text-2xl lg:text-3xl font-bold text-charcoal-black mb-8">
-            Past Sessions
-          </h2>
-          <div className="space-y-6">
-            {pastBookings.map((booking) => (
-              <div key={booking._id} className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8 opacity-80 hover:opacity-100 transition-opacity duration-300">
-                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 lg:gap-6">
-                  <div className="flex-1">
-                    {/* Session Title */}
-                    <h3 className="font-heading text-xl lg:text-2xl font-bold text-charcoal-black mb-2">
-                      {booking.serviceType === 'consultation' && 'Initial Consultation'}
-                      {booking.serviceType === 'training' && 'Training Session'}
-                      {booking.serviceType === 'check-in' && 'Progress Check-in Call'}
-                      {booking.serviceType === 'nutrition' && 'Nutrition Consultation'}
-                      {booking.serviceType === 'form-review' && 'Form Review Session'}
-                    </h3>
-
-                    {/* Context Line */}
-                    <p className="text-sm text-warm-grey font-medium mb-4">
-                      {booking.serviceType === 'consultation' && 'Get to know each other & plan your journey'}
-                      {booking.serviceType === 'training' && 'Personalised workout with form guidance'}
-                      {booking.serviceType === 'check-in' && 'Weekly accountability & progress review'}
-                      {booking.serviceType === 'nutrition' && 'Nutrition guidance tailored to you'}
-                      {booking.serviceType === 'form-review' && 'Technique analysis & improvement tips'}
-                    </p>
-
-                    {/* Date & Time */}
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-3 text-charcoal-black">
-                        <Calendar size={18} className="text-warm-grey flex-shrink-0" />
-                        <span className="text-sm">
-                          {new Date(booking.appointmentDate || '').toLocaleDateString('en-GB', {
-                            month: 'long',
-                            day: 'numeric',
-                            year: 'numeric'
-                          })}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-3 text-charcoal-black">
-                        <Clock size={18} className="text-warm-grey flex-shrink-0" />
-                        <span className="text-sm">{booking.appointmentTime}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Completed Badge */}
-                  <div className="flex items-center gap-2 text-green-700 font-medium text-sm">
-                    <CheckCircle2 size={18} />
-                    Completed
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       )}
     </div>
