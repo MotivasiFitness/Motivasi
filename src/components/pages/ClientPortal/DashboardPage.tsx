@@ -1,26 +1,30 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { ClientBookings, ProgressCheckins, NutritionGuidance, ClientPrograms, WeeklyCoachesNotes, ClientProfiles } from '@/entities';
+import { ClientBookings, ProgressCheckins, NutritionGuidance, ClientPrograms, ClientAssignedWorkouts, WeeklyCoachesNotes, ClientProfiles } from '@/entities';
 import { Calendar, CheckCircle, TrendingUp, Zap, Heart, ArrowRight, MessageCircle, Smile } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { Link } from 'react-router-dom';
 import ProgramCompletionRing from '@/components/ClientPortal/ProgramCompletionRing';
 import { getClientDisplayName, isProfileIncomplete } from '@/lib/client-name-service';
 import WelcomeMessage from '@/components/ClientPortal/WelcomeMessage';
+import { getActiveCycle, getCompletedWeeksArray } from '@/lib/program-cycle-service';
 
 export default function DashboardPage() {
   const { member } = useMember();
   const [upcomingBookings, setUpcomingBookings] = useState<ClientBookings[]>([]);
   const [latestCheckIn, setLatestCheckIn] = useState<ProgressCheckins | null>(null);
   const [programs, setPrograms] = useState<ClientPrograms[]>([]);
+  const [assignedWorkouts, setAssignedWorkouts] = useState<ClientAssignedWorkouts[]>([]);
   const [completedWorkouts, setCompletedWorkouts] = useState<number>(0);
+  const [totalWorkouts, setTotalWorkouts] = useState<number>(0);
   const [weeklyCoachNote, setWeeklyCoachNote] = useState<WeeklyCoachesNotes | null>(null);
   const [loading, setLoading] = useState(true);
   const [isInactive, setIsInactive] = useState(false);
   const [daysSinceActivity, setDaysSinceActivity] = useState<number>(0);
   const [clientProfile, setClientProfile] = useState<ClientProfiles | null>(null);
   const [showWelcomeMessage, setShowWelcomeMessage] = useState(false);
+  const [useNewSystem, setUseNewSystem] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +42,6 @@ export default function DashboardPage() {
           setShowWelcomeMessage(true);
         }
 
-        // ... keep existing code (bookings, check-ins, programs, coach notes)
         // Fetch upcoming bookings
         const { items: bookings } = await BaseCrudService.getAll<ClientBookings>('clientbookings');
         const upcomingFiltered = bookings
@@ -69,13 +72,56 @@ export default function DashboardPage() {
           }
         }
 
-        // Fetch programs for completion ring
-        const { items: programItems } = await BaseCrudService.getAll<ClientPrograms>('clientprograms');
-        setPrograms(programItems);
+        // Fetch active program cycle
+        const cycle = await getActiveCycle(member.loginEmail);
         
-        // Calculate completed workouts (unique workout days)
-        const uniqueDays = new Set(programItems.map(p => p.workoutDay));
-        setCompletedWorkouts(Math.floor(uniqueDays.size * 0.6)); // Mock: 60% completion for demo
+        // Try to fetch from new system first (assigned workouts)
+        const { items: allAssignedWorkouts } = await BaseCrudService.getAll<ClientAssignedWorkouts>('clientassignedworkouts');
+        const clientWorkouts = allAssignedWorkouts.filter(w => w.clientId === member._id);
+        
+        if (clientWorkouts.length > 0) {
+          // NEW SYSTEM: Use assigned workouts
+          setUseNewSystem(true);
+          
+          // Get completed weeks from the active cycle
+          const completedWeeks = getCompletedWeeksArray(cycle?.weeksCompleted || 0);
+          const currentWeek = cycle?.currentWeek || 1;
+          
+          // Filter workouts: only show active/pending from current week (not completed weeks)
+          const activeWorkouts = clientWorkouts.filter(w => {
+            // Exclude workouts from completed weeks
+            if (w.weekNumber && completedWeeks.includes(w.weekNumber)) {
+              return false;
+            }
+            
+            // Only show workouts from current week or future weeks
+            if (w.weekNumber && w.weekNumber < currentWeek) {
+              return false;
+            }
+            
+            // Only show active or pending workouts (not completed)
+            return w.status === 'active' || w.status === 'pending';
+          });
+          
+          setAssignedWorkouts(activeWorkouts);
+          
+          // Calculate completed workouts in current week
+          const currentWeekWorkouts = clientWorkouts.filter(w => w.weekNumber === currentWeek);
+          const currentWeekCompleted = currentWeekWorkouts.filter(w => w.status === 'completed');
+          
+          setCompletedWorkouts(currentWeekCompleted.length);
+          setTotalWorkouts(currentWeekWorkouts.length);
+        } else {
+          // LEGACY SYSTEM: Fall back to clientprograms
+          setUseNewSystem(false);
+          const { items: programItems } = await BaseCrudService.getAll<ClientPrograms>('clientprograms');
+          setPrograms(programItems);
+          
+          // Calculate completed workouts (unique workout days)
+          const uniqueDays = new Set(programItems.map(p => p.workoutDay));
+          setTotalWorkouts(uniqueDays.size);
+          setCompletedWorkouts(Math.floor(uniqueDays.size * 0.6)); // Mock: 60% completion for demo
+        }
 
         // Fetch current week's coach note
         const { items: coachNotes } = await BaseCrudService.getAll<WeeklyCoachesNotes>('weeklycoachesnotes');
@@ -102,7 +148,7 @@ export default function DashboardPage() {
     };
 
     fetchData();
-  }, [member?.loginEmail]);
+  }, [member?.loginEmail, member?._id]);
 
   if (loading) {
     return (
@@ -277,7 +323,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Program Completion Ring - Overview */}
-      {programs.length > 0 && (
+      {(useNewSystem ? assignedWorkouts.length > 0 : programs.length > 0) && (
         <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
           <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-8">
             Your Program Progress
@@ -287,7 +333,7 @@ export default function DashboardPage() {
               <div className="w-64">
                 <ProgramCompletionRing
                   completedWorkouts={completedWorkouts}
-                  totalWorkouts={Math.max(1, new Set(programs.map(p => p.workoutDay)).size)}
+                  totalWorkouts={Math.max(1, totalWorkouts)}
                   showAnimation={false}
                 />
               </div>
