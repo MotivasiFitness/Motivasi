@@ -9,6 +9,8 @@
  * - Wix Velo backend integration
  */
 
+import { getBackendEndpoint, BACKEND_FUNCTIONS } from '@/lib/backend-config';
+
 export interface DescriptionGeneratorInput {
   programTitle: string;
   duration: string;
@@ -34,19 +36,6 @@ interface WixFunctionResponse {
 }
 
 /**
- * Get the correct endpoint based on environment
- * Uses /_functions-dev/ for Preview, /_functions/ for Production
- */
-function getEndpoint(): string {
-  // Check if we're in preview/development environment
-  const isPreview = window.location.hostname.includes('preview') || 
-                   window.location.hostname.includes('localhost') ||
-                   window.location.hostname.includes('127.0.0.1');
-  
-  return isPreview ? '/_functions-dev/generateProgramDescription' : '/_functions/generateProgramDescription';
-}
-
-/**
  * Generate a program description using Wix Velo backend
  * @param input - Program details for description generation
  * @returns Generated description
@@ -68,8 +57,8 @@ export async function generateProgramDescription(
       throw new Error('Focus area is required');
     }
 
-    // Get the correct endpoint
-    const endpoint = getEndpoint();
+    // Get the correct endpoint using centralized config
+    const endpoint = getBackendEndpoint(BACKEND_FUNCTIONS.GENERATE_PROGRAM_DESCRIPTION);
 
     // Call Wix Velo backend function
     const response = await fetch(endpoint, {

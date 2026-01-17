@@ -11,6 +11,7 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { User, Mail, Globe, Award, Briefcase, Camera, Upload, X, CheckCircle, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { getBackendEndpoint, BACKEND_FUNCTIONS, validateBackendResponse } from '@/lib/backend-config';
 
 // Trainer Profile Type
 interface TrainerProfile {
@@ -200,32 +201,14 @@ export default function TrainerProfilePage() {
     });
   };
 
-  // Get the correct endpoint based on environment
-  const getUploadEndpoint = (): string => {
-    // Check if we're in preview/development environment
-    const isPreview = window.location.hostname.includes('preview') || 
-                     window.location.hostname.includes('localhost') ||
-                     window.location.hostname.includes('127.0.0.1') ||
-                     window.location.hostname.includes('editorx.io');
-    
-    // Use /_functions-dev/ for preview/dev, /_functions/ for production
-    const endpoint = isPreview ? '/_functions-dev/uploadProfilePhoto' : '/_functions/uploadProfilePhoto';
-    console.log('[Upload] Environment detection:', {
-      hostname: window.location.hostname,
-      isPreview,
-      endpoint
-    });
-    return endpoint;
-  };
-
   // Upload image to Wix Media Manager
   const uploadImageToWix = async (blob: Blob, fileName: string): Promise<string> => {
     // Create FormData
     const formData = new FormData();
     formData.append('file', blob, fileName);
 
-    // Get the correct endpoint for the current environment
-    const uploadUrl = getUploadEndpoint();
+    // Get the correct endpoint for the current environment using centralized config
+    const uploadUrl = getBackendEndpoint(BACKEND_FUNCTIONS.UPLOAD_PROFILE_PHOTO);
     console.log('[Upload] Starting upload to:', uploadUrl);
     console.log('[Upload] File name:', fileName);
     console.log('[Upload] Blob size:', blob.size, 'bytes');
@@ -241,22 +224,8 @@ export default function TrainerProfilePage() {
     console.log('[Upload] Response URL:', response.url);
     console.log('[Upload] Response headers:', Object.fromEntries(response.headers.entries()));
 
-    // Check content-type before parsing
-    const contentType = response.headers.get('content-type') || '';
-    console.log('[Upload] Response content-type:', contentType);
-
-    // If response is not JSON, log the error
-    if (!contentType.includes('application/json')) {
-      const textResponse = await response.text();
-      console.error('[Upload] ERROR: Expected JSON but got:', contentType);
-      console.error('[Upload] Response body (first 500 chars):', textResponse.substring(0, 500));
-      throw new Error(
-        `Upload endpoint returned ${contentType} instead of JSON. ` +
-        `Status: ${response.status}. ` +
-        `This usually means the endpoint URL is incorrect or the server is returning an error page. ` +
-        `Check the Network tab in DevTools for the actual response.`
-      );
-    }
+    // Validate response is JSON using centralized helper
+    await validateBackendResponse(response, BACKEND_FUNCTIONS.UPLOAD_PROFILE_PHOTO);
 
     // Parse JSON response
     const data = await response.json();

@@ -14,6 +14,7 @@
 import { BaseCrudService } from '@/integrations';
 import { FitnessPrograms } from '@/entities';
 import { safeFetch } from './api-response-handler';
+import { getBackendEndpoint, BACKEND_FUNCTIONS } from '@/lib/backend-config';
 
 export interface ProgramGeneratorInput {
   programGoal: string;
@@ -141,7 +142,7 @@ export async function generateProgramWithAI(
 
     // Call backend API to generate program with safe JSON parsing
     const response = await safeFetch<{ success: boolean; data: GeneratedProgram; error?: string; statusCode: number }>(
-      '/_functions/generateProgram',
+      getBackendEndpoint(BACKEND_FUNCTIONS.GENERATE_PROGRAM),
       {
         method: 'POST',
         headers: {
@@ -719,7 +720,7 @@ export async function regenerateProgramSection(
 
     // Call backend API with section-specific prompt using safe JSON parsing
     const response = await safeFetch<{ success: boolean; data: any; statusCode: number }>(
-      '/_functions/regenerateProgramSection',
+      getBackendEndpoint(BACKEND_FUNCTIONS.REGENERATE_PROGRAM_SECTION),
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
