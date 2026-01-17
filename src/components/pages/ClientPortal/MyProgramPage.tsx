@@ -528,12 +528,12 @@ export default function MyProgramPage() {
     return (
       <div className={PAGE_WRAPPER.container}>
         {/* PRIMARY HERO: Page Title + Program Progress + Overview Metrics */}
-        <div className="bg-soft-bronze rounded-2xl p-8 lg:p-10 mb-8 shadow-lg">
+        <div className="bg-gradient-to-br from-soft-bronze to-soft-bronze/90 rounded-2xl p-8 lg:p-10 mb-8 shadow-xl">
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
             {/* Left: Title + Week Info */}
             <div className="flex-1">
               <h1 className="font-heading text-4xl lg:text-5xl font-bold text-soft-white mb-3">My Training Programme</h1>
-              <p className="text-soft-white/80 text-base lg:text-lg">
+              <p className="text-soft-white/95 text-base lg:text-lg">
                 {weekDisplay} • Your personalised training plan
               </p>
             </div>
