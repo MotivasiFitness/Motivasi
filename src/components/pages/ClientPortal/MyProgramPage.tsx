@@ -1163,7 +1163,7 @@ export default function MyProgramPage() {
 
       {/* SECONDARY SECTION: Workout Overview with Progress Ring + Stats */}
       {programs.length > 0 && (
-        <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 lg:p-10 mb-8 shadow-lg">
+        <div className="bg-charcoal-black border border-charcoal-black rounded-2xl p-8 lg:p-10 mb-8 shadow-lg">
           <div className="grid lg:grid-cols-5 gap-8 items-start">
             {/* Progress Ring - Left Side */}
             <div className="lg:col-span-1 flex justify-center">
@@ -1178,7 +1178,7 @@ export default function MyProgramPage() {
 
             {/* Stats Grid - Right Side */}
             <div className="lg:col-span-4">
-              <h2 className="font-heading text-3xl lg:text-4xl font-bold text-charcoal-black mb-6">
+              <h2 className="font-heading text-3xl lg:text-4xl font-bold text-soft-white mb-6">
                 Programme Overview
               </h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
@@ -1187,7 +1187,7 @@ export default function MyProgramPage() {
                   <Clock className="w-6 h-6 text-soft-bronze mb-2" />
                   <p className="text-sm text-warm-grey mb-1">Training Length</p>
                   <p className="font-heading text-2xl font-bold text-charcoal-black">
-                    {estimatedSessionTime}–{estimatedSessionTime + 5} min
+                    30-50 min
                   </p>
                 </div>
 
