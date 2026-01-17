@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { FitnessPrograms, TrainerClientAssignments, MemberRoles, TrainerClientMessages } from '@/entities';
-import { MessageSquare, Plus, AlertCircle, CheckCircle, User } from 'lucide-react';
+import { FitnessPrograms, MemberRoles } from '@/entities';
+import { Plus, AlertCircle, CheckCircle, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getTrainerClients, assignClientToTrainer } from '@/lib/role-utils';
 import { getClientDisplayNames } from '@/lib/client-display-name';
@@ -14,7 +14,6 @@ interface ClientInfo {
   programCount: number;
   activePrograms: number;
   assignmentStatus: string;
-  conversationId?: string;
 }
 
 interface AvailableClient {
@@ -34,8 +33,6 @@ export default function TrainerClientsPage() {
   const [assignmentError, setAssignmentError] = useState('');
   const [assignmentSuccess, setAssignmentSuccess] = useState('');
   const [isAssigning, setIsAssigning] = useState(false);
-  const [messageError, setMessageError] = useState('');
-  const [messagingClientId, setMessagingClientId] = useState<string | null>(null);
 
   const fetchClients = async () => {
     if (!member?._id) return;
@@ -48,9 +45,6 @@ export default function TrainerClientsPage() {
       const { items: programs } = await BaseCrudService.getAll<FitnessPrograms>('programs');
       const trainerPrograms = programs.filter(p => p.trainerId === member._id);
 
-      // Get all messages to find/create conversation IDs
-      const { items: messages } = await BaseCrudService.getAll<TrainerClientMessages>('trainerclientmessages');
-
       // Get display names for all assigned clients
       const clientIds = assignments.map(a => a.clientId).filter(Boolean) as string[];
       const displayNames = await getClientDisplayNames(clientIds);
@@ -60,12 +54,6 @@ export default function TrainerClientsPage() {
       
       assignments.forEach((assignment) => {
         if (assignment.clientId) {
-          // Find existing conversation for this client
-          const existingConversation = messages.find(
-            m => (m.senderId === member._id && m.recipientId === assignment.clientId) ||
-                 (m.senderId === assignment.clientId && m.recipientId === member._id)
-          );
-          
           clientMap.set(assignment.clientId, {
             assignmentId: assignment._id,
             clientId: assignment.clientId,
@@ -73,7 +61,6 @@ export default function TrainerClientsPage() {
             programCount: 0,
             activePrograms: 0,
             assignmentStatus: assignment.status || 'Active',
-            conversationId: existingConversation?.conversationId || `${member._id}-${assignment.clientId}`,
           });
         }
       });
@@ -154,42 +141,6 @@ export default function TrainerClientsPage() {
       console.error('Error assigning client:', error);
     } finally {
       setIsAssigning(false);
-    }
-  };
-
-  const handleMessageClient = async (clientId: string, conversationId: string) => {
-    console.log('[handleMessageClient] Starting message flow', { clientId, conversationId, trainerId: member?._id });
-    setMessageError('');
-    setMessagingClientId(clientId);
-
-    try {
-      // Validate required data
-      if (!clientId || !clientId.trim()) {
-        const error = 'Client ID is missing or invalid';
-        console.error('[handleMessageClient] Validation failed:', error);
-        setMessageError(error);
-        setMessagingClientId(null);
-        return;
-      }
-
-      if (!member?._id) {
-        const error = 'Trainer ID not found - please ensure you are logged in';
-        console.error('[handleMessageClient] Validation failed:', error);
-        setMessageError(error);
-        setMessagingClientId(null);
-        return;
-      }
-
-      console.log('[handleMessageClient] Validation passed, navigating to messages');
-
-      // Navigate to messages page with client ID as query parameter
-      // The messages page will handle creating/finding the conversation
-      navigate(`/trainer/messages?clientId=${encodeURIComponent(clientId)}&conversationId=${encodeURIComponent(conversationId)}`);
-    } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Failed to open messaging';
-      console.error('[handleMessageClient] Error:', errorMsg, error);
-      setMessageError(errorMsg);
-      setMessagingClientId(null);
     }
   };
 
@@ -300,7 +251,7 @@ export default function TrainerClientsPage() {
               You don't have any clients assigned yet
             </p>
             <p className="text-warm-grey text-base mb-8 max-w-2xl mx-auto">
-              Assign a client to start managing workouts, messaging, video reviews, and progress tracking — all in one place.
+              Assign a client to start managing workouts, programs, video reviews, and progress tracking — all in one place.
             </p>
             <button
               onClick={() => setShowAssignForm(true)}
@@ -310,7 +261,7 @@ export default function TrainerClientsPage() {
             </button>
             <div className="space-y-3 pt-8 border-t border-warm-sand-beige">
               <p className="text-warm-grey text-sm">
-                Once assigned, clients will automatically appear in your messages, programs, video reviews, and progress pages.
+                Once assigned, clients will automatically appear in your programs, video reviews, and progress pages.
               </p>
               <p className="text-warm-grey text-sm italic">
                 You can assign or remove clients at any time.
@@ -353,34 +304,14 @@ export default function TrainerClientsPage() {
                   </div>
                 </div>
 
-                {/* Message Error Alert */}
-                {messageError && messagingClientId === client.clientId && (
-                  <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex gap-2">
-                    <AlertCircle className="text-red-600 flex-shrink-0" size={16} />
-                    <p className="font-paragraph text-xs text-red-800">{messageError}</p>
-                  </div>
-                )}
-
-                <div className="space-y-3">
-                  <button
-                    onClick={() => navigate(`/trainer/client-profile/${client.clientId}`)}
-                    className="w-full flex items-center justify-center gap-2 bg-soft-bronze text-soft-white px-4 py-3 rounded-lg hover:bg-charcoal-black transition-colors"
-                    title="View client profile"
-                  >
-                    <User size={18} />
-                    View Profile
-                  </button>
-
-                  <button
-                    onClick={() => handleMessageClient(client.clientId, client.conversationId || `${member?._id}-${client.clientId}`)}
-                    disabled={messagingClientId === client.clientId}
-                    className="w-full flex items-center justify-center gap-2 bg-charcoal-black text-soft-white px-4 py-3 rounded-lg hover:bg-soft-bronze transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    title="Open messaging with this client"
-                  >
-                    <MessageSquare size={18} />
-                    {messagingClientId === client.clientId ? 'Opening...' : 'Message Client'}
-                  </button>
-                </div>
+                <button
+                  onClick={() => navigate(`/trainer/client-profile/${client.clientId}`)}
+                  className="w-full flex items-center justify-center gap-2 bg-soft-bronze text-soft-white px-4 py-3 rounded-lg hover:bg-charcoal-black transition-colors"
+                  title="View client profile"
+                >
+                  <User size={18} />
+                  View Profile
+                </button>
               </div>
             ))}
           </div>
