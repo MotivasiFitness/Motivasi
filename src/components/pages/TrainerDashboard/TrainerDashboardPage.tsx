@@ -46,139 +46,139 @@ export default function TrainerDashboardPage() {
   }
 
   return (
-    <div className="p-8 lg:p-12">
-      <div className="max-w-7xl mx-auto">
+    <div className="p-8 lg:p-12 bg-soft-white min-h-screen">
+      <div className="max-w-7xl mx-auto space-y-12">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="font-heading text-5xl font-bold text-charcoal-black mb-2">
+        <div>
+          <h1 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-3">
             Welcome Back, {member?.profile?.nickname || 'Trainer'}!
           </h1>
-          <p className="text-lg text-warm-grey">
+          <p className="text-xl text-warm-grey">
             Manage your clients, programs, and coaching sessions
           </p>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid md:grid-cols-4 gap-6 mb-12">
-          <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-paragraph text-sm text-warm-grey uppercase tracking-widest">
+        {/* Stats Grid - PRIMARY METRICS */}
+        <div className="grid md:grid-cols-4 gap-6">
+          <div className="bg-soft-white border-2 border-warm-sand-beige rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="font-paragraph text-sm text-warm-grey uppercase tracking-widest font-bold">
                 Total Clients
               </h3>
-              <Users className="text-soft-bronze" size={24} />
+              <Users className="text-soft-bronze" size={28} />
             </div>
-            <p className="font-heading text-4xl font-bold text-charcoal-black">
+            <p className="font-heading text-5xl font-bold text-charcoal-black">
               {stats.totalClients}
             </p>
           </div>
 
-          <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-paragraph text-sm text-warm-grey uppercase tracking-widest">
+          <div className="bg-soft-white border-2 border-warm-sand-beige rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="font-paragraph text-sm text-warm-grey uppercase tracking-widest font-bold">
                 Active Programs
               </h3>
-              <BookOpen className="text-soft-bronze" size={24} />
+              <BookOpen className="text-soft-bronze" size={28} />
             </div>
-            <p className="font-heading text-4xl font-bold text-charcoal-black">
+            <p className="font-heading text-5xl font-bold text-charcoal-black">
               {stats.activePrograms}
             </p>
           </div>
 
-          <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-paragraph text-sm text-warm-grey uppercase tracking-widest">
+          <div className="bg-soft-white border-2 border-warm-sand-beige rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="font-paragraph text-sm text-warm-grey uppercase tracking-widest font-bold">
                 Completed
               </h3>
-              <TrendingUp className="text-soft-bronze" size={24} />
+              <TrendingUp className="text-soft-bronze" size={28} />
             </div>
-            <p className="font-heading text-4xl font-bold text-charcoal-black">
+            <p className="font-heading text-5xl font-bold text-charcoal-black">
               {stats.completedPrograms}
             </p>
           </div>
 
-          <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-paragraph text-sm text-warm-grey uppercase tracking-widest">
+          <div className="bg-soft-white border-2 border-warm-sand-beige rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="font-paragraph text-sm text-warm-grey uppercase tracking-widest font-bold">
                 Messages
               </h3>
-              <MessageSquare className="text-soft-bronze" size={24} />
+              <MessageSquare className="text-soft-bronze" size={28} />
             </div>
-            <p className="font-heading text-4xl font-bold text-charcoal-black">
+            <p className="font-heading text-5xl font-bold text-charcoal-black">
               0
             </p>
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        {/* Quick Actions - PRIMARY HERO CARDS */}
+        <div className="grid md:grid-cols-3 gap-6">
           <Link
             to="/trainer/programs"
-            className="bg-charcoal-black text-soft-white p-8 rounded-2xl hover:bg-soft-bronze transition-all duration-300 group"
+            className="bg-charcoal-black text-soft-white p-10 rounded-2xl hover:bg-soft-bronze transition-all duration-300 group shadow-xl"
           >
-            <BookOpen className="mb-4 group-hover:scale-110 transition-transform" size={32} />
-            <h3 className="font-heading text-2xl font-bold mb-2">Create New Program</h3>
-            <p className="text-warm-grey">Design a personalised fitness programme for your client</p>
+            <BookOpen className="mb-5 group-hover:scale-110 transition-transform" size={40} />
+            <h3 className="font-heading text-3xl font-bold mb-3">Create New Program</h3>
+            <p className="text-warm-sand-beige text-base leading-relaxed">Design a personalised fitness programme for your client</p>
           </Link>
 
           <Link
             to="/trainer/clients"
-            className="bg-soft-bronze text-soft-white p-8 rounded-2xl hover:bg-charcoal-black transition-all duration-300 group"
+            className="bg-soft-bronze text-soft-white p-10 rounded-2xl hover:bg-charcoal-black transition-all duration-300 group shadow-xl"
           >
-            <Users className="mb-4 group-hover:scale-110 transition-transform" size={32} />
-            <h3 className="font-heading text-2xl font-bold mb-2">Manage Clients</h3>
-            <p className="text-soft-white/80">View and manage all your assigned clients</p>
+            <Users className="mb-5 group-hover:scale-110 transition-transform" size={40} />
+            <h3 className="font-heading text-3xl font-bold mb-3">Manage Clients</h3>
+            <p className="text-soft-white/90 text-base leading-relaxed">View and manage all your assigned clients</p>
           </Link>
 
           <Link
             to="/trainer/video-reviews"
-            className="bg-warm-sand-beige text-charcoal-black p-8 rounded-2xl hover:bg-soft-bronze hover:text-soft-white transition-all duration-300 group"
+            className="bg-warm-sand-beige text-charcoal-black p-10 rounded-2xl hover:bg-soft-bronze hover:text-soft-white transition-all duration-300 group shadow-xl"
           >
-            <Video className="mb-4 group-hover:scale-110 transition-transform" size={32} />
-            <h3 className="font-heading text-2xl font-bold mb-2">Video Reviews</h3>
-            <p className="text-charcoal-black/70 group-hover:text-soft-white/80">Review exercise videos from clients</p>
+            <Video className="mb-5 group-hover:scale-110 transition-transform" size={40} />
+            <h3 className="font-heading text-3xl font-bold mb-3">Video Reviews</h3>
+            <p className="text-charcoal-black/80 group-hover:text-soft-white/90 text-base leading-relaxed">Review exercise videos from clients</p>
           </Link>
         </div>
 
-        {/* Weekly Retention Snapshot */}
-        <div className="mb-12">
+        {/* Weekly Retention Snapshot - SECONDARY SECTION */}
+        <div>
           <WeeklyRetentionSnapshot />
         </div>
 
-        {/* At-Risk Client Surfacing - PRIORITY SECTION */}
-        <div className="mb-12">
+        {/* At-Risk Client Surfacing - SECONDARY PRIORITY SECTION */}
+        <div>
           <AtRiskClientSurfacing />
         </div>
 
-        {/* Weekly Coach Notes Panel */}
-        <div className="mb-12">
+        {/* Weekly Coach Notes Panel - SECONDARY SECTION */}
+        <div>
           <WeeklyCoachNotesPanel />
         </div>
 
-        {/* Recent Programs */}
-        <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
-          <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
+        {/* Recent Programs - TERTIARY SECTION */}
+        <div className="bg-soft-white border-2 border-warm-sand-beige rounded-xl p-10 shadow-sm">
+          <h2 className="font-heading text-3xl font-bold text-charcoal-black mb-8">
             Recent Programs
           </h2>
           {programs.length === 0 ? (
-            <p className="text-warm-grey text-center py-8">
-              No programs yet. <Link to="/trainer/programs" className="text-soft-bronze hover:underline">Create your first program</Link>
+            <p className="text-warm-grey text-center py-10 text-lg">
+              No programs yet. <Link to="/trainer/programs" className="text-soft-bronze hover:underline font-bold">Create your first program</Link>
             </p>
           ) : (
             <div className="space-y-4">
               {programs.slice(0, 5).map((program) => (
                 <div
                   key={program._id}
-                  className="flex items-center justify-between p-4 bg-warm-sand-beige/30 rounded-lg hover:bg-warm-sand-beige/50 transition-colors"
+                  className="flex items-center justify-between p-6 bg-warm-sand-beige/30 rounded-xl hover:bg-warm-sand-beige/50 transition-colors"
                 >
                   <div>
-                    <h3 className="font-paragraph font-bold text-charcoal-black">
+                    <h3 className="font-paragraph font-bold text-charcoal-black text-lg">
                       {program.programName}
                     </h3>
-                    <p className="text-sm text-warm-grey">
+                    <p className="text-base text-warm-grey">
                       {program.focusArea} • {program.duration}
                     </p>
                   </div>
-                  <span className={`px-4 py-2 rounded-full text-sm font-medium ${
+                  <span className={`px-5 py-2 rounded-full text-sm font-bold ${
                     program.status === 'Active'
                       ? 'bg-green-100 text-green-700'
                       : program.status === 'Completed'

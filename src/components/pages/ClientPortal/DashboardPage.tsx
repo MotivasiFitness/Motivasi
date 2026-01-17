@@ -230,24 +230,24 @@ export default function DashboardPage() {
         />
       )}
 
-      <div className="space-y-10 bg-warm-sand-beige/40 min-h-screen p-8 rounded-2xl">
-      {/* Profile Completion Prompt */}
+      <div className="space-y-12 bg-soft-white min-h-screen p-8 lg:p-12">
+      {/* Profile Completion Prompt - TERTIARY INFO BANNER */}
       {showProfilePrompt && (
-        <div className="bg-blue-50 border-l-4 border-blue-400 rounded-2xl p-6">
+        <div className="bg-soft-white border-2 border-soft-bronze/30 rounded-xl p-6 shadow-sm">
           <div className="flex items-start gap-4">
-            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <Smile className="w-5 h-5 text-blue-600" />
+            <div className="w-12 h-12 bg-soft-bronze/10 rounded-full flex items-center justify-center flex-shrink-0">
+              <Smile className="w-6 h-6 text-soft-bronze" />
             </div>
             <div className="flex-1">
-              <h3 className="font-heading text-lg font-bold text-charcoal-black mb-2">
+              <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2">
                 Complete Your Profile
               </h3>
-              <p className="font-paragraph text-charcoal-black mb-4">
+              <p className="font-paragraph text-charcoal-black/80 mb-4 leading-relaxed">
                 Help us personalise your experience by adding your name and details.
               </p>
               <Link
                 to="/portal/profile"
-                className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white px-6 py-3 rounded-lg font-bold hover:bg-soft-bronze/90 transition-colors shadow-sm"
               >
                 Complete Profile
                 <ArrowRight size={16} />
@@ -257,47 +257,47 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Welcome Back State - Triggered by 7+ days of inactivity */}
+      {/* PRIMARY HERO - Welcome Back State (Triggered by 7+ days of inactivity) */}
       {isInactive && (
-        <div className="bg-gradient-to-r from-soft-bronze via-soft-bronze/90 to-soft-bronze/80 rounded-2xl p-8 md:p-12 text-soft-white shadow-lg border border-soft-bronze/50">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-soft-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-                <Smile className="w-6 h-6 text-soft-white" />
+        <div className="bg-gradient-to-br from-soft-bronze to-soft-bronze/90 rounded-2xl p-10 md:p-14 text-soft-white shadow-xl">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+            <div className="flex items-start gap-5">
+              <div className="w-14 h-14 bg-soft-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                <Smile className="w-7 h-7 text-soft-white" />
               </div>
               <div>
-                <h2 className="font-heading text-3xl md:text-4xl font-bold mb-2">
-                  Welcome back, {displayName} — let's pick up where you left off
-                </h2>
-                <p className="text-soft-white/90 font-paragraph text-lg">
+                <h1 className="font-heading text-4xl md:text-5xl font-bold mb-3 leading-tight">
+                  Welcome back, {displayName}
+                </h1>
+                <p className="text-soft-white/95 font-paragraph text-lg md:text-xl leading-relaxed">
                   It's been {daysSinceActivity} days. Your program is ready for you, and your trainer is here to support your comeback.
                 </p>
               </div>
             </div>
             <Link
               to="/portal/program"
-              className="inline-flex items-center gap-2 bg-soft-white text-soft-bronze px-8 py-4 rounded-lg font-bold text-lg hover:bg-soft-white/95 transition-all duration-300 whitespace-nowrap shadow-lg flex-shrink-0"
+              className="inline-flex items-center gap-3 bg-soft-white text-soft-bronze px-10 py-5 rounded-xl font-bold text-xl hover:bg-soft-white/95 transition-all duration-300 whitespace-nowrap shadow-2xl flex-shrink-0"
             >
               Start Workout
-              <ArrowRight size={20} />
+              <ArrowRight size={22} />
             </Link>
           </div>
         </div>
       )}
 
-      {/* Weekly Coach Note - If Available */}
+      {/* SECONDARY INFO BANNER - Weekly Coach Note (If Available) */}
       {weeklyCoachNote && weeklyCoachNote.noteContent && (
-        <div className="bg-gradient-to-r from-soft-bronze/10 to-soft-bronze/5 border-l-4 border-soft-bronze rounded-2xl p-6">
-          <div className="flex gap-4">
-            <MessageCircle className="w-6 h-6 text-soft-bronze flex-shrink-0 mt-0.5" />
+        <div className="bg-warm-sand-beige/40 border-l-4 border-soft-bronze rounded-xl p-8 shadow-sm">
+          <div className="flex gap-5">
+            <MessageCircle className="w-7 h-7 text-soft-bronze flex-shrink-0 mt-1" />
             <div className="flex-1">
-              <h2 className="font-heading text-lg font-bold text-charcoal-black mb-2">
+              <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-3">
                 This Week's Note from Your Coach
               </h2>
-              <p className="font-paragraph text-charcoal-black leading-relaxed">
+              <p className="font-paragraph text-charcoal-black/90 leading-relaxed text-lg">
                 {weeklyCoachNote.noteContent}
               </p>
-              <p className="text-xs text-warm-grey mt-3">
+              <p className="text-sm text-warm-grey mt-4">
                 Updated {new Date(weeklyCoachNote.lastUpdated || '').toLocaleDateString('en-GB', {
                   weekday: 'long',
                   month: 'long',
@@ -309,37 +309,37 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Welcome Section with Primary CTA - Hidden when inactive */}
+      {/* PRIMARY HERO - Welcome Section (Hidden when inactive) */}
       {!isInactive && (
-        <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div className="bg-gradient-to-br from-soft-bronze to-soft-bronze/90 rounded-2xl p-10 md:p-14 text-soft-white shadow-xl">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
             <div>
-              <h1 className="font-heading text-4xl font-bold mb-2">
+              <h1 className="font-heading text-4xl md:text-5xl font-bold mb-3 leading-tight">
                 Welcome back, {displayName}!
               </h1>
-              <p className="text-soft-white/90">
+              <p className="text-soft-white/95 text-lg md:text-xl">
                 You're making great progress. Keep up the momentum!
               </p>
             </div>
             <Link
               to="/portal/bookings"
-              className="inline-flex items-center gap-2 bg-soft-white text-soft-bronze px-10 py-5 rounded-lg font-bold text-lg hover:bg-soft-white/90 transition-colors whitespace-nowrap shadow-lg"
+              className="inline-flex items-center gap-3 bg-soft-white text-soft-bronze px-10 py-5 rounded-xl font-bold text-xl hover:bg-soft-white/95 transition-colors whitespace-nowrap shadow-2xl"
             >
               Book Your Next Session
-              <ArrowRight size={20} />
+              <ArrowRight size={22} />
             </Link>
           </div>
         </div>
       )}
 
-      {/* PRIMARY HERO - This Week's Training */}
-      <div className="bg-gradient-to-br from-charcoal-black to-charcoal-black/95 rounded-2xl p-8 shadow-xl border border-charcoal-black/50">
-        <div className="flex items-start justify-between mb-6">
+      {/* PRIMARY SECTION - This Week's Training */}
+      <div className="bg-charcoal-black rounded-2xl p-10 shadow-2xl">
+        <div className="flex items-start justify-between mb-8">
           <div>
-            <h2 className="font-heading text-3xl font-bold text-soft-white mb-2">
+            <h2 className="font-heading text-4xl font-bold text-soft-white mb-3">
               This Week's Training
             </h2>
-            <p className="text-warm-sand-beige text-sm">
+            <p className="text-warm-sand-beige text-base">
               Week {currentWeekNumber} • {completedWorkouts} of {totalWorkouts} workouts completed
             </p>
           </div>
@@ -354,8 +354,8 @@ export default function DashboardPage() {
         </div>
 
         {/* Progress bar */}
-        <div className="mb-6">
-          <div className="h-3 bg-warm-grey/30 rounded-full overflow-hidden">
+        <div className="mb-8">
+          <div className="h-4 bg-warm-grey/20 rounded-full overflow-hidden">
             <div 
               className="h-full bg-gradient-to-r from-soft-bronze to-soft-bronze/90 rounded-full transition-all duration-500"
               style={{ width: `${totalWorkouts > 0 ? (completedWorkouts / totalWorkouts) * 100 : 0}%` }}
@@ -364,9 +364,9 @@ export default function DashboardPage() {
         </div>
 
         {/* Supportive messaging */}
-        <div className="flex items-start gap-3 p-4 bg-soft-white/10 rounded-lg mb-6">
-          <MessageCircle className="w-5 h-5 text-soft-bronze flex-shrink-0 mt-0.5" />
-          <p className="text-sm text-soft-white/90">
+        <div className="flex items-start gap-4 p-5 bg-soft-white/10 rounded-xl mb-8">
+          <MessageCircle className="w-6 h-6 text-soft-bronze flex-shrink-0 mt-1" />
+          <p className="text-base text-soft-white/95 leading-relaxed">
             {completedWorkouts === 0 
               ? "Your coach has prepared this week's workouts. Start when you're ready."
               : completedWorkouts === totalWorkouts
@@ -378,29 +378,29 @@ export default function DashboardPage() {
         {/* CTA */}
         <Link
           to="/portal/program"
-          className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-soft-bronze/90 transition-colors w-full justify-center shadow-lg"
+          className="inline-flex items-center gap-3 bg-soft-bronze text-soft-white px-10 py-5 rounded-xl font-bold text-xl hover:bg-soft-bronze/90 transition-colors w-full justify-center shadow-xl"
         >
           {completedWorkouts === 0 ? 'Start This Week' : completedWorkouts === totalWorkouts ? 'Review Week' : 'Continue Training'}
-          <ArrowRight size={20} />
+          <ArrowRight size={22} />
         </Link>
       </div>
 
-      {/* SECONDARY HERO - Weekly Check-In */}
-      <div className="bg-gradient-to-br from-muted-rose/15 to-muted-rose/5 border-l-4 border-muted-rose rounded-2xl p-8">
-        <div className="flex items-center justify-between mb-6">
+      {/* SECONDARY SECTION - Weekly Check-In */}
+      <div className="bg-warm-sand-beige/50 border-l-4 border-muted-rose rounded-xl p-10 shadow-md">
+        <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-1">
+            <h2 className="font-heading text-3xl font-bold text-charcoal-black mb-2">
               Weekly Check-In
             </h2>
-            <p className="text-warm-grey text-sm">
+            <p className="text-warm-grey text-base">
               Help your coach understand how you're feeling
             </p>
           </div>
           <Badge 
             variant={checkInStatus === 'completed' ? 'default' : 'secondary'}
             className={checkInStatus === 'completed' 
-              ? 'bg-green-100 text-green-800 hover:bg-green-100' 
-              : 'bg-amber-100 text-amber-800 hover:bg-amber-100'
+              ? 'bg-green-100 text-green-800 hover:bg-green-100 px-4 py-2 text-sm font-bold' 
+              : 'bg-amber-100 text-amber-800 hover:bg-amber-100 px-4 py-2 text-sm font-bold'
             }
           >
             {checkInStatus === 'completed' ? '✓ Completed' : 'Due'}
@@ -408,56 +408,56 @@ export default function DashboardPage() {
         </div>
 
         {latestWeeklyCheckIn && hasCurrentWeekCheckIn ? (
-          <div className="space-y-4">
+          <div className="space-y-6">
             {/* Summary metrics */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-soft-white/60 rounded-lg p-4">
-                <div className="flex items-center gap-2 mb-1">
-                  <Zap className="w-4 h-4 text-soft-bronze" />
-                  <p className="text-xs text-warm-grey">Energy</p>
+            <div className="grid grid-cols-2 gap-5">
+              <div className="bg-soft-white rounded-xl p-6 shadow-sm">
+                <div className="flex items-center gap-3 mb-2">
+                  <Zap className="w-5 h-5 text-soft-bronze" />
+                  <p className="text-sm text-warm-grey font-medium">Energy</p>
                 </div>
-                <p className="font-heading text-xl font-bold text-charcoal-black">
+                <p className="font-heading text-2xl font-bold text-charcoal-black">
                   {latestWeeklyCheckIn.energyRating || 'N/A'}
                 </p>
               </div>
 
-              <div className="bg-soft-white/60 rounded-lg p-4">
-                <div className="flex items-center gap-2 mb-1">
-                  <Activity className="w-4 h-4 text-soft-bronze" />
-                  <p className="text-xs text-warm-grey">Difficulty</p>
+              <div className="bg-soft-white rounded-xl p-6 shadow-sm">
+                <div className="flex items-center gap-3 mb-2">
+                  <Activity className="w-5 h-5 text-soft-bronze" />
+                  <p className="text-sm text-warm-grey font-medium">Difficulty</p>
                 </div>
-                <p className="font-heading text-xl font-bold text-charcoal-black">
+                <p className="font-heading text-2xl font-bold text-charcoal-black">
                   {latestWeeklyCheckIn.difficultyRating || 'N/A'}
                 </p>
               </div>
             </div>
 
             {/* Coach review message */}
-            <div className="flex items-start gap-3 p-4 bg-soft-white/60 rounded-lg">
-              <Eye className="w-5 h-5 text-soft-bronze flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-charcoal-black">
+            <div className="flex items-start gap-4 p-5 bg-soft-white rounded-xl shadow-sm">
+              <Eye className="w-6 h-6 text-soft-bronze flex-shrink-0 mt-1" />
+              <p className="text-base text-charcoal-black/90 leading-relaxed">
                 Your coach is reviewing this and will respond here.
               </p>
             </div>
 
             <Link
               to="/portal/progress"
-              className="inline-flex items-center gap-2 text-soft-bronze hover:underline text-sm font-medium"
+              className="inline-flex items-center gap-2 text-soft-bronze hover:underline text-base font-bold"
             >
               View all check-ins
-              <ArrowRight size={14} />
+              <ArrowRight size={16} />
             </Link>
           </div>
         ) : (
-          <div className="space-y-4">
-            <p className="text-charcoal-black">
+          <div className="space-y-6">
+            <p className="text-charcoal-black/90 text-base leading-relaxed">
               Share how this week's training is going. Your feedback helps your coach keep your program aligned with how you're feeling.
             </p>
             <button
               onClick={() => setShowCheckInModal(true)}
-              className="inline-flex items-center gap-2 bg-muted-rose text-soft-white px-6 py-3 rounded-lg font-bold hover:bg-muted-rose/90 transition-colors"
+              className="inline-flex items-center gap-3 bg-muted-rose text-soft-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-muted-rose/90 transition-colors shadow-md"
             >
-              <CheckCircle size={18} />
+              <CheckCircle size={20} />
               Complete check-in (2 min)
             </button>
           </div>
@@ -465,34 +465,34 @@ export default function DashboardPage() {
       </div>
 
       {/* TERTIARY SECTION - Upcoming Sessions */}
-      <div className="bg-soft-white/80 border border-warm-sand-beige/50 rounded-xl p-8">
-        <div className="flex items-center justify-between mb-6">
+      <div className="bg-soft-white border border-warm-sand-beige rounded-xl p-10 shadow-sm">
+        <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="font-heading text-xl font-bold text-charcoal-black mb-1">
+            <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-2">
               Upcoming Sessions
             </h2>
-            <p className="text-warm-grey text-sm">
+            <p className="text-warm-grey text-base">
               {upcomingBookings.length > 0 
                 ? `${upcomingBookings.length} session${upcomingBookings.length !== 1 ? 's' : ''} scheduled`
                 : 'Stay consistent by booking ahead'}
             </p>
           </div>
           {upcomingBookings.length > 0 && (
-            <Link to="/portal/bookings" className="text-soft-bronze hover:underline text-sm font-medium">
+            <Link to="/portal/bookings" className="text-soft-bronze hover:underline text-base font-bold">
               View all
             </Link>
           )}
         </div>
 
         {upcomingBookings.length > 0 ? (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {upcomingBookings.slice(0, 2).map((booking) => (
-              <div key={booking._id} className="flex items-center justify-between p-4 bg-warm-sand-beige/30 rounded-lg">
+              <div key={booking._id} className="flex items-center justify-between p-5 bg-warm-sand-beige/30 rounded-xl">
                 <div>
-                  <h3 className="font-paragraph font-bold text-charcoal-black">
+                  <h3 className="font-paragraph font-bold text-charcoal-black text-lg">
                     {booking.serviceType}
                   </h3>
-                  <p className="text-warm-grey text-sm">
+                  <p className="text-warm-grey text-base">
                     {new Date(booking.appointmentDate || '').toLocaleDateString('en-GB', {
                       weekday: 'short',
                       month: 'short',
@@ -502,7 +502,7 @@ export default function DashboardPage() {
                     })}
                   </p>
                 </div>
-                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                <span className={`px-4 py-2 rounded-full text-sm font-bold ${
                   booking.status === 'confirmed' 
                     ? 'bg-green-100 text-green-800'
                     : 'bg-yellow-100 text-yellow-800'
@@ -514,23 +514,23 @@ export default function DashboardPage() {
             {upcomingBookings.length > 2 && (
               <Link 
                 to="/portal/bookings"
-                className="block text-center text-soft-bronze hover:underline text-sm font-medium pt-2"
+                className="block text-center text-soft-bronze hover:underline text-base font-bold pt-3"
               >
                 +{upcomingBookings.length - 2} more session{upcomingBookings.length - 2 !== 1 ? 's' : ''}
               </Link>
             )}
           </div>
         ) : (
-          <div className="space-y-4">
-            <p className="text-charcoal-black">
+          <div className="space-y-6">
+            <p className="text-charcoal-black/90 text-base leading-relaxed">
               Clients who book ahead stay more consistent around family life.
             </p>
             <Link 
               to="/portal/bookings" 
-              className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white hover:bg-soft-bronze/90 transition-colors font-bold px-6 py-3 rounded-lg"
+              className="inline-flex items-center gap-3 bg-soft-bronze text-soft-white hover:bg-soft-bronze/90 transition-colors font-bold px-8 py-4 rounded-xl text-lg shadow-md"
             >
               Book a session
-              <ArrowRight size={16} />
+              <ArrowRight size={18} />
             </Link>
           </div>
         )}
@@ -554,44 +554,44 @@ export default function DashboardPage() {
       <div className="grid md:grid-cols-3 gap-6">
         <Link
           to="/portal/nutrition"
-          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 hover:border-soft-bronze transition-all duration-200 group"
+          className="bg-soft-white border-2 border-warm-sand-beige rounded-xl p-8 hover:border-soft-bronze hover:shadow-md transition-all duration-200 group"
         >
-          <h3 className="font-heading text-lg font-bold text-charcoal-black mb-1 group-hover:text-soft-bronze transition-colors">
+          <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-bronze transition-colors">
             Nutrition
           </h3>
-          <p className="text-warm-grey text-sm">Meal plans & guidance</p>
+          <p className="text-warm-grey text-base">Meal plans & guidance</p>
         </Link>
 
         <Link
           to="/portal/video-library"
-          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 hover:border-soft-bronze transition-all duration-200 group"
+          className="bg-soft-white border-2 border-warm-sand-beige rounded-xl p-8 hover:border-soft-bronze hover:shadow-md transition-all duration-200 group"
         >
-          <h3 className="font-heading text-lg font-bold text-charcoal-black mb-1 group-hover:text-soft-bronze transition-colors">
+          <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-bronze transition-colors">
             Video Library
           </h3>
-          <p className="text-warm-grey text-sm">Exercise demos</p>
+          <p className="text-warm-grey text-base">Exercise demos</p>
         </Link>
 
         <Link
           to="/portal/progress"
-          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 hover:border-soft-bronze transition-all duration-200 group"
+          className="bg-soft-white border-2 border-warm-sand-beige rounded-xl p-8 hover:border-soft-bronze hover:shadow-md transition-all duration-200 group"
         >
-          <h3 className="font-heading text-lg font-bold text-charcoal-black mb-1 group-hover:text-soft-bronze transition-colors">
+          <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-bronze transition-colors">
             Progress
           </h3>
-          <p className="text-warm-grey text-sm">Track your journey</p>
+          <p className="text-warm-grey text-base">Track your journey</p>
         </Link>
       </div>
 
-      {/* Coach Support Footer */}
-      <div className="bg-gradient-to-r from-soft-bronze/10 to-soft-bronze/5 border border-soft-bronze/30 rounded-2xl p-6">
-        <div className="flex items-start gap-3">
-          <Heart className="text-soft-bronze flex-shrink-0 mt-0.5" size={24} />
+      {/* Coach Support Footer - TERTIARY INFO BANNER */}
+      <div className="bg-soft-white border-2 border-soft-bronze/30 rounded-xl p-8 shadow-sm">
+        <div className="flex items-start gap-4">
+          <Heart className="text-soft-bronze flex-shrink-0 mt-1" size={28} />
           <div>
-            <h3 className="font-heading text-lg font-bold text-charcoal-black mb-1">
+            <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2">
               You're not doing this alone
             </h3>
-            <p className="text-warm-grey text-sm">
+            <p className="text-warm-grey text-base leading-relaxed">
               Your coach reviews your progress regularly and is here to support you. Reach out anytime if you need adjustments or have questions.
             </p>
           </div>
