@@ -1154,9 +1154,9 @@ export default function MyProgramPage() {
   return (
     <div className={PAGE_WRAPPER.container}>
       {/* PRIMARY HERO: Page Title */}
-      <div className={PRIMARY_HERO_SECTION.container}>
-        <h1 className={PRIMARY_HERO_SECTION.heading}>My Training Programme</h1>
-        <p className={PRIMARY_HERO_SECTION.subheading}>
+      <div className="bg-charcoal-black rounded-2xl p-8 lg:p-10 text-soft-white mb-8 shadow-2xl">
+        <h1 className="font-heading text-4xl lg:text-5xl font-bold text-soft-white mb-2">My Training Programme</h1>
+        <p className="text-warm-sand-beige text-base lg:text-lg">
           Your personalised training plan
         </p>
       </div>
