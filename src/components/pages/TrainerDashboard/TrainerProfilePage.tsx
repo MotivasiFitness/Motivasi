@@ -200,14 +200,32 @@ export default function TrainerProfilePage() {
     });
   };
 
+  // Get the correct endpoint based on environment
+  const getUploadEndpoint = (): string => {
+    // Check if we're in preview/development environment
+    const isPreview = window.location.hostname.includes('preview') || 
+                     window.location.hostname.includes('localhost') ||
+                     window.location.hostname.includes('127.0.0.1') ||
+                     window.location.hostname.includes('editorx.io');
+    
+    // Use /_functions-dev/ for preview/dev, /_functions/ for production
+    const endpoint = isPreview ? '/_functions-dev/uploadProfilePhoto' : '/_functions/uploadProfilePhoto';
+    console.log('[Upload] Environment detection:', {
+      hostname: window.location.hostname,
+      isPreview,
+      endpoint
+    });
+    return endpoint;
+  };
+
   // Upload image to Wix Media Manager
   const uploadImageToWix = async (blob: Blob, fileName: string): Promise<string> => {
     // Create FormData
     const formData = new FormData();
     formData.append('file', blob, fileName);
 
-    // Upload to Wix Media Manager via backend function
-    const uploadUrl = '/_functions/uploadProfilePhoto';
+    // Get the correct endpoint for the current environment
+    const uploadUrl = getUploadEndpoint();
     console.log('[Upload] Starting upload to:', uploadUrl);
     console.log('[Upload] File name:', fileName);
     console.log('[Upload] Blob size:', blob.size, 'bytes');
