@@ -126,7 +126,12 @@ export default function TrainerProfilePage() {
           description: 'Profile created successfully'
         });
       }
+      
+      // Reload profile to get latest data
       await loadProfile();
+      
+      // Trigger a custom event to notify other components (like sidebar) to refresh
+      window.dispatchEvent(new CustomEvent('trainerProfileUpdated'));
     } catch (error) {
       console.error('Error saving profile:', error);
       toast({
@@ -201,18 +206,21 @@ export default function TrainerProfilePage() {
     const formData = new FormData();
     formData.append('file', blob, fileName);
 
-    // Upload to Wix Media Manager
-    const response = await fetch('/_api/upload/file', {
+    // Upload to Wix Media Manager via backend function
+    const response = await fetch('/_functions/uploadProfilePhoto', {
       method: 'POST',
       body: formData,
     });
 
-    if (!response.ok) {
-      throw new Error('Upload failed');
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      // Throw specific error message from backend
+      throw new Error(data.error || `Upload failed with status ${response.status}`);
     }
 
-    const data = await response.json();
-    return data.url || data.fileUrl || data.file?.url;
+    // Return the uploaded URL
+    return data.url;
   };
 
   // Handle file selection
@@ -225,8 +233,9 @@ export default function TrainerProfilePage() {
     setUploadStatus('idle');
 
     // Validate file type
-    if (!file.type.startsWith('image/')) {
-      setUploadError('Please select a valid image file');
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type.toLowerCase())) {
+      setUploadError('Please select a valid image file (JPG, PNG, or WebP)');
       setUploadStatus('error');
       return;
     }
@@ -264,13 +273,14 @@ export default function TrainerProfilePage() {
 
       // Clean up preview URL
       URL.revokeObjectURL(previewUrl);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Upload error:', error);
-      setUploadError('Failed to upload image. Please try again.');
+      const errorMessage = error.message || 'Failed to upload image. Please try again.';
+      setUploadError(errorMessage);
       setUploadStatus('error');
       toast({
         title: 'Upload Failed',
-        description: 'Failed to upload image. Please try again.',
+        description: errorMessage,
         variant: 'destructive',
       });
     }
@@ -395,7 +405,7 @@ export default function TrainerProfilePage() {
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/jpg,image/png,image/webp"
                   onChange={handleFileSelect}
                   className="hidden"
                 />
@@ -457,7 +467,7 @@ export default function TrainerProfilePage() {
 
                 <p className="text-xs text-warm-grey">
                   Upload a square photo (recommended 512x512px). Max file size: 5MB. 
-                  Images will be automatically cropped to a square and compressed.
+                  Accepted formats: JPG, PNG, WebP. Images will be automatically cropped to a square and compressed.
                 </p>
               </div>
 

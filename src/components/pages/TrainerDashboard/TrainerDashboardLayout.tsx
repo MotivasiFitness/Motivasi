@@ -1,4 +1,5 @@
 import { useMember } from '@/integrations';
+import { BaseCrudService } from '@/integrations';
 import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
 import { Users, BookOpen, Settings, LogOut, Menu, X, Loader, Sparkles, Video, Apple, MessageSquare, LayoutDashboard, FolderOpen, Dumbbell, TrendingUp, ChevronDown, User } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -7,11 +8,13 @@ import PortalHeader from '@/components/layout/PortalHeader';
 import NotificationsPanel from './NotificationsPanel';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { TrainerProfiles } from '@/entities';
 
 export default function TrainerDashboardLayout() {
   const { member, actions } = useMember();
   const { isTrainer, isAdmin, isLoading } = useRole();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [trainerProfile, setTrainerProfile] = useState<TrainerProfiles | null>(null);
   const location = useLocation();
 
   // Allow trainers and admins to access trainer portal
@@ -19,6 +22,38 @@ export default function TrainerDashboardLayout() {
   if (!isLoading && !isTrainer && !isAdmin) {
     return <Navigate to="/" replace />;
   }
+
+  // Load trainer profile for avatar
+  useEffect(() => {
+    const loadTrainerProfile = async () => {
+      if (!member?._id) return;
+      
+      try {
+        const { items } = await BaseCrudService.getAll<TrainerProfiles>('trainerprofiles');
+        const profile = items.find(p => p.memberId === member._id);
+        if (profile) {
+          setTrainerProfile(profile);
+        }
+      } catch (error) {
+        console.error('Error loading trainer profile:', error);
+      }
+    };
+
+    if (member?._id) {
+      loadTrainerProfile();
+    }
+
+    // Listen for profile updates
+    const handleProfileUpdate = () => {
+      loadTrainerProfile();
+    };
+
+    window.addEventListener('trainerProfileUpdated', handleProfileUpdate);
+
+    return () => {
+      window.removeEventListener('trainerProfileUpdated', handleProfileUpdate);
+    };
+  }, [member?._id]);
 
   if (isLoading) {
     return (
@@ -112,14 +147,17 @@ export default function TrainerDashboardLayout() {
               <DropdownMenuTrigger className="w-full">
                 <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-soft-white/5 transition-colors cursor-pointer group">
                   <Avatar className="w-10 h-10">
-                    <AvatarImage src={member?.profile?.photo?.url} alt={member?.profile?.nickname || 'Trainer'} />
+                    <AvatarImage 
+                      src={trainerProfile?.profilePhoto || member?.profile?.photo?.url} 
+                      alt={trainerProfile?.displayName || member?.profile?.nickname || 'Trainer'} 
+                    />
                     <AvatarFallback className="bg-soft-bronze text-soft-white font-heading">
-                      {(member?.profile?.nickname || member?.loginEmail)?.charAt(0).toUpperCase() || 'T'}
+                      {(trainerProfile?.displayName || member?.profile?.nickname || member?.loginEmail)?.charAt(0).toUpperCase() || 'T'}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 text-left">
                     <p className="text-sm font-medium text-soft-white">
-                      {member?.profile?.nickname || member?.contact?.firstName || 'Trainer'}
+                      {trainerProfile?.displayName || member?.profile?.nickname || member?.contact?.firstName || 'Trainer'}
                     </p>
                     <p className="text-xs text-warm-grey">
                       {member?.loginEmail}
