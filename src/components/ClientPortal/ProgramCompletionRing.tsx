@@ -122,14 +122,14 @@ export default function ProgramCompletionRing({
             transition={{ delay: 0.2, duration: 0.4 }}
           >
             <motion.div
-              className="font-heading text-3xl font-bold text-charcoal-black"
+              className="font-heading text-3xl font-bold text-soft-white"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.3 }}
             >
               {Math.round(percentage)}%
             </motion.div>
-            <p className="font-paragraph text-xs text-warm-grey mt-1 uppercase tracking-wide">
+            <p className="font-paragraph text-xs text-warm-sand-beige mt-1 uppercase tracking-wide">
               Complete
             </p>
           </motion.div>
