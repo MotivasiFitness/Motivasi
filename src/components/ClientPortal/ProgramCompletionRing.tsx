@@ -136,7 +136,7 @@ export default function ProgramCompletionRing({
         </div>
 
         <motion.p
-          className="mt-3 font-paragraph text-xs text-charcoal-black text-center"
+          className="mt-3 font-paragraph text-xs text-soft-white text-center"
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.3 }}
