@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { User, Mail, Globe, Award, Briefcase, Camera } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { User, Mail, Globe, Award, Briefcase, Camera, Upload, X, CheckCircle, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 // Trainer Profile Type
@@ -26,9 +27,13 @@ interface TrainerProfile {
   memberId?: string;
 }
 
+// Upload states
+type UploadStatus = 'idle' | 'uploading' | 'success' | 'error';
+
 export default function TrainerProfilePage() {
   const { member } = useMember();
   const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [profile, setProfile] = useState<TrainerProfile | null>(null);
@@ -41,6 +46,11 @@ export default function TrainerProfilePage() {
     contactEmail: '',
     profilePhoto: ''
   });
+  
+  // Photo upload states
+  const [uploadStatus, setUploadStatus] = useState<UploadStatus>('idle');
+  const [uploadError, setUploadError] = useState<string>('');
+  const [photoPreview, setPhotoPreview] = useState<string>('');
 
   useEffect(() => {
     loadProfile();
@@ -65,14 +75,17 @@ export default function TrainerProfilePage() {
           contactEmail: existingProfile.contactEmail || member.loginEmail || '',
           profilePhoto: existingProfile.profilePhoto || ''
         });
+        setPhotoPreview(existingProfile.profilePhoto || '');
       } else {
         // Initialize with member data
+        const memberPhoto = member.profile?.photo?.url || '';
         setFormData(prev => ({
           ...prev,
           displayName: member.profile?.nickname || member.contact?.firstName || '',
           contactEmail: member.loginEmail || '',
-          profilePhoto: member.profile?.photo?.url || ''
+          profilePhoto: memberPhoto
         }));
+        setPhotoPreview(memberPhoto);
       }
     } catch (error) {
       console.error('Error loading profile:', error);
@@ -130,6 +143,155 @@ export default function TrainerProfilePage() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  // Image compression and cropping utility
+  const compressAndCropImage = (file: File): Promise<Blob> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            reject(new Error('Failed to get canvas context'));
+            return;
+          }
+
+          // Target dimensions (square)
+          const targetSize = 512;
+          canvas.width = targetSize;
+          canvas.height = targetSize;
+
+          // Calculate crop dimensions (center square crop)
+          const sourceSize = Math.min(img.width, img.height);
+          const sourceX = (img.width - sourceSize) / 2;
+          const sourceY = (img.height - sourceSize) / 2;
+
+          // Draw cropped and resized image
+          ctx.drawImage(
+            img,
+            sourceX, sourceY, sourceSize, sourceSize,
+            0, 0, targetSize, targetSize
+          );
+
+          // Convert to blob with compression
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                resolve(blob);
+              } else {
+                reject(new Error('Failed to compress image'));
+              }
+            },
+            'image/jpeg',
+            0.85 // Quality (85%)
+          );
+        };
+        img.onerror = () => reject(new Error('Failed to load image'));
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = () => reject(new Error('Failed to read file'));
+      reader.readAsDataURL(file);
+    });
+  };
+
+  // Upload image to Wix Media Manager
+  const uploadImageToWix = async (blob: Blob, fileName: string): Promise<string> => {
+    // Create FormData
+    const formData = new FormData();
+    formData.append('file', blob, fileName);
+
+    // Upload to Wix Media Manager
+    const response = await fetch('/_api/upload/file', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error('Upload failed');
+    }
+
+    const data = await response.json();
+    return data.url || data.fileUrl || data.file?.url;
+  };
+
+  // Handle file selection
+  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Reset states
+    setUploadError('');
+    setUploadStatus('idle');
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setUploadError('Please select a valid image file');
+      setUploadStatus('error');
+      return;
+    }
+
+    // Validate file size (5MB max)
+    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+    if (file.size > maxSize) {
+      setUploadError('Image size must be less than 5MB');
+      setUploadStatus('error');
+      return;
+    }
+
+    setUploadStatus('uploading');
+
+    try {
+      // Compress and crop image
+      const compressedBlob = await compressAndCropImage(file);
+
+      // Create preview URL
+      const previewUrl = URL.createObjectURL(compressedBlob);
+      setPhotoPreview(previewUrl);
+
+      // Upload to Wix
+      const uploadedUrl = await uploadImageToWix(compressedBlob, file.name);
+
+      // Update form data
+      setFormData(prev => ({ ...prev, profilePhoto: uploadedUrl }));
+      setPhotoPreview(uploadedUrl);
+      setUploadStatus('success');
+
+      toast({
+        title: 'Success',
+        description: 'Photo uploaded successfully. Remember to save your profile.',
+      });
+
+      // Clean up preview URL
+      URL.revokeObjectURL(previewUrl);
+    } catch (error) {
+      console.error('Upload error:', error);
+      setUploadError('Failed to upload image. Please try again.');
+      setUploadStatus('error');
+      toast({
+        title: 'Upload Failed',
+        description: 'Failed to upload image. Please try again.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  // Handle remove photo
+  const handleRemovePhoto = () => {
+    setFormData(prev => ({ ...prev, profilePhoto: '' }));
+    setPhotoPreview('');
+    setUploadStatus('idle');
+    setUploadError('');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  // Trigger file input
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
@@ -162,14 +324,31 @@ export default function TrainerProfilePage() {
               <div className="flex flex-col items-center text-center space-y-4">
                 <div className="relative">
                   <Avatar className="w-32 h-32">
-                    <AvatarImage src={formData.profilePhoto} alt={formData.displayName} />
+                    <AvatarImage src={photoPreview || formData.profilePhoto} alt={formData.displayName} />
                     <AvatarFallback className="bg-soft-bronze text-soft-white text-3xl font-heading">
                       {formData.displayName?.charAt(0) || 'T'}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="absolute bottom-0 right-0 bg-soft-bronze text-soft-white p-2 rounded-full">
-                    <Camera size={16} />
-                  </div>
+                  {uploadStatus === 'uploading' && (
+                    <div className="absolute inset-0 bg-charcoal-black/50 rounded-full flex items-center justify-center">
+                      <LoadingSpinner />
+                    </div>
+                  )}
+                  {uploadStatus === 'success' && (
+                    <div className="absolute bottom-0 right-0 bg-green-600 text-white p-2 rounded-full">
+                      <CheckCircle size={16} />
+                    </div>
+                  )}
+                  {uploadStatus === 'error' && (
+                    <div className="absolute bottom-0 right-0 bg-destructive text-white p-2 rounded-full">
+                      <AlertCircle size={16} />
+                    </div>
+                  )}
+                  {uploadStatus === 'idle' && (
+                    <div className="absolute bottom-0 right-0 bg-soft-bronze text-soft-white p-2 rounded-full">
+                      <Camera size={16} />
+                    </div>
+                  )}
                 </div>
                 <div>
                   <h3 className="font-heading text-2xl font-bold text-charcoal-black">
@@ -205,6 +384,83 @@ export default function TrainerProfilePage() {
               <CardDescription>Update your professional details</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
+              {/* Profile Photo Upload */}
+              <div className="space-y-4">
+                <Label className="flex items-center gap-2">
+                  <Camera size={16} className="text-soft-bronze" />
+                  Profile Photo
+                </Label>
+                
+                {/* Hidden file input */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                />
+
+                {/* Upload controls */}
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    type="button"
+                    onClick={triggerFileInput}
+                    disabled={uploadStatus === 'uploading'}
+                    variant="outline"
+                    className="font-paragraph"
+                  >
+                    <Upload size={16} className="mr-2" />
+                    {photoPreview || formData.profilePhoto ? 'Change Photo' : 'Upload Photo'}
+                  </Button>
+                  
+                  {(photoPreview || formData.profilePhoto) && (
+                    <Button
+                      type="button"
+                      onClick={handleRemovePhoto}
+                      disabled={uploadStatus === 'uploading'}
+                      variant="outline"
+                      className="font-paragraph text-destructive hover:text-destructive"
+                    >
+                      <X size={16} className="mr-2" />
+                      Remove Photo
+                    </Button>
+                  )}
+                </div>
+
+                {/* Upload status messages */}
+                {uploadStatus === 'uploading' && (
+                  <Alert className="bg-soft-white border-soft-bronze">
+                    <LoadingSpinner />
+                    <AlertDescription className="ml-2">
+                      Uploading and processing image...
+                    </AlertDescription>
+                  </Alert>
+                )}
+
+                {uploadStatus === 'success' && (
+                  <Alert className="bg-green-50 border-green-600">
+                    <CheckCircle size={16} className="text-green-600" />
+                    <AlertDescription className="ml-2 text-green-800">
+                      Photo uploaded successfully! Don't forget to save your profile.
+                    </AlertDescription>
+                  </Alert>
+                )}
+
+                {uploadStatus === 'error' && uploadError && (
+                  <Alert className="bg-red-50 border-destructive">
+                    <AlertCircle size={16} className="text-destructive" />
+                    <AlertDescription className="ml-2 text-destructive">
+                      {uploadError}
+                    </AlertDescription>
+                  </Alert>
+                )}
+
+                <p className="text-xs text-warm-grey">
+                  Upload a square photo (recommended 512x512px). Max file size: 5MB. 
+                  Images will be automatically cropped to a square and compressed.
+                </p>
+              </div>
+
               {/* Display Name */}
               <div className="space-y-2">
                 <Label htmlFor="displayName" className="flex items-center gap-2">
@@ -299,24 +555,6 @@ export default function TrainerProfilePage() {
                   placeholder="your.email@example.com"
                   className="font-paragraph"
                 />
-              </div>
-
-              {/* Profile Photo URL */}
-              <div className="space-y-2">
-                <Label htmlFor="profilePhoto" className="flex items-center gap-2">
-                  <Camera size={16} className="text-soft-bronze" />
-                  Profile Photo URL
-                </Label>
-                <Input
-                  id="profilePhoto"
-                  value={formData.profilePhoto}
-                  onChange={(e) => handleChange('profilePhoto', e.target.value)}
-                  placeholder="https://example.com/photo.jpg"
-                  className="font-paragraph"
-                />
-                <p className="text-xs text-warm-grey">
-                  Enter a URL to your profile photo
-                </p>
               </div>
 
               {/* Save Button */}
