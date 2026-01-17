@@ -1,4 +1,4 @@
-export type Language = 'en-GB' | 'en-US' | 'es' | 'fr' | 'de' | 'nl' | 'en-SG' | 'en-AE';
+export type Language = 'en-GB' | 'en-US' | 'es' | 'fr' | 'de' | 'nl';
 
 export interface Translations {
   // Navigation
