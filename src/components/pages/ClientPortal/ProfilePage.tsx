@@ -9,6 +9,8 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import { CheckCircle2, User, AlertCircle } from 'lucide-react';
 
 export default function ProfilePage() {
@@ -25,6 +27,9 @@ export default function ProfilePage() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [emergencyContact, setEmergencyContact] = useState('');
   const [fitnessGoals, setFitnessGoals] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [trainingExperience, setTrainingExperience] = useState('');
+  const [fitnessGoalsCategory, setFitnessGoalsCategory] = useState('');
   const [isFirstTimeSetup, setIsFirstTimeSetup] = useState(false);
 
   useEffect(() => {
@@ -46,6 +51,9 @@ export default function ProfilePage() {
         setPhoneNumber(existingProfile.phoneNumber || '');
         setEmergencyContact(existingProfile.emergencyContact || '');
         setFitnessGoals(existingProfile.fitnessGoals || '');
+        setDateOfBirth(existingProfile.dateOfBirth ? new Date(existingProfile.dateOfBirth).toISOString().split('T')[0] : '');
+        setTrainingExperience(existingProfile.trainingExperience || '');
+        setFitnessGoalsCategory(existingProfile.fitnessGoalsCategory || '');
         
         // Check if this is first-time setup (no firstName or lastName)
         if (!existingProfile.firstName || !existingProfile.lastName) {
@@ -90,6 +98,9 @@ export default function ProfilePage() {
         phoneNumber,
         emergencyContact,
         fitnessGoals,
+        dateOfBirth: dateOfBirth || undefined,
+        trainingExperience: trainingExperience || undefined,
+        fitnessGoalsCategory: fitnessGoalsCategory || undefined,
       };
 
       if (profile?._id) {
@@ -212,6 +223,31 @@ export default function ProfilePage() {
           {!isFirstTimeSetup && (
             <>
               <div className="space-y-2">
+                <Label htmlFor="dateOfBirth">Date of Birth (Optional)</Label>
+                <Input
+                  id="dateOfBirth"
+                  type="date"
+                  value={dateOfBirth}
+                  onChange={(e) => setDateOfBirth(e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="trainingExperience">Training Experience</Label>
+                <Select value={trainingExperience} onValueChange={setTrainingExperience}>
+                  <SelectTrigger id="trainingExperience">
+                    <SelectValue placeholder="Select your experience level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Beginner">Beginner</SelectItem>
+                    <SelectItem value="Intermediate">Intermediate</SelectItem>
+                    <SelectItem value="Advanced">Advanced</SelectItem>
+                    <SelectItem value="Returning after a break">Returning after a break</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
                 <Label htmlFor="phoneNumber">Phone Number</Label>
                 <Input
                   id="phoneNumber"
@@ -230,15 +266,34 @@ export default function ProfilePage() {
                   onChange={(e) => setEmergencyContact(e.target.value)}
                   placeholder="Name and phone number"
                 />
+                <p className="text-sm text-warm-grey">Only used in case of emergency.</p>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="fitnessGoals">Fitness Goals</Label>
-                <Input
+                <Label htmlFor="fitnessGoalsCategory">Fitness Goals Category</Label>
+                <Select value={fitnessGoalsCategory} onValueChange={setFitnessGoalsCategory}>
+                  <SelectTrigger id="fitnessGoalsCategory">
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Weight Loss">Weight Loss</SelectItem>
+                    <SelectItem value="Muscle Gain">Muscle Gain</SelectItem>
+                    <SelectItem value="General Fitness">General Fitness</SelectItem>
+                    <SelectItem value="Athletic Performance">Athletic Performance</SelectItem>
+                    <SelectItem value="Rehabilitation">Rehabilitation</SelectItem>
+                    <SelectItem value="Other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="fitnessGoals">Fitness Goals (Details)</Label>
+                <Textarea
                   id="fitnessGoals"
                   value={fitnessGoals}
                   onChange={(e) => setFitnessGoals(e.target.value)}
-                  placeholder="What are your fitness goals?"
+                  placeholder="Tell us more about your specific fitness goals..."
+                  rows={4}
                 />
               </div>
             </>
