@@ -528,12 +528,12 @@ export default function MyProgramPage() {
     return (
       <div className={PAGE_WRAPPER.container}>
         {/* PRIMARY HERO: Page Title + Program Progress + Overview Metrics */}
-        <div className="bg-charcoal-black rounded-2xl p-8 lg:p-10 text-soft-white mb-8 shadow-2xl">
+        <div className="bg-soft-white rounded-2xl p-8 lg:p-10 mb-8 shadow-lg border border-warm-sand-beige">
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
             {/* Left: Title + Week Info */}
             <div className="flex-1">
-              <h1 className="font-heading text-4xl lg:text-5xl font-bold text-soft-white mb-3">My Training Programme</h1>
-              <p className="text-warm-sand-beige text-base lg:text-lg">
+              <h1 className="font-heading text-4xl lg:text-5xl font-bold text-charcoal-black mb-3">My Training Programme</h1>
+              <p className="text-warm-grey text-base lg:text-lg">
                 {weekDisplay} • Your personalised training plan
               </p>
             </div>
@@ -542,15 +542,15 @@ export default function MyProgramPage() {
             <div className="flex flex-col gap-4 lg:items-end">
               {/* Quick Stats Grid */}
               <div className="grid grid-cols-2 gap-4 lg:gap-6">
-                <div className="flex flex-col items-center text-center p-4 bg-soft-white/10 backdrop-blur-sm rounded-xl border border-soft-white/20">
-                  <Clock className="w-6 h-6 text-soft-white mb-2" />
-                  <p className="text-xs text-soft-white/80 mb-1">Training Length</p>
-                  <p className="font-heading text-xl font-bold text-soft-white">30-35 min</p>
+                <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/30 rounded-xl border border-warm-sand-beige">
+                  <Clock className="w-6 h-6 text-charcoal-black mb-2" />
+                  <p className="text-xs text-warm-grey mb-1">Training Length</p>
+                  <p className="font-heading text-xl font-bold text-charcoal-black">30-35 min</p>
                 </div>
-                <div className="flex flex-col items-center text-center p-4 bg-soft-white/10 backdrop-blur-sm rounded-xl border border-soft-white/20">
-                  <Target className="w-6 h-6 text-soft-white mb-2" />
-                  <p className="text-xs text-soft-white/80 mb-1">This Week</p>
-                  <p className="font-heading text-xl font-bold text-soft-white">
+                <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/30 rounded-xl border border-warm-sand-beige">
+                  <Target className="w-6 h-6 text-charcoal-black mb-2" />
+                  <p className="text-xs text-warm-grey mb-1">This Week</p>
+                  <p className="font-heading text-xl font-bold text-charcoal-black">
                     {sortedWeeks.length > 0 ? workoutsByWeek[sortedWeeks[0]]?.length || 0 : 0} trainings
                   </p>
                 </div>
@@ -570,8 +570,8 @@ export default function MyProgramPage() {
 
         {/* SECONDARY SECTION: Program Progress Ring */}
         {activeCycle && (
-          <div className={SECONDARY_SECTION.container}>
-            <h2 className={SECONDARY_SECTION.heading}>Your Progress</h2>
+          <div className="bg-charcoal-black rounded-2xl p-8 lg:p-10 mb-8 shadow-lg">
+            <h2 className="font-heading text-3xl lg:text-4xl font-bold text-soft-white mb-6">Your Progress</h2>
             <div className="flex justify-center">
               <div className="w-full max-w-xs">
                 <ProgramCompletionRing
@@ -1163,7 +1163,7 @@ export default function MyProgramPage() {
 
       {/* SECONDARY SECTION: Workout Overview with Progress Ring + Stats */}
       {programs.length > 0 && (
-        <div className={SECONDARY_SECTION.container}>
+        <div className="bg-charcoal-black rounded-2xl p-8 lg:p-10 mb-8 shadow-lg">
           <div className="grid lg:grid-cols-5 gap-8 items-start">
             {/* Progress Ring - Left Side */}
             <div className="lg:col-span-1 flex justify-center">
@@ -1178,7 +1178,7 @@ export default function MyProgramPage() {
 
             {/* Stats Grid - Right Side */}
             <div className="lg:col-span-4">
-              <h2 className={SECONDARY_SECTION.heading}>
+              <h2 className="font-heading text-3xl lg:text-4xl font-bold text-soft-white mb-6">
                 Programme Overview
               </h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
