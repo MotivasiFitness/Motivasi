@@ -368,6 +368,27 @@ export interface PrivateVideoLibrary {
 
 
 /**
+ * Collection ID: programassignments
+ * Interface for ProgramAssignments
+ */
+export interface ProgramAssignments {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  programId?: string;
+  /** @wixFieldType text */
+  clientId?: string;
+  /** @wixFieldType text */
+  trainerId?: string;
+  /** @wixFieldType datetime */
+  assignedAt?: Date | string;
+  /** @wixFieldType text */
+  status?: string;
+}
+
+
+/**
  * Collection ID: programcycles
  * Interface for ProgramCycles
  */
