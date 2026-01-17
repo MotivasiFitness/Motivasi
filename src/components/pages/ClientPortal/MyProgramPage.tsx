@@ -1154,13 +1154,12 @@ export default function MyProgramPage() {
   return (
     <div className={PAGE_WRAPPER.container}>
       {/* PRIMARY HERO: Page Title */}
-      <div className="bg-charcoal-black rounded-2xl p-8 lg:p-10 text-soft-white mb-8 shadow-2xl">
+      <div className="rounded-2xl p-8 lg:p-10 text-soft-white mb-8 shadow-2xl bg-primary">
         <h1 className="font-heading text-4xl lg:text-5xl font-bold text-soft-white mb-2">My Training Programme</h1>
         <p className="text-warm-sand-beige text-base lg:text-lg">
           Your personalised training plan
         </p>
       </div>
-
       {/* SECONDARY SECTION: Workout Overview with Progress Ring + Stats */}
       {programs.length > 0 && (
         <div className="bg-charcoal-black border border-charcoal-black rounded-2xl p-8 lg:p-10 mb-8 shadow-lg">
@@ -1222,7 +1221,6 @@ export default function MyProgramPage() {
           </div>
         </div>
       )}
-
       {/* SECONDARY SECTION: Workout Days as Cards */}
       <div className="space-y-4">
         {workoutDays.length > 0 ? (
@@ -1744,7 +1742,6 @@ export default function MyProgramPage() {
           </div>
         )}
       </div>
-
       {/* TERTIARY SECTION: Programme Tips */}
       <div className={TERTIARY_SECTION.container}>
         <h3 className={TERTIARY_SECTION.heading}>
@@ -1777,7 +1774,6 @@ export default function MyProgramPage() {
           </div>
         </div>
       </div>
-
       {/* Post-Workout Reflection Modal */}
       {showFeedback && completedWorkoutId && (
         <PostWorkoutFeedbackPrompt
@@ -1794,7 +1790,6 @@ export default function MyProgramPage() {
           }}
         />
       )}
-
       {/* Weekly Summary Modal */}
       {showWeeklySummary && weeklySummary && (
         <div className="fixed inset-0 bg-charcoal-black/50 flex items-center justify-center z-50 p-4">
@@ -1814,7 +1809,6 @@ export default function MyProgramPage() {
           </div>
         </div>
       )}
-
       {/* Exercise Modification Request Dialog */}
       <Dialog open={showModificationDialog} onOpenChange={setShowModificationDialog}>
         <DialogContent className="sm:max-w-[500px]">
