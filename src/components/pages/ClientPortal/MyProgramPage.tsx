@@ -35,6 +35,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { getClientDisplayName } from '@/lib/client-name-service';
+import { 
+  PRIMARY_HERO_SECTION, 
+  SECONDARY_SECTION, 
+  TERTIARY_SECTION, 
+  INLINE_GUIDANCE,
+  STAT_CARD,
+  PAGE_WRAPPER 
+} from '@/lib/portal-design-system';
 
 interface WorkoutSession {
   day: string;
@@ -518,39 +526,72 @@ export default function MyProgramPage() {
     };
     
     return (
-      <div className="space-y-8 bg-warm-sand-beige/40 min-h-screen p-6 lg:p-8 rounded-2xl">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            <div>
-              <h1 className="font-heading text-4xl font-bold mb-2">My Training Programme</h1>
-              <p className="text-soft-white/90">
+      <div className={PAGE_WRAPPER.container}>
+        {/* PRIMARY HERO: Page Title + Program Progress + Overview Metrics */}
+        <div className={PRIMARY_HERO_SECTION.container}>
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
+            {/* Left: Title + Week Info + Progress Ring */}
+            <div className="flex-1">
+              <h1 className={PRIMARY_HERO_SECTION.heading}>My Training Programme</h1>
+              <p className={PRIMARY_HERO_SECTION.subheading}>
                 {weekDisplay} • Your personalised training plan
               </p>
+              
+              {/* Progress Ring - Integrated into Hero */}
+              {activeCycle && (
+                <div className="mt-6 max-w-[200px]">
+                  <ProgramCompletionRing
+                    completedWorkouts={completedWorkouts.size}
+                    totalWorkouts={sortedWeeks.reduce((acc, week) => acc + (workoutsByWeek[week]?.length || 0), 0)}
+                    compact={true}
+                  />
+                </div>
+              )}
             </div>
-            <Link
-              to="/portal/history"
-              className="inline-flex items-center gap-2 bg-soft-white text-soft-bronze px-6 py-3 rounded-lg font-heading text-base font-bold hover:bg-soft-white/90 transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap"
-            >
-              <Archive size={20} />
-              View History
-            </Link>
+
+            {/* Right: Quick Stats + CTA */}
+            <div className="flex flex-col gap-4 lg:items-end">
+              {/* Quick Stats Grid */}
+              <div className="grid grid-cols-2 gap-4 lg:gap-6">
+                <div className="flex flex-col items-center text-center p-4 bg-soft-white/10 backdrop-blur-sm rounded-xl border border-soft-white/20">
+                  <Clock className="w-6 h-6 text-soft-white mb-2" />
+                  <p className="text-xs text-soft-white/80 mb-1">Training Length</p>
+                  <p className="font-heading text-xl font-bold text-soft-white">30-35 min</p>
+                </div>
+                <div className="flex flex-col items-center text-center p-4 bg-soft-white/10 backdrop-blur-sm rounded-xl border border-soft-white/20">
+                  <Target className="w-6 h-6 text-soft-white mb-2" />
+                  <p className="text-xs text-soft-white/80 mb-1">This Week</p>
+                  <p className="font-heading text-xl font-bold text-soft-white">
+                    {sortedWeeks.length > 0 ? workoutsByWeek[sortedWeeks[0]]?.length || 0 : 0} trainings
+                  </p>
+                </div>
+              </div>
+
+              {/* Primary CTA */}
+              <Link
+                to="/portal/history"
+                className={`inline-flex items-center gap-2 ${PRIMARY_HERO_SECTION.cta} whitespace-nowrap`}
+              >
+                <Archive size={20} className={PRIMARY_HERO_SECTION.ctaIcon} />
+                View History
+              </Link>
+            </div>
           </div>
         </div>
 
         {/* Inline Guidance - How the program works */}
-        <div className="bg-soft-white border-l-4 border-soft-bronze rounded-r-xl p-6">
-          <h3 className="font-heading text-lg font-bold text-charcoal-black mb-3">
+        <div className={INLINE_GUIDANCE.container}>
+          <h3 className={INLINE_GUIDANCE.heading}>
             📖 How your programme works
           </h3>
-          <div className="space-y-2 font-paragraph text-charcoal-black leading-relaxed">
-            <p>
+          <div className={INLINE_GUIDANCE.list}>
+            <p className={INLINE_GUIDANCE.listItem}>
               • <strong>This is your current training week.</strong> Complete trainings in any order that suits your schedule.
             </p>
-            <p>
+            <p className={INLINE_GUIDANCE.listItem}>
               • <strong>Completed weeks move to history automatically</strong> once all trainings are done.
             </p>
-            <p>
+            <p className={INLINE_GUIDANCE.listItem}>
               • Focus on consistency, not perfection. Your coach is here to support you every step of the way.
             </p>
           </div>
@@ -639,13 +680,13 @@ export default function MyProgramPage() {
           </div>
         ) : null}
 
-        {/* Workouts Organized by Week */}
+        {/* SECONDARY SECTION: Workouts Organized by Week */}
         {sortedWeeks.map((weekNum) => {
           const weekWorkouts = workoutsByWeek[weekNum];
           
           return (
-            <div key={weekNum} id={`week-${weekNum}`} className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8">
-              <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
+            <div key={weekNum} id={`week-${weekNum}`} className={SECONDARY_SECTION.container}>
+              <h2 className={SECONDARY_SECTION.heading}>
                 Week {weekNum} Trainings
               </h2>
               
@@ -1106,18 +1147,18 @@ export default function MyProgramPage() {
   const trainingFocus = programs[0]?.programTitle || 'Full-body strength';
 
   return (
-    <div className="space-y-8 bg-warm-sand-beige/40 min-h-screen p-6 lg:p-8 rounded-2xl">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
-        <h1 className="font-heading text-4xl font-bold mb-2">My Training Programme</h1>
-        <p className="text-soft-white/90">
+    <div className={PAGE_WRAPPER.container}>
+      {/* PRIMARY HERO: Page Title */}
+      <div className={PRIMARY_HERO_SECTION.container}>
+        <h1 className={PRIMARY_HERO_SECTION.heading}>My Training Programme</h1>
+        <p className={PRIMARY_HERO_SECTION.subheading}>
           Your personalised training plan
         </p>
       </div>
 
-      {/* Workout Overview Section */}
+      {/* SECONDARY SECTION: Workout Overview with Progress Ring + Stats */}
       {programs.length > 0 && (
-        <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8">
+        <div className={SECONDARY_SECTION.container}>
           <div className="grid lg:grid-cols-5 gap-8 items-start">
             {/* Progress Ring - Left Side */}
             <div className="lg:col-span-1 flex justify-center">
@@ -1132,41 +1173,41 @@ export default function MyProgramPage() {
 
             {/* Stats Grid - Right Side */}
             <div className="lg:col-span-4">
-              <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
+              <h2 className={SECONDARY_SECTION.heading}>
                 Programme Overview
               </h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
                 {/* Training Length */}
-                <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
-                  <Clock className="w-6 h-6 text-soft-bronze mb-2" />
-                  <p className="text-sm text-warm-grey mb-1">Training Length</p>
-                  <p className="font-heading text-2xl font-bold text-charcoal-black">
+                <div className={STAT_CARD.container}>
+                  <Clock className={STAT_CARD.icon} />
+                  <p className={STAT_CARD.label}>Training Length</p>
+                  <p className={STAT_CARD.value}>
                     {estimatedSessionTime}–{estimatedSessionTime + 5} min
                   </p>
                 </div>
 
                 {/* Weekly Frequency */}
-                <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
-                  <Target className="w-6 h-6 text-soft-bronze mb-2" />
-                  <p className="text-sm text-warm-grey mb-1">Weekly Frequency</p>
-                  <p className="font-heading text-2xl font-bold text-charcoal-black">
+                <div className={STAT_CARD.container}>
+                  <Target className={STAT_CARD.icon} />
+                  <p className={STAT_CARD.label}>Weekly Frequency</p>
+                  <p className={STAT_CARD.value}>
                     {weeklyFrequency}x per week
                   </p>
                 </div>
 
                 {/* Equipment Needed */}
-                <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
-                  <Dumbbell className="w-6 h-6 text-soft-bronze mb-2" />
-                  <p className="text-sm text-warm-grey mb-1">Equipment</p>
+                <div className={STAT_CARD.container}>
+                  <Dumbbell className={STAT_CARD.icon} />
+                  <p className={STAT_CARD.label}>Equipment</p>
                   <p className="font-heading text-sm font-bold text-charcoal-black">
                     {equipment}
                   </p>
                 </div>
 
                 {/* Training Focus */}
-                <div className="flex flex-col items-center text-center p-4 bg-warm-sand-beige/20 rounded-xl">
-                  <CheckCircle2 className="w-6 h-6 text-soft-bronze mb-2" />
-                  <p className="text-sm text-warm-grey mb-1">Training Focus</p>
+                <div className={STAT_CARD.container}>
+                  <CheckCircle2 className={STAT_CARD.icon} />
+                  <p className={STAT_CARD.label}>Training Focus</p>
                   <p className="font-heading text-sm font-bold text-charcoal-black">
                     {trainingFocus}
                   </p>
@@ -1177,7 +1218,7 @@ export default function MyProgramPage() {
         </div>
       )}
 
-      {/* Workout Days as Cards */}
+      {/* SECONDARY SECTION: Workout Days as Cards */}
       <div className="space-y-4">
         {workoutDays.length > 0 ? (
           workoutDays.map((day, dayIndex) => {
@@ -1191,15 +1232,7 @@ export default function MyProgramPage() {
             return (
               <div
                 key={day}
-                className={`bg-soft-white border rounded-2xl overflow-hidden transition-all duration-300 ${
-                  isActive
-                    ? 'border-soft-bronze shadow-lg'
-                    : isCompleted
-                    ? 'border-green-200 bg-green-50/30'
-                    : isNextRecommended
-                    ? 'border-soft-bronze/60 shadow-md'
-                    : 'border-warm-sand-beige'
-                }`}
+                className={isActive ? SECONDARY_SECTION.containerActive : SECONDARY_SECTION.container}
               >
                 {/* Workout Card Header */}
                 <button
@@ -1707,33 +1740,33 @@ export default function MyProgramPage() {
         )}
       </div>
 
-      {/* Tips Section */}
-      <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-2xl p-6 lg:p-8">
-        <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
+      {/* TERTIARY SECTION: Programme Tips */}
+      <div className={TERTIARY_SECTION.container}>
+        <h3 className={TERTIARY_SECTION.heading}>
           Programme Tips
         </h3>
         <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="font-paragraph font-bold text-charcoal-black mb-2">✓ Form First</h4>
-            <p className="text-warm-grey">
+          <div className={TERTIARY_SECTION.tipItem}>
+            <h4 className={TERTIARY_SECTION.tipHeading}>✓ Form First</h4>
+            <p className={TERTIARY_SECTION.tipText}>
               Always prioritize proper form over heavy weight. Quality reps build better results.
             </p>
           </div>
-          <div>
-            <h4 className="font-paragraph font-bold text-charcoal-black mb-2">✓ Rest Days Matter</h4>
-            <p className="text-warm-grey">
+          <div className={TERTIARY_SECTION.tipItem}>
+            <h4 className={TERTIARY_SECTION.tipHeading}>✓ Rest Days Matter</h4>
+            <p className={TERTIARY_SECTION.tipText}>
               Recovery is when your body adapts. Don't skip rest days—they're part of your programme.
             </p>
           </div>
-          <div>
-            <h4 className="font-paragraph font-bold text-charcoal-black mb-2">✓ Progressive Overload</h4>
-            <p className="text-warm-grey">
+          <div className={TERTIARY_SECTION.tipItem}>
+            <h4 className={TERTIARY_SECTION.tipHeading}>✓ Progressive Overload</h4>
+            <p className={TERTIARY_SECTION.tipText}>
               Gradually increase weight, reps, or sets each week to continue making progress.
             </p>
           </div>
-          <div>
-            <h4 className="font-paragraph font-bold text-charcoal-black mb-2">✓ Track Your Trainings</h4>
-            <p className="text-warm-grey">
+          <div className={TERTIARY_SECTION.tipItem}>
+            <h4 className={TERTIARY_SECTION.tipHeading}>✓ Track Your Trainings</h4>
+            <p className={TERTIARY_SECTION.tipText}>
               Keep notes on how you felt and any modifications. This helps us adjust your programme.
             </p>
           </div>
