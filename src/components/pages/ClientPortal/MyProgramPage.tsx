@@ -570,8 +570,8 @@ export default function MyProgramPage() {
 
         {/* SECONDARY SECTION: Program Progress Ring */}
         {activeCycle && (
-          <div className="bg-charcoal-black rounded-2xl p-8 lg:p-10 mb-8 shadow-lg">
-            <h2 className="font-heading text-3xl lg:text-4xl font-bold text-soft-white mb-6">Your Progress</h2>
+          <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 lg:p-10 mb-8 shadow-lg">
+            <h2 className="font-heading text-3xl lg:text-4xl font-bold text-charcoal-black mb-6">Your Progress</h2>
             <div className="flex justify-center">
               <div className="w-full max-w-xs">
                 <ProgramCompletionRing
@@ -705,18 +705,18 @@ export default function MyProgramPage() {
                       className={`flex flex-col items-center text-center p-4 rounded-xl transition-all ${
                         isCompleted
                           ? 'bg-green-50 border border-green-200'
-                          : 'bg-soft-bronze/10 border border-soft-bronze/30'
+                          : 'bg-soft-white border border-soft-bronze/30'
                       }`}
                     >
                       <div className="flex items-center justify-center gap-2 mb-2">
-                        <div className="font-heading text-2xl font-bold text-charcoal-black">
+                        <div className={`font-heading text-2xl font-bold ${isCompleted ? 'text-green-700' : 'text-soft-bronze'}`}>
                           Training {workout.workoutSlot}
                         </div>
                         {isCompleted && (
                           <CheckCircle2 size={24} className="text-green-600" />
                         )}
                       </div>
-                      <p className={`text-sm mb-2 ${isCompleted ? 'text-green-700 font-medium' : 'text-warm-grey'}`}>
+                      <p className={`text-sm mb-2 ${isCompleted ? 'text-green-700 font-medium' : 'text-charcoal-black'}`}>
                         {isCompleted ? '✓ Completed' : workout.exerciseName || 'Training'}
                       </p>
                       <p className="text-xs text-warm-grey/60">
@@ -1163,7 +1163,7 @@ export default function MyProgramPage() {
 
       {/* SECONDARY SECTION: Workout Overview with Progress Ring + Stats */}
       {programs.length > 0 && (
-        <div className="bg-charcoal-black rounded-2xl p-8 lg:p-10 mb-8 shadow-lg">
+        <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 lg:p-10 mb-8 shadow-lg">
           <div className="grid lg:grid-cols-5 gap-8 items-start">
             {/* Progress Ring - Left Side */}
             <div className="lg:col-span-1 flex justify-center">
@@ -1178,41 +1178,41 @@ export default function MyProgramPage() {
 
             {/* Stats Grid - Right Side */}
             <div className="lg:col-span-4">
-              <h2 className="font-heading text-3xl lg:text-4xl font-bold text-soft-white mb-6">
+              <h2 className="font-heading text-3xl lg:text-4xl font-bold text-charcoal-black mb-6">
                 Programme Overview
               </h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
                 {/* Training Length */}
-                <div className={STAT_CARD.container}>
-                  <Clock className={STAT_CARD.icon} />
-                  <p className={STAT_CARD.label}>Training Length</p>
-                  <p className={STAT_CARD.value}>
+                <div className="flex flex-col items-center text-center p-4 bg-soft-white border border-soft-bronze/20 rounded-xl">
+                  <Clock className="w-6 h-6 text-soft-bronze mb-2" />
+                  <p className="text-sm text-warm-grey mb-1">Training Length</p>
+                  <p className="font-heading text-2xl font-bold text-charcoal-black">
                     {estimatedSessionTime}–{estimatedSessionTime + 5} min
                   </p>
                 </div>
 
                 {/* Weekly Frequency */}
-                <div className={STAT_CARD.container}>
-                  <Target className={STAT_CARD.icon} />
-                  <p className={STAT_CARD.label}>Weekly Frequency</p>
-                  <p className={STAT_CARD.value}>
+                <div className="flex flex-col items-center text-center p-4 bg-soft-white border border-soft-bronze/20 rounded-xl">
+                  <Target className="w-6 h-6 text-soft-bronze mb-2" />
+                  <p className="text-sm text-warm-grey mb-1">Weekly Frequency</p>
+                  <p className="font-heading text-2xl font-bold text-charcoal-black">
                     {weeklyFrequency}x per week
                   </p>
                 </div>
 
                 {/* Equipment Needed */}
-                <div className={STAT_CARD.container}>
-                  <Dumbbell className={STAT_CARD.icon} />
-                  <p className={STAT_CARD.label}>Equipment</p>
+                <div className="flex flex-col items-center text-center p-4 bg-soft-white border border-soft-bronze/20 rounded-xl">
+                  <Dumbbell className="w-6 h-6 text-soft-bronze mb-2" />
+                  <p className="text-sm text-warm-grey mb-1">Equipment</p>
                   <p className="font-heading text-sm font-bold text-charcoal-black">
                     {equipment}
                   </p>
                 </div>
 
                 {/* Training Focus */}
-                <div className={STAT_CARD.container}>
-                  <CheckCircle2 className={STAT_CARD.icon} />
-                  <p className={STAT_CARD.label}>Training Focus</p>
+                <div className="flex flex-col items-center text-center p-4 bg-soft-white border border-soft-bronze/20 rounded-xl">
+                  <CheckCircle2 className="w-6 h-6 text-soft-bronze mb-2" />
+                  <p className="text-sm text-warm-grey mb-1">Training Focus</p>
                   <p className="font-heading text-sm font-bold text-charcoal-black">
                     {trainingFocus}
                   </p>
