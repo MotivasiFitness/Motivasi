@@ -1,6 +1,6 @@
 import { useMember } from '@/integrations';
 import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
-import { Users, BookOpen, Settings, LogOut, Menu, X, Loader, Sparkles, Video, Apple, MessageSquare } from 'lucide-react';
+import { Users, BookOpen, Settings, LogOut, Menu, X, Loader, Sparkles, Video, Apple, MessageSquare, LayoutDashboard, FolderOpen, Dumbbell, TrendingUp } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useRole } from '@/hooks/useRole';
 import PortalHeader from '@/components/layout/PortalHeader';
@@ -26,17 +26,43 @@ export default function TrainerDashboardLayout() {
     );
   }
 
-  const navItems = [
-    { path: '/trainer', label: 'Dashboard', icon: Users, color: 'text-blue-400' },
-    { path: '/trainer/clients', label: 'My Clients', icon: Users, color: 'text-emerald-400' },
-    { path: '/trainer/programs', label: 'Create Program', icon: BookOpen, color: 'text-purple-400' },
-    { path: '/trainer/programs-created', label: 'Programs Created', icon: BookOpen, color: 'text-purple-400' },
-    { path: '/trainer/workout-feedback', label: 'Workout Feedback', icon: MessageSquare, color: 'text-pink-400' },
-    { path: '/trainer/nutrition', label: 'Nutrition', icon: Apple, color: 'text-green-400' },
-    { path: '/trainer/ai-assistant', label: 'AI Assistant', icon: Sparkles, color: 'text-yellow-400' },
-    { path: '/trainer/video-reviews', label: 'Video Reviews', icon: Video, color: 'text-orange-400' },
-    { path: '/trainer/video-library', label: 'Video Library', icon: Video, color: 'text-indigo-400' },
-    { path: '/trainer/progress', label: 'Client Progress', icon: BookOpen, color: 'text-cyan-400' },
+  const navSections = [
+    {
+      title: 'Core',
+      items: [
+        { path: '/trainer', label: 'Dashboard', icon: LayoutDashboard },
+        { path: '/trainer/clients', label: 'My Clients', icon: Users },
+      ]
+    },
+    {
+      title: 'Programs & Work',
+      items: [
+        { path: '/trainer/programs', label: 'Create Program', icon: BookOpen },
+        { path: '/trainer/programs-created', label: 'My Programs', icon: FolderOpen },
+        { path: '/trainer/workout-assignment', label: 'Assign Workouts', icon: Dumbbell },
+      ]
+    },
+    {
+      title: 'Content & Media',
+      items: [
+        { path: '/trainer/video-reviews', label: 'Client Video Reviews', icon: Video },
+        { path: '/trainer/video-library', label: 'Video Library', icon: Video },
+      ]
+    },
+    {
+      title: 'Insights',
+      items: [
+        { path: '/trainer/workout-feedback', label: 'Client Feedback', icon: MessageSquare },
+        { path: '/trainer/progress', label: 'Client Progress', icon: TrendingUp },
+        { path: '/trainer/nutrition', label: 'Nutrition', icon: Apple },
+      ]
+    },
+    {
+      title: 'Tools',
+      items: [
+        { path: '/trainer/ai-assistant', label: 'AI Assistant', icon: Sparkles },
+      ]
+    }
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -76,25 +102,41 @@ export default function TrainerDashboardLayout() {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-6 space-y-2">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                    isActive(item.path)
-                      ? 'bg-soft-bronze text-soft-white'
-                      : 'text-warm-grey hover:bg-soft-bronze/10'
-                  }`}
-                >
-                  <Icon size={20} className={item.color} />
-                  <span className="font-paragraph">{item.label}</span>
-                </Link>
-              );
-            })}
+          <nav className="flex-1 p-6 space-y-6 overflow-y-auto">
+            {navSections.map((section, sectionIndex) => (
+              <div key={sectionIndex}>
+                {/* Section Header */}
+                <h3 className="text-xs font-semibold text-warm-grey uppercase tracking-wider mb-3 px-4">
+                  {section.title}
+                </h3>
+                
+                {/* Section Items */}
+                <div className="space-y-1">
+                  {section.items.map((item) => {
+                    const Icon = item.icon;
+                    const active = isActive(item.path);
+                    return (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all relative group ${
+                          active
+                            ? 'bg-soft-bronze/10 text-soft-bronze border-l-4 border-soft-bronze'
+                            : 'text-warm-grey hover:bg-soft-white/5 hover:text-soft-white border-l-4 border-transparent'
+                        }`}
+                      >
+                        <Icon 
+                          size={20} 
+                          className={active ? 'text-soft-bronze' : 'text-warm-grey group-hover:text-soft-white'} 
+                        />
+                        <span className="font-paragraph text-sm">{item.label}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </nav>
 
           {/* Footer */}
