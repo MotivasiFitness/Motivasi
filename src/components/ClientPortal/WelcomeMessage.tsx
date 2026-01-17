@@ -57,7 +57,7 @@ export default function WelcomeMessage({ clientName, onDismiss }: WelcomeMessage
                 📅 How weekly training works
               </h3>
               <p className="font-paragraph text-charcoal-black leading-relaxed">
-                Complete your workouts at your own pace throughout the week. When you finish all workouts for the week, it moves to your history automatically, and the next week begins.
+                Complete your workouts at your own pace throughout the week. When you finish all workouts for the week, it moves to your history automatically, and the next week begins. <strong>Don't worry if you miss a workout—life happens, and your coach will help you adjust.</strong>
               </p>
             </div>
 
@@ -66,7 +66,7 @@ export default function WelcomeMessage({ clientName, onDismiss }: WelcomeMessage
                 💬 Coach support & check-ins
               </h3>
               <p className="font-paragraph text-charcoal-black leading-relaxed">
-                Your coach reviews your progress regularly. After each week, you'll be prompted to share a quick check-in about how training felt—this helps your coach adjust your program to suit you better.
+                <strong>Your coach is here for you.</strong> They review your progress regularly and will adjust your program based on how you're feeling. After each week, you'll be prompted to share a quick check-in—this helps your coach tailor your training to suit you better.
               </p>
             </div>
           </div>
@@ -77,7 +77,7 @@ export default function WelcomeMessage({ clientName, onDismiss }: WelcomeMessage
               onClick={handleDismiss}
               className="inline-flex items-center justify-center gap-2 w-full bg-soft-bronze text-soft-white px-8 py-4 rounded-lg font-heading text-lg font-bold hover:bg-soft-bronze/90 transition-all duration-300 shadow-md hover:shadow-lg"
             >
-              View My Program
+              Take me to my program
               <ArrowRight size={20} />
             </Link>
           </div>
