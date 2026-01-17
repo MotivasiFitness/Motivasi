@@ -230,7 +230,7 @@ export default function DashboardPage() {
         />
       )}
 
-      <div className="space-y-8 bg-warm-sand-beige/40 min-h-screen p-8 rounded-2xl">
+      <div className="space-y-10 bg-warm-sand-beige/40 min-h-screen p-8 rounded-2xl">
       {/* Profile Completion Prompt */}
       {showProfilePrompt && (
         <div className="bg-blue-50 border-l-4 border-blue-400 rounded-2xl p-6">
@@ -332,14 +332,14 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Primary Action Card - This Week's Training */}
-      <div className="bg-soft-white border-2 border-soft-bronze/30 rounded-2xl p-8 shadow-sm">
+      {/* PRIMARY HERO - This Week's Training */}
+      <div className="bg-gradient-to-br from-charcoal-black to-charcoal-black/95 rounded-2xl p-8 shadow-xl border border-charcoal-black/50">
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-2">
+            <h2 className="font-heading text-3xl font-bold text-soft-white mb-2">
               This Week's Training
             </h2>
-            <p className="text-warm-grey text-sm">
+            <p className="text-warm-sand-beige text-sm">
               Week {currentWeekNumber} • {completedWorkouts} of {totalWorkouts} workouts completed
             </p>
           </div>
@@ -355,18 +355,18 @@ export default function DashboardPage() {
 
         {/* Progress bar */}
         <div className="mb-6">
-          <div className="h-3 bg-warm-sand-beige/50 rounded-full overflow-hidden">
+          <div className="h-3 bg-warm-grey/30 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-full transition-all duration-500"
+              className="h-full bg-gradient-to-r from-soft-bronze to-soft-bronze/90 rounded-full transition-all duration-500"
               style={{ width: `${totalWorkouts > 0 ? (completedWorkouts / totalWorkouts) * 100 : 0}%` }}
             />
           </div>
         </div>
 
         {/* Supportive messaging */}
-        <div className="flex items-start gap-3 p-4 bg-soft-bronze/5 rounded-lg mb-4">
+        <div className="flex items-start gap-3 p-4 bg-soft-white/10 rounded-lg mb-6">
           <MessageCircle className="w-5 h-5 text-soft-bronze flex-shrink-0 mt-0.5" />
-          <p className="text-sm text-charcoal-black">
+          <p className="text-sm text-soft-white/90">
             {completedWorkouts === 0 
               ? "Your coach has prepared this week's workouts. Start when you're ready."
               : completedWorkouts === totalWorkouts
@@ -378,15 +378,15 @@ export default function DashboardPage() {
         {/* CTA */}
         <Link
           to="/portal/program"
-          className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white px-6 py-3 rounded-lg font-bold hover:bg-soft-bronze/90 transition-colors w-full justify-center"
+          className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-soft-bronze/90 transition-colors w-full justify-center shadow-lg"
         >
           {completedWorkouts === 0 ? 'Start This Week' : completedWorkouts === totalWorkouts ? 'Review Week' : 'Continue Training'}
-          <ArrowRight size={18} />
+          <ArrowRight size={20} />
         </Link>
       </div>
 
-      {/* Weekly Check-In Summary Card */}
-      <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
+      {/* SECONDARY HERO - Weekly Check-In */}
+      <div className="bg-gradient-to-br from-muted-rose/15 to-muted-rose/5 border-l-4 border-muted-rose rounded-2xl p-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-1">
@@ -411,7 +411,7 @@ export default function DashboardPage() {
           <div className="space-y-4">
             {/* Summary metrics */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-warm-sand-beige/30 rounded-lg p-4">
+              <div className="bg-soft-white/60 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-1">
                   <Zap className="w-4 h-4 text-soft-bronze" />
                   <p className="text-xs text-warm-grey">Energy</p>
@@ -421,7 +421,7 @@ export default function DashboardPage() {
                 </p>
               </div>
 
-              <div className="bg-warm-sand-beige/30 rounded-lg p-4">
+              <div className="bg-soft-white/60 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-1">
                   <Activity className="w-4 h-4 text-soft-bronze" />
                   <p className="text-xs text-warm-grey">Difficulty</p>
@@ -433,7 +433,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Coach review message */}
-            <div className="flex items-start gap-3 p-4 bg-soft-bronze/5 rounded-lg">
+            <div className="flex items-start gap-3 p-4 bg-soft-white/60 rounded-lg">
               <Eye className="w-5 h-5 text-soft-bronze flex-shrink-0 mt-0.5" />
               <p className="text-sm text-charcoal-black">
                 Your coach is reviewing this and will respond here.
@@ -455,7 +455,7 @@ export default function DashboardPage() {
             </p>
             <button
               onClick={() => setShowCheckInModal(true)}
-              className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white px-6 py-3 rounded-lg font-bold hover:bg-soft-bronze/90 transition-colors"
+              className="inline-flex items-center gap-2 bg-muted-rose text-soft-white px-6 py-3 rounded-lg font-bold hover:bg-muted-rose/90 transition-colors"
             >
               <CheckCircle size={18} />
               Complete check-in (2 min)
@@ -464,11 +464,11 @@ export default function DashboardPage() {
         )}
       </div>
 
-      {/* Upcoming Sessions Card */}
-      <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
+      {/* TERTIARY SECTION - Upcoming Sessions */}
+      <div className="bg-soft-white/80 border border-warm-sand-beige/50 rounded-xl p-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-1">
+            <h2 className="font-heading text-xl font-bold text-charcoal-black mb-1">
               Upcoming Sessions
             </h2>
             <p className="text-warm-grey text-sm">
