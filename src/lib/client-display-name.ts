@@ -3,7 +3,7 @@ import { ClientProfiles } from '@/entities';
 
 /**
  * Get the display name for a client with fallback order:
- * displayName → firstName → email prefix → 'Client ****' (last 4 of ID)
+ * firstName + lastName → firstName only → 'Client ****' (last 4 of ID)
  */
 export async function getClientDisplayName(clientId: string): Promise<string> {
   try {
@@ -12,16 +12,18 @@ export async function getClientDisplayName(clientId: string): Promise<string> {
     const profile = items.find(p => p.memberId === clientId);
 
     if (profile) {
-      // Fallback order: displayName → firstName → email prefix → 'Client ****'
-      if (profile.displayName?.trim()) {
-        return profile.displayName;
+      // Build full name from firstName and lastName
+      const firstName = profile.firstName?.trim() || '';
+      const lastName = profile.lastName?.trim() || '';
+      
+      if (firstName && lastName) {
+        return `${firstName} ${lastName}`;
       }
-      if (profile.firstName?.trim()) {
-        return profile.firstName;
+      if (firstName) {
+        return firstName;
       }
-      if (profile.email?.trim()) {
-        const emailPrefix = profile.email.split('@')[0];
-        return emailPrefix;
+      if (lastName) {
+        return lastName;
       }
     }
   } catch (error) {
@@ -48,12 +50,16 @@ export async function getClientDisplayNames(clientIds: string[]): Promise<Map<st
       let displayName = '';
 
       if (profile) {
-        if (profile.displayName?.trim()) {
-          displayName = profile.displayName;
-        } else if (profile.firstName?.trim()) {
-          displayName = profile.firstName;
-        } else if (profile.email?.trim()) {
-          displayName = profile.email.split('@')[0];
+        // Build full name from firstName and lastName
+        const firstName = profile.firstName?.trim() || '';
+        const lastName = profile.lastName?.trim() || '';
+        
+        if (firstName && lastName) {
+          displayName = `${firstName} ${lastName}`;
+        } else if (firstName) {
+          displayName = firstName;
+        } else if (lastName) {
+          displayName = lastName;
         }
       }
 
