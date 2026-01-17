@@ -523,9 +523,9 @@ export default function MyProgramPage() {
         <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div>
-              <h1 className="font-heading text-4xl font-bold mb-2">My Personalized Program</h1>
+              <h1 className="font-heading text-4xl font-bold mb-2">My Personalised Programme</h1>
               <p className="text-soft-white/90">
-                {weekDisplay} • Follow your customized workout plan designed specifically for your goals
+                {weekDisplay} • Follow your customised workout plan designed specifically for your goals
               </p>
             </div>
             <Link
@@ -1109,9 +1109,9 @@ export default function MyProgramPage() {
     <div className="space-y-8 bg-warm-sand-beige/40 min-h-screen p-6 lg:p-8 rounded-2xl">
       {/* Header */}
       <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
-        <h1 className="font-heading text-4xl font-bold mb-2">My Personalized Program</h1>
+        <h1 className="font-heading text-4xl font-bold mb-2">My Personalised Programme</h1>
         <p className="text-soft-white/90">
-          Follow your customized workout plan designed specifically for your goals
+          Follow your customised workout plan designed specifically for your goals
         </p>
       </div>
 

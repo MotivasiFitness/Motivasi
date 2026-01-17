@@ -151,7 +151,7 @@ export default function ProfilePage() {
         <Alert className="bg-blue-50 border-blue-200">
           <AlertCircle className="h-4 w-4 text-blue-600" />
           <AlertDescription className="text-blue-800">
-            👋 Welcome! Let's personalize your experience. Please tell us your name so we can greet you properly. This information is private and only shared with your assigned coach.
+            👋 Welcome! Let's personalise your experience. Please tell us your name so we can greet you properly. This information is private and only shared with your assigned coach.
           </AlertDescription>
         </Alert>
       )}
@@ -181,8 +181,8 @@ export default function ProfilePage() {
           <CardTitle>Personal Information</CardTitle>
           <CardDescription>
             {isFirstTimeSetup 
-              ? 'We need your name to personalize your experience' 
-              : 'Help us personalize your experience by providing your name and contact details'}
+              ? 'We need your name to personalise your experience' 
+              : 'Help us personalise your experience by providing your name and contact details'}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">

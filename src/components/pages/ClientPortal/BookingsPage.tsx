@@ -314,7 +314,7 @@ export default function BookingsPage() {
                     {/* Context Line */}
                     <p className="text-sm text-warm-grey font-medium mb-4">
                       {booking.serviceType === 'consultation' && 'Get to know each other & plan your journey'}
-                      {booking.serviceType === 'training' && 'Personalized workout with form guidance'}
+                      {booking.serviceType === 'training' && 'Personalised workout with form guidance'}
                       {booking.serviceType === 'check-in' && 'Weekly accountability & progress review'}
                       {booking.serviceType === 'nutrition' && 'Nutrition guidance tailored to you'}
                       {booking.serviceType === 'form-review' && 'Technique analysis & improvement tips'}
@@ -438,7 +438,7 @@ export default function BookingsPage() {
                     {/* Context Line */}
                     <p className="text-sm text-warm-grey font-medium mb-4">
                       {booking.serviceType === 'consultation' && 'Get to know each other & plan your journey'}
-                      {booking.serviceType === 'training' && 'Personalized workout with form guidance'}
+                      {booking.serviceType === 'training' && 'Personalised workout with form guidance'}
                       {booking.serviceType === 'check-in' && 'Weekly accountability & progress review'}
                       {booking.serviceType === 'nutrition' && 'Nutrition guidance tailored to you'}
                       {booking.serviceType === 'form-review' && 'Technique analysis & improvement tips'}

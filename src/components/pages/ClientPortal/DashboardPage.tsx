@@ -145,7 +145,7 @@ export default function DashboardPage() {
                 Complete Your Profile
               </h3>
               <p className="font-paragraph text-charcoal-black mb-4">
-                Help us personalize your experience by adding your name and details.
+                Help us personalise your experience by adding your name and details.
               </p>
               <Link
                 to="/portal/profile"
@@ -298,7 +298,7 @@ export default function DashboardPage() {
                   Stay on Track
                 </h3>
                 <p className="font-paragraph text-charcoal-black leading-relaxed">
-                  Your personalized program is designed to fit your life. Complete workouts at your own pace, and watch your progress unfold.
+                  Your personalised programme is designed to fit your life. Complete workouts at your own pace, and watch your progress unfold.
                 </p>
               </div>
               <Link
