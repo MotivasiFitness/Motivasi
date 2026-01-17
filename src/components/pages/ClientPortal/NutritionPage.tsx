@@ -129,25 +129,115 @@ export default function NutritionPage() {
                   <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
                     Daily Plate Guide
                   </h3>
-                  <p className="font-paragraph text-charcoal-black mb-6 leading-relaxed">
-                    Use this simple visual guide to balance your meals throughout the day:
-                  </p>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    {[
-                      { label: '½ plate', item: 'Vegetables or fruit', color: 'bg-green-50 border-green-200' },
-                      { label: '¼ plate', item: 'Protein', color: 'bg-blue-50 border-blue-200' },
-                      { label: '¼ plate', item: 'Carbohydrates', color: 'bg-amber-50 border-amber-200' },
-                      { label: 'As needed', item: 'Healthy fats', color: 'bg-orange-50 border-orange-200' }
-                    ].map((plate, idx) => (
-                      <div key={idx} className={`${plate.color} border rounded-xl p-5`}>
-                        <p className="font-heading font-bold text-charcoal-black text-lg mb-1">
-                          {plate.label}
-                        </p>
-                        <p className="font-paragraph text-charcoal-black/80">
-                          {plate.item}
-                        </p>
+                  
+                  {/* Circular Plate Graphic - Primary Visual */}
+                  <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start mb-8">
+                    <div className="flex-shrink-0 w-full max-w-md mx-auto lg:mx-0">
+                      <svg 
+                        viewBox="0 0 400 400" 
+                        className="w-full h-auto print:max-w-sm"
+                        role="img"
+                        aria-labelledby="plate-guide-title plate-guide-desc"
+                      >
+                        <title id="plate-guide-title">Daily Plate Guide</title>
+                        <desc id="plate-guide-desc">
+                          A circular plate divided into sections showing meal proportions: half plate vegetables or fruit, 
+                          quarter plate protein, quarter plate carbohydrates, with healthy fats as needed
+                        </desc>
+                        
+                        {/* Plate Background */}
+                        <circle cx="200" cy="200" r="180" fill="#FAF9F7" stroke="#B8B2AA" strokeWidth="3"/>
+                        
+                        {/* Vegetables/Fruit - Left Half (Green) */}
+                        <path 
+                          d="M 200 200 L 200 20 A 180 180 0 0 1 200 380 Z" 
+                          fill="#86EFAC" 
+                          opacity="0.7"
+                          stroke="#22C55E" 
+                          strokeWidth="2"
+                        />
+                        
+                        {/* Protein - Top Right Quarter (Blue) */}
+                        <path 
+                          d="M 200 200 L 380 200 A 180 180 0 0 0 200 20 Z" 
+                          fill="#93C5FD" 
+                          opacity="0.7"
+                          stroke="#3B82F6" 
+                          strokeWidth="2"
+                        />
+                        
+                        {/* Carbohydrates - Bottom Right Quarter (Amber) */}
+                        <path 
+                          d="M 200 200 L 200 380 A 180 180 0 0 0 380 200 Z" 
+                          fill="#FCD34D" 
+                          opacity="0.7"
+                          stroke="#F59E0B" 
+                          strokeWidth="2"
+                        />
+                        
+                        {/* Labels */}
+                        <text x="120" y="200" textAnchor="middle" className="font-heading font-bold" fontSize="20" fill="#1F1F1F">
+                          ½ Vegetables
+                        </text>
+                        <text x="120" y="220" textAnchor="middle" className="font-heading font-bold" fontSize="20" fill="#1F1F1F">
+                          or Fruit
+                        </text>
+                        
+                        <text x="280" y="120" textAnchor="middle" className="font-heading font-bold" fontSize="18" fill="#1F1F1F">
+                          ¼ Protein
+                        </text>
+                        
+                        <text x="280" y="280" textAnchor="middle" className="font-heading font-bold" fontSize="18" fill="#1F1F1F">
+                          ¼ Carbs
+                        </text>
+                        
+                        {/* Center Circle for Fats */}
+                        <circle cx="200" cy="200" r="40" fill="#FDBA74" opacity="0.8" stroke="#F97316" strokeWidth="2"/>
+                        <text x="200" y="195" textAnchor="middle" className="font-heading font-bold" fontSize="14" fill="#1F1F1F">
+                          Fats
+                        </text>
+                        <text x="200" y="210" textAnchor="middle" className="font-heading" fontSize="12" fill="#1F1F1F">
+                          as needed
+                        </text>
+                      </svg>
+                    </div>
+                    
+                    {/* Text Guidance - Secondary Position */}
+                    <div className="flex-1 space-y-4">
+                      <p className="font-paragraph text-charcoal-black leading-relaxed">
+                        Use this simple visual guide to balance your meals throughout the day:
+                      </p>
+                      <div className="space-y-3">
+                        <div className="flex items-start gap-3">
+                          <div className="w-4 h-4 rounded-full bg-green-400 flex-shrink-0 mt-1.5"></div>
+                          <div>
+                            <p className="font-heading font-bold text-charcoal-black">½ plate: Vegetables or fruit</p>
+                            <p className="font-paragraph text-sm text-charcoal-black/70">Fill half your plate with colorful vegetables or fruit for vitamins, minerals, and fiber.</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <div className="w-4 h-4 rounded-full bg-blue-400 flex-shrink-0 mt-1.5"></div>
+                          <div>
+                            <p className="font-heading font-bold text-charcoal-black">¼ plate: Protein</p>
+                            <p className="font-paragraph text-sm text-charcoal-black/70">Include lean protein sources to support muscle growth and repair.</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <div className="w-4 h-4 rounded-full bg-amber-400 flex-shrink-0 mt-1.5"></div>
+                          <div>
+                            <p className="font-heading font-bold text-charcoal-black">¼ plate: Carbohydrates</p>
+                            <p className="font-paragraph text-sm text-charcoal-black/70">Choose whole grains and complex carbs for sustained energy.</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <div className="w-4 h-4 rounded-full bg-orange-400 flex-shrink-0 mt-1.5"></div>
+                          <div>
+                            <p className="font-heading font-bold text-charcoal-black">As needed: Healthy fats</p>
+                            <p className="font-paragraph text-sm text-charcoal-black/70">Add healthy fats like olive oil, avocado, nuts, or seeds to support nutrient absorption.</p>
+                          </div>
+                        </div>
                       </div>
-                    ))}
+                    </div>
                   </div>
                 </div>
 
