@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientBookings, ProgressCheckins, NutritionGuidance, ClientPrograms, ClientAssignedWorkouts, WeeklyCoachesNotes, ClientProfiles, WeeklyCheckins } from '@/entities';
+import { getClientWorkouts } from '@/lib/client-workout-access-control';
 import { Calendar, CheckCircle, TrendingUp, Zap, Heart, ArrowRight, MessageCircle, Smile, Activity, AlertCircle, Eye } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { Link } from 'react-router-dom';
@@ -94,9 +95,13 @@ export default function DashboardPage() {
         setCurrentWeekStartDate(weekStartStr);
         setCurrentWeekNumber(cycle?.currentWeek || 1);
         
-        // Try to fetch from new system first (assigned workouts)
-        const { items: allAssignedWorkouts } = await BaseCrudService.getAll<ClientAssignedWorkouts>('clientassignedworkouts');
-        const clientWorkouts = allAssignedWorkouts.filter(w => w.clientId === member._id);
+        // SECURITY: Fetch workouts using access-controlled method
+        // This ensures server-side filtering by clientId - client cannot access other clients' workouts
+        const clientWorkouts = await getClientWorkouts(
+          member._id,
+          member._id,
+          'client'
+        );
         
         if (clientWorkouts.length > 0) {
           // NEW SYSTEM: Use assigned workouts

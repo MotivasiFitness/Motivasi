@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientAssignedWorkouts, WeeklyCoachesNotes } from '@/entities';
+import { getClientWorkouts } from '@/lib/client-workout-access-control';
 import { Calendar, ChevronDown, CheckCircle2, Clock, Dumbbell, MessageCircle, TrendingUp, Archive, ClipboardCheck, AlertCircle } from 'lucide-react';
 import { formatWeekDisplay, getWeekStartDate } from '@/lib/workout-assignment-service';
 import { getAllCycles, ProgramCycle, getCompletedWeeksArray } from '@/lib/program-cycle-service';
@@ -91,13 +92,16 @@ export default function WorkoutHistoryPage() {
         // Fetch all program cycles for the client (including active cycle with completed weeks)
         const cycles = await getAllCycles(member._id);
         
-        // Fetch all assigned workouts for the client
-        const { items: allWorkouts } = await BaseCrudService.getAll<ClientAssignedWorkouts>('clientassignedworkouts');
-        
-        // Filter for completed workouts belonging to this client
-        const completed = allWorkouts.filter(
-          w => w.clientId === member._id && w.status === 'completed'
+        // SECURITY: Fetch workouts using access-controlled method
+        // This ensures server-side filtering by clientId - client cannot access other clients' workouts
+        const allWorkouts = await getClientWorkouts(
+          member._id,
+          member._id,
+          'client'
         );
+        
+        // Filter for completed workouts (status filtering happens client-side after secure fetch)
+        const completed = allWorkouts.filter(w => w.status === 'completed');
 
         // Fetch coach notes for all weeks
         const { items: allNotes } = await BaseCrudService.getAll<WeeklyCoachesNotes>('weeklycoachesnotes');

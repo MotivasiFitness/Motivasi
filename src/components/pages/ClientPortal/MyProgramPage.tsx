@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientPrograms, ClientAssignedWorkouts, WeeklyCoachesNotes, ClientProfiles } from '@/entities';
+import { getClientWorkouts } from '@/lib/client-workout-access-control';
 import { Play, ChevronDown, ChevronUp, CheckCircle2, Clock, Dumbbell, Target, ArrowRight, Volume2, AlertCircle, MessageCircle, Zap, Info, Archive, Star, HelpCircle, Lightbulb, Smile } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { Link } from 'react-router-dom';
@@ -139,11 +140,13 @@ export default function MyProgramPage() {
         const cycle = await getActiveCycle(member.loginEmail);
         setActiveCycle(cycle);
 
-        // Try to fetch from new system first
-        const { items: allAssignedWorkouts } = await BaseCrudService.getAll<ClientAssignedWorkouts>('clientassignedworkouts');
-        
-        // Filter for this client's workouts
-        const clientWorkouts = allAssignedWorkouts.filter(w => w.clientId === member._id);
+        // SECURITY: Fetch workouts using access-controlled method
+        // This ensures server-side filtering by clientId - client cannot access other clients' workouts
+        const clientWorkouts = await getClientWorkouts(
+          member._id,
+          member._id,
+          'client'
+        );
         
         // Get completed weeks from the active cycle
         const completedWeeks = getCompletedWeeksArray(cycle?.weeksCompleted || 0);

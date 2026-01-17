@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientAssignedWorkouts, TrainerClientAssignments } from '@/entities';
+import { getAuthorizedClientWorkouts } from '@/lib/client-workout-access-control';
 import { MessageSquare, Save, CheckCircle, Calendar, User, Dumbbell, ChevronDown, Filter, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -49,12 +50,13 @@ export default function CompletedWorkoutsFeedbackPage() {
         );
         setClients(clientsWithNames);
 
-        // Get all completed workouts for trainer's clients
-        const { items: allWorkouts } = await BaseCrudService.getAll<ClientAssignedWorkouts>('clientassignedworkouts');
-        
-        const completed = allWorkouts.filter(
-          w => w.status === 'completed' && clientIds.includes(w.clientId || '')
-        );
+        // SECURITY: Get completed workouts using access-controlled method
+        // This ensures trainer can only see workouts for their actively managed clients
+        const completed = await getAuthorizedClientWorkouts({
+          memberId: member._id,
+          role: 'trainer',
+          status: 'completed'
+        });
 
         // Add client names to workouts
         const workoutsWithNames = await Promise.all(
