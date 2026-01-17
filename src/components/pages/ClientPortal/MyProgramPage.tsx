@@ -528,12 +528,12 @@ export default function MyProgramPage() {
     return (
       <div className={PAGE_WRAPPER.container}>
         {/* PRIMARY HERO: Page Title + Program Progress + Overview Metrics */}
-        <div className={PRIMARY_HERO_SECTION.container}>
+        <div className="bg-charcoal-black rounded-2xl p-8 lg:p-10 text-soft-white mb-8 shadow-2xl">
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
             {/* Left: Title + Week Info */}
             <div className="flex-1">
-              <h1 className={PRIMARY_HERO_SECTION.heading}>My Training Programme</h1>
-              <p className={PRIMARY_HERO_SECTION.subheading}>
+              <h1 className="font-heading text-4xl lg:text-5xl font-bold text-soft-white mb-3">My Training Programme</h1>
+              <p className="text-warm-sand-beige text-base lg:text-lg">
                 {weekDisplay} • Your personalised training plan
               </p>
             </div>
@@ -559,9 +559,9 @@ export default function MyProgramPage() {
               {/* Primary CTA */}
               <Link
                 to="/portal/history"
-                className={`inline-flex items-center gap-2 ${PRIMARY_HERO_SECTION.cta} whitespace-nowrap`}
+                className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white px-6 py-3 rounded-lg font-heading text-base font-bold hover:bg-soft-bronze/90 transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap"
               >
-                <Archive size={20} className={PRIMARY_HERO_SECTION.ctaIcon} />
+                <Archive size={20} />
                 View History
               </Link>
             </div>
