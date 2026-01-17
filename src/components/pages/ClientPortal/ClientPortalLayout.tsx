@@ -110,26 +110,24 @@ export default function ClientPortalLayout() {
     );
   }
 
-  // Primary navigation items for bottom bar (mobile)
+  // Primary navigation items - Core features (mobile bottom bar + desktop sidebar)
   const primaryNavItems = [
     { path: '/portal', label: 'Dashboard', icon: LayoutDashboard, color: 'text-blue-400' },
     { path: '/portal/program', label: 'My Program', icon: Dumbbell, color: 'text-emerald-400' },
     { path: '/portal/history', label: 'History', icon: Archive, color: 'text-slate-400' },
+    { path: '/portal/progress', label: 'Progress', icon: TrendingUp, color: 'text-orange-400' },
     { path: '/portal/profile', label: 'Profile', icon: User, color: 'text-pink-400' },
   ];
 
-  // Secondary navigation items for "More" drawer (mobile)
+  // Secondary navigation items - Additional features ("More" drawer on mobile + desktop sidebar)
   const secondaryNavItems = [
     { path: '/portal/bookings', label: 'Bookings', icon: Calendar, color: 'text-purple-400' },
     { path: '/portal/nutrition', label: 'Nutrition', icon: Apple, color: 'text-yellow-400' },
-    { path: '/portal/progress', label: 'Progress', icon: TrendingUp, color: 'text-orange-400' },
     { path: '/portal/video-library', label: 'Video Library', icon: Video, color: 'text-cyan-400' },
-    { path: '/portal/my-submissions', label: 'My Submissions', icon: Video, color: 'text-rose-400' },
-    { path: '/exercise-video-review', label: 'Upload Video', icon: Video, color: 'text-indigo-400' },
   ];
 
-  // All navigation items for desktop sidebar
-  const allNavItems = [...primaryNavItems.slice(0, -1), ...secondaryNavItems, primaryNavItems[primaryNavItems.length - 1]];
+  // All navigation items for desktop sidebar (primary + secondary)
+  const allNavItems = [...primaryNavItems, ...secondaryNavItems];
 
   const isActive = (path: string) => {
     if (path === '/portal') {

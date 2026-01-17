@@ -1,14 +1,29 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { ProgressCheckins } from '@/entities';
-import { Upload, TrendingUp, Calendar, ChevronDown, ChevronUp, Heart, Zap, TrendingUpIcon, MessageSquare } from 'lucide-react';
+import { ProgressCheckins, PrivateVideoLibrary } from '@/entities';
+import { Upload, TrendingUp, Calendar, ChevronDown, ChevronUp, Heart, Zap, TrendingUpIcon, MessageSquare, Video, Play, Clock, CheckCircle, AlertCircle, Loader } from 'lucide-react';
 import { Image } from '@/components/ui/image';
+import { Link } from 'react-router-dom';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+interface VideoSubmission {
+  _id: string;
+  videoTitle?: string;
+  description?: string;
+  videoUrl?: string;
+  category?: string;
+  _createdDate?: Date;
+  reviewStatus?: 'New' | 'In Review' | 'Replied';
+  feedbackProvidedAt?: Date;
+}
 
 export default function ProgressPage() {
   const { member } = useMember();
   const [checkins, setCheckins] = useState<ProgressCheckins[]>([]);
+  const [videoSubmissions, setVideoSubmissions] = useState<VideoSubmission[]>([]);
   const [loading, setLoading] = useState(true);
+  const [videosLoading, setVideosLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [expandedCheckins, setExpandedCheckins] = useState<Set<string>>(new Set());
   const [showOlderCheckins, setShowOlderCheckins] = useState(false);
@@ -48,6 +63,36 @@ export default function ProgressPage() {
     };
 
     fetchCheckins();
+  }, [member?._id]);
+
+  // Fetch video submissions
+  useEffect(() => {
+    const fetchVideoSubmissions = async () => {
+      if (!member?._id) return;
+
+      try {
+        setVideosLoading(true);
+        const { items } = await BaseCrudService.getAll<PrivateVideoLibrary>('privatevideolibrary');
+        const clientVideos = items.filter(v => v.accessTags === member._id);
+
+        const enrichedSubmissions: VideoSubmission[] = clientVideos.map(v => ({
+          ...v,
+          reviewStatus: 'New',
+        }));
+
+        setVideoSubmissions(enrichedSubmissions.sort((a, b) => {
+          const dateA = new Date(a._createdDate || 0).getTime();
+          const dateB = new Date(b._createdDate || 0).getTime();
+          return dateB - dateA;
+        }));
+      } catch (error) {
+        console.error('Error fetching video submissions:', error);
+      } finally {
+        setVideosLoading(false);
+      }
+    };
+
+    fetchVideoSubmissions();
   }, [member?._id]);
 
   const toggleCheckinExpanded = (id: string) => {
@@ -111,6 +156,45 @@ export default function ProgressPage() {
     }
   };
 
+  const getStatusIcon = (status?: 'New' | 'In Review' | 'Replied') => {
+    switch (status) {
+      case 'New':
+        return <AlertCircle className="w-4 h-4 text-soft-bronze" />;
+      case 'In Review':
+        return <Loader className="w-4 h-4 text-blue-600 animate-spin" />;
+      case 'Replied':
+        return <CheckCircle className="w-4 h-4 text-green-600" />;
+      default:
+        return <Video className="w-4 h-4 text-warm-grey" />;
+    }
+  };
+
+  const getStatusLabel = (status?: 'New' | 'In Review' | 'Replied') => {
+    switch (status) {
+      case 'New':
+        return 'Waiting for Review';
+      case 'In Review':
+        return 'Being Reviewed';
+      case 'Replied':
+        return 'Feedback Provided';
+      default:
+        return 'Submitted';
+    }
+  };
+
+  const getStatusColor = (status?: 'New' | 'In Review' | 'Replied') => {
+    switch (status) {
+      case 'New':
+        return 'bg-soft-bronze/10 text-soft-bronze border border-soft-bronze/30';
+      case 'In Review':
+        return 'bg-blue-50 text-blue-700 border border-blue-200';
+      case 'Replied':
+        return 'bg-green-50 text-green-700 border border-green-200';
+      default:
+        return 'bg-warm-sand-beige text-charcoal-black';
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -123,11 +207,25 @@ export default function ProgressPage() {
     <div className="space-y-6 bg-warm-sand-beige/10 min-h-screen p-6 lg:p-8 rounded-2xl">
       {/* Header */}
       <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
-        <h1 className="font-heading text-4xl font-bold mb-2">Progress Check-ins</h1>
+        <h1 className="font-heading text-4xl font-bold mb-2">Progress & Video Submissions</h1>
         <p className="text-soft-white/90">
-          Track your transformation with regular check-ins
+          Track your transformation with check-ins and video feedback
         </p>
       </div>
+
+      {/* Tabs for Check-ins and Video Submissions */}
+      <Tabs defaultValue="checkins" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 bg-soft-white border border-warm-sand-beige rounded-lg p-1">
+          <TabsTrigger value="checkins" className="data-[state=active]:bg-soft-bronze data-[state=active]:text-soft-white">
+            Progress Check-ins
+          </TabsTrigger>
+          <TabsTrigger value="videos" className="data-[state=active]:bg-soft-bronze data-[state=active]:text-soft-white">
+            Video Submissions {videoSubmissions.length > 0 && `(${videoSubmissions.length})`}
+          </TabsTrigger>
+        </TabsList>
+
+        {/* Progress Check-ins Tab */}
+        <TabsContent value="checkins" className="space-y-6 mt-6">
 
       {/* Progress Snapshot Summary Card */}
       {checkins.length > 0 && (
@@ -397,6 +495,124 @@ export default function ProgressPage() {
           </button>
         </div>
       )}
+        </TabsContent>
+
+        {/* Video Submissions Tab */}
+        <TabsContent value="videos" className="space-y-6 mt-6">
+          {videosLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader className="w-8 h-8 animate-spin text-soft-bronze" />
+            </div>
+          ) : videoSubmissions.length === 0 ? (
+            <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-12 text-center">
+              <Video className="mx-auto text-warm-grey mb-4" size={48} />
+              <p className="text-warm-grey text-lg mb-6">
+                You haven't submitted any videos yet.
+              </p>
+              <Link
+                to="/exercise-video-review"
+                className="inline-block bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-soft-bronze/90 transition-colors font-medium"
+              >
+                Submit Your First Video
+              </Link>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {videoSubmissions.map((submission) => (
+                <div
+                  key={submission._id}
+                  className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 hover:border-soft-bronze transition-all"
+                >
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                    {/* Left: Video Info */}
+                    <div className="flex-1">
+                      <div className="flex items-start gap-4">
+                        {/* Thumbnail */}
+                        <div className="hidden sm:block w-20 h-20 bg-charcoal-black/10 rounded-lg flex-shrink-0 flex items-center justify-center">
+                          <Play className="text-warm-grey" size={28} />
+                        </div>
+
+                        {/* Details */}
+                        <div className="flex-1">
+                          <h3 className="font-heading text-lg font-bold text-charcoal-black mb-2">
+                            {submission.videoTitle || 'Untitled Video'}
+                          </h3>
+
+                          {submission.description && (
+                            <p className="text-sm text-warm-grey mb-3 line-clamp-2">
+                              {submission.description}
+                            </p>
+                          )}
+
+                          <div className="flex flex-wrap gap-4 text-sm">
+                            {submission.category && (
+                              <div className="flex items-center gap-2">
+                                <span className="text-warm-grey">Category:</span>
+                                <span className="font-medium text-charcoal-black">{submission.category}</span>
+                              </div>
+                            )}
+
+                            {submission._createdDate && (
+                              <div className="flex items-center gap-2">
+                                <Clock size={14} className="text-warm-grey" />
+                                <span className="text-warm-grey">
+                                  Submitted {new Date(submission._createdDate).toLocaleDateString('en-GB', {
+                                    day: 'numeric',
+                                    month: 'short',
+                                    year: 'numeric'
+                                  })}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right: Status & Actions */}
+                    <div className="flex flex-col items-start md:items-end gap-4">
+                      {/* Status Badge */}
+                      <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${getStatusColor(submission.reviewStatus)}`}>
+                        {getStatusIcon(submission.reviewStatus)}
+                        <span>{getStatusLabel(submission.reviewStatus)}</span>
+                      </div>
+
+                      {/* Watch Button */}
+                      {submission.videoUrl && (
+                        <a
+                          href={submission.videoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 bg-charcoal-black text-soft-white px-4 py-2 rounded-lg hover:bg-soft-bronze transition-colors text-sm font-medium"
+                        >
+                          <Play size={14} />
+                          Watch Video
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {/* CTA to submit more videos */}
+              <div className="mt-8 bg-soft-bronze/10 border border-soft-bronze/30 rounded-2xl p-6 text-center">
+                <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2">
+                  Ready to Submit Another Video?
+                </h3>
+                <p className="text-warm-grey mb-4 text-sm">
+                  Get more feedback from your trainer by submitting additional exercise videos.
+                </p>
+                <Link
+                  to="/exercise-video-review"
+                  className="inline-block bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-soft-bronze/90 transition-colors font-medium"
+                >
+                  Submit a Video
+                </Link>
+              </div>
+            </div>
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

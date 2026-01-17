@@ -37,7 +37,6 @@ import NutritionPage from '@/components/pages/ClientPortal/NutritionPage';
 import ProgressPage from '@/components/pages/ClientPortal/ProgressPage';
 import BookingsPage from '@/components/pages/ClientPortal/BookingsPage';
 import VideoLibraryPage from '@/components/pages/ClientPortal/VideoLibraryPage';
-import MyVideoSubmissionsPage from '@/components/pages/ClientPortal/MyVideoSubmissionsPage';
 import WorkoutHistoryPage from '@/components/pages/ClientPortal/WorkoutHistoryPage';
 import ProfilePage from '@/components/pages/ClientPortal/ProfilePage';
 
@@ -238,10 +237,6 @@ const router = createBrowserRouter([
           {
             path: "video-library",
             element: <VideoLibraryPage />,
-          },
-          {
-            path: "my-submissions",
-            element: <MyVideoSubmissionsPage />,
           },
           {
             path: "history",
