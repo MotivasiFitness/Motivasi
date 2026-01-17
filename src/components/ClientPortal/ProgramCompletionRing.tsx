@@ -11,15 +11,15 @@ interface ProgramCompletionRingProps {
 
 const ENCOURAGING_MESSAGES = [
   'You\'re building momentum',
-  'Consistency is your superpower',
-  'Every workout counts',
-  'You\'re stronger than yesterday',
+  'Every session brings you closer',
+  'Your coach is proud of your consistency',
   'Progress over perfection',
   'Trust the process',
-  'You\'ve got this',
-  'Keep the momentum going',
-  'Small steps, big results',
-  'Your future self thanks you',
+  'You\'re doing great',
+  'Keep showing up for yourself',
+  'Small steps, lasting results',
+  'Your effort is noticed',
+  'You\'re exactly where you need to be',
 ];
 
 export default function ProgramCompletionRing({
@@ -232,8 +232,8 @@ export default function ProgramCompletionRing({
         </p>
         <p className="font-paragraph text-xs text-warm-grey mt-2">
           {totalWorkouts - completedWorkouts === 0
-            ? 'You\'ve completed all workouts this week!'
-            : `${totalWorkouts - completedWorkouts} workout${totalWorkouts - completedWorkouts !== 1 ? 's' : ''} remaining`}
+            ? 'Week complete! Your coach will review your progress.'
+            : `${totalWorkouts - completedWorkouts} workout${totalWorkouts - completedWorkouts !== 1 ? 's' : ''} remaining this week`}
         </p>
       </motion.div>
 
@@ -288,7 +288,7 @@ export default function ProgramCompletionRing({
             🎉 Week Complete!
           </p>
           <p className="font-paragraph text-sm text-warm-grey mt-2">
-            Rest well and prepare for next week's challenges
+            Your coach will review your progress and prepare next week
           </p>
         </motion.div>
       )}

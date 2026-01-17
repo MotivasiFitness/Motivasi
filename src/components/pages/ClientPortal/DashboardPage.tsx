@@ -332,97 +332,161 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Quick Stats */}
-      <div className="grid md:grid-cols-3 gap-6">
-        <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-heading text-lg font-bold text-charcoal-black">Progress Tracked</h3>
-            <TrendingUp className="text-soft-bronze" size={24} />
+      {/* Primary Action Card - This Week's Training */}
+      <div className="bg-soft-white border-2 border-soft-bronze/30 rounded-2xl p-8 shadow-sm">
+        <div className="flex items-start justify-between mb-6">
+          <div>
+            <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-2">
+              This Week's Training
+            </h2>
+            <p className="text-warm-grey text-sm">
+              Week {currentWeekNumber} • {completedWorkouts} of {totalWorkouts} workouts completed
+            </p>
           </div>
-          <p className="font-heading text-4xl font-bold text-charcoal-black">
-            {latestCheckIn ? '✓' : '0'}
-          </p>
-          <p className="text-warm-grey text-sm mt-2">
-            {latestCheckIn ? 'Last check-in completed' : 'No check-ins yet'}
+          <div className="flex-shrink-0">
+            <ProgramCompletionRing
+              completedWorkouts={completedWorkouts}
+              totalWorkouts={Math.max(1, totalWorkouts)}
+              showAnimation={false}
+              compact={true}
+            />
+          </div>
+        </div>
+
+        {/* Progress bar */}
+        <div className="mb-6">
+          <div className="h-3 bg-warm-sand-beige/50 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-full transition-all duration-500"
+              style={{ width: `${totalWorkouts > 0 ? (completedWorkouts / totalWorkouts) * 100 : 0}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Supportive messaging */}
+        <div className="flex items-start gap-3 p-4 bg-soft-bronze/5 rounded-lg mb-4">
+          <MessageCircle className="w-5 h-5 text-soft-bronze flex-shrink-0 mt-0.5" />
+          <p className="text-sm text-charcoal-black">
+            {completedWorkouts === 0 
+              ? "Your coach has prepared this week's workouts. Start when you're ready."
+              : completedWorkouts === totalWorkouts
+              ? "Week complete! Your coach will review your progress and prepare next week's plan."
+              : "Your coach is tracking your progress and will adjust your program as needed."}
           </p>
         </div>
 
-        <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-heading text-lg font-bold text-charcoal-black">Consistency</h3>
-            <Zap className="text-soft-bronze" size={24} />
-          </div>
-          <p className="font-heading text-4xl font-bold text-charcoal-black">
-            100%
-          </p>
-          <p className="text-warm-grey text-sm mt-2">
-            🔥 You stayed consistent this week. That's how real results are built.
-          </p>
-        </div>
-
-        <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-heading text-lg font-bold text-charcoal-black">Upcoming Sessions</h3>
-            <Calendar className="text-soft-bronze" size={24} />
-          </div>
-          <p className="font-heading text-4xl font-bold text-charcoal-black">
-            {upcomingBookings.length}
-          </p>
-          <p className="text-warm-grey text-sm mt-2">
-            {upcomingBookings.length > 0 ? 'scheduled this month' : 'No sessions booked yet'}
-          </p>
-        </div>
+        {/* CTA */}
+        <Link
+          to="/portal/program"
+          className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white px-6 py-3 rounded-lg font-bold hover:bg-soft-bronze/90 transition-colors w-full justify-center"
+        >
+          {completedWorkouts === 0 ? 'Start This Week' : completedWorkouts === totalWorkouts ? 'Review Week' : 'Continue Training'}
+          <ArrowRight size={18} />
+        </Link>
       </div>
 
-      {/* Program Completion Ring - Overview */}
-      {(useNewSystem ? assignedWorkouts.length > 0 : programs.length > 0) && (
-        <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
-          <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-8">
-            Your Program Progress
-          </h2>
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="w-full md:w-1/2 flex justify-center">
-              <div className="w-64">
-                <ProgramCompletionRing
-                  completedWorkouts={completedWorkouts}
-                  totalWorkouts={Math.max(1, totalWorkouts)}
-                  showAnimation={false}
-                />
-              </div>
-            </div>
-            <div className="w-full md:w-1/2 space-y-6">
-              <div>
-                <h3 className="font-heading text-xl font-bold text-charcoal-black mb-3">
-                  Stay on Track
-                </h3>
-                <p className="font-paragraph text-charcoal-black leading-relaxed">
-                  Your personalised programme is designed to fit your life. Complete workouts at your own pace, and watch your progress unfold.
-                </p>
-              </div>
-              <Link
-                to="/portal/program"
-                className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white px-6 py-3 rounded-lg font-bold hover:bg-soft-bronze/90 transition-colors"
-              >
-                View Your Program
-                <ArrowRight size={18} />
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Upcoming Bookings */}
+      {/* Weekly Check-In Summary Card */}
       <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="font-heading text-2xl font-bold text-charcoal-black">Upcoming Sessions</h2>
-          <Link to="/portal/bookings" className="text-soft-bronze hover:underline text-sm font-medium">
-            View all
-          </Link>
+          <div>
+            <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-1">
+              Weekly Check-In
+            </h2>
+            <p className="text-warm-grey text-sm">
+              Help your coach understand how you're feeling
+            </p>
+          </div>
+          <Badge 
+            variant={checkInStatus === 'completed' ? 'default' : 'secondary'}
+            className={checkInStatus === 'completed' 
+              ? 'bg-green-100 text-green-800 hover:bg-green-100' 
+              : 'bg-amber-100 text-amber-800 hover:bg-amber-100'
+            }
+          >
+            {checkInStatus === 'completed' ? '✓ Completed' : 'Due'}
+          </Badge>
+        </div>
+
+        {latestWeeklyCheckIn && hasCurrentWeekCheckIn ? (
+          <div className="space-y-4">
+            {/* Summary metrics */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-warm-sand-beige/30 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <Zap className="w-4 h-4 text-soft-bronze" />
+                  <p className="text-xs text-warm-grey">Energy</p>
+                </div>
+                <p className="font-heading text-xl font-bold text-charcoal-black">
+                  {latestWeeklyCheckIn.energyRating || 'N/A'}
+                </p>
+              </div>
+
+              <div className="bg-warm-sand-beige/30 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <Activity className="w-4 h-4 text-soft-bronze" />
+                  <p className="text-xs text-warm-grey">Difficulty</p>
+                </div>
+                <p className="font-heading text-xl font-bold text-charcoal-black">
+                  {latestWeeklyCheckIn.difficultyRating || 'N/A'}
+                </p>
+              </div>
+            </div>
+
+            {/* Coach review message */}
+            <div className="flex items-start gap-3 p-4 bg-soft-bronze/5 rounded-lg">
+              <Eye className="w-5 h-5 text-soft-bronze flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-charcoal-black">
+                Your coach is reviewing this and will respond here.
+              </p>
+            </div>
+
+            <Link
+              to="/portal/progress"
+              className="inline-flex items-center gap-2 text-soft-bronze hover:underline text-sm font-medium"
+            >
+              View all check-ins
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <p className="text-charcoal-black">
+              Share how this week's training is going. Your feedback helps your coach keep your program aligned with how you're feeling.
+            </p>
+            <button
+              onClick={() => setShowCheckInModal(true)}
+              className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white px-6 py-3 rounded-lg font-bold hover:bg-soft-bronze/90 transition-colors"
+            >
+              <CheckCircle size={18} />
+              Complete check-in (2 min)
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Upcoming Sessions Card */}
+      <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-1">
+              Upcoming Sessions
+            </h2>
+            <p className="text-warm-grey text-sm">
+              {upcomingBookings.length > 0 
+                ? `${upcomingBookings.length} session${upcomingBookings.length !== 1 ? 's' : ''} scheduled`
+                : 'Stay consistent by booking ahead'}
+            </p>
+          </div>
+          {upcomingBookings.length > 0 && (
+            <Link to="/portal/bookings" className="text-soft-bronze hover:underline text-sm font-medium">
+              View all
+            </Link>
+          )}
         </div>
 
         {upcomingBookings.length > 0 ? (
-          <div className="space-y-4">
-            {upcomingBookings.map((booking) => (
+          <div className="space-y-3">
+            {upcomingBookings.slice(0, 2).map((booking) => (
               <div key={booking._id} className="flex items-center justify-between p-4 bg-warm-sand-beige/30 rounded-lg">
                 <div>
                   <h3 className="font-paragraph font-bold text-charcoal-black">
@@ -438,7 +502,7 @@ export default function DashboardPage() {
                     })}
                   </p>
                 </div>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                   booking.status === 'confirmed' 
                     ? 'bg-green-100 text-green-800'
                     : 'bg-yellow-100 text-yellow-800'
@@ -447,138 +511,30 @@ export default function DashboardPage() {
                 </span>
               </div>
             ))}
+            {upcomingBookings.length > 2 && (
+              <Link 
+                to="/portal/bookings"
+                className="block text-center text-soft-bronze hover:underline text-sm font-medium pt-2"
+              >
+                +{upcomingBookings.length - 2} more session{upcomingBookings.length - 2 !== 1 ? 's' : ''}
+              </Link>
+            )}
           </div>
         ) : (
-          <div className="bg-warm-sand-beige/20 border border-warm-sand-beige rounded-lg p-6 text-center">
-            <p className="text-charcoal-black font-medium mb-2">
-              No sessions booked yet
-            </p>
-            <p className="text-warm-grey text-sm mb-6">
+          <div className="space-y-4">
+            <p className="text-charcoal-black">
               Clients who book ahead stay more consistent around family life.
             </p>
             <Link 
               to="/portal/bookings" 
               className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white hover:bg-soft-bronze/90 transition-colors font-bold px-6 py-3 rounded-lg"
             >
-              Schedule in 30 seconds
+              Book a session
               <ArrowRight size={16} />
             </Link>
           </div>
         )}
       </div>
-
-      {/* Latest Check-in */}
-      {latestWeeklyCheckIn && (
-        <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <h2 className="font-heading text-2xl font-bold text-charcoal-black">Latest Progress Check-In</h2>
-              <Badge 
-                variant={checkInStatus === 'completed' ? 'default' : 'secondary'}
-                className={checkInStatus === 'completed' 
-                  ? 'bg-green-100 text-green-800 hover:bg-green-100' 
-                  : 'bg-amber-100 text-amber-800 hover:bg-amber-100'
-                }
-              >
-                {checkInStatus === 'completed' ? '✓ Check-in completed' : 'Check-in due'}
-              </Badge>
-            </div>
-            <Link to="/portal/progress" className="text-soft-bronze hover:underline text-sm font-medium">
-              View all
-            </Link>
-          </div>
-
-          <div className="space-y-6">
-            {/* Primary metrics - Energy and Effort */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-warm-sand-beige/30 rounded-xl p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 bg-soft-bronze/20 rounded-full flex items-center justify-center">
-                    <Zap className="w-5 h-5 text-soft-bronze" />
-                  </div>
-                  <div>
-                    <p className="text-warm-grey text-sm">Energy levels</p>
-                    <p className="font-heading text-2xl font-bold text-charcoal-black">
-                      {latestWeeklyCheckIn.energyRating || 'N/A'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-warm-sand-beige/30 rounded-xl p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 bg-soft-bronze/20 rounded-full flex items-center justify-center">
-                    <Activity className="w-5 h-5 text-soft-bronze" />
-                  </div>
-                  <div>
-                    <p className="text-warm-grey text-sm">Overall difficulty</p>
-                    <p className="font-heading text-2xl font-bold text-charcoal-black">
-                      {latestWeeklyCheckIn.difficultyRating || 'N/A'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Secondary info - Soreness */}
-            {latestWeeklyCheckIn.sorenessRating && (
-              <div className="flex items-start gap-3 p-4 bg-warm-sand-beige/20 rounded-lg">
-                <AlertCircle className="w-5 h-5 text-warm-grey flex-shrink-0 mt-0.5" />
-                <div className="flex-1">
-                  <p className="text-warm-grey text-sm mb-1">Soreness / aches</p>
-                  <p className="font-paragraph font-medium text-charcoal-black">
-                    {latestWeeklyCheckIn.sorenessRating}
-                  </p>
-                  {latestWeeklyCheckIn.sorenessNotes && (
-                    <p className="text-sm text-warm-grey mt-1 line-clamp-2">
-                      {latestWeeklyCheckIn.sorenessNotes}
-                    </p>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Client notes - truncated */}
-            {latestWeeklyCheckIn.clientNotes && (
-              <div className="p-4 bg-warm-sand-beige/20 rounded-lg">
-                <p className="text-warm-grey text-sm mb-2">Your notes</p>
-                <p className="font-paragraph text-charcoal-black line-clamp-3">
-                  {latestWeeklyCheckIn.clientNotes}
-                </p>
-              </div>
-            )}
-
-            {/* Coach involvement reinforcement */}
-            <div className="flex items-start gap-3 p-4 bg-soft-bronze/10 rounded-lg border border-soft-bronze/20">
-              <MessageCircle className="w-5 h-5 text-soft-bronze flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-charcoal-black">
-                Your coach reviews every check-in to ensure your program stays aligned with how you're feeling.
-              </p>
-            </div>
-
-            {/* CTA Button - Conditional */}
-            <div className="flex justify-end pt-2">
-              {hasCurrentWeekCheckIn ? (
-                <Link
-                  to="/portal/progress"
-                  className="inline-flex items-center gap-2 bg-soft-white border-2 border-soft-bronze text-soft-bronze px-6 py-3 rounded-lg font-bold hover:bg-soft-bronze hover:text-soft-white transition-all duration-200"
-                >
-                  <Eye size={18} />
-                  View check-in history
-                </Link>
-              ) : (
-                <button
-                  onClick={() => setShowCheckInModal(true)}
-                  className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white px-6 py-3 rounded-lg font-bold hover:bg-soft-bronze/90 transition-colors"
-                >
-                  <CheckCircle size={18} />
-                  Complete weekly check-in
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Weekly Check-In Modal */}
       {showCheckInModal && member?._id && (
@@ -594,62 +550,52 @@ export default function DashboardPage() {
         />
       )}
 
-      {/* Coach Support Block */}
-      <div className="bg-gradient-to-r from-soft-bronze/10 to-soft-bronze/5 border border-soft-bronze/30 rounded-2xl p-8">
-        <div className="flex items-start gap-4">
-          <Heart className="text-soft-bronze flex-shrink-0 mt-1" size={28} />
-          <div>
-            <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2">
-              You're not doing this alone
-            </h3>
-            <p className="text-warm-grey">
-              Your coach is reviewing your progress and is always here if you need support. Don't hesitate to reach out with questions or if you need adjustments to your program.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Quick Links */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <Link
-          to="/portal/program"
-          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 hover:bg-soft-bronze hover:border-soft-bronze hover:text-soft-white transition-all duration-300 group"
-        >
-          <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-white transition-colors duration-300">
-            My Program
-          </h3>
-          <p className="text-warm-grey group-hover:text-soft-white/80 transition-colors duration-300">View your personalised workout plan</p>
-        </Link>
-
+      {/* Quick Links - Simplified */}
+      <div className="grid md:grid-cols-3 gap-6">
         <Link
           to="/portal/nutrition"
-          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 hover:bg-soft-bronze hover:border-soft-bronze hover:text-soft-white transition-all duration-300 group"
+          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 hover:border-soft-bronze transition-all duration-200 group"
         >
-          <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-white transition-colors duration-300">
-            Nutrition Guidance
+          <h3 className="font-heading text-lg font-bold text-charcoal-black mb-1 group-hover:text-soft-bronze transition-colors">
+            Nutrition
           </h3>
-          <p className="text-warm-grey group-hover:text-soft-white/80 transition-colors duration-300">Check your meal plans and nutrition tips</p>
-        </Link>
-
-        <Link
-          to="/portal/messages"
-          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 hover:bg-soft-bronze hover:border-soft-bronze hover:text-soft-white transition-all duration-300 group"
-        >
-          <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-white transition-colors duration-300">
-            Messages
-          </h3>
-          <p className="text-warm-grey group-hover:text-soft-white/80 transition-colors duration-300">Chat with your trainer</p>
+          <p className="text-warm-grey text-sm">Meal plans & guidance</p>
         </Link>
 
         <Link
           to="/portal/video-library"
-          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 hover:bg-soft-bronze hover:border-soft-bronze hover:text-soft-white transition-all duration-300 group"
+          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 hover:border-soft-bronze transition-all duration-200 group"
         >
-          <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-white transition-colors duration-300">
+          <h3 className="font-heading text-lg font-bold text-charcoal-black mb-1 group-hover:text-soft-bronze transition-colors">
             Video Library
           </h3>
-          <p className="text-warm-grey group-hover:text-soft-white/80 transition-colors duration-300">Access exercise demos and guidance videos</p>
+          <p className="text-warm-grey text-sm">Exercise demos</p>
         </Link>
+
+        <Link
+          to="/portal/progress"
+          className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 hover:border-soft-bronze transition-all duration-200 group"
+        >
+          <h3 className="font-heading text-lg font-bold text-charcoal-black mb-1 group-hover:text-soft-bronze transition-colors">
+            Progress
+          </h3>
+          <p className="text-warm-grey text-sm">Track your journey</p>
+        </Link>
+      </div>
+
+      {/* Coach Support Footer */}
+      <div className="bg-gradient-to-r from-soft-bronze/10 to-soft-bronze/5 border border-soft-bronze/30 rounded-2xl p-6">
+        <div className="flex items-start gap-3">
+          <Heart className="text-soft-bronze flex-shrink-0 mt-0.5" size={24} />
+          <div>
+            <h3 className="font-heading text-lg font-bold text-charcoal-black mb-1">
+              You're not doing this alone
+            </h3>
+            <p className="text-warm-grey text-sm">
+              Your coach reviews your progress regularly and is here to support you. Reach out anytime if you need adjustments or have questions.
+            </p>
+          </div>
+        </div>
       </div>
       </div>
     </>
