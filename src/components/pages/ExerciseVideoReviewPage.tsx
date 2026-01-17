@@ -184,10 +184,10 @@ export default function ExerciseVideoReviewPage() {
                 </p>
               </div>
 
-              {/* Video URL */}
+              {/* Video Upload */}
               <div>
                 <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
-                  Video URL *
+                  Upload your video *
                 </label>
                 <input
                   type="url"
@@ -198,7 +198,7 @@ export default function ExerciseVideoReviewPage() {
                   className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
                 />
                 <p className="text-xs text-warm-grey mt-2">
-                  Paste the URL of your uploaded video (YouTube, Vimeo, Google Drive, etc.)
+                  You can upload videos directly from your phone or computer (MP4, MOV supported). Short clips under 5 minutes are best.
                 </p>
               </div>
 
