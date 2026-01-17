@@ -47,3 +47,50 @@
 .interactive-tab-active {
   @apply bg-soft-bronze text-soft-white;
 }
+
+/* Print Styles */
+@media print {
+  /* Hide navigation, sidebar, and interactive elements */
+  header,
+  nav,
+  aside,
+  .print\\:hidden {
+    display: none !important;
+  }
+
+  /* Set white background for clean printing */
+  body,
+  * {
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Ensure readable spacing */
+  body {
+    margin: 0;
+    padding: 20px;
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+
+  /* Page breaks */
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+
+  /* Remove shadows and borders for cleaner print */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Ensure links are visible */
+  a {
+    text-decoration: underline;
+  }
+
+  /* Remove rounded corners for print */
+  * {
+    border-radius: 0 !important;
+  }
+}

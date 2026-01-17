@@ -148,6 +148,12 @@ export interface ClientProfiles {
   _createdDate?: Date;
   _updatedDate?: Date;
   /** @wixFieldType text */
+  trainingExperience?: string;
+  /** @wixFieldType text */
+  fitnessGoalsCategory?: string;
+  /** @wixFieldType date */
+  dateOfBirth?: Date | string;
+  /** @wixFieldType text */
   memberId?: string;
   /** @wixFieldType text */
   firstName?: string;

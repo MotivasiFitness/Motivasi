@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { NutritionGuidance } from '@/entities';
-import { Download, Calendar, MessageCircle, CheckCircle2 } from 'lucide-react';
+import { Printer, Calendar, MessageCircle, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function NutritionPage() {
@@ -39,10 +39,14 @@ export default function NutritionPage() {
     );
   }
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <div className="space-y-8 bg-warm-sand-beige/20 min-h-screen p-6 lg:p-8 rounded-2xl">
       {/* Header */}
-      <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white">
+      <div className="bg-gradient-to-r from-soft-bronze to-soft-bronze/80 rounded-2xl p-8 text-soft-white print:hidden">
         <h1 className="font-heading text-4xl font-bold mb-2">Nutrition Guidance</h1>
         <p className="text-soft-white/90">
           Your personalised meal plans and nutrition recommendations
@@ -74,17 +78,18 @@ export default function NutritionPage() {
                       </div>
                     )}
                   </div>
-                  {guidance.supportingDocument && (
-                    <a
-                      href={guidance.supportingDocument}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-soft-bronze/90 transition-colors text-sm font-medium flex-shrink-0"
+                  <div className="flex flex-col gap-3 flex-shrink-0">
+                    <button
+                      onClick={handlePrint}
+                      className="flex items-center gap-2 bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-soft-bronze/90 transition-colors text-sm font-medium print:hidden"
                     >
-                      <Download size={16} />
-                      Download
-                    </a>
-                  )}
+                      <Printer size={16} />
+                      Print Guide
+                    </button>
+                    <p className="text-xs text-warm-grey italic text-center print:hidden">
+                      Ideal to print or save for reference.
+                    </p>
+                  </div>
                 </div>
 
                 {/* What This Plan Focuses On */}
@@ -202,7 +207,7 @@ export default function NutritionPage() {
               </div>
 
               {/* Coaching Support Prompt */}
-              <div className="bg-soft-bronze/5 border border-soft-bronze/20 rounded-2xl p-6 lg:p-8 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+              <div className="bg-soft-bronze/5 border border-soft-bronze/20 rounded-2xl p-6 lg:p-8 flex flex-col sm:flex-row gap-4 items-start sm:items-center print:hidden">
                 <MessageCircle size={24} className="text-soft-bronze flex-shrink-0" />
                 <div className="flex-1">
                   <p className="font-paragraph text-charcoal-black leading-relaxed">
@@ -231,7 +236,7 @@ export default function NutritionPage() {
       )}
 
       {/* Nutrition Tips */}
-      <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-2xl p-6 lg:p-8">
+      <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-2xl p-6 lg:p-8 print:hidden">
         <h3 className="font-heading text-2xl lg:text-3xl font-bold text-charcoal-black mb-8">
           Nutrition Tips
         </h3>
@@ -264,7 +269,7 @@ export default function NutritionPage() {
       </div>
 
       {/* Macro Guide */}
-      <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8">
+      <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 lg:p-8 print:hidden">
         <h3 className="font-heading text-2xl lg:text-3xl font-bold text-charcoal-black mb-8">
           Understanding Your Macros
         </h3>
