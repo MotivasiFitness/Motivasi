@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { FitnessPrograms, MemberRoles } from '@/entities';
-import { Plus, AlertCircle, CheckCircle, User } from 'lucide-react';
+import { Plus, AlertCircle, CheckCircle, User, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getTrainerClients, assignClientToTrainer } from '@/lib/role-utils';
-import { getClientDisplayNames } from '@/lib/client-display-name';
+import { getClientDisplayNames } from '@/lib/client-profile-service';
 
 interface ClientInfo {
   assignmentId: string;
@@ -28,16 +28,21 @@ export default function TrainerClientsPage() {
   const [clients, setClients] = useState<ClientInfo[]>([]);
   const [availableClients, setAvailableClients] = useState<AvailableClient[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [showAssignForm, setShowAssignForm] = useState(false);
   const [newClientId, setNewClientId] = useState('');
   const [assignmentError, setAssignmentError] = useState('');
   const [assignmentSuccess, setAssignmentSuccess] = useState('');
   const [isAssigning, setIsAssigning] = useState(false);
 
-  const fetchClients = async () => {
+  const fetchClients = async (forceRefresh: boolean = false) => {
     if (!member?._id) return;
 
     try {
+      if (forceRefresh) {
+        setRefreshing(true);
+      }
+
       // Get assigned clients
       const assignments = await getTrainerClients(member._id);
       
@@ -45,9 +50,9 @@ export default function TrainerClientsPage() {
       const { items: programs } = await BaseCrudService.getAll<FitnessPrograms>('programs');
       const trainerPrograms = programs.filter(p => p.trainerId === member._id);
 
-      // Get display names for all assigned clients
+      // Get display names for all assigned clients (with force refresh option)
       const clientIds = assignments.map(a => a.clientId).filter(Boolean) as string[];
-      const displayNames = await getClientDisplayNames(clientIds);
+      const displayNames = await getClientDisplayNames(clientIds, undefined, forceRefresh);
 
       // Build client info
       const clientMap = new Map<string, ClientInfo>();
@@ -101,12 +106,17 @@ export default function TrainerClientsPage() {
       console.error('Error fetching clients:', error);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
   useEffect(() => {
     fetchClients();
   }, [member?._id]);
+
+  const handleRefresh = () => {
+    fetchClients(true);
+  };
 
   const handleAssignClient = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -157,16 +167,29 @@ export default function TrainerClientsPage() {
               Manage and communicate with your assigned clients
             </p>
           </div>
-          {/* Only show top-right button if clients exist */}
-          {clients.length > 0 && (
+          <div className="flex items-center gap-3">
+            {/* Refresh Button */}
             <button
-              onClick={() => setShowAssignForm(!showAssignForm)}
-              className="flex items-center gap-2 bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-charcoal-black transition-colors"
+              onClick={handleRefresh}
+              disabled={refreshing}
+              className="flex items-center gap-2 bg-warm-sand-beige text-charcoal-black px-4 py-3 rounded-lg hover:bg-warm-sand-beige/80 transition-colors disabled:opacity-50"
+              title="Refresh client data"
             >
-              <Plus size={20} />
-              Assign Client
+              <RefreshCw size={20} className={refreshing ? 'animate-spin' : ''} />
+              <span className="font-medium">{refreshing ? 'Refreshing...' : 'Refresh'}</span>
             </button>
-          )}
+            
+            {/* Only show assign button if clients exist */}
+            {clients.length > 0 && (
+              <button
+                onClick={() => setShowAssignForm(!showAssignForm)}
+                className="flex items-center gap-2 bg-soft-bronze text-soft-white px-6 py-3 rounded-lg hover:bg-charcoal-black transition-colors"
+              >
+                <Plus size={20} />
+                Assign Client
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Assign Client Form */}

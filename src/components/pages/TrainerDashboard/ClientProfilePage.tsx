@@ -3,8 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientProfiles, TrainerClientAssignments } from '@/entities';
-import { ArrowLeft, User, Phone, Target, AlertCircle, CheckCircle, Info, Edit2, Save, X, Flag, ClipboardCheck, Calendar, Star } from 'lucide-react';
-import { getClientDisplayName } from '@/lib/client-name-service';
+import { ArrowLeft, User, Phone, Target, AlertCircle, CheckCircle, Info, Edit2, Save, X, Flag, ClipboardCheck, Calendar, Star, RefreshCw } from 'lucide-react';
+import { getClientDisplayName, getClientProfile } from '@/lib/client-profile-service';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Textarea } from '@/components/ui/textarea';
 
@@ -47,6 +47,7 @@ export default function ClientProfilePage() {
   const [clientProfile, setClientProfile] = useState<ClientProfiles | null>(null);
   const [clientDisplayName, setClientDisplayName] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string>('');
   const [isAuthorized, setIsAuthorized] = useState(false);
   
@@ -61,75 +62,83 @@ export default function ClientProfilePage() {
   const [weeklyCheckIns, setWeeklyCheckIns] = useState<WeeklyCheckIn[]>([]);
 
   useEffect(() => {
-    const fetchClientProfile = async () => {
-      if (!member?._id || !clientId) {
-        setError('Missing required information');
+    fetchClientProfile();
+  }, [member?._id, clientId]);
+
+  const fetchClientProfile = async (forceRefresh: boolean = false) => {
+    if (!member?._id || !clientId) {
+      setError('Missing required information');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      if (forceRefresh) {
+        setRefreshing(true);
+      }
+
+      // First, verify that this trainer is assigned to this client
+      const { items: assignments } = await BaseCrudService.getAll<TrainerClientAssignments>(
+        'trainerclientassignments'
+      );
+      
+      const isAssigned = assignments.some(
+        a => a.trainerId === member._id && a.clientId === clientId && a.status === 'Active'
+      );
+
+      if (!isAssigned) {
+        setError('You are not authorized to view this client profile');
+        setIsAuthorized(false);
         setLoading(false);
         return;
       }
 
-      try {
-        // First, verify that this trainer is assigned to this client
-        const { items: assignments } = await BaseCrudService.getAll<TrainerClientAssignments>(
-          'trainerclientassignments'
-        );
-        
-        const isAssigned = assignments.some(
-          a => a.trainerId === member._id && a.clientId === clientId && a.status === 'Active'
-        );
+      setIsAuthorized(true);
 
-        if (!isAssigned) {
-          setError('You are not authorized to view this client profile');
-          setIsAuthorized(false);
-          setLoading(false);
-          return;
-        }
+      // Fetch client profile using centralized service (with force refresh option)
+      const profile = await getClientProfile(clientId, forceRefresh);
 
-        setIsAuthorized(true);
-
-        // Fetch client profile
-        const { items: profiles } = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
-        const profile = profiles.find(p => p.memberId === clientId);
-
-        if (profile) {
-          setClientProfile(profile);
-        }
-
-        // Get display name
-        const displayName = await getClientDisplayName(clientId);
-        setClientDisplayName(displayName);
-
-        // Fetch trainer notes
-        const { items: notes } = await BaseCrudService.getAll<TrainerClientNotes>('trainerclientnotes');
-        const existingNotes = notes.find(n => n.trainerId === member._id && n.clientId === clientId);
-        
-        if (existingNotes) {
-          setTrainerNotes(existingNotes);
-          setNotesText(existingNotes.notes || '');
-          setSelectedFlags(existingNotes.flags ? JSON.parse(existingNotes.flags) : []);
-        }
-
-        // Fetch weekly check-ins for this client
-        const { items: checkIns } = await BaseCrudService.getAll<WeeklyCheckIn>('weeklycheckins');
-        const clientCheckIns = checkIns
-          .filter(c => c.clientId === clientId && c.trainerId === member._id)
-          .sort((a, b) => {
-            const dateA = new Date(a.createdAt || 0).getTime();
-            const dateB = new Date(b.createdAt || 0).getTime();
-            return dateB - dateA; // Newest first
-          });
-        setWeeklyCheckIns(clientCheckIns);
-
-      } catch (err) {
-        console.error('Error fetching client profile:', err);
-        setError('Failed to load client profile');
-      } finally {
-        setLoading(false);
+      if (profile) {
+        setClientProfile(profile);
       }
-    };
 
-    fetchClientProfile();
-  }, [member?._id, clientId]);
+      // Get display name (with force refresh)
+      const displayName = await getClientDisplayName(clientId, undefined, forceRefresh);
+      setClientDisplayName(displayName);
+
+      // Fetch trainer notes
+      const { items: notes } = await BaseCrudService.getAll<TrainerClientNotes>('trainerclientnotes');
+      const existingNotes = notes.find(n => n.trainerId === member._id && n.clientId === clientId);
+      
+      if (existingNotes) {
+        setTrainerNotes(existingNotes);
+        setNotesText(existingNotes.notes || '');
+        setSelectedFlags(existingNotes.flags ? JSON.parse(existingNotes.flags) : []);
+      }
+
+      // Fetch weekly check-ins for this client
+      const { items: checkIns } = await BaseCrudService.getAll<WeeklyCheckIn>('weeklycheckins');
+      const clientCheckIns = checkIns
+        .filter(c => c.clientId === clientId && c.trainerId === member._id)
+        .sort((a, b) => {
+          const dateA = new Date(a.createdAt || 0).getTime();
+          const dateB = new Date(b.createdAt || 0).getTime();
+          return dateB - dateA; // Newest first
+        });
+      setWeeklyCheckIns(clientCheckIns);
+
+    } catch (err) {
+      console.error('Error fetching client profile:', err);
+      setError('Failed to load client profile');
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  const handleRefresh = () => {
+    fetchClientProfile(true);
+  };
 
   const handleSaveNotes = async () => {
     if (!member?._id || !clientId) return;
@@ -289,35 +298,50 @@ export default function ClientProfilePage() {
                 </p>
               </div>
               
-              {/* Profile Completion Indicator */}
-              <div className="text-center">
-                <div className="relative inline-flex items-center justify-center w-20 h-20 mb-2">
-                  <svg className="w-20 h-20 transform -rotate-90">
-                    <circle
-                      cx="40"
-                      cy="40"
-                      r="34"
-                      stroke="#E8DED3"
-                      strokeWidth="6"
-                      fill="none"
-                    />
-                    <circle
-                      cx="40"
-                      cy="40"
-                      r="34"
-                      stroke="#B08D57"
-                      strokeWidth="6"
-                      fill="none"
-                      strokeDasharray={`${2 * Math.PI * 34}`}
-                      strokeDashoffset={`${2 * Math.PI * 34 * (1 - profileCompletion / 100)}`}
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                  <span className="absolute font-heading text-lg font-bold text-charcoal-black">
-                    {profileCompletion}%
+              <div className="flex items-center gap-4">
+                {/* Refresh Button */}
+                <button
+                  onClick={handleRefresh}
+                  disabled={refreshing}
+                  className="flex items-center gap-2 px-4 py-2 bg-warm-sand-beige text-charcoal-black rounded-lg hover:bg-warm-sand-beige/80 transition-colors disabled:opacity-50"
+                  title="Refresh client data"
+                >
+                  <RefreshCw size={18} className={refreshing ? 'animate-spin' : ''} />
+                  <span className="font-medium text-sm">
+                    {refreshing ? 'Refreshing...' : 'Refresh'}
                   </span>
+                </button>
+
+                {/* Profile Completion Indicator */}
+                <div className="text-center">
+                  <div className="relative inline-flex items-center justify-center w-20 h-20 mb-2">
+                    <svg className="w-20 h-20 transform -rotate-90">
+                      <circle
+                        cx="40"
+                        cy="40"
+                        r="34"
+                        stroke="#E8DED3"
+                        strokeWidth="6"
+                        fill="none"
+                      />
+                      <circle
+                        cx="40"
+                        cy="40"
+                        r="34"
+                        stroke="#B08D57"
+                        strokeWidth="6"
+                        fill="none"
+                        strokeDasharray={`${2 * Math.PI * 34}`}
+                        strokeDashoffset={`${2 * Math.PI * 34 * (1 - profileCompletion / 100)}`}
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                    <span className="absolute font-heading text-lg font-bold text-charcoal-black">
+                      {profileCompletion}%
+                    </span>
+                  </div>
+                  <p className="text-xs text-warm-grey">Profile Complete</p>
                 </div>
-                <p className="text-xs text-warm-grey">Profile Complete</p>
               </div>
             </div>
           </div>
@@ -327,8 +351,8 @@ export default function ClientProfilePage() {
             <Info className="text-blue-600 flex-shrink-0" size={20} />
             <div>
               <p className="font-paragraph text-sm text-blue-900">
-                <strong>Client Information:</strong> The information below was provided by the client and is read-only. 
-                Use the Trainer Notes section to add your private observations and flags.
+                <strong>Real-Time Data:</strong> Client information is automatically synced from the Client Portal. 
+                Click the Refresh button to get the latest updates. Use the Trainer Notes section to add your private observations and flags.
               </p>
             </div>
           </div>

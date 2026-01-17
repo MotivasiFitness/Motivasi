@@ -2,23 +2,47 @@
  * Client Profile Service
  * Manages client name and profile information
  * Provides utilities to fetch, cache, and display client names
+ * 
+ * CRITICAL: This is the SINGLE SOURCE OF TRUTH for client profile data.
+ * All client information (name, email, metrics, goals, notes) flows through this service.
+ * Cache invalidation ensures real-time updates between Client Portal and Trainer Portal.
  */
 
 import { BaseCrudService } from '@/integrations';
 import { ClientProfiles } from '@/entities';
 
-// In-memory cache for client profiles
-const clientProfileCache = new Map<string, ClientProfiles>();
+// In-memory cache for client profiles with timestamp tracking
+interface CachedProfile {
+  profile: ClientProfiles;
+  timestamp: number;
+}
+
+const clientProfileCache = new Map<string, CachedProfile>();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes cache TTL
+
+/**
+ * Check if cached profile is still valid
+ */
+function isCacheValid(cachedItem: CachedProfile): boolean {
+  return Date.now() - cachedItem.timestamp < CACHE_TTL;
+}
 
 /**
  * Get client profile by member ID
  * @param memberId - Member ID of the client
+ * @param forceRefresh - Force bypass cache and fetch fresh data
  * @returns Client profile with name information
  */
-export async function getClientProfile(memberId: string): Promise<ClientProfiles | null> {
-  // Check cache first
-  if (clientProfileCache.has(memberId)) {
-    return clientProfileCache.get(memberId) || null;
+export async function getClientProfile(
+  memberId: string, 
+  forceRefresh: boolean = false
+): Promise<ClientProfiles | null> {
+  // Check cache first (unless force refresh)
+  if (!forceRefresh && clientProfileCache.has(memberId)) {
+    const cached = clientProfileCache.get(memberId)!;
+    if (isCacheValid(cached)) {
+      return cached.profile;
+    }
   }
 
   try {
@@ -26,7 +50,10 @@ export async function getClientProfile(memberId: string): Promise<ClientProfiles
     const profile = items.find(p => p.memberId === memberId);
     
     if (profile) {
-      clientProfileCache.set(memberId, profile);
+      clientProfileCache.set(memberId, {
+        profile,
+        timestamp: Date.now()
+      });
     }
     
     return profile || null;
@@ -39,13 +66,23 @@ export async function getClientProfile(memberId: string): Promise<ClientProfiles
 /**
  * Get multiple client profiles by member IDs
  * @param memberIds - Array of member IDs
+ * @param forceRefresh - Force bypass cache and fetch fresh data
  * @returns Map of member ID to client profile
  */
-export async function getClientProfiles(memberIds: string[]): Promise<Map<string, ClientProfiles>> {
+export async function getClientProfiles(
+  memberIds: string[],
+  forceRefresh: boolean = false
+): Promise<Map<string, ClientProfiles>> {
   const profiles = new Map<string, ClientProfiles>();
-  const uncachedIds = memberIds.filter(id => !clientProfileCache.has(id));
+  
+  // Determine which IDs need fetching
+  const uncachedIds = memberIds.filter(id => {
+    if (forceRefresh) return true;
+    const cached = clientProfileCache.get(id);
+    return !cached || !isCacheValid(cached);
+  });
 
-  // Fetch uncached profiles
+  // Fetch uncached or stale profiles
   if (uncachedIds.length > 0) {
     try {
       const { items } = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
@@ -53,7 +90,10 @@ export async function getClientProfiles(memberIds: string[]): Promise<Map<string
       uncachedIds.forEach(id => {
         const profile = items.find(p => p.memberId === id);
         if (profile) {
-          clientProfileCache.set(id, profile);
+          clientProfileCache.set(id, {
+            profile,
+            timestamp: Date.now()
+          });
         }
       });
     } catch (error) {
@@ -63,9 +103,9 @@ export async function getClientProfiles(memberIds: string[]): Promise<Map<string
 
   // Collect all profiles (cached + newly fetched)
   memberIds.forEach(id => {
-    const profile = clientProfileCache.get(id);
-    if (profile) {
-      profiles.set(id, profile);
+    const cached = clientProfileCache.get(id);
+    if (cached) {
+      profiles.set(id, cached.profile);
     }
   });
 
@@ -77,14 +117,15 @@ export async function getClientProfiles(memberIds: string[]): Promise<Map<string
  * Falls back to email or member ID if name not available
  * @param memberId - Member ID of the client
  * @param fallbackEmail - Email to use as fallback
+ * @param forceRefresh - Force bypass cache and fetch fresh data
  * @returns Display name string
  */
-export async function getClientDisplayName(memberId: string, fallbackEmail?: string): Promise<string> {
-  const profile = await getClientProfile(memberId);
-  
-  if (profile?.displayName) {
-    return profile.displayName;
-  }
+export async function getClientDisplayName(
+  memberId: string, 
+  fallbackEmail?: string,
+  forceRefresh: boolean = false
+): Promise<string> {
+  const profile = await getClientProfile(memberId, forceRefresh);
   
   if (profile?.firstName && profile?.lastName) {
     return `${profile.firstName} ${profile.lastName}`;
@@ -94,45 +135,39 @@ export async function getClientDisplayName(memberId: string, fallbackEmail?: str
     return profile.firstName;
   }
   
-  if (profile?.email) {
-    return profile.email;
-  }
-  
   if (fallbackEmail) {
     return fallbackEmail;
   }
   
-  return memberId;
+  return `Client ${memberId.slice(-4).toUpperCase()}`;
 }
 
 /**
  * Get display names for multiple clients
  * @param memberIds - Array of member IDs
  * @param fallbackEmails - Map of member ID to email for fallback
+ * @param forceRefresh - Force bypass cache and fetch fresh data
  * @returns Map of member ID to display name
  */
 export async function getClientDisplayNames(
   memberIds: string[],
-  fallbackEmails?: Map<string, string>
+  fallbackEmails?: Map<string, string>,
+  forceRefresh: boolean = false
 ): Promise<Map<string, string>> {
-  const profiles = await getClientProfiles(memberIds);
+  const profiles = await getClientProfiles(memberIds, forceRefresh);
   const displayNames = new Map<string, string>();
 
   memberIds.forEach(memberId => {
     const profile = profiles.get(memberId);
     
-    if (profile?.displayName) {
-      displayNames.set(memberId, profile.displayName);
-    } else if (profile?.firstName && profile?.lastName) {
+    if (profile?.firstName && profile?.lastName) {
       displayNames.set(memberId, `${profile.firstName} ${profile.lastName}`);
     } else if (profile?.firstName) {
       displayNames.set(memberId, profile.firstName);
-    } else if (profile?.email) {
-      displayNames.set(memberId, profile.email);
     } else if (fallbackEmails?.has(memberId)) {
-      displayNames.set(memberId, fallbackEmails.get(memberId) || memberId);
+      displayNames.set(memberId, fallbackEmails.get(memberId) || `Client ${memberId.slice(-4).toUpperCase()}`);
     } else {
-      displayNames.set(memberId, memberId);
+      displayNames.set(memberId, `Client ${memberId.slice(-4).toUpperCase()}`);
     }
   });
 
@@ -141,6 +176,7 @@ export async function getClientDisplayNames(
 
 /**
  * Create or update client profile
+ * CRITICAL: This invalidates cache to ensure real-time updates across portals
  * @param memberId - Member ID of the client
  * @param data - Profile data to save
  * @returns Created/updated profile
@@ -174,8 +210,15 @@ export async function upsertClientProfile(
       await BaseCrudService.create('clientprofiles', profile);
     }
 
-    // Update cache
-    clientProfileCache.set(memberId, profile);
+    // CRITICAL: Invalidate cache immediately to ensure real-time updates
+    invalidateClientProfileCache(memberId);
+    
+    // Update cache with new data
+    clientProfileCache.set(memberId, {
+      profile,
+      timestamp: Date.now()
+    });
+    
     return profile;
   } catch (error) {
     console.error(`Error upserting client profile for ${memberId}:`, error);
@@ -184,8 +227,25 @@ export async function upsertClientProfile(
 }
 
 /**
- * Clear the client profile cache
- * Useful for testing or forcing a refresh
+ * Invalidate cache for a specific client
+ * Use this when you know data has changed and want to force a refresh
+ * @param memberId - Member ID to invalidate
+ */
+export function invalidateClientProfileCache(memberId: string): void {
+  clientProfileCache.delete(memberId);
+}
+
+/**
+ * Invalidate cache for multiple clients
+ * @param memberIds - Array of member IDs to invalidate
+ */
+export function invalidateClientProfileCaches(memberIds: string[]): void {
+  memberIds.forEach(id => clientProfileCache.delete(id));
+}
+
+/**
+ * Clear the entire client profile cache
+ * Useful for testing or forcing a complete refresh
  */
 export function clearClientProfileCache(): void {
   clientProfileCache.clear();
@@ -198,12 +258,39 @@ export function getClientProfileCacheSize(): number {
   return clientProfileCache.size;
 }
 
+/**
+ * Get cache statistics (for debugging)
+ */
+export function getClientProfileCacheStats(): {
+  size: number;
+  entries: Array<{ memberId: string; age: number; valid: boolean }>;
+} {
+  const entries: Array<{ memberId: string; age: number; valid: boolean }> = [];
+  
+  clientProfileCache.forEach((cached, memberId) => {
+    const age = Date.now() - cached.timestamp;
+    entries.push({
+      memberId,
+      age,
+      valid: isCacheValid(cached)
+    });
+  });
+  
+  return {
+    size: clientProfileCache.size,
+    entries
+  };
+}
+
 export default {
   getClientProfile,
   getClientProfiles,
   getClientDisplayName,
   getClientDisplayNames,
   upsertClientProfile,
+  invalidateClientProfileCache,
+  invalidateClientProfileCaches,
   clearClientProfileCache,
   getClientProfileCacheSize,
+  getClientProfileCacheStats,
 };

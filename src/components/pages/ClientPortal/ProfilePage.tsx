@@ -12,6 +12,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { CheckCircle2, User, AlertCircle } from 'lucide-react';
+import { upsertClientProfile, getClientProfile } from '@/lib/client-profile-service';
 
 export default function ProfilePage() {
   const { member } = useMember();
@@ -41,8 +42,8 @@ export default function ProfilePage() {
 
     try {
       setIsLoading(true);
-      const { items } = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
-      const existingProfile = items.find(p => p.memberId === member.loginEmail);
+      // Use centralized service for data fetching
+      const existingProfile = await getClientProfile(member.loginEmail, true); // Force refresh
       
       if (existingProfile) {
         setProfile(existingProfile);
@@ -90,9 +91,7 @@ export default function ProfilePage() {
       setIsSaving(true);
       setSaveSuccess(false);
 
-      const profileData: ClientProfiles = {
-        _id: profile?._id || crypto.randomUUID(),
-        memberId: member.loginEmail,
+      const profileData: Partial<ClientProfiles> = {
         firstName: firstName.trim(),
         lastName: lastName.trim(),
         phoneNumber,
@@ -103,16 +102,11 @@ export default function ProfilePage() {
         fitnessGoalsCategory: fitnessGoalsCategory || undefined,
       };
 
-      if (profile?._id) {
-        // Update existing profile
-        await BaseCrudService.update('clientprofiles', profileData);
-      } else {
-        // Create new profile
-        await BaseCrudService.create('clientprofiles', profileData);
-      }
-
-      // Reload to get updated data
-      await loadProfile();
+      // Use centralized service - automatically handles cache invalidation
+      const updatedProfile = await upsertClientProfile(member.loginEmail, profileData);
+      
+      // Update local state
+      setProfile(updatedProfile);
       setSaveSuccess(true);
       
       // If this was first-time setup, navigate to dashboard after short delay
