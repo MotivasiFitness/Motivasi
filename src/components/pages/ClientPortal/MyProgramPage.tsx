@@ -530,23 +530,12 @@ export default function MyProgramPage() {
         {/* PRIMARY HERO: Page Title + Program Progress + Overview Metrics */}
         <div className={PRIMARY_HERO_SECTION.container}>
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
-            {/* Left: Title + Week Info + Progress Ring */}
+            {/* Left: Title + Week Info */}
             <div className="flex-1">
               <h1 className={PRIMARY_HERO_SECTION.heading}>My Training Programme</h1>
               <p className={PRIMARY_HERO_SECTION.subheading}>
                 {weekDisplay} • Your personalised training plan
               </p>
-              
-              {/* Progress Ring - Integrated into Hero */}
-              {activeCycle && (
-                <div className="mt-6 max-w-[200px]">
-                  <ProgramCompletionRing
-                    completedWorkouts={completedWorkouts.size}
-                    totalWorkouts={sortedWeeks.reduce((acc, week) => acc + (workoutsByWeek[week]?.length || 0), 0)}
-                    compact={true}
-                  />
-                </div>
-              )}
             </div>
 
             {/* Right: Quick Stats + CTA */}
@@ -578,6 +567,22 @@ export default function MyProgramPage() {
             </div>
           </div>
         </div>
+
+        {/* SECONDARY SECTION: Program Progress Ring */}
+        {activeCycle && (
+          <div className={SECONDARY_SECTION.container}>
+            <h2 className={SECONDARY_SECTION.heading}>Your Progress</h2>
+            <div className="flex justify-center">
+              <div className="w-full max-w-xs">
+                <ProgramCompletionRing
+                  completedWorkouts={completedWorkouts.size}
+                  totalWorkouts={sortedWeeks.reduce((acc, week) => acc + (workoutsByWeek[week]?.length || 0), 0)}
+                  compact={true}
+                />
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Inline Guidance - How the program works */}
         <div className={INLINE_GUIDANCE.container}>
