@@ -207,19 +207,52 @@ export default function TrainerProfilePage() {
     formData.append('file', blob, fileName);
 
     // Upload to Wix Media Manager via backend function
-    const response = await fetch('/_functions/uploadProfilePhoto', {
+    const uploadUrl = '/_functions/uploadProfilePhoto';
+    console.log('[Upload] Starting upload to:', uploadUrl);
+    console.log('[Upload] File name:', fileName);
+    console.log('[Upload] Blob size:', blob.size, 'bytes');
+    console.log('[Upload] Blob type:', blob.type);
+
+    const response = await fetch(uploadUrl, {
       method: 'POST',
       body: formData,
     });
 
+    console.log('[Upload] Response status:', response.status);
+    console.log('[Upload] Response status text:', response.statusText);
+    console.log('[Upload] Response URL:', response.url);
+    console.log('[Upload] Response headers:', Object.fromEntries(response.headers.entries()));
+
+    // Check content-type before parsing
+    const contentType = response.headers.get('content-type') || '';
+    console.log('[Upload] Response content-type:', contentType);
+
+    // If response is not JSON, log the error
+    if (!contentType.includes('application/json')) {
+      const textResponse = await response.text();
+      console.error('[Upload] ERROR: Expected JSON but got:', contentType);
+      console.error('[Upload] Response body (first 500 chars):', textResponse.substring(0, 500));
+      throw new Error(
+        `Upload endpoint returned ${contentType} instead of JSON. ` +
+        `Status: ${response.status}. ` +
+        `This usually means the endpoint URL is incorrect or the server is returning an error page. ` +
+        `Check the Network tab in DevTools for the actual response.`
+      );
+    }
+
+    // Parse JSON response
     const data = await response.json();
+    console.log('[Upload] Response data:', data);
 
     if (!response.ok || !data.success) {
       // Throw specific error message from backend
-      throw new Error(data.error || `Upload failed with status ${response.status}`);
+      const errorMsg = data.error || `Upload failed with status ${response.status}`;
+      console.error('[Upload] Upload failed:', errorMsg);
+      throw new Error(errorMsg);
     }
 
     // Return the uploaded URL
+    console.log('[Upload] Upload successful! URL:', data.url);
     return data.url;
   };
 
