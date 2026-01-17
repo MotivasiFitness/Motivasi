@@ -207,19 +207,13 @@ export default function NutritionPage() {
               </div>
 
               {/* Coaching Support Prompt */}
-              <div className="bg-soft-bronze/5 border border-soft-bronze/20 rounded-2xl p-6 lg:p-8 flex flex-col sm:flex-row gap-4 items-start sm:items-center print:hidden">
+              <div className="bg-soft-bronze/5 border border-soft-bronze/20 rounded-2xl p-6 lg:p-8 flex gap-4 items-start print:hidden">
                 <MessageCircle size={24} className="text-soft-bronze flex-shrink-0" />
                 <div className="flex-1">
                   <p className="font-paragraph text-charcoal-black leading-relaxed">
-                    <span className="font-medium">💬 Not sure how this fits your routine?</span> Send me a message and we'll adjust it together.
+                    Not sure how this fits into your routine? Use the chat bubble in the bottom corner to message your coach and we'll adjust it together.
                   </p>
                 </div>
-                <Link
-                  to="/portal/messages"
-                  className="flex-shrink-0 bg-soft-bronze text-soft-white px-6 py-2 rounded-lg font-medium text-sm hover:bg-soft-bronze/90 transition-colors whitespace-nowrap"
-                >
-                  Send Message
-                </Link>
               </div>
             </div>
           ))}
