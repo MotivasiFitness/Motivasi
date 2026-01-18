@@ -48,10 +48,18 @@ function jsonResponse(statusCode: number, body: any) {
 
 export async function post_uploadProfilePhoto(request: any): Promise<any> {
   try {
+    // Enhanced logging for debugging
+    console.log('=== Upload Profile Photo Backend ===');
+    console.log('Request method:', request.method);
+    console.log('Request headers:', JSON.stringify(request.headers, null, 2));
+    console.log('Request body keys:', Object.keys(request.body || {}));
+    
     // Parse the request body
     const contentType = request.headers['content-type'] || request.headers['Content-Type'] || '';
+    console.log('Content-Type:', contentType);
     
     if (!contentType.includes('multipart/form-data')) {
+      console.error('Invalid Content-Type:', contentType);
       return jsonResponse(400, {
         success: false,
         statusCode: 400,
@@ -62,8 +70,10 @@ export async function post_uploadProfilePhoto(request: any): Promise<any> {
     // Get the file from the request
     // In Wix Velo, multipart data is available in request.body
     const file = request.body?.file;
+    console.log('File present:', !!file);
     
     if (!file) {
+      console.error('No file in request body');
       return jsonResponse(400, {
         success: false,
         statusCode: 400,
@@ -71,26 +81,37 @@ export async function post_uploadProfilePhoto(request: any): Promise<any> {
       });
     }
 
+    // Log file details
+    console.log('File details:', {
+      name: file.name,
+      size: file.size,
+      type: file.type
+    });
+
     // Validate file size (5MB max)
     const maxSize = 5 * 1024 * 1024; // 5MB in bytes
     if (file.size > maxSize) {
+      console.error('File too large:', file.size, 'bytes');
       return jsonResponse(400, {
         success: false,
         statusCode: 400,
-        error: 'File size must be less than 5MB'
+        error: `File size must be less than 5MB (current: ${(file.size / 1024 / 1024).toFixed(2)}MB)`
       });
     }
 
     // Validate file type
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
     if (!allowedTypes.includes(file.type)) {
+      console.error('Invalid file type:', file.type);
       return jsonResponse(400, {
         success: false,
         statusCode: 400,
-        error: 'File type must be JPG, PNG, or WebP'
+        error: `File type must be JPG, PNG, or WebP (current: ${file.type})`
       });
     }
 
+    console.log('Starting upload to Wix Media Manager...');
+    
     // Upload to Wix Media Manager
     const uploadResult = await wixMediaBackend.upload(
       '/trainer-profiles',
@@ -102,6 +123,10 @@ export async function post_uploadProfilePhoto(request: any): Promise<any> {
       }
     );
 
+    console.log('Upload successful!');
+    console.log('Upload result:', JSON.stringify(uploadResult, null, 2));
+    console.log('File URL:', uploadResult.fileUrl);
+
     // Return the uploaded file URL
     return jsonResponse(200, {
       success: true,
@@ -110,7 +135,11 @@ export async function post_uploadProfilePhoto(request: any): Promise<any> {
     });
 
   } catch (error: any) {
-    console.error('Upload error:', error);
+    console.error('=== Upload Error ===');
+    console.error('Error type:', error.constructor?.name);
+    console.error('Error message:', error.message);
+    console.error('Error stack:', error.stack);
+    console.error('Full error:', JSON.stringify(error, null, 2));
     
     // Handle specific errors
     if (error.message?.includes('unauthorized') || error.message?.includes('permission')) {

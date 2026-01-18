@@ -11,7 +11,7 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { User, Mail, Globe, Award, Briefcase, Camera, Upload, X, CheckCircle, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { getBackendEndpoint, BACKEND_FUNCTIONS, validateBackendResponse } from '@/lib/backend-config';
+import { getBackendEndpoint, BACKEND_FUNCTIONS, validateBackendResponse, isPreviewEnvironment } from '@/lib/backend-config';
 
 // Trainer Profile Type
 interface TrainerProfile {
@@ -209,38 +209,97 @@ export default function TrainerProfilePage() {
 
     // Get the correct endpoint for the current environment using centralized config
     const uploadUrl = getBackendEndpoint(BACKEND_FUNCTIONS.UPLOAD_PROFILE_PHOTO);
-    console.log('[Upload] Starting upload to:', uploadUrl);
-    console.log('[Upload] File name:', fileName);
-    console.log('[Upload] Blob size:', blob.size, 'bytes');
-    console.log('[Upload] Blob type:', blob.type);
+    
+    // Enhanced logging for debugging
+    console.group('[Upload Debug] Profile Photo Upload');
+    console.log('📤 Starting upload to:', uploadUrl);
+    console.log('📁 File name:', fileName);
+    console.log('📊 Blob size:', blob.size, 'bytes', `(${(blob.size / 1024).toFixed(2)} KB)`);
+    console.log('🎨 Blob type:', blob.type);
+    console.log('🌐 Current hostname:', window.location.hostname);
+    console.log('🔧 Environment:', isPreviewEnvironment() ? 'Preview/Dev' : 'Production');
+    console.log('📍 Full URL:', window.location.origin + uploadUrl);
+    console.groupEnd();
 
-    const response = await fetch(uploadUrl, {
-      method: 'POST',
-      body: formData,
-    });
+    let response: Response;
+    let responseText: string = '';
+    
+    try {
+      response = await fetch(uploadUrl, {
+        method: 'POST',
+        body: formData,
+        // Don't set Content-Type header - browser will set it with boundary for multipart/form-data
+      });
 
-    console.log('[Upload] Response status:', response.status);
-    console.log('[Upload] Response status text:', response.statusText);
-    console.log('[Upload] Response URL:', response.url);
-    console.log('[Upload] Response headers:', Object.fromEntries(response.headers.entries()));
+      // Capture response details BEFORE consuming the body
+      const responseHeaders = Object.fromEntries(response.headers.entries());
+      const contentType = response.headers.get('content-type') || 'unknown';
+      
+      console.group('[Upload Debug] Response Details');
+      console.log('📡 Status:', response.status, response.statusText);
+      console.log('🔗 Response URL:', response.url);
+      console.log('📋 Content-Type:', contentType);
+      console.log('📨 All Headers:', responseHeaders);
+      console.groupEnd();
 
-    // Validate response is JSON using centralized helper
-    await validateBackendResponse(response, BACKEND_FUNCTIONS.UPLOAD_PROFILE_PHOTO);
+      // Try to get response text first (for debugging)
+      responseText = await response.clone().text();
+      
+      console.group('[Upload Debug] Response Body');
+      console.log('📄 Raw response (first 1000 chars):', responseText.substring(0, 1000));
+      console.groupEnd();
 
-    // Parse JSON response
-    const data = await response.json();
-    console.log('[Upload] Response data:', data);
+      // Check if response is JSON
+      if (!contentType.includes('application/json')) {
+        console.error('❌ [Upload] ERROR: Expected JSON but got:', contentType);
+        console.error('📄 [Upload] Response body:', responseText.substring(0, 500));
+        
+        // Provide specific error messages based on response
+        if (response.status === 404) {
+          throw new Error('Upload endpoint not found. The backend function may not be deployed correctly.');
+        } else if (response.status === 401 || response.status === 403) {
+          throw new Error('Authentication failed. Please sign in again.');
+        } else if (contentType.includes('text/html')) {
+          throw new Error('Received HTML instead of JSON. The backend function may have an error or routing issue.');
+        } else {
+          throw new Error(`Unexpected response type: ${contentType}. Expected JSON.`);
+        }
+      }
 
-    if (!response.ok || !data.success) {
-      // Throw specific error message from backend
-      const errorMsg = data.error || `Upload failed with status ${response.status}`;
-      console.error('[Upload] Upload failed:', errorMsg);
-      throw new Error(errorMsg);
+      // Parse JSON response
+      const data = await response.json();
+      console.log('✅ [Upload] Parsed JSON data:', data);
+
+      if (!response.ok || !data.success) {
+        // Throw specific error message from backend
+        const errorMsg = data.error || `Upload failed with status ${response.status}`;
+        console.error('❌ [Upload] Upload failed:', errorMsg);
+        throw new Error(errorMsg);
+      }
+
+      // Validate URL is present
+      if (!data.url) {
+        console.error('❌ [Upload] No URL in response:', data);
+        throw new Error('Upload succeeded but no URL was returned');
+      }
+
+      // Return the uploaded URL
+      console.log('✅ [Upload] Upload successful! URL:', data.url);
+      return data.url;
+      
+    } catch (error: any) {
+      console.group('❌ [Upload Debug] Error Details');
+      console.error('Error type:', error.constructor.name);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+      if (responseText) {
+        console.error('Response text:', responseText.substring(0, 500));
+      }
+      console.groupEnd();
+      
+      // Re-throw with enhanced error message
+      throw new Error(error.message || 'Failed to upload profile photo');
     }
-
-    // Return the uploaded URL
-    console.log('[Upload] Upload successful! URL:', data.url);
-    return data.url;
   };
 
   // Handle file selection
