@@ -14,7 +14,7 @@
  * - NEVER redirects (returns 400/500 as JSON)
  * - Standardized response format with { success, statusCode }
  * - Saves to ParqSubmissions CMS collection
- * - Sends email notification to info@motivasi.co.uk
+ * - Sends email notification to hello@motivasi.co.uk
  * 
  * Request Body:
  * {
@@ -145,7 +145,7 @@ export async function post_parq(request: any) {
 
     const insertResult = await wixData.insert('ParqSubmissions', submissionData);
 
-    // Send email notification to info@motivasi.co.uk
+    // Send email notification to hello@motivasi.co.uk
     try {
       const submittedDate = new Date().toLocaleString('en-GB', {
         day: 'numeric',
@@ -163,7 +163,7 @@ export async function post_parq(request: any) {
         body: JSON.stringify({
           _subject: `New PAR-Q Submission - ${requestData.firstName} ${requestData.lastName}`,
           _replyto: requestData.email,
-          _to: 'info@motivasi.co.uk',
+          _to: 'hello@motivasi.co.uk',
           message: `
 New PAR-Q & Health Questionnaire Submission
 
@@ -184,7 +184,7 @@ This PAR-Q submission has been saved to the CMS database.
         })
       });
       
-      console.log('✅ Email notification sent to info@motivasi.co.uk');
+      console.log('✅ Email notification sent to hello@motivasi.co.uk');
     } catch (emailError) {
       console.error('⚠️ Failed to send email notification:', emailError);
       // Don't fail the submission if email fails

@@ -111,7 +111,7 @@ export async function post_parq(request) {
 
     const inserted = await wixData.insert('ParqSubmissions', item);
 
-    // Send email notification to info@motivasi.co.uk
+    // Send email notification to hello@motivasi.co.uk
     try {
       const submittedDate = new Date().toLocaleString('en-GB', {
         day: 'numeric',
@@ -129,7 +129,7 @@ export async function post_parq(request) {
         body: JSON.stringify({
           _subject: `New PAR-Q Submission - ${data.firstName} ${data.lastName}`,
           _replyto: data.email,
-          _to: 'info@motivasi.co.uk',
+          _to: 'hello@motivasi.co.uk',
           message: `
 New PAR-Q & Health Questionnaire Submission
 
@@ -150,7 +150,7 @@ This PAR-Q submission has been saved to the CMS database.
         })
       });
       
-      console.log('✅ Email notification sent to info@motivasi.co.uk');
+      console.log('✅ Email notification sent to hello@motivasi.co.uk');
     } catch (emailError) {
       console.error('⚠️ Failed to send email notification:', emailError);
       // Don't fail the submission if email fails
