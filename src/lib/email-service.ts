@@ -251,6 +251,7 @@ This form submission has been saved to the CMS database.
 
 /**
  * Send email notification when someone subscribes to newsletter
+ * Sends notification to hello@motivasi.co.uk about new subscriber
  */
 export async function sendNewsletterSubscriptionNotification(
   subscriberEmail: string
@@ -264,23 +265,28 @@ export async function sendNewsletterSubscriptionNotification(
       minute: '2-digit'
     });
 
+    // IMPORTANT: Replace 'xyzpqrst' with your actual Formspree form ID
+    // Get your form ID from https://formspree.io/forms after creating an account
     const response = await fetch('https://formspree.io/f/xyzpqrst', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        _subject: 'New Newsletter Subscription',
+        _subject: '🎉 New Newsletter Subscription - Motivasi',
         _replyto: subscriberEmail,
         _to: 'hello@motivasi.co.uk',
         message: `
-New Newsletter Subscription
+🎉 NEW NEWSLETTER SUBSCRIPTION
 
-Email: ${subscriberEmail}
-Subscribed: ${submittedDate}
+A new client has signed up to your newsletter!
+
+📧 Email: ${subscriberEmail}
+📅 Subscribed: ${submittedDate}
 
 ---
-A new user has subscribed to the Motivasi newsletter.
+This subscriber will now receive your weekly tips and updates.
+You can add them to your email marketing platform.
         `,
         subscriber_email: subscriberEmail,
         submitted_date: submittedDate,
