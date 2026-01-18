@@ -355,39 +355,44 @@ Full Name: ${formData.fullName}
 Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       `;
 
-      // IMPORTANT: Replace 'xyzpqrst' with your actual Formspree form ID
-      // The form must be configured in Formspree dashboard to send to hello@motivasi.co.uk
-      const response = await fetch('https://formspree.io/f/xyzpqrst', {
+      // Replace Formspree/Formsubmit with Wix backend HTTP function
+      const response = await fetch('/_functions/parq', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          Accept: 'application/json',
         },
         body: JSON.stringify({
+          // Core fields (match your CMS)
+          firstName: formData.firstName,
+          lastName: formData.lastName,
           email: formData.email,
-          message: emailBody,
-          _subject: `PAR-Q Questionnaire from ${formData.firstName} ${formData.lastName}${
-            hasRedFlags ? ' - MEDICAL CLEARANCE REQUIRED' : ''
-          }`,
-          _replyto: formData.email,
+          phone: formData.phone,
+          dateOfBirth: formData.dateOfBirth, // YYYY-MM-DD
+
+          // Map to your existing CMS booleans if you have them
+          hasHeartCondition: formData.medicalConditions === 'yes',
+          currentlyTakingMedication: formData.medications === 'yes',
+
+          // Store the entire submission (best for automations + audit trail)
+          formData: emailBody,
         }),
       });
 
-      if (response.ok) {
-        console.log('✅ PAR-Q form submitted successfully');
-        setIsSubmitted(true);
-        setFormData(INITIAL_FORM_DATA);
-        setTimeout(() => setIsSubmitted(false), 5000);
-      } else {
-        // Log the full response for debugging
-        const responseText = await response.text();
-        console.error('❌ Formspree submission failed:', {
-          status: response.status,
-          statusText: response.statusText,
-          body: responseText
-        });
+      if (!response.ok) {
+        const text = await response.text();
+        console.error('PAR-Q submit failed:', response.status, text);
         setSubmitError('Failed to submit form. Please try again or contact us directly at hello@motivasi.co.uk');
+        return;
       }
+
+      // Optional: read JSON confirmation
+      const data = await response.json().catch(() => null);
+      console.log('✅ PAR-Q submitted:', data);
+
+      setIsSubmitted(true);
+      setFormData(INITIAL_FORM_DATA);
+      setTimeout(() => setIsSubmitted(false), 5000);
     } catch (error) {
       console.error('❌ Form submission error:', error);
       setSubmitError('An error occurred while submitting the form. Please contact us directly at hello@motivasi.co.uk');
