@@ -1,54 +1,26 @@
 import { ok, badRequest, serverError } from 'wix-http-functions';
 import wixData from 'wix-data';
+import { mediaManager } from 'wix-media-backend';
 
-/**
- * Consistent JSON response helper using wix-http-functions helpers
- */
-function jsonOk(data) {
-  return ok(data, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    },
-  });
+const JSON_HEADERS = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
+function jsonOk(body) {
+  return ok(body, { headers: JSON_HEADERS });
 }
-
-function jsonBadRequest(data) {
-  return badRequest(data, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    },
-  });
+function jsonBadRequest(body) {
+  return badRequest(body, { headers: JSON_HEADERS });
 }
-
-function jsonServerError(data) {
-  return serverError(data, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    },
-  });
+function jsonServerError(body) {
+  return serverError(body, { headers: JSON_HEADERS });
 }
 
 function corsPreflight() {
-  // OPTIONS handlers must return a valid response
-  return ok(
-    { success: true },
-    {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      },
-    }
-  );
+  return ok({ success: true, statusCode: 200 }, { headers: JSON_HEADERS });
 }
 
 // -----------------------------------------------------------------------------
@@ -59,11 +31,20 @@ export function options_health() {
 }
 
 export function get_health(request) {
+  const path = request?.path || '';
+  const isDev = typeof path === 'string' && path.includes('-dev');
+
   return jsonOk({
     success: true,
+    statusCode: 200,
     status: 'healthy',
     timestamp: new Date().toISOString(),
-    path: request.path,
+    environment: isDev ? 'preview' : 'production',
+    endpoints: {
+      health: '/_functions/health',
+      parq: '/_functions/parq',
+      uploadProfilePhoto: '/_functions/uploadProfilePhoto',
+    },
   });
 }
 
@@ -75,8 +56,7 @@ export function options_parq() {
 }
 
 export function get_parq() {
-  // Using ok() because wix-http-functions doesn't provide a 405 helper.
-  // Still returns JSON and tells caller to use POST.
+  // Wix doesn't provide a 405 helper, so we still return JSON via ok()
   return ok(
     {
       success: false,
@@ -84,36 +64,22 @@ export function get_parq() {
       error: 'Method Not Allowed. Use POST to submit PAR-Q data.',
       allowedMethods: ['POST', 'OPTIONS'],
     },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      },
-    }
+    { headers: JSON_HEADERS }
   );
 }
 
 export async function post_parq(request) {
   try {
-    // Wix HTTP functions body parsing:
-    // request.body can be null. If present, use request.body.text()
-    const raw = request.body ? await request.body.text() : '';
-    let data;
+    const raw = request?.body ? await request.body.text() : '';
+    let data = {};
 
     try {
       data = raw ? JSON.parse(raw) : {};
     } catch (e) {
-      return jsonBadRequest({
-        success: false,
-        statusCode: 400,
-        error: 'Invalid JSON in request body',
-      });
+      return jsonBadRequest({ success: false, statusCode: 400, error: 'Invalid JSON in request body' });
     }
 
-    // Validate required fields
-    const missing = ['firstName', 'lastName', 'email'].filter((k) => !data?.[k]);
+    const missing = ['firstName', 'lastName', 'email'].filter((k) => !data[k]);
     if (missing.length) {
       return jsonBadRequest({
         success: false,
@@ -122,33 +88,24 @@ export async function post_parq(request) {
       });
     }
 
-    // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(data.email)) {
-      return jsonBadRequest({
-        success: false,
-        statusCode: 400,
-        error: 'Invalid email format',
-      });
+    if (!emailRegex.test(String(data.email))) {
+      return jsonBadRequest({ success: false, statusCode: 400, error: 'Invalid email format' });
     }
 
-    // Build the item according to your collection schema
-    // NOTE: Collection name appears to be "ParqSubmissions" (case-sensitive)
     const item = {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
       clientName: `${data.firstName} ${data.lastName}`,
 
-      // store as Date (if provided)
       dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth) : undefined,
 
-      // existing booleans (keep if these fields exist in the collection)
       hasHeartCondition: Boolean(data.hasHeartCondition),
       currentlyTakingMedication: Boolean(data.currentlyTakingMedication),
 
-      // fields you said you added to the collection
-      formData: typeof data.formData === 'string' ? data.formData : JSON.stringify(data.formData ?? data),
+      // Save full submission for audit + automation email body
+      formData: typeof data.formData === 'string' ? data.formData : JSON.stringify(data, null, 2),
       submittedAt: new Date(),
     };
 
@@ -158,13 +115,95 @@ export async function post_parq(request) {
       success: true,
       statusCode: 200,
       itemId: inserted._id,
+      submissionId: inserted._id,
       message: 'PAR-Q submission saved successfully',
     });
   } catch (err) {
     return jsonServerError({
       success: false,
       statusCode: 500,
-      error: err?.message || 'Failed to save PAR-Q submission',
+      error: (err && err.message) || 'Failed to save PAR-Q submission',
+    });
+  }
+}
+
+// -----------------------------------------------------------------------------
+// UPLOAD PROFILE PHOTO (BASE64 JSON - RELIABLE ON WIX)
+// -----------------------------------------------------------------------------
+export function options_uploadProfilePhoto() {
+  return corsPreflight();
+}
+
+/**
+ * POST expects JSON:
+ * {
+ *   "fileName": "photo.jpg",
+ *   "mimeType": "image/jpeg",
+ *   "base64": "<base64 OR data URL>"
+ * }
+ */
+export async function post_uploadProfilePhoto(request) {
+  try {
+    const raw = request?.body ? await request.body.text() : '';
+    let data = {};
+
+    try {
+      data = raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return jsonBadRequest({ success: false, statusCode: 400, error: 'Invalid JSON in request body' });
+    }
+
+    const fileName = data.fileName || 'profile-photo.jpg';
+    const mimeTypeRaw = (data.mimeType || '').toLowerCase();
+    const mimeType = mimeTypeRaw === 'image/jpg' ? 'image/jpeg' : mimeTypeRaw;
+
+    let base64 = data.base64 || '';
+    if (!base64) {
+      return jsonBadRequest({ success: false, statusCode: 400, error: 'Missing base64 image data' });
+    }
+
+    // Allow full data URL like "data:image/jpeg;base64,..."
+    const match = typeof base64 === 'string' ? base64.match(/^data:(.+);base64,(.*)$/) : null;
+    if (match) base64 = match[2];
+
+    const allowed = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!allowed.includes(mimeType)) {
+      return jsonBadRequest({
+        success: false,
+        statusCode: 400,
+        error: `File type must be JPG, PNG, or WebP (current: ${mimeTypeRaw || 'unknown'})`,
+      });
+    }
+
+    const buffer = Buffer.from(base64, 'base64');
+    const maxSize = 5 * 1024 * 1024;
+    if (buffer.length > maxSize) {
+      return jsonBadRequest({
+        success: false,
+        statusCode: 400,
+        error: `File size must be less than 5MB (current: ${(buffer.length / 1024 / 1024).toFixed(2)}MB)`,
+      });
+    }
+
+    const uploadResult = await mediaManager.upload('/trainer-profiles', buffer, fileName, {
+      mediaOptions: { mimeType, mediaType: 'image' },
+    });
+
+    const url = uploadResult?.fileUrl || uploadResult?.url;
+    if (!url) {
+      return jsonServerError({
+        success: false,
+        statusCode: 500,
+        error: 'Upload succeeded but no URL was returned',
+      });
+    }
+
+    return jsonOk({ success: true, statusCode: 200, url });
+  } catch (err) {
+    return jsonServerError({
+      success: false,
+      statusCode: 500,
+      error: (err && err.message) || 'Failed to upload profile photo',
     });
   }
 }
