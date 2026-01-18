@@ -293,3 +293,57 @@ A new user has subscribed to the Motivasi newsletter.
     return false;
   }
 }
+
+/**
+ * Send email notification when PAR-Q form is submitted
+ */
+export async function sendParQSubmissionNotification(
+  firstName: string,
+  lastName: string,
+  email: string,
+  formData: string
+): Promise<boolean> {
+  try {
+    const submittedDate = new Date().toLocaleString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+    const response = await fetch('https://formspree.io/f/xyzpqrst', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        _subject: `New PAR-Q Submission - ${firstName} ${lastName}`,
+        _replyto: email,
+        _to: 'hello@motivasi.co.uk',
+        message: `
+New PAR-Q & Health Questionnaire Submission
+
+Name: ${firstName} ${lastName}
+Email: ${email}
+Submitted: ${submittedDate}
+
+${formData}
+
+---
+This PAR-Q submission has been saved to the CMS database.
+        `,
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        form_data: formData,
+        submitted_date: submittedDate,
+      })
+    });
+
+    return response.ok;
+  } catch (error) {
+    console.error('Error sending PAR-Q submission notification:', error);
+    return false;
+  }
+}

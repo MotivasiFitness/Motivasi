@@ -104,12 +104,57 @@ export async function post_parq(request) {
       hasHeartCondition: Boolean(data.hasHeartCondition),
       currentlyTakingMedication: Boolean(data.currentlyTakingMedication),
 
-      // Save full submission for audit + automation email body
+      // Save full submission for audit + email body
       formData: typeof data.formData === 'string' ? data.formData : JSON.stringify(data, null, 2),
       submittedAt: new Date(),
     };
 
     const inserted = await wixData.insert('ParqSubmissions', item);
+
+    // Send email notification to info@motivasi.co.uk
+    try {
+      const submittedDate = new Date().toLocaleString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      await fetch('https://formspree.io/f/xyzpqrst', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          _subject: `New PAR-Q Submission - ${data.firstName} ${data.lastName}`,
+          _replyto: data.email,
+          _to: 'info@motivasi.co.uk',
+          message: `
+New PAR-Q & Health Questionnaire Submission
+
+Name: ${data.firstName} ${data.lastName}
+Email: ${data.email}
+Submitted: ${submittedDate}
+
+${item.formData}
+
+---
+This PAR-Q submission has been saved to the CMS database.
+          `,
+          first_name: data.firstName,
+          last_name: data.lastName,
+          email: data.email,
+          form_data: item.formData,
+          submitted_date: submittedDate,
+        })
+      });
+      
+      console.log('✅ Email notification sent to info@motivasi.co.uk');
+    } catch (emailError) {
+      console.error('⚠️ Failed to send email notification:', emailError);
+      // Don't fail the submission if email fails
+    }
 
     return jsonOk({
       success: true,

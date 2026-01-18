@@ -14,7 +14,7 @@
  * - NEVER redirects (returns 400/500 as JSON)
  * - Standardized response format with { success, statusCode }
  * - Saves to ParqSubmissions CMS collection
- * - Triggers Wix Automation for email notifications
+ * - Sends email notification to info@motivasi.co.uk
  * 
  * Request Body:
  * {
@@ -47,6 +47,7 @@
 
 import { ok, badRequest, serverError } from 'wix-http-functions';
 import wixData from 'wix-data';
+import { fetch } from 'wix-fetch';
 
 const JSON_HEADERS = {
   'Content-Type': 'application/json',
@@ -143,6 +144,51 @@ export async function post_parq(request: any) {
     };
 
     const insertResult = await wixData.insert('ParqSubmissions', submissionData);
+
+    // Send email notification to info@motivasi.co.uk
+    try {
+      const submittedDate = new Date().toLocaleString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      await fetch('https://formspree.io/f/xyzpqrst', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          _subject: `New PAR-Q Submission - ${requestData.firstName} ${requestData.lastName}`,
+          _replyto: requestData.email,
+          _to: 'info@motivasi.co.uk',
+          message: `
+New PAR-Q & Health Questionnaire Submission
+
+Name: ${requestData.firstName} ${requestData.lastName}
+Email: ${requestData.email}
+Submitted: ${submittedDate}
+
+${submissionData.formData}
+
+---
+This PAR-Q submission has been saved to the CMS database.
+          `,
+          first_name: requestData.firstName,
+          last_name: requestData.lastName,
+          email: requestData.email,
+          form_data: submissionData.formData,
+          submitted_date: submittedDate,
+        })
+      });
+      
+      console.log('✅ Email notification sent to info@motivasi.co.uk');
+    } catch (emailError) {
+      console.error('⚠️ Failed to send email notification:', emailError);
+      // Don't fail the submission if email fails
+    }
 
     return jsonOk({
       success: true,

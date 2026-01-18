@@ -57,7 +57,6 @@ export default function TrainerProfilePage() {
 
   useEffect(() => {
     loadProfile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [member?._id]);
 
   const loadProfile = async () => {
