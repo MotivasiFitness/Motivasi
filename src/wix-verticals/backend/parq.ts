@@ -156,11 +156,12 @@ export async function post_parq(request: any): Promise<any> {
     console.log('Insert successful!');
     console.log('Submission ID:', insertResult._id);
 
-    // Return success response
+    // Return success response with explicit success flag and itemId
     return jsonResponse(200, {
       success: true,
       statusCode: 200,
-      submissionId: insertResult._id,
+      itemId: insertResult._id,
+      submissionId: insertResult._id, // Keep for backwards compatibility
       message: 'PAR-Q submission saved successfully'
     });
 
