@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { getBackendEndpoint, BACKEND_FUNCTIONS } from '@/lib/backend-config';
 
 type ParQFormData = {
   // Basic Information
@@ -355,8 +356,8 @@ Full Name: ${formData.fullName}
 Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       `;
 
-      // Replace Formspree/Formsubmit with Wix backend HTTP function
-      const response = await fetch('/_functions/parq', {
+      // Use environment-aware backend endpoint
+      const response = await fetch(getBackendEndpoint(BACKEND_FUNCTIONS.PARQ), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -24,6 +24,7 @@ export const BACKEND_FUNCTIONS = {
   REGENERATE_PROGRAM_SECTION: 'regenerateProgramSection',
   GENERATE_PROGRAM_DESCRIPTION: 'generateProgramDescription',
   UPLOAD_PROFILE_PHOTO: 'uploadProfilePhoto',
+  PARQ: 'parq',
   HEALTH: 'health',
 } as const;
 

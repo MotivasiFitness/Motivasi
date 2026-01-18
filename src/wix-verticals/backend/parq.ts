@@ -1,6 +1,11 @@
 /**
  * Wix Velo HTTP Function: PAR-Q Submission
- * Endpoint: POST /_functions/parq
+ * 
+ * ENVIRONMENT-AWARE ROUTING:
+ * - Preview/Dev: POST /_functions-dev/parq
+ * - Production: POST /_functions/parq
+ * 
+ * Frontend automatically routes to correct endpoint via getBackendEndpoint('parq')
  * 
  * Handles PAR-Q form submissions and saves to ParqSubmissions collection
  * 
