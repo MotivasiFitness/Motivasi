@@ -355,9 +355,14 @@ Full Name: ${formData.fullName}
 Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       `;
 
+      // IMPORTANT: Replace 'xyzpqrst' with your actual Formspree form ID
+      // The form must be configured in Formspree dashboard to send to hello@motivasi.co.uk
       const response = await fetch('https://formspree.io/f/xyzpqrst', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify({
           email: formData.email,
           message: emailBody,
@@ -369,15 +374,23 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       });
 
       if (response.ok) {
+        console.log('✅ PAR-Q form submitted successfully');
         setIsSubmitted(true);
         setFormData(INITIAL_FORM_DATA);
         setTimeout(() => setIsSubmitted(false), 5000);
       } else {
+        // Log the full response for debugging
+        const responseText = await response.text();
+        console.error('❌ Formspree submission failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          body: responseText
+        });
         setSubmitError('Failed to submit form. Please try again or contact us directly at hello@motivasi.co.uk');
       }
     } catch (error) {
+      console.error('❌ Form submission error:', error);
       setSubmitError('An error occurred while submitting the form. Please contact us directly at hello@motivasi.co.uk');
-      console.error('Form submission error:', error);
     } finally {
       setIsSubmitting(false);
     }
