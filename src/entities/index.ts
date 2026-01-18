@@ -4,6 +4,31 @@
  */
 
 /**
+ * Collection ID: ParqSubmissions
+ * Interface for ParqSubmissions
+ */
+export interface ParqSubmissions {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  clientName?: string;
+  /** @wixFieldType date */
+  dateOfBirth?: Date | string;
+  /** @wixFieldType boolean */
+  hasHeartCondition?: boolean;
+  /** @wixFieldType boolean */
+  currentlyTakingMedication?: boolean;
+  /** @wixFieldType text */
+  firstName?: string;
+  /** @wixFieldType text */
+  lastName?: string;
+  /** @wixFieldType email */
+  email?: string;
+}
+
+
+/**
  * Collection ID: blogposts
  * Interface for BlogPosts
  */
