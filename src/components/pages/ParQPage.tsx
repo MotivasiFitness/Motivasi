@@ -1,100 +1,278 @@
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 
+type ParQFormData = {
+  // Basic Information
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+
+  // Medical Clearance
+  medicalConditions: string;
+  medicalConditionsDetails: string;
+  medications: string;
+  medicationsDetails: string;
+  surgery: string;
+  surgeryDetails: string;
+  familyHistory: string;
+  familyHistoryDetails: string;
+  redFlagSymptoms: string[];
+
+  // Injury & Pain History
+  currentPain: string;
+  currentPainDetails: string;
+  pastInjuries: string;
+  pastInjuriesDetails: string;
+
+  // Exercise Experience & Ability
+  exerciseFrequency: string;
+  exerciseTypes: string;
+  fitnessLevel: string;
+
+  // Lifestyle & Recovery
+  sleepHours: string;
+  stressLevel: string;
+  workType: string;
+
+  // Female-Specific Considerations
+  menstrualCycle: string;
+  menopauseStatus: string;
+  pregnancyStatus: string;
+
+  // Goals & Confidence
+  primaryGoal: string;
+  secondaryGoals: string;
+  confidence: string;
+  additionalInfo: string;
+
+  // Consent & Declarations
+  healthDataConsent: boolean;
+  marketingConsent: boolean;
+  physicalActivityReadiness: boolean;
+  informedConsent: boolean;
+  fullName: string;
+};
+
+const INITIAL_FORM_DATA: ParQFormData = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  dateOfBirth: '',
+
+  medicalConditions: '',
+  medicalConditionsDetails: '',
+  medications: '',
+  medicationsDetails: '',
+  surgery: '',
+  surgeryDetails: '',
+  familyHistory: '',
+  familyHistoryDetails: '',
+  redFlagSymptoms: [],
+
+  currentPain: '',
+  currentPainDetails: '',
+  pastInjuries: '',
+  pastInjuriesDetails: '',
+
+  exerciseFrequency: '',
+  exerciseTypes: '',
+  fitnessLevel: '',
+
+  sleepHours: '',
+  stressLevel: '',
+  workType: '',
+
+  menstrualCycle: '',
+  menopauseStatus: '',
+  pregnancyStatus: '',
+
+  primaryGoal: '',
+  secondaryGoals: '',
+  confidence: '',
+  additionalInfo: '',
+
+  healthDataConsent: false,
+  marketingConsent: false,
+  physicalActivityReadiness: false,
+  informedConsent: false,
+  fullName: '',
+};
+
+type FormSectionProps = {
+  title: string;
+  description?: string;
+  children: React.ReactNode;
+};
+
+function FormSection({ title, description, children }: FormSectionProps) {
+  return (
+    <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 md:p-10">
+      <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-2">{title}</h3>
+      {description && (
+        <p className="font-paragraph text-base text-warm-grey mb-6">{description}</p>
+      )}
+      <div className="space-y-6">{children}</div>
+    </div>
+  );
+}
+
+type FormFieldProps = {
+  label: string;
+  name: keyof ParQFormData;
+  type?: string;
+  placeholder?: string;
+  required?: boolean;
+  formData: ParQFormData;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  children?: React.ReactNode;
+};
+
+function FormField({
+  label,
+  name,
+  type = 'text',
+  placeholder,
+  required = false,
+  formData,
+  onChange,
+  children,
+}: FormFieldProps) {
+  return (
+    <div>
+      <label htmlFor={String(name)} className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
+        {label} {required && <span className="text-soft-bronze">*</span>}
+      </label>
+
+      {children || (
+        <input
+          type={type}
+          id={String(name)}
+          name={String(name)}
+          value={(formData[name] as unknown as string) || ''}
+          onChange={onChange}
+          placeholder={placeholder}
+          required={required}
+          className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
+        />
+      )}
+    </div>
+  );
+}
+
+type YesNoFieldProps = {
+  label: string;
+  name: keyof ParQFormData;
+  required?: boolean;
+  showDetails?: boolean;
+  formData: ParQFormData;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+};
+
+function YesNoField({
+  label,
+  name,
+  required = false,
+  showDetails = false,
+  formData,
+  onChange,
+}: YesNoFieldProps) {
+  const detailsKey = `${String(name)}Details` as keyof ParQFormData;
+
+  return (
+    <div>
+      <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-3">
+        {label} {required && <span className="text-soft-bronze">*</span>}
+      </label>
+
+      <div className="flex gap-4 mb-4">
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="radio"
+            name={String(name)}
+            value="no"
+            checked={formData[name] === 'no'}
+            onChange={onChange}
+            className="w-4 h-4 accent-soft-bronze"
+          />
+          <span className="font-paragraph text-base text-charcoal-black">No</span>
+        </label>
+
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="radio"
+            name={String(name)}
+            value="yes"
+            checked={formData[name] === 'yes'}
+            onChange={onChange}
+            className="w-4 h-4 accent-soft-bronze"
+          />
+          <span className="font-paragraph text-base text-charcoal-black">Yes</span>
+        </label>
+      </div>
+
+      {showDetails && formData[name] === 'yes' && (
+        <textarea
+          name={String(detailsKey)}
+          value={(formData[detailsKey] as unknown as string) || ''}
+          onChange={onChange}
+          placeholder="Please provide details..."
+          rows={3}
+          className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
+        />
+      )}
+    </div>
+  );
+}
+
 export default function ParQPage() {
   const { t } = useLanguage();
-  const [formData, setFormData] = useState({
-    // Basic Information
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    dateOfBirth: '',
-    
-    // Medical Clearance
-    medicalConditions: '',
-    medicalConditionsDetails: '',
-    medications: '',
-    medicationsDetails: '',
-    surgery: '',
-    surgeryDetails: '',
-    familyHistory: '',
-    familyHistoryDetails: '',
-    redFlagSymptoms: [] as string[],
-    
-    // Injury & Pain History
-    currentPain: '',
-    currentPainDetails: '',
-    pastInjuries: '',
-    pastInjuriesDetails: '',
-    
-    // Exercise Experience & Ability
-    exerciseFrequency: '',
-    exerciseTypes: '',
-    fitnessLevel: '',
-    
-    // Lifestyle & Recovery
-    sleepHours: '',
-    stressLevel: '',
-    workType: '',
-    
-    // Female-Specific Considerations
-    menstrualCycle: '',
-    menopauseStatus: '',
-    pregnancyStatus: '',
-    
-    // Goals & Confidence
-    primaryGoal: '',
-    secondaryGoals: '',
-    confidence: '',
-    additionalInfo: '',
-    
-    // Consent & Declarations
-    healthDataConsent: false,
-    marketingConsent: false,
-    physicalActivityReadiness: false,
-    informedConsent: false,
-    fullName: ''
-  });
+
+  const [formData, setFormData] = useState<ParQFormData>(INITIAL_FORM_DATA);
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
-  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
-    if (type === 'checkbox') {
-      const checked = (e.target as HTMLInputElement).checked;
-      // Handle multi-select checkboxes for red flag symptoms
-      if (name === 'redFlagSymptoms') {
-        setFormData(prev => {
-          const symptoms = checked
-            ? [...prev.redFlagSymptoms, value]
-            : prev.redFlagSymptoms.filter(s => s !== value);
-          return { ...prev, redFlagSymptoms: symptoms };
-        });
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+      const { name, value, type } = e.target;
+
+      if (type === 'checkbox') {
+        const checked = (e.target as HTMLInputElement).checked;
+
+        if (name === 'redFlagSymptoms') {
+          setFormData((prev) => {
+            const symptoms = checked
+              ? [...prev.redFlagSymptoms, value]
+              : prev.redFlagSymptoms.filter((s) => s !== value);
+            return { ...prev, redFlagSymptoms: symptoms };
+          });
+        } else {
+          setFormData((prev) => ({
+            ...prev,
+            [name]: checked,
+          }));
+        }
       } else {
-        setFormData(prev => ({
+        setFormData((prev) => ({
           ...prev,
-          [name]: checked
+          [name]: value,
         }));
       }
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: value
-      }));
-    }
-  }, []);
+    },
+    []
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitError('');
 
-    // Check required consent
     if (!formData.healthDataConsent) {
       setSubmitError('You must consent to health data processing to proceed.');
       setIsSubmitting(false);
@@ -114,10 +292,9 @@ export default function ParQPage() {
     }
 
     try {
-      // Check for red flag symptoms
-      const hasRedFlags = formData.redFlagSymptoms.length > 0 && !formData.redFlagSymptoms.includes('None of the above');
-      
-      // Format the form data into a readable email body
+      const hasRedFlags =
+        formData.redFlagSymptoms.length > 0 && !formData.redFlagSymptoms.includes('none');
+
       const emailBody = `
 Women's Personal Training PAR-Q & Health Questionnaire Submission
 ${hasRedFlags ? '\n⚠️ RED FLAG SYMPTOMS REPORTED - MEDICAL CLEARANCE REQUIRED' : ''}
@@ -141,7 +318,9 @@ ${formData.surgery === 'yes' ? `Details: ${formData.surgeryDetails}` : ''}
 Family History of Heart Disease: ${formData.familyHistory}
 ${formData.familyHistory === 'yes' ? `Details: ${formData.familyHistoryDetails}` : ''}
 
-Red Flag Symptoms During Exercise: ${formData.redFlagSymptoms.length > 0 ? formData.redFlagSymptoms.join(', ') : 'None reported'}
+Red Flag Symptoms During Exercise: ${
+        formData.redFlagSymptoms.length > 0 ? formData.redFlagSymptoms.join(', ') : 'None reported'
+      }
 
 === INJURY & PAIN HISTORY ===
 Current Pain/Discomfort: ${formData.currentPain}
@@ -176,60 +355,22 @@ Full Name: ${formData.fullName}
 Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       `;
 
-      // Send email using Formspree (free service for form submissions)
       const response = await fetch('https://formspree.io/f/xyzpqrst', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: formData.email,
           message: emailBody,
-          _subject: `PAR-Q Questionnaire from ${formData.firstName} ${formData.lastName}${hasRedFlags ? ' - MEDICAL CLEARANCE REQUIRED' : ''}`,
-          _replyto: formData.email
-        })
+          _subject: `PAR-Q Questionnaire from ${formData.firstName} ${formData.lastName}${
+            hasRedFlags ? ' - MEDICAL CLEARANCE REQUIRED' : ''
+          }`,
+          _replyto: formData.email,
+        }),
       });
 
       if (response.ok) {
         setIsSubmitted(true);
-        setFormData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          phone: '',
-          dateOfBirth: '',
-          medicalConditions: '',
-          medicalConditionsDetails: '',
-          medications: '',
-          medicationsDetails: '',
-          surgery: '',
-          surgeryDetails: '',
-          familyHistory: '',
-          familyHistoryDetails: '',
-          redFlagSymptoms: [],
-          currentPain: '',
-          currentPainDetails: '',
-          pastInjuries: '',
-          pastInjuriesDetails: '',
-          exerciseFrequency: '',
-          exerciseTypes: '',
-          fitnessLevel: '',
-          sleepHours: '',
-          stressLevel: '',
-          workType: '',
-          menstrualCycle: '',
-          menopauseStatus: '',
-          pregnancyStatus: '',
-          primaryGoal: '',
-          secondaryGoals: '',
-          confidence: '',
-          additionalInfo: '',
-          healthDataConsent: false,
-          marketingConsent: false,
-          physicalActivityReadiness: false,
-          informedConsent: false,
-          fullName: ''
-        });
+        setFormData(INITIAL_FORM_DATA);
         setTimeout(() => setIsSubmitted(false), 5000);
       } else {
         setSubmitError('Failed to submit form. Please try again or contact us directly at hello@motivasi.co.uk');
@@ -241,84 +382,6 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       setIsSubmitting(false);
     }
   };
-
-  const FormSection = ({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) => (
-    <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 md:p-10">
-      <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-2">
-        {title}
-      </h3>
-      {description && (
-        <p className="font-paragraph text-base text-warm-grey mb-6">
-          {description}
-        </p>
-      )}
-      <div className="space-y-6">
-        {children}
-      </div>
-    </div>
-  );
-
-  const FormField = ({ label, name, type = 'text', placeholder, required = false, children }: any) => (
-    <div>
-      <label htmlFor={name} className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
-        {label} {required && <span className="text-soft-bronze">*</span>}
-      </label>
-      {children || (
-        <input
-          type={type}
-          id={name}
-          name={name}
-          value={formData[name as keyof typeof formData] as string}
-          onChange={handleInputChange}
-          placeholder={placeholder}
-          required={required}
-          className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
-        />
-      )}
-    </div>
-  );
-
-  const YesNoField = ({ label, name, required = false, showDetails = false }: any) => (
-    <div>
-      <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-3">
-        {label} {required && <span className="text-soft-bronze">*</span>}
-      </label>
-      <div className="flex gap-4 mb-4">
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="radio"
-            name={name}
-            value="no"
-            checked={formData[name as keyof typeof formData] === 'no'}
-            onChange={handleInputChange}
-            className="w-4 h-4 accent-soft-bronze"
-          />
-          <span className="font-paragraph text-base text-charcoal-black">No</span>
-        </label>
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="radio"
-            name={name}
-            value="yes"
-            checked={formData[name as keyof typeof formData] === 'yes'}
-            onChange={handleInputChange}
-            className="w-4 h-4 accent-soft-bronze"
-          />
-          <span className="font-paragraph text-base text-charcoal-black">Yes</span>
-        </label>
-      </div>
-      {showDetails && formData[name as keyof typeof formData] === 'yes' && (
-        <textarea
-          name={`${name}Details`}
-          value={formData[`${name}Details` as keyof typeof formData] as string}
-          onChange={handleInputChange}
-          placeholder="Please provide details..."
-          rows={3}
-          className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
-        />
-      )}
-    </div>
-  );
 
   return (
     <div className="bg-soft-white">
@@ -358,9 +421,7 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
                 <h3 className="font-heading text-lg font-bold text-red-900 mb-1">
                   Submission Error
                 </h3>
-                <p className="font-paragraph text-red-800">
-                  {submitError}
-                </p>
+                <p className="font-paragraph text-red-800">{submitError}</p>
               </div>
             </div>
           )}
@@ -369,43 +430,26 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
             {/* Basic Information */}
             <FormSection title="Basic Information" description="Let's start with your contact details.">
               <div className="grid md:grid-cols-2 gap-6">
-                <FormField label="First Name" name="firstName" placeholder="Jane" required />
-                <FormField label="Last Name" name="lastName" placeholder="Smith" required />
+                <FormField label="First Name" name="firstName" placeholder="Jane" required formData={formData} onChange={handleInputChange} />
+                <FormField label="Last Name" name="lastName" placeholder="Smith" required formData={formData} onChange={handleInputChange} />
               </div>
               <div className="grid md:grid-cols-2 gap-6">
-                <FormField label="Email Address" name="email" type="email" placeholder="jane@example.com" required />
-                <FormField label="Phone Number" name="phone" type="tel" placeholder="+44 (0) 7700 000 000" />
+                <FormField label="Email Address" name="email" type="email" placeholder="jane@example.com" required formData={formData} onChange={handleInputChange} />
+                <FormField label="Phone Number" name="phone" type="tel" placeholder="+44 (0) 7700 000 000" formData={formData} onChange={handleInputChange} />
               </div>
-              <FormField label="Date of Birth" name="dateOfBirth" type="date" required />
+              <FormField label="Date of Birth" name="dateOfBirth" type="date" required formData={formData} onChange={handleInputChange} />
             </FormSection>
 
             {/* Medical Clearance */}
-            <FormSection 
-              title="Medical Clearance" 
+            <FormSection
+              title="Medical Clearance"
               description="Please answer the following questions honestly. Your responses help us ensure your safety."
             >
-              <YesNoField 
-                label="Do you have any diagnosed medical conditions (e.g., heart disease, diabetes, asthma)?" 
-                name="medicalConditions"
-                showDetails={true}
-                required
-              />
-              <YesNoField 
-                label="Are you currently taking any medications?" 
-                name="medications"
-                showDetails={true}
-              />
-              <YesNoField 
-                label="Have you had any surgeries in the past 12 months?" 
-                name="surgery"
-                showDetails={true}
-              />
-              <YesNoField 
-                label="Do you have a family history of heart disease, stroke, or diabetes?" 
-                name="familyHistory"
-                showDetails={true}
-              />
-              
+              <YesNoField label="Do you have any diagnosed medical conditions (e.g., heart disease, diabetes, asthma)?" name="medicalConditions" showDetails required formData={formData} onChange={handleInputChange} />
+              <YesNoField label="Are you currently taking any medications?" name="medications" showDetails formData={formData} onChange={handleInputChange} />
+              <YesNoField label="Have you had any surgeries in the past 12 months?" name="surgery" showDetails formData={formData} onChange={handleInputChange} />
+              <YesNoField label="Do you have a family history of heart disease, stroke, or diabetes?" name="familyHistory" showDetails formData={formData} onChange={handleInputChange} />
+
               {/* Red Flag Symptoms */}
               <div className="border-t border-warm-sand-beige pt-6">
                 <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-3">
@@ -417,8 +461,8 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
                     { value: 'dizziness', label: 'Dizziness or fainting' },
                     { value: 'shortness-of-breath', label: 'Shortness of breath beyond normal exertion' },
                     { value: 'palpitations', label: 'Heart palpitations' },
-                    { value: 'none', label: 'None of the above' }
-                  ].map(symptom => (
+                    { value: 'none', label: 'None of the above' },
+                  ].map((symptom) => (
                     <label key={symptom.value} className="flex items-center gap-3 cursor-pointer">
                       <input
                         type="checkbox"
@@ -437,37 +481,21 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
 
             {/* Important - Medical Clearance Trigger */}
             <div className="bg-soft-bronze/10 border border-soft-bronze/30 rounded-2xl p-8">
-              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
-                Important – Medical Clearance
-              </h3>
+              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">Important – Medical Clearance</h3>
               <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
                 If you answer "Yes" to any of the medical or injury questions above, you may be required to obtain written medical clearance from a GP or qualified healthcare professional before starting your personal training programme. Motivasi reserves the right to delay or modify training until appropriate clearance is received, to ensure your safety.
               </p>
             </div>
 
             {/* Injury & Pain History */}
-            <FormSection 
-              title="Injury & Pain History" 
-              description="Tell us about any current or past injuries that might affect your training."
-            >
-              <YesNoField 
-                label="Do you currently experience any pain or discomfort?" 
-                name="currentPain"
-                showDetails={true}
-              />
-              <YesNoField 
-                label="Have you had any significant injuries in the past?" 
-                name="pastInjuries"
-                showDetails={true}
-              />
+            <FormSection title="Injury & Pain History" description="Tell us about any current or past injuries that might affect your training.">
+              <YesNoField label="Do you currently experience any pain or discomfort?" name="currentPain" showDetails formData={formData} onChange={handleInputChange} />
+              <YesNoField label="Have you had any significant injuries in the past?" name="pastInjuries" showDetails formData={formData} onChange={handleInputChange} />
             </FormSection>
 
             {/* Exercise Experience & Ability */}
-            <FormSection 
-              title="Exercise Experience & Ability" 
-              description="Help us understand your fitness background."
-            >
-              <FormField label="How often do you currently exercise?" name="exerciseFrequency">
+            <FormSection title="Exercise Experience & Ability" description="Help us understand your fitness background.">
+              <FormField label="How often do you currently exercise?" name="exerciseFrequency" formData={formData} onChange={handleInputChange}>
                 <select
                   name="exerciseFrequency"
                   value={formData.exerciseFrequency}
@@ -483,12 +511,16 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
                   <option value="frequent">Frequent (4+ times per week)</option>
                 </select>
               </FormField>
-              <FormField 
-                label="What types of exercise do you currently do?" 
-                name="exerciseTypes" 
+
+              <FormField
+                label="What types of exercise do you currently do?"
+                name="exerciseTypes"
                 placeholder="e.g., Walking, yoga, gym workouts, sports..."
+                formData={formData}
+                onChange={handleInputChange}
               />
-              <FormField label="How would you rate your current fitness level?" name="fitnessLevel">
+
+              <FormField label="How would you rate your current fitness level?" name="fitnessLevel" formData={formData} onChange={handleInputChange}>
                 <select
                   name="fitnessLevel"
                   value={formData.fitnessLevel}
@@ -505,11 +537,8 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
             </FormSection>
 
             {/* Lifestyle & Recovery */}
-            <FormSection 
-              title="Lifestyle & Recovery" 
-              description="Understanding your lifestyle helps us create a sustainable program."
-            >
-              <FormField label="How many hours of sleep do you typically get per night?" name="sleepHours">
+            <FormSection title="Lifestyle & Recovery" description="Understanding your lifestyle helps us create a sustainable program.">
+              <FormField label="How many hours of sleep do you typically get per night?" name="sleepHours" formData={formData} onChange={handleInputChange}>
                 <select
                   name="sleepHours"
                   value={formData.sleepHours}
@@ -524,7 +553,8 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
                   <option value="more-than-8">More than 8 hours</option>
                 </select>
               </FormField>
-              <FormField label="How would you rate your current stress level?" name="stressLevel">
+
+              <FormField label="How would you rate your current stress level?" name="stressLevel" formData={formData} onChange={handleInputChange}>
                 <select
                   name="stressLevel"
                   value={formData.stressLevel}
@@ -538,7 +568,8 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
                   <option value="very-high">Very High</option>
                 </select>
               </FormField>
-              <FormField label="What is your primary work type?" name="workType">
+
+              <FormField label="What is your primary work type?" name="workType" formData={formData} onChange={handleInputChange}>
                 <select
                   name="workType"
                   value={formData.workType}
@@ -555,11 +586,8 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
             </FormSection>
 
             {/* Female-Specific Considerations */}
-            <FormSection 
-              title="Female-Specific Considerations" 
-              description="Optional but helpful information to personalise your programme."
-            >
-              <FormField label="Menstrual Cycle Status" name="menstrualCycle">
+            <FormSection title="Female-Specific Considerations" description="Optional but helpful information to personalise your programme.">
+              <FormField label="Menstrual Cycle Status" name="menstrualCycle" formData={formData} onChange={handleInputChange}>
                 <select
                   name="menstrualCycle"
                   value={formData.menstrualCycle}
@@ -573,7 +601,8 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
                   <option value="prefer-not-to-say">Prefer not to say</option>
                 </select>
               </FormField>
-              <FormField label="Menopause Status" name="menopauseStatus">
+
+              <FormField label="Menopause Status" name="menopauseStatus" formData={formData} onChange={handleInputChange}>
                 <select
                   name="menopauseStatus"
                   value={formData.menopauseStatus}
@@ -587,7 +616,8 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
                   <option value="prefer-not-to-say">Prefer not to say</option>
                 </select>
               </FormField>
-              <FormField label="Pregnancy Status" name="pregnancyStatus">
+
+              <FormField label="Pregnancy Status" name="pregnancyStatus" formData={formData} onChange={handleInputChange}>
                 <select
                   name="pregnancyStatus"
                   value={formData.pregnancyStatus}
@@ -601,28 +631,30 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
                   <option value="prefer-not-to-say">Prefer not to say</option>
                 </select>
               </FormField>
+
               <p className="font-paragraph text-sm text-warm-grey italic">
                 If you are currently pregnant or postnatal, training will be adapted accordingly and may require medical clearance depending on your circumstances.
               </p>
             </FormSection>
 
             {/* Goals & Confidence */}
-            <FormSection 
-              title="Goals & Confidence" 
-              description="Tell us about your fitness goals and what you hope to achieve."
-            >
-              <FormField 
-                label="What is your primary fitness goal?" 
-                name="primaryGoal" 
+            <FormSection title="Goals & Confidence" description="Tell us about your fitness goals and what you hope to achieve.">
+              <FormField
+                label="What is your primary fitness goal?"
+                name="primaryGoal"
                 placeholder="e.g., Lose fat, build strength, improve energy levels..."
                 required
+                formData={formData}
+                onChange={handleInputChange}
               />
-              <FormField 
-                label="Any secondary goals?" 
-                name="secondaryGoals" 
+              <FormField
+                label="Any secondary goals?"
+                name="secondaryGoals"
                 placeholder="e.g., Better posture, increased flexibility..."
+                formData={formData}
+                onChange={handleInputChange}
               />
-              <FormField label="How confident are you about achieving your goals?" name="confidence">
+              <FormField label="How confident are you about achieving your goals?" name="confidence" required formData={formData} onChange={handleInputChange}>
                 <select
                   name="confidence"
                   value={formData.confidence}
@@ -637,11 +669,8 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
                   <option value="very-confident">Very confident</option>
                 </select>
               </FormField>
-              <FormField 
-                label="Any additional information you'd like to share?" 
-                name="additionalInfo"
-                placeholder="Tell us anything else we should know..."
-              >
+
+              <FormField label="Any additional information you'd like to share?" name="additionalInfo" formData={formData} onChange={handleInputChange}>
                 <textarea
                   name="additionalInfo"
                   value={formData.additionalInfo}
@@ -656,15 +685,17 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
             {/* Privacy Notice */}
             <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-2xl p-8">
               <p className="font-paragraph text-sm text-charcoal-black leading-relaxed">
-                By submitting this form, you acknowledge that your personal data will be used to respond to your enquiry, manage bookings, and provide personal training services in accordance with our <Link to="/privacy" className="text-soft-bronze hover:underline">Privacy & Cookie Policy</Link>.
+                By submitting this form, you acknowledge that your personal data will be used to respond to your enquiry, manage bookings, and provide personal training services in accordance with our{' '}
+                <Link to="/privacy" className="text-soft-bronze hover:underline">
+                  Privacy & Cookie Policy
+                </Link>
+                .
               </p>
             </div>
 
             {/* Physical Activity Readiness Declaration */}
             <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 md:p-10">
-              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
-                Physical Activity Readiness Declaration
-              </h3>
+              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">Physical Activity Readiness Declaration</h3>
               <p className="font-paragraph text-base text-charcoal-black leading-relaxed mb-6">
                 I confirm that the information I have provided in this questionnaire is complete and accurate to the best of my knowledge. I understand that participating in physical exercise involves some inherent risk, and I agree to inform my trainer immediately of any changes to my health, medical condition, or pregnancy status during my training programme.
               </p>
@@ -672,9 +703,7 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
 
             {/* Professional Scope Disclaimer */}
             <div className="bg-soft-bronze/10 border border-soft-bronze/30 rounded-2xl p-8">
-              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
-                Important Notice
-              </h3>
+              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">Important Notice</h3>
               <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
                 Motivasi provides fitness coaching and personal training services only. We do not diagnose medical conditions or provide medical advice. Any guidance provided is for general fitness purposes and should not replace advice from a qualified healthcare professional.
               </p>
@@ -683,7 +712,6 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
             {/* Consent Checkboxes */}
             <FormSection title="Consent & Preferences">
               <div className="space-y-6">
-                {/* Health Data Consent - Required */}
                 <div className="flex items-start gap-3 p-4 bg-soft-white border border-warm-sand-beige rounded-lg">
                   <input
                     type="checkbox"
@@ -695,11 +723,14 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
                     className="w-5 h-5 accent-soft-bronze mt-0.5 flex-shrink-0 cursor-pointer"
                   />
                   <label htmlFor="healthDataConsent" className="font-paragraph text-sm text-charcoal-black cursor-pointer flex-1">
-                    <span className="text-soft-bronze font-bold">*</span> <span className="font-bold">Consent & Data Use:</span> I consent to Motivasi collecting and processing my health and fitness information for the purpose of delivering a personalised training programme. I understand that this information will be handled confidentially and in accordance with the <Link to="/privacy" className="text-soft-bronze hover:underline">Privacy & Cookie Policy</Link> and applicable data protection laws.
+                    <span className="text-soft-bronze font-bold">*</span> <span className="font-bold">Consent & Data Use:</span> I consent to Motivasi collecting and processing my health and fitness information for the purpose of delivering a personalised training programme. I understand that this information will be handled confidentially and in accordance with the{' '}
+                    <Link to="/privacy" className="text-soft-bronze hover:underline">
+                      Privacy & Cookie Policy
+                    </Link>{' '}
+                    and applicable data protection laws.
                   </label>
                 </div>
 
-                {/* Physical Activity Readiness Checkbox - Required */}
                 <div className="flex items-start gap-3 p-4 bg-soft-white border border-warm-sand-beige rounded-lg">
                   <input
                     type="checkbox"
@@ -715,7 +746,6 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
                   </label>
                 </div>
 
-                {/* Informed Consent Checkbox - Required */}
                 <div className="flex items-start gap-3 p-4 bg-soft-white border border-warm-sand-beige rounded-lg">
                   <input
                     type="checkbox"
@@ -731,7 +761,6 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
                   </label>
                 </div>
 
-                {/* Marketing Consent - Optional */}
                 <div className="flex items-start gap-3 p-4 bg-soft-white border border-warm-sand-beige rounded-lg">
                   <input
                     type="checkbox"
@@ -746,7 +775,6 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
                   </label>
                 </div>
 
-                {/* Digital Signature */}
                 <div className="border-t border-warm-sand-beige pt-6">
                   <label htmlFor="fullName" className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
                     Full Name (Digital Signature) <span className="text-soft-bronze">*</span>
@@ -768,36 +796,22 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
               </div>
             </FormSection>
 
-            {/* You're in the Right Place If... Reassurance Block */}
+            {/* Reassurance Block */}
             <div className="bg-warm-sand-beige/20 border border-warm-sand-beige rounded-2xl p-8 md:p-12">
-              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-8 text-center">
-                You're in the Right Place If…
-              </h3>
+              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-8 text-center">You're in the Right Place If…</h3>
               <div className="grid md:grid-cols-3 gap-6 mb-8">
-                <div className="flex gap-4 items-start">
-                  <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-soft-white font-heading font-bold text-sm">✓</span>
+                {[
+                  "You're a busy woman or mum who wants realistic support",
+                  "You want to feel stronger and healthier without extreme diets",
+                  "You value guidance from someone who truly understands women's bodies",
+                ].map((txt) => (
+                  <div key={txt} className="flex gap-4 items-start">
+                    <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-soft-white font-heading font-bold text-sm">✓</span>
+                    </div>
+                    <p className="font-paragraph text-base text-charcoal-black leading-relaxed">{txt}</p>
                   </div>
-                  <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
-                    You're a busy woman or mum who wants realistic support
-                  </p>
-                </div>
-                <div className="flex gap-4 items-start">
-                  <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-soft-white font-heading font-bold text-sm">✓</span>
-                  </div>
-                  <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
-                    You want to feel stronger and healthier without extreme diets
-                  </p>
-                </div>
-                <div className="flex gap-4 items-start">
-                  <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-soft-white font-heading font-bold text-sm">✓</span>
-                  </div>
-                  <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
-                    You value guidance from someone who truly understands women's bodies
-                  </p>
-                </div>
+                ))}
               </div>
               <p className="font-paragraph text-base text-charcoal-black italic text-center">
                 This is about progress — not perfection.
@@ -828,42 +842,31 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       {/* Info Section */}
       <section className="py-24 px-8 lg:px-20 bg-warm-sand-beige/30">
         <div className="max-w-4xl mx-auto">
-          <h2 className="font-heading text-4xl font-bold text-charcoal-black mb-8 text-center">
-            Why We Ask These Questions
-          </h2>
+          <h2 className="font-heading text-4xl font-bold text-charcoal-black mb-8 text-center">Why We Ask These Questions</h2>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-soft-white rounded-2xl p-8 border border-warm-sand-beige">
-              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
-                Your Safety
-              </h3>
-              <p className="font-paragraph text-base text-warm-grey">
-                Understanding your medical history helps us identify any contraindications and ensure your training program is safe and appropriate for your current health status.
-              </p>
-            </div>
-            <div className="bg-soft-white rounded-2xl p-8 border border-warm-sand-beige">
-              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
-                Personalisation
-              </h3>
-              <p className="font-paragraph text-base text-warm-grey">
-                Your responses help us create a truly personalised programme that accounts for your unique circumstances, goals, and any special considerations.
-              </p>
-            </div>
-            <div className="bg-soft-white rounded-2xl p-8 border border-warm-sand-beige">
-              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
-                Better Results
-              </h3>
-              <p className="font-paragraph text-base text-warm-grey">
-                The more we know about your lifestyle, stress levels, and recovery habits, the better we can optimise your training for maximum results.
-              </p>
-            </div>
-            <div className="bg-soft-white rounded-2xl p-8 border border-warm-sand-beige">
-              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
-                Accountability
-              </h3>
-              <p className="font-paragraph text-base text-warm-grey">
-                This questionnaire is part of our commitment to professional standards and ensuring we're the right fit for your needs.
-              </p>
-            </div>
+            {[
+              {
+                title: 'Your Safety',
+                body: 'Understanding your medical history helps us identify any contraindications and ensure your training program is safe and appropriate for your current health status.',
+              },
+              {
+                title: 'Personalisation',
+                body: 'Your responses help us create a truly personalised programme that accounts for your unique circumstances, goals, and any special considerations.',
+              },
+              {
+                title: 'Better Results',
+                body: 'The more we know about your lifestyle, stress levels, and recovery habits, the better we can optimise your training for maximum results.',
+              },
+              {
+                title: 'Accountability',
+                body: "This questionnaire is part of our commitment to professional standards and ensuring we're the right fit for your needs.",
+              },
+            ].map((card) => (
+              <div key={card.title} className="bg-soft-white rounded-2xl p-8 border border-warm-sand-beige">
+                <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">{card.title}</h3>
+                <p className="font-paragraph text-base text-warm-grey">{card.body}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -871,9 +874,7 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       {/* CTA Section */}
       <section className="py-24 px-8 lg:px-20 bg-charcoal-black">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="font-heading text-5xl font-bold text-soft-white mb-6">
-            Ready to Get Started?
-          </h2>
+          <h2 className="font-heading text-5xl font-bold text-soft-white mb-6">Ready to Get Started?</h2>
           <p className="font-paragraph text-lg text-warm-grey mb-8">
             Complete this questionnaire and we'll be in touch within 24 hours to discuss your personalised training programme.
           </p>
