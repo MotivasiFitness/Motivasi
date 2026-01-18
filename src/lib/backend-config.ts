@@ -75,8 +75,12 @@ export function getBackendEndpoint(functionName: BackendFunctionName | string): 
   const basePath = getBackendBasePath();
   const endpoint = `${basePath}${functionName}`;
   
-  // Log for debugging (can be removed in production)
-  if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
+  // Only log in development (localhost only)
+  if (
+    typeof window !== 'undefined' && 
+    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
+    process.env.NODE_ENV !== 'production'
+  ) {
     console.log('[Backend Config]', {
       functionName,
       environment: isPreviewEnvironment() ? 'preview/dev' : 'production',
@@ -121,14 +125,19 @@ export async function validateBackendResponse(
   
   if (!contentType.includes('application/json')) {
     const textResponse = await response.text();
-    console.error(`[Backend Config] ERROR: ${functionName} returned ${contentType} instead of JSON`);
-    console.error(`[Backend Config] Response body (first 500 chars):`, textResponse.substring(0, 500));
     
+    // Only log detailed errors in development
+    const isDev = typeof window !== 'undefined' && 
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    
+    if (isDev) {
+      console.error(`[Backend Config] ERROR: ${functionName} returned ${contentType} instead of JSON`);
+      console.error(`[Backend Config] Response body (first 500 chars):`, textResponse.substring(0, 500));
+    }
+    
+    // User-friendly error message for production
     throw new Error(
-      `Backend function '${functionName}' returned ${contentType} instead of JSON. ` +
-      `Status: ${response.status}. ` +
-      `This usually means the endpoint URL is incorrect or the server is returning an error page. ` +
-      `Check the Network tab in DevTools for the actual response.`
+      `Unable to process request. Please try again or contact support if the issue persists.`
     );
   }
 }

@@ -26,18 +26,22 @@ export async function safeJsonParse<T = any>(
   if (!contentType || !contentType.includes('application/json')) {
     const text = await response.text();
     
-    // Log the actual response for debugging
-    console.error(`[${context}] Non-JSON response received:`, {
-      status: response.status,
-      contentType,
-      responseLength: text.length,
-      responsePreview: text.substring(0, 200),
-    });
+    // Only log detailed errors in development
+    const isDev = typeof window !== 'undefined' && 
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    
+    if (isDev) {
+      console.error(`[${context}] Non-JSON response received:`, {
+        status: response.status,
+        contentType,
+        responseLength: text.length,
+        responsePreview: text.substring(0, 200),
+      });
+    }
 
+    // User-friendly error message for production
     throw new Error(
-      `${context} returned non-JSON response (${response.status}). ` +
-      `Expected JSON but got ${contentType || 'unknown content type'}. ` +
-      `This usually means the API endpoint is missing or returning an error page.`
+      `Unable to process request. Please try again or contact support if the issue persists.`
     );
   }
 
@@ -49,16 +53,19 @@ export async function safeJsonParse<T = any>(
     const json = JSON.parse(text);
     return json as T;
   } catch (parseError) {
-    // Text is already read above, so we can't read it again
-    // Use the error message instead
-    console.error(`[${context}] JSON parse error:`, {
-      error: parseError,
-      status: response.status,
-    });
+    // Only log detailed errors in development
+    const isDev = typeof window !== 'undefined' && 
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    
+    if (isDev) {
+      console.error(`[${context}] JSON parse error:`, {
+        error: parseError,
+        status: response.status,
+      });
+    }
 
     throw new Error(
-      `${context} returned invalid JSON. ` +
-      `Parse error: ${parseError instanceof Error ? parseError.message : 'Unknown error'}`
+      `Unable to process server response. Please try again or contact support if the issue persists.`
     );
   }
 }
@@ -147,7 +154,15 @@ export async function safeFetch<T = any>(
     return await safeJsonParse<T>(response, context);
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error(`[${context}] Error:`, errorMessage);
+    
+    // Only log detailed errors in development
+    const isDev = typeof window !== 'undefined' && 
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    
+    if (isDev) {
+      console.error(`[${context}] Error:`, errorMessage);
+    }
+    
     throw error;
   }
 }
