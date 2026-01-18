@@ -48,165 +48,116 @@
 import { ok, badRequest, serverError } from 'wix-http-functions';
 import wixData from 'wix-data';
 
-// Helper to create JSON response
-function jsonResponse(statusCode: number, body: any) {
-  return {
-    status: statusCode,
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-    },
-    body: JSON.stringify(body)
-  };
+const JSON_HEADERS = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
+function jsonOk(body: any) {
+  return ok(body, { headers: JSON_HEADERS });
+}
+function jsonBadRequest(body: any) {
+  return badRequest(body, { headers: JSON_HEADERS });
+}
+function jsonServerError(body: any) {
+  return serverError(body, { headers: JSON_HEADERS });
 }
 
-/**
- * Main HTTP function handler for PAR-Q submission
- */
-export async function post_parq(request: any): Promise<any> {
+export function options_parq() {
+  return ok({ success: true, statusCode: 200 }, { headers: JSON_HEADERS });
+}
+
+export function get_parq() {
+  // Wix doesn't have a 405 helper; still return JSON with ok()
+  return ok(
+    {
+      success: false,
+      statusCode: 405,
+      error: 'Method Not Allowed. Use POST to submit PAR-Q data.',
+      allowedMethods: ['POST', 'OPTIONS'],
+    },
+    { headers: JSON_HEADERS }
+  );
+}
+
+export async function post_parq(request: any) {
   try {
     console.log('=== PAR-Q Submission Backend ===');
-    console.log('Request method:', request.method);
-    console.log('Request headers:', JSON.stringify(request.headers, null, 2));
-    
-    // Parse request body
-    let requestData;
+
+    // ✅ Correct body parsing for Wix HTTP functions
+    const raw = request?.body ? await request.body.text() : '';
+    let requestData: any = {};
+
     try {
-      if (typeof request.body === 'string') {
-        requestData = JSON.parse(request.body);
-      } else {
-        requestData = request.body;
-      }
-    } catch (parseError: any) {
-      console.error('Failed to parse request body:', parseError);
-      return jsonResponse(400, {
+      requestData = raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return jsonBadRequest({
         success: false,
         statusCode: 400,
-        error: 'Invalid JSON in request body'
+        error: 'Invalid JSON in request body',
       });
     }
-
-    console.log('Parsed request data keys:', Object.keys(requestData));
 
     // Validate required fields
     const requiredFields = ['firstName', 'lastName', 'email'];
-    const missingFields = requiredFields.filter(field => !requestData[field]);
-    
+    const missingFields = requiredFields.filter((f) => !requestData?.[f]);
     if (missingFields.length > 0) {
-      console.error('Missing required fields:', missingFields);
-      return jsonResponse(400, {
+      return jsonBadRequest({
         success: false,
         statusCode: 400,
-        error: `Missing required fields: ${missingFields.join(', ')}`
+        error: `Missing required fields: ${missingFields.join(', ')}`,
       });
     }
 
-    // Validate email format
+    // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(requestData.email)) {
-      console.error('Invalid email format:', requestData.email);
-      return jsonResponse(400, {
+      return jsonBadRequest({
         success: false,
         statusCode: 400,
-        error: 'Invalid email format'
+        error: 'Invalid email format',
       });
     }
 
-    // Prepare data for ParqSubmissions collection
+    // Build item for CMS (collection ID appears to be case-sensitive)
     const submissionData: any = {
-      // Core fields that exist in the collection
       firstName: requestData.firstName,
       lastName: requestData.lastName,
       email: requestData.email,
-      clientName: `${requestData.firstName} ${requestData.lastName}`, // Legacy field
-      
-      // Date of birth (convert to Date object if string)
+      clientName: `${requestData.firstName} ${requestData.lastName}`,
+
       dateOfBirth: requestData.dateOfBirth ? new Date(requestData.dateOfBirth) : undefined,
-      
-      // Boolean health fields
-      hasHeartCondition: requestData.hasHeartCondition || false,
-      currentlyTakingMedication: requestData.currentlyTakingMedication || false,
-      
-      // Store entire form submission as JSON string
-      // NOTE: This field needs to be added to ParqSubmissions collection as "Long text" type
-      formData: JSON.stringify(requestData, null, 2),
-      
-      // Submission timestamp
-      // NOTE: This field needs to be added to ParqSubmissions collection as "Date & Time" type
-      submittedAt: new Date()
+
+      hasHeartCondition: Boolean(requestData.hasHeartCondition),
+      currentlyTakingMedication: Boolean(requestData.currentlyTakingMedication),
+
+      // ✅ Store full submission (string). If you prefer the formatted emailBody string, send that instead.
+      formData:
+        typeof requestData.formData === 'string'
+          ? requestData.formData
+          : JSON.stringify(requestData, null, 2),
+
+      submittedAt: new Date(),
     };
 
-    console.log('Prepared submission data:', {
-      firstName: submissionData.firstName,
-      lastName: submissionData.lastName,
-      email: submissionData.email,
-      dateOfBirth: submissionData.dateOfBirth,
-      hasHeartCondition: submissionData.hasHeartCondition,
-      currentlyTakingMedication: submissionData.currentlyTakingMedication,
-      hasFormData: !!submissionData.formData,
-      submittedAt: submissionData.submittedAt
-    });
-
-    // Insert into ParqSubmissions collection
-    console.log('Inserting into ParqSubmissions collection...');
     const insertResult = await wixData.insert('ParqSubmissions', submissionData);
-    
-    console.log('Insert successful!');
-    console.log('Submission ID:', insertResult._id);
 
-    // Return success response with explicit success flag and itemId
-    return jsonResponse(200, {
+    return jsonOk({
       success: true,
       statusCode: 200,
       itemId: insertResult._id,
-      submissionId: insertResult._id, // Keep for backwards compatibility
-      message: 'PAR-Q submission saved successfully'
+      submissionId: insertResult._id,
+      message: 'PAR-Q submission saved successfully',
     });
-
   } catch (error: any) {
-    console.error('=== PAR-Q Submission Error ===');
-    console.error('Error type:', error.constructor?.name);
-    console.error('Error message:', error.message);
-    console.error('Error stack:', error.stack);
-    console.error('Full error:', JSON.stringify(error, null, 2));
+    console.error('PAR-Q error:', error);
 
-    // Handle specific errors
-    if (error.message?.includes('Collection') || error.message?.includes('not found')) {
-      return jsonResponse(500, {
-        success: false,
-        statusCode: 500,
-        error: 'ParqSubmissions collection not found or not accessible'
-      });
-    }
-
-    if (error.message?.includes('field') || error.message?.includes('schema')) {
-      return jsonResponse(500, {
-        success: false,
-        statusCode: 500,
-        error: 'Collection schema mismatch - please ensure formData (Long text) and submittedAt (Date & Time) fields exist'
-      });
-    }
-
-    return jsonResponse(500, {
+    return jsonServerError({
       success: false,
       statusCode: 500,
-      error: error.message || 'Failed to save PAR-Q submission'
+      error: error?.message || 'Failed to save PAR-Q submission',
     });
   }
-}
-
-/**
- * Handle OPTIONS for CORS preflight
- */
-export async function options_parq(request: any): Promise<any> {
-  return {
-    status: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-    }
-  };
 }
