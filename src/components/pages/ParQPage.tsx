@@ -382,8 +382,30 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
 
       if (!response.ok) {
         const text = await response.text();
-        console.error('PAR-Q submit failed:', response.status, text);
-        setSubmitError('Failed to submit form. Please try again or contact us directly at hello@motivasi.co.uk');
+        
+        // Log detailed error information for debugging
+        console.error('❌ PAR-Q submit failed:');
+        console.error('Status:', response.status);
+        console.error('Content-Type:', response.headers.get('content-type'));
+        console.error('Response body (first 300 chars):', text.substring(0, 300));
+        
+        // Try to parse JSON error message from backend
+        let errorMessage = 'Failed to submit form. Please try again or contact us directly at hello@motivasi.co.uk';
+        try {
+          const errorData = JSON.parse(text);
+          if (errorData.error) {
+            errorMessage = `Submission failed: ${errorData.error}`;
+          } else if (errorData.message) {
+            errorMessage = `Submission failed: ${errorData.message}`;
+          }
+        } catch (parseError) {
+          // If not JSON, use the text response if it's short enough
+          if (text.length > 0 && text.length < 200 && !text.includes('<!DOCTYPE')) {
+            errorMessage = `Submission failed: ${text}`;
+          }
+        }
+        
+        setSubmitError(errorMessage);
         return;
       }
 
