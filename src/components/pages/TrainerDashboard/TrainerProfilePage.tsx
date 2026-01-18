@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { Button } from '@/components/ui/button';
@@ -11,7 +11,7 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { User, Mail, Globe, Award, Briefcase, Camera, Upload, X, CheckCircle, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { getBackendEndpoint, BACKEND_FUNCTIONS, validateBackendResponse, isPreviewEnvironment } from '@/lib/backend-config';
+import { getBackendEndpoint, BACKEND_FUNCTIONS, isPreviewEnvironment } from '@/lib/backend-config';
 
 // Trainer Profile Type
 interface TrainerProfile {
@@ -35,8 +35,10 @@ export default function TrainerProfilePage() {
   const { member } = useMember();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+
   const [profile, setProfile] = useState<TrainerProfile | null>(null);
   const [formData, setFormData] = useState({
     displayName: '',
@@ -47,7 +49,7 @@ export default function TrainerProfilePage() {
     contactEmail: '',
     profilePhoto: ''
   });
-  
+
   // Photo upload states
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>('idle');
   const [uploadError, setUploadError] = useState<string>('');
@@ -55,20 +57,20 @@ export default function TrainerProfilePage() {
 
   useEffect(() => {
     loadProfile();
-  }, [member]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [member?._id]);
 
   const loadProfile = async () => {
     if (!member?._id) return;
-    
+
     setIsLoading(true);
     try {
       console.log('[Profile Load] Loading profile for member:', member._id);
       const { items } = await BaseCrudService.getAll<TrainerProfile>('trainerprofiles');
-      const existingProfile = items.find(p => p.memberId === member._id);
-      
+      const existingProfile = items.find((p) => p.memberId === member._id);
+
       if (existingProfile) {
         console.log('[Profile Load] Found existing profile:', existingProfile._id);
-        console.log('[Profile Load] Profile photo URL:', existingProfile.profilePhoto);
         setProfile(existingProfile);
         setFormData({
           displayName: existingProfile.displayName || '',
@@ -82,10 +84,9 @@ export default function TrainerProfilePage() {
         setPhotoPreview(existingProfile.profilePhoto || '');
       } else {
         console.log('[Profile Load] No existing profile found, initializing with member data');
-        // Initialize with member data
         const memberPhoto = member.profile?.photo?.url || '';
-        console.log('[Profile Load] Member photo URL:', memberPhoto);
-        setFormData(prev => ({
+        setProfile(null);
+        setFormData((prev) => ({
           ...prev,
           displayName: member.profile?.nickname || member.contact?.firstName || '',
           contactEmail: member.loginEmail || '',
@@ -111,40 +112,25 @@ export default function TrainerProfilePage() {
     setIsSaving(true);
     try {
       console.log('[Profile Save] Starting save with data:', formData);
-      
+
       if (profile?._id) {
-        // Update existing profile
         console.log('[Profile Save] Updating existing profile:', profile._id);
         await BaseCrudService.update<TrainerProfile>('trainerprofiles', {
           _id: profile._id,
           ...formData
         });
-        console.log('[Profile Save] Update successful');
-        toast({
-          title: 'Success',
-          description: 'Profile updated successfully'
-        });
+        toast({ title: 'Success', description: 'Profile updated successfully' });
       } else {
-        // Create new profile
         console.log('[Profile Save] Creating new profile for member:', member._id);
         await BaseCrudService.create('trainerprofiles', {
           _id: crypto.randomUUID(),
           memberId: member._id,
           ...formData
         });
-        console.log('[Profile Save] Create successful');
-        toast({
-          title: 'Success',
-          description: 'Profile created successfully'
-        });
+        toast({ title: 'Success', description: 'Profile created successfully' });
       }
-      
-      // Reload profile to get latest data
-      console.log('[Profile Save] Reloading profile data...');
+
       await loadProfile();
-      
-      // Trigger a custom event to notify other components (like sidebar) to refresh
-      console.log('[Profile Save] Dispatching profile update event');
       window.dispatchEvent(new CustomEvent('trainerProfileUpdated'));
     } catch (error) {
       console.error('[Profile Save] Error saving profile:', error);
@@ -159,252 +145,186 @@ export default function TrainerProfilePage() {
   };
 
   const handleChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Image compression and cropping utility
+  // Image compression & crop utility (center square, 512x512)
   const compressAndCropImage = (file: File): Promise<Blob> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
+      reader.onerror = () => reject(new Error('Failed to read file'));
       reader.onload = (e) => {
         const img = new Image();
+        img.onerror = () => reject(new Error('Failed to load image'));
         img.onload = () => {
           const canvas = document.createElement('canvas');
           const ctx = canvas.getContext('2d');
-          if (!ctx) {
-            reject(new Error('Failed to get canvas context'));
-            return;
-          }
+          if (!ctx) return reject(new Error('Failed to get canvas context'));
 
-          // Target dimensions (square)
           const targetSize = 512;
           canvas.width = targetSize;
           canvas.height = targetSize;
 
-          // Calculate crop dimensions (center square crop)
           const sourceSize = Math.min(img.width, img.height);
           const sourceX = (img.width - sourceSize) / 2;
           const sourceY = (img.height - sourceSize) / 2;
 
-          // Draw cropped and resized image
-          ctx.drawImage(
-            img,
-            sourceX, sourceY, sourceSize, sourceSize,
-            0, 0, targetSize, targetSize
-          );
+          ctx.drawImage(img, sourceX, sourceY, sourceSize, sourceSize, 0, 0, targetSize, targetSize);
 
-          // Convert to blob with compression
           canvas.toBlob(
             (blob) => {
-              if (blob) {
-                resolve(blob);
-              } else {
-                reject(new Error('Failed to compress image'));
-              }
+              if (!blob) return reject(new Error('Failed to compress image'));
+              resolve(blob);
             },
             'image/jpeg',
-            0.85 // Quality (85%)
+            0.85
           );
         };
-        img.onerror = () => reject(new Error('Failed to load image'));
-        img.src = e.target?.result as string;
+        img.src = String(e.target?.result || '');
       };
-      reader.onerror = () => reject(new Error('Failed to read file'));
       reader.readAsDataURL(file);
     });
   };
 
-  // Upload image to Wix Media Manager
-  const uploadImageToWix = async (blob: Blob, fileName: string): Promise<string> => {
-    // Create FormData
-    const formData = new FormData();
-    formData.append('file', blob, fileName);
+  // Convert Blob -> Data URL base64 (for Wix JSON upload)
+  const blobToDataUrl = (blob: Blob): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error('Failed to read image data'));
+      reader.onload = () => resolve(String(reader.result)); // data:image/jpeg;base64,...
+      reader.readAsDataURL(blob);
+    });
+  };
 
-    // Get the correct endpoint for the current environment using centralized config
+  // Upload image to Wix Media Manager (Base64 JSON to /_functions(-dev)/uploadProfilePhoto)
+  const uploadImageToWix = async (blob: Blob, fileName: string): Promise<string> => {
     const uploadUrl = getBackendEndpoint(BACKEND_FUNCTIONS.UPLOAD_PROFILE_PHOTO);
-    
-    // Enhanced logging for debugging
-    console.group('[Upload Debug] Profile Photo Upload');
-    console.log('📤 Starting upload to:', uploadUrl);
+    const base64DataUrl = await blobToDataUrl(blob);
+
+    console.group('[Upload Debug] Profile Photo Upload (Base64 JSON)');
+    console.log('📤 Upload endpoint:', uploadUrl);
+    console.log('📍 Full URL:', window.location.origin + uploadUrl);
     console.log('📁 File name:', fileName);
     console.log('📊 Blob size:', blob.size, 'bytes', `(${(blob.size / 1024).toFixed(2)} KB)`);
     console.log('🎨 Blob type:', blob.type);
-    console.log('🌐 Current hostname:', window.location.hostname);
     console.log('🔧 Environment:', isPreviewEnvironment() ? 'Preview/Dev' : 'Production');
-    console.log('📍 Full URL:', window.location.origin + uploadUrl);
     console.groupEnd();
 
-    let response: Response;
-    let responseText: string = '';
-    
-    try {
-      response = await fetch(uploadUrl, {
-        method: 'POST',
-        body: formData,
-        // Don't set Content-Type header - browser will set it with boundary for multipart/form-data
-      });
+    let responseText = '';
 
-      // Capture response details BEFORE consuming the body
-      const responseHeaders = Object.fromEntries(response.headers.entries());
-      const contentType = response.headers.get('content-type') || 'unknown';
-      
-      console.group('[Upload Debug] Response Details');
-      console.log('📡 Status:', response.status, response.statusText);
-      console.log('🔗 Response URL:', response.url);
-      console.log('📋 Content-Type:', contentType);
-      console.log('📨 All Headers:', responseHeaders);
-      console.groupEnd();
+    const response = await fetch(uploadUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify({
+        fileName: fileName || 'profile-photo.jpg',
+        mimeType: blob.type || 'image/jpeg',
+        base64: base64DataUrl
+      })
+    });
 
-      // Try to get response text first (for debugging)
-      responseText = await response.clone().text();
-      
-      console.group('[Upload Debug] Response Body');
-      console.log('📄 Raw response (first 1000 chars):', responseText.substring(0, 1000));
-      console.groupEnd();
+    const contentType = response.headers.get('content-type') || 'unknown';
+    responseText = await response.clone().text();
 
-      // Check if response is JSON
-      if (!contentType.includes('application/json')) {
-        console.error('❌ [Upload] ERROR: Expected JSON but got:', contentType);
-        console.error('📄 [Upload] Response body:', responseText.substring(0, 500));
-        
-        // Provide specific error messages based on response
-        if (response.status === 404) {
-          throw new Error('Upload endpoint not found. The backend function may not be deployed correctly.');
-        } else if (response.status === 401 || response.status === 403) {
-          throw new Error('Authentication failed. Please sign in again.');
-        } else if (contentType.includes('text/html')) {
-          throw new Error('Received HTML instead of JSON. The backend function may have an error or routing issue.');
-        } else {
-          throw new Error(`Unexpected response type: ${contentType}. Expected JSON.`);
-        }
+    console.group('[Upload Debug] Response');
+    console.log('📡 Status:', response.status, response.statusText);
+    console.log('📋 Content-Type:', contentType);
+    console.log('🔗 Response URL:', response.url);
+    console.log('📄 Body (first 1000 chars):', responseText.substring(0, 1000));
+    console.groupEnd();
+
+    if (!contentType.includes('application/json')) {
+      if (contentType.includes('text/html')) {
+        throw new Error('Received HTML instead of JSON. The Wix HTTP function is not deployed/routing correctly.');
       }
-
-      // Parse JSON response
-      const data = await response.json();
-      console.log('✅ [Upload] Parsed JSON data:', data);
-
-      if (!response.ok || !data.success) {
-        // Throw specific error message from backend
-        const errorMsg = data.error || `Upload failed with status ${response.status}`;
-        console.error('❌ [Upload] Upload failed:', errorMsg);
-        throw new Error(errorMsg);
-      }
-
-      // Validate URL is present
-      if (!data.url) {
-        console.error('❌ [Upload] No URL in response:', data);
-        throw new Error('Upload succeeded but no URL was returned');
-      }
-
-      // Return the uploaded URL
-      console.log('✅ [Upload] Upload successful! URL:', data.url);
-      return data.url;
-      
-    } catch (error: any) {
-      console.group('❌ [Upload Debug] Error Details');
-      console.error('Error type:', error.constructor.name);
-      console.error('Error message:', error.message);
-      console.error('Error stack:', error.stack);
-      if (responseText) {
-        console.error('Response text:', responseText.substring(0, 500));
-      }
-      console.groupEnd();
-      
-      // Re-throw with enhanced error message
-      throw new Error(error.message || 'Failed to upload profile photo');
+      throw new Error(`Unexpected response type: ${contentType}. Expected JSON.`);
     }
+
+    const data = await response.json();
+
+    if (!response.ok || !data?.success) {
+      throw new Error(data?.error || data?.message || `Upload failed (HTTP ${response.status})`);
+    }
+
+    if (!data?.url) {
+      throw new Error('Upload succeeded but no URL was returned');
+    }
+
+    return data.url as string;
   };
 
   // Handle file selection
-  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+  const handleFileSelect = useCallback(
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
 
-    console.log('[File Select] File selected:', file.name, file.size, file.type);
+      console.log('[File Select] File selected:', file.name, file.size, file.type);
 
-    // Reset states
-    setUploadError('');
-    setUploadStatus('idle');
+      setUploadError('');
+      setUploadStatus('idle');
 
-    // Validate file type
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-    if (!allowedTypes.includes(file.type.toLowerCase())) {
-      const errorMsg = 'Please select a valid image file (JPG, PNG, or WebP)';
-      console.error('[File Select] Invalid file type:', file.type);
-      setUploadError(errorMsg);
-      setUploadStatus('error');
-      return;
-    }
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+      if (!allowedTypes.includes(file.type.toLowerCase())) {
+        const msg = 'Please select a valid image file (JPG, PNG, or WebP)';
+        setUploadError(msg);
+        setUploadStatus('error');
+        toast({ title: 'Upload Failed', description: msg, variant: 'destructive' });
+        return;
+      }
 
-    // Validate file size (5MB max)
-    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
-    if (file.size > maxSize) {
-      const errorMsg = 'Image size must be less than 5MB';
-      console.error('[File Select] File too large:', file.size);
-      setUploadError(errorMsg);
-      setUploadStatus('error');
-      return;
-    }
+      const maxSize = 5 * 1024 * 1024;
+      if (file.size > maxSize) {
+        const msg = 'Image size must be less than 5MB';
+        setUploadError(msg);
+        setUploadStatus('error');
+        toast({ title: 'Upload Failed', description: msg, variant: 'destructive' });
+        return;
+      }
 
-    setUploadStatus('uploading');
-    console.log('[File Select] Starting upload process...');
+      setUploadStatus('uploading');
 
-    try {
-      // Compress and crop image
-      console.log('[File Select] Compressing and cropping image...');
-      const compressedBlob = await compressAndCropImage(file);
-      console.log('[File Select] Compressed blob size:', compressedBlob.size);
+      let localPreviewUrl = '';
+      try {
+        const compressedBlob = await compressAndCropImage(file);
 
-      // Create preview URL
-      const previewUrl = URL.createObjectURL(compressedBlob);
-      setPhotoPreview(previewUrl);
-      console.log('[File Select] Preview URL created');
+        // Show local preview immediately while uploading
+        localPreviewUrl = URL.createObjectURL(compressedBlob);
+        setPhotoPreview(localPreviewUrl);
 
-      // Upload to Wix
-      console.log('[File Select] Uploading to Wix Media Manager...');
-      const uploadedUrl = await uploadImageToWix(compressedBlob, file.name);
-      console.log('[File Select] Upload successful! URL:', uploadedUrl);
+        const uploadedUrl = await uploadImageToWix(compressedBlob, file.name);
 
-      // Update form data with the uploaded URL
-      setFormData(prev => {
-        const updated = { ...prev, profilePhoto: uploadedUrl };
-        console.log('[File Select] Updated form data:', updated);
-        return updated;
-      });
-      
-      // Update preview to use the actual uploaded URL
-      setPhotoPreview(uploadedUrl);
-      setUploadStatus('success');
+        // Persist URL to form state
+        setFormData((prev) => ({ ...prev, profilePhoto: uploadedUrl }));
+        setPhotoPreview(uploadedUrl);
 
-      toast({
-        title: 'Success',
-        description: 'Photo uploaded successfully. Remember to save your profile.',
-      });
+        setUploadStatus('success');
+        toast({
+          title: 'Success',
+          description: 'Photo uploaded successfully. Remember to save your profile.'
+        });
+      } catch (error: any) {
+        console.error('[File Select] Upload error:', error);
+        const msg = error?.message || 'Failed to upload image. Please try again.';
+        setUploadError(msg);
+        setUploadStatus('error');
+        toast({ title: 'Upload Failed', description: msg, variant: 'destructive' });
+      } finally {
+        if (localPreviewUrl) URL.revokeObjectURL(localPreviewUrl);
+      }
+    },
+    [toast]
+  );
 
-      // Clean up preview URL
-      URL.revokeObjectURL(previewUrl);
-    } catch (error: any) {
-      console.error('[File Select] Upload error:', error);
-      const errorMessage = error.message || 'Failed to upload image. Please try again.';
-      setUploadError(errorMessage);
-      setUploadStatus('error');
-      toast({
-        title: 'Upload Failed',
-        description: errorMessage,
-        variant: 'destructive',
-      });
-    }
-  };
-
-  // Handle remove photo
+  // Remove photo
   const handleRemovePhoto = () => {
-    setFormData(prev => ({ ...prev, profilePhoto: '' }));
+    setFormData((prev) => ({ ...prev, profilePhoto: '' }));
     setPhotoPreview('');
     setUploadStatus('idle');
     setUploadError('');
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   // Trigger file input
@@ -425,16 +345,12 @@ export default function TrainerProfilePage() {
       <div className="max-w-[100rem] mx-auto px-8 py-12">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="font-heading text-5xl font-bold text-charcoal-black mb-4">
-            Trainer Profile
-          </h1>
-          <p className="font-paragraph text-lg text-warm-grey">
-            Manage your professional profile and public information
-          </p>
+          <h1 className="font-heading text-5xl font-bold text-charcoal-black mb-4">Trainer Profile</h1>
+          <p className="font-paragraph text-lg text-warm-grey">Manage your professional profile and public information</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Profile Preview Card */}
+          {/* Preview */}
           <Card className="lg:col-span-1">
             <CardHeader>
               <CardTitle className="font-heading text-2xl">Profile Preview</CardTitle>
@@ -449,6 +365,7 @@ export default function TrainerProfilePage() {
                       {formData.displayName?.charAt(0) || 'T'}
                     </AvatarFallback>
                   </Avatar>
+
                   {uploadStatus === 'uploading' && (
                     <div className="absolute inset-0 bg-charcoal-black/50 rounded-full flex items-center justify-center">
                       <LoadingSpinner />
@@ -470,13 +387,12 @@ export default function TrainerProfilePage() {
                     </div>
                   )}
                 </div>
+
                 <div>
                   <h3 className="font-heading text-2xl font-bold text-charcoal-black">
                     {formData.displayName || 'Your Name'}
                   </h3>
-                  {formData.specialisms && (
-                    <p className="text-sm text-warm-grey mt-1">{formData.specialisms}</p>
-                  )}
+                  {formData.specialisms && <p className="text-sm text-warm-grey mt-1">{formData.specialisms}</p>}
                 </div>
               </div>
 
@@ -497,21 +413,20 @@ export default function TrainerProfilePage() {
             </CardContent>
           </Card>
 
-          {/* Profile Form */}
+          {/* Form */}
           <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle className="font-heading text-2xl">Profile Information</CardTitle>
               <CardDescription>Update your professional details</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Profile Photo Upload */}
+              {/* Photo upload */}
               <div className="space-y-4">
                 <Label className="flex items-center gap-2">
                   <Camera size={16} className="text-soft-bronze" />
                   Profile Photo
                 </Label>
-                
-                {/* Hidden file input */}
+
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -520,7 +435,6 @@ export default function TrainerProfilePage() {
                   className="hidden"
                 />
 
-                {/* Upload controls */}
                 <div className="flex flex-wrap gap-2">
                   <Button
                     type="button"
@@ -532,7 +446,7 @@ export default function TrainerProfilePage() {
                     <Upload size={16} className="mr-2" />
                     {photoPreview || formData.profilePhoto ? 'Change Photo' : 'Upload Photo'}
                   </Button>
-                  
+
                   {(photoPreview || formData.profilePhoto) && (
                     <Button
                       type="button"
@@ -547,13 +461,10 @@ export default function TrainerProfilePage() {
                   )}
                 </div>
 
-                {/* Upload status messages */}
                 {uploadStatus === 'uploading' && (
                   <Alert className="bg-soft-white border-soft-bronze">
                     <LoadingSpinner />
-                    <AlertDescription className="ml-2">
-                      Uploading and processing image...
-                    </AlertDescription>
+                    <AlertDescription className="ml-2">Uploading and processing image...</AlertDescription>
                   </Alert>
                 )}
 
@@ -561,7 +472,7 @@ export default function TrainerProfilePage() {
                   <Alert className="bg-green-50 border-green-600">
                     <CheckCircle size={16} className="text-green-600" />
                     <AlertDescription className="ml-2 text-green-800">
-                      Photo uploaded successfully! Don't forget to save your profile.
+                      Photo uploaded successfully! Don&apos;t forget to save your profile.
                     </AlertDescription>
                   </Alert>
                 )}
@@ -569,15 +480,13 @@ export default function TrainerProfilePage() {
                 {uploadStatus === 'error' && uploadError && (
                   <Alert className="bg-red-50 border-destructive">
                     <AlertCircle size={16} className="text-destructive" />
-                    <AlertDescription className="ml-2 text-destructive">
-                      {uploadError}
-                    </AlertDescription>
+                    <AlertDescription className="ml-2 text-destructive">{uploadError}</AlertDescription>
                   </Alert>
                 )}
 
                 <p className="text-xs text-warm-grey">
-                  Upload a square photo (recommended 512x512px). Max file size: 5MB. 
-                  Accepted formats: JPG, PNG, WebP. Images will be automatically cropped to a square and compressed.
+                  Upload a square photo (recommended 512x512px). Max file size: 5MB. Accepted formats: JPG, PNG, WebP.
+                  Images will be automatically cropped to a square and compressed.
                 </p>
               </div>
 
@@ -596,7 +505,7 @@ export default function TrainerProfilePage() {
                 />
               </div>
 
-              {/* Bio / Coaching Philosophy */}
+              {/* Bio */}
               <div className="space-y-2">
                 <Label htmlFor="bio" className="flex items-center gap-2">
                   <Briefcase size={16} className="text-soft-bronze" />
@@ -610,9 +519,7 @@ export default function TrainerProfilePage() {
                   rows={5}
                   className="font-paragraph resize-none"
                 />
-                <p className="text-xs text-warm-grey">
-                  This will be visible to clients and on your public profile
-                </p>
+                <p className="text-xs text-warm-grey">This will be visible to clients and on your public profile</p>
               </div>
 
               {/* Specialisms */}
@@ -656,7 +563,7 @@ export default function TrainerProfilePage() {
                   id="timeZone"
                   value={formData.timeZone}
                   onChange={(e) => handleChange('timeZone', e.target.value)}
-                  placeholder="e.g., GMT, EST, PST"
+                  placeholder="e.g., Europe/London"
                   className="font-paragraph"
                 />
               </div>
@@ -677,7 +584,7 @@ export default function TrainerProfilePage() {
                 />
               </div>
 
-              {/* Save Button */}
+              {/* Save */}
               <div className="pt-6 border-t border-warm-sand-beige">
                 <Button
                   onClick={handleSave}
