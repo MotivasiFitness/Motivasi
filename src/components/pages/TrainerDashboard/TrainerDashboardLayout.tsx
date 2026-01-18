@@ -29,13 +29,18 @@ export default function TrainerDashboardLayout() {
       if (!member?._id) return;
       
       try {
+        console.log('[Sidebar] Loading trainer profile for member:', member._id);
         const { items } = await BaseCrudService.getAll<TrainerProfiles>('trainerprofiles');
         const profile = items.find(p => p.memberId === member._id);
         if (profile) {
+          console.log('[Sidebar] Found profile:', profile._id);
+          console.log('[Sidebar] Profile photo URL:', profile.profilePhoto);
           setTrainerProfile(profile);
+        } else {
+          console.log('[Sidebar] No profile found for member');
         }
       } catch (error) {
-        console.error('Error loading trainer profile:', error);
+        console.error('[Sidebar] Error loading trainer profile:', error);
       }
     };
 
@@ -45,6 +50,7 @@ export default function TrainerDashboardLayout() {
 
     // Listen for profile updates
     const handleProfileUpdate = () => {
+      console.log('[Sidebar] Profile update event received, reloading...');
       loadTrainerProfile();
     };
 

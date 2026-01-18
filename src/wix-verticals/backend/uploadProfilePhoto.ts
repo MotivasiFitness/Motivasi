@@ -52,7 +52,8 @@ export async function post_uploadProfilePhoto(request: any): Promise<any> {
     console.log('=== Upload Profile Photo Backend ===');
     console.log('Request method:', request.method);
     console.log('Request headers:', JSON.stringify(request.headers, null, 2));
-    console.log('Request body keys:', Object.keys(request.body || {}));
+    console.log('Request body type:', typeof request.body);
+    console.log('Request body keys:', request.body ? Object.keys(request.body) : 'null');
     
     // Parse the request body
     const contentType = request.headers['content-type'] || request.headers['Content-Type'] || '';
@@ -71,67 +72,93 @@ export async function post_uploadProfilePhoto(request: any): Promise<any> {
     // In Wix Velo, multipart data is available in request.body
     const file = request.body?.file;
     console.log('File present:', !!file);
+    console.log('File object type:', file ? typeof file : 'undefined');
     
     if (!file) {
       console.error('No file in request body');
+      console.error('Available body keys:', request.body ? Object.keys(request.body) : 'none');
       return jsonResponse(400, {
         success: false,
         statusCode: 400,
-        error: 'No file provided'
+        error: 'No file provided in request'
       });
     }
 
     // Log file details
     console.log('File details:', {
-      name: file.name,
-      size: file.size,
-      type: file.type
+      name: file.name || 'unknown',
+      size: file.size || 0,
+      type: file.type || 'unknown',
+      hasData: !!file.data || !!file.buffer || !!file.content
     });
 
     // Validate file size (5MB max)
     const maxSize = 5 * 1024 * 1024; // 5MB in bytes
-    if (file.size > maxSize) {
-      console.error('File too large:', file.size, 'bytes');
+    const fileSize = file.size || 0;
+    if (fileSize > maxSize) {
+      console.error('File too large:', fileSize, 'bytes');
       return jsonResponse(400, {
         success: false,
         statusCode: 400,
-        error: `File size must be less than 5MB (current: ${(file.size / 1024 / 1024).toFixed(2)}MB)`
+        error: `File size must be less than 5MB (current: ${(fileSize / 1024 / 1024).toFixed(2)}MB)`
       });
     }
 
     // Validate file type
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-    if (!allowedTypes.includes(file.type)) {
-      console.error('Invalid file type:', file.type);
+    const fileType = (file.type || '').toLowerCase();
+    if (!allowedTypes.includes(fileType)) {
+      console.error('Invalid file type:', fileType);
       return jsonResponse(400, {
         success: false,
         statusCode: 400,
-        error: `File type must be JPG, PNG, or WebP (current: ${file.type})`
+        error: `File type must be JPG, PNG, or WebP (current: ${fileType || 'unknown'})`
       });
     }
 
     console.log('Starting upload to Wix Media Manager...');
+    console.log('Upload parameters:', {
+      folder: '/trainer-profiles',
+      fileName: file.name,
+      mediaType: 'image',
+      mimeType: fileType
+    });
     
     // Upload to Wix Media Manager
+    // Note: wixMediaBackend.upload expects (folder, file, fileName, options)
     const uploadResult = await wixMediaBackend.upload(
       '/trainer-profiles',
       file,
-      file.name,
+      file.name || 'profile-photo.jpg',
       {
         mediaType: 'image',
-        mimeType: file.type
+        mimeType: fileType
       }
     );
 
     console.log('Upload successful!');
+    console.log('Upload result keys:', uploadResult ? Object.keys(uploadResult) : 'null');
     console.log('Upload result:', JSON.stringify(uploadResult, null, 2));
-    console.log('File URL:', uploadResult.fileUrl);
+    
+    // Extract the file URL from the upload result
+    // Wix Media Manager returns fileUrl or url
+    const uploadedUrl = uploadResult.fileUrl || uploadResult.url;
+    console.log('Extracted URL:', uploadedUrl);
+
+    if (!uploadedUrl) {
+      console.error('No URL in upload result:', uploadResult);
+      return jsonResponse(500, {
+        success: false,
+        statusCode: 500,
+        error: 'Upload succeeded but no URL was returned from Wix Media Manager'
+      });
+    }
 
     // Return the uploaded file URL
     return jsonResponse(200, {
       success: true,
       statusCode: 200,
-      url: uploadResult.fileUrl
+      url: uploadedUrl
     });
 
   } catch (error: any) {
@@ -150,10 +177,18 @@ export async function post_uploadProfilePhoto(request: any): Promise<any> {
       });
     }
 
+    if (error.message?.includes('size') || error.message?.includes('too large')) {
+      return jsonResponse(400, {
+        success: false,
+        statusCode: 400,
+        error: 'File size exceeds maximum allowed size'
+      });
+    }
+
     return jsonResponse(500, {
       success: false,
       statusCode: 500,
-      error: error.message || 'Failed to upload file'
+      error: error.message || 'Failed to upload file to Wix Media Manager'
     });
   }
 }

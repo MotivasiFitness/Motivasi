@@ -62,10 +62,13 @@ export default function TrainerProfilePage() {
     
     setIsLoading(true);
     try {
+      console.log('[Profile Load] Loading profile for member:', member._id);
       const { items } = await BaseCrudService.getAll<TrainerProfile>('trainerprofiles');
       const existingProfile = items.find(p => p.memberId === member._id);
       
       if (existingProfile) {
+        console.log('[Profile Load] Found existing profile:', existingProfile._id);
+        console.log('[Profile Load] Profile photo URL:', existingProfile.profilePhoto);
         setProfile(existingProfile);
         setFormData({
           displayName: existingProfile.displayName || '',
@@ -78,8 +81,10 @@ export default function TrainerProfilePage() {
         });
         setPhotoPreview(existingProfile.profilePhoto || '');
       } else {
+        console.log('[Profile Load] No existing profile found, initializing with member data');
         // Initialize with member data
         const memberPhoto = member.profile?.photo?.url || '';
+        console.log('[Profile Load] Member photo URL:', memberPhoto);
         setFormData(prev => ({
           ...prev,
           displayName: member.profile?.nickname || member.contact?.firstName || '',
@@ -89,7 +94,7 @@ export default function TrainerProfilePage() {
         setPhotoPreview(memberPhoto);
       }
     } catch (error) {
-      console.error('Error loading profile:', error);
+      console.error('[Profile Load] Error loading profile:', error);
       toast({
         title: 'Error',
         description: 'Failed to load profile. Please try again.',
@@ -105,23 +110,29 @@ export default function TrainerProfilePage() {
 
     setIsSaving(true);
     try {
+      console.log('[Profile Save] Starting save with data:', formData);
+      
       if (profile?._id) {
         // Update existing profile
+        console.log('[Profile Save] Updating existing profile:', profile._id);
         await BaseCrudService.update<TrainerProfile>('trainerprofiles', {
           _id: profile._id,
           ...formData
         });
+        console.log('[Profile Save] Update successful');
         toast({
           title: 'Success',
           description: 'Profile updated successfully'
         });
       } else {
         // Create new profile
+        console.log('[Profile Save] Creating new profile for member:', member._id);
         await BaseCrudService.create('trainerprofiles', {
           _id: crypto.randomUUID(),
           memberId: member._id,
           ...formData
         });
+        console.log('[Profile Save] Create successful');
         toast({
           title: 'Success',
           description: 'Profile created successfully'
@@ -129,12 +140,14 @@ export default function TrainerProfilePage() {
       }
       
       // Reload profile to get latest data
+      console.log('[Profile Save] Reloading profile data...');
       await loadProfile();
       
       // Trigger a custom event to notify other components (like sidebar) to refresh
+      console.log('[Profile Save] Dispatching profile update event');
       window.dispatchEvent(new CustomEvent('trainerProfileUpdated'));
     } catch (error) {
-      console.error('Error saving profile:', error);
+      console.error('[Profile Save] Error saving profile:', error);
       toast({
         title: 'Error',
         description: 'Failed to save profile. Please try again.',
@@ -307,6 +320,8 @@ export default function TrainerProfilePage() {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    console.log('[File Select] File selected:', file.name, file.size, file.type);
+
     // Reset states
     setUploadError('');
     setUploadStatus('idle');
@@ -314,7 +329,9 @@ export default function TrainerProfilePage() {
     // Validate file type
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
     if (!allowedTypes.includes(file.type.toLowerCase())) {
-      setUploadError('Please select a valid image file (JPG, PNG, or WebP)');
+      const errorMsg = 'Please select a valid image file (JPG, PNG, or WebP)';
+      console.error('[File Select] Invalid file type:', file.type);
+      setUploadError(errorMsg);
       setUploadStatus('error');
       return;
     }
@@ -322,26 +339,40 @@ export default function TrainerProfilePage() {
     // Validate file size (5MB max)
     const maxSize = 5 * 1024 * 1024; // 5MB in bytes
     if (file.size > maxSize) {
-      setUploadError('Image size must be less than 5MB');
+      const errorMsg = 'Image size must be less than 5MB';
+      console.error('[File Select] File too large:', file.size);
+      setUploadError(errorMsg);
       setUploadStatus('error');
       return;
     }
 
     setUploadStatus('uploading');
+    console.log('[File Select] Starting upload process...');
 
     try {
       // Compress and crop image
+      console.log('[File Select] Compressing and cropping image...');
       const compressedBlob = await compressAndCropImage(file);
+      console.log('[File Select] Compressed blob size:', compressedBlob.size);
 
       // Create preview URL
       const previewUrl = URL.createObjectURL(compressedBlob);
       setPhotoPreview(previewUrl);
+      console.log('[File Select] Preview URL created');
 
       // Upload to Wix
+      console.log('[File Select] Uploading to Wix Media Manager...');
       const uploadedUrl = await uploadImageToWix(compressedBlob, file.name);
+      console.log('[File Select] Upload successful! URL:', uploadedUrl);
 
-      // Update form data
-      setFormData(prev => ({ ...prev, profilePhoto: uploadedUrl }));
+      // Update form data with the uploaded URL
+      setFormData(prev => {
+        const updated = { ...prev, profilePhoto: uploadedUrl };
+        console.log('[File Select] Updated form data:', updated);
+        return updated;
+      });
+      
+      // Update preview to use the actual uploaded URL
       setPhotoPreview(uploadedUrl);
       setUploadStatus('success');
 
@@ -353,7 +384,7 @@ export default function TrainerProfilePage() {
       // Clean up preview URL
       URL.revokeObjectURL(previewUrl);
     } catch (error: any) {
-      console.error('Upload error:', error);
+      console.error('[File Select] Upload error:', error);
       const errorMessage = error.message || 'Failed to upload image. Please try again.';
       setUploadError(errorMessage);
       setUploadStatus('error');
