@@ -24,41 +24,51 @@
 
 import { ok } from 'wix-http-functions';
 
-interface HealthResponse {
+type AnyRequest = { path?: string };
+
+type HealthResponse = {
   success: boolean;
   statusCode: number;
-  status: string;
+  status: 'healthy';
   timestamp: string;
+  environment?: 'preview' | 'production';
   endpoints: {
+    health: string;
+    parq: string;
     generateProgram: string;
     regenerateProgramSection: string;
     generateProgramDescription: string;
   };
+};
+
+const JSON_HEADERS = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
+export function options_health() {
+  return ok({ success: true, statusCode: 200 }, { headers: JSON_HEADERS });
 }
 
-/**
- * Main HTTP function handler
- */
-export async function get_health(request: any): Promise<any> {
-  const responseBody: HealthResponse = {
+export function get_health(request: AnyRequest) {
+  const isDev = typeof request?.path === 'string' && request.path.includes('-dev');
+
+  const body: HealthResponse = {
     success: true,
     statusCode: 200,
     status: 'healthy',
     timestamp: new Date().toISOString(),
+    environment: isDev ? 'preview' : 'production',
     endpoints: {
+      health: '/_functions/health',
+      parq: '/_functions/parq',
       generateProgram: '/_functions/generateProgram',
       regenerateProgramSection: '/_functions/regenerateProgramSection',
       generateProgramDescription: '/_functions/generateProgramDescription',
     },
   };
 
-  const response = ok(responseBody);
-
-  // Ensure Content-Type is application/json
-  response.headers = {
-    ...response.headers,
-    'Content-Type': 'application/json',
-  };
-
-  return response;
+  return ok(body, { headers: JSON_HEADERS });
 }
