@@ -405,7 +405,7 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       // CRITICAL: Check if response is JSON BEFORE reading body
       if (!contentType.includes('application/json')) {
         console.error('❌ PAR-Q Submit - Expected JSON but got:', contentType);
-        console.error('❌ This indicates the endpoint is not deployed or returning HTML homepage');
+        console.error('❌ This indicates the endpoint is not deployed or returning HTML');
         
         // Read response text for logging only
         let responseText = '';
@@ -416,7 +416,8 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
           console.error('❌ Could not read response body:', readError);
         }
         
-        setSubmitError('Server configuration error: endpoint not returning JSON. Please contact us directly at hello@motivasi.co.uk');
+        // User-friendly error message (no technical jargon)
+        setSubmitError('We couldn\'t submit your PAR-Q right now. Please try again or contact us directly at hello@motivasi.co.uk');
         return;
       }
 
@@ -427,34 +428,36 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
         console.log('📥 PAR-Q Submit - Parsed JSON:', data);
       } catch (parseError) {
         console.error('❌ PAR-Q Submit - Failed to parse JSON:', parseError);
-        setSubmitError('Invalid server response format. Please contact us directly at hello@motivasi.co.uk');
+        setSubmitError('We couldn\'t process your submission. Please try again or contact us directly at hello@motivasi.co.uk');
         return;
       }
 
-      // CRITICAL: Check unified response format { ok: boolean, id?: string, code?: string, error?: string }
-      if (!data.ok || data.ok !== true) {
-        console.error('❌ PAR-Q Submit - Backend returned ok=false');
+      // Check for success using the backend's response format
+      // Backend returns: { success: true, statusCode: 200, itemId: '...', submissionId: '...', message: '...' }
+      if (!data.success || !response.ok) {
+        console.error('❌ PAR-Q Submit - Backend returned error');
         console.error('Response data:', data);
         
         const errorMessage = data.error || 'Submission failed';
-        const errorCode = data.code || 'UNKNOWN_ERROR';
-        console.error(`❌ Error code: ${errorCode}`);
+        console.error(`❌ Error: ${errorMessage}`);
         
-        setSubmitError(`Failed to submit form: ${errorMessage}. Please contact us directly at hello@motivasi.co.uk`);
+        // User-friendly error message
+        setSubmitError(`Unable to submit your PAR-Q: ${errorMessage}. Please try again or contact us at hello@motivasi.co.uk`);
         return;
       }
 
       // Verify we have a submission ID
-      if (!data.id) {
+      const submissionId = data.submissionId || data.itemId;
+      if (!submissionId) {
         console.error('❌ PAR-Q Submit - Success but no submission ID returned');
         console.error('Response data:', data);
-        setSubmitError('Submission may have failed - no confirmation ID received. Please contact us directly at hello@motivasi.co.uk');
+        setSubmitError('Your submission may not have been saved. Please contact us at hello@motivasi.co.uk to confirm.');
         return;
       }
 
       // SUCCESS - All checks passed
       console.log('✅ PAR-Q submitted successfully!');
-      console.log('✅ Submission ID:', data.id);
+      console.log('✅ Submission ID:', submissionId);
       console.log('✅ Response:', data);
 
       setIsSubmitted(true);
