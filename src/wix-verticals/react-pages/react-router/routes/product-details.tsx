@@ -1,4 +1,4 @@
-import { useLoaderData, useParams } from 'react-router';
+import { useLoaderData, useParams } from 'react-router-dom';
 import { loadProductServiceConfig, ProductService } from '@wix/stores/services';
 import type { ServiceFactoryConfig } from '@wix/services-definitions';
 import ProductDetailPage from '../../store/main-components/productDetailsPage';

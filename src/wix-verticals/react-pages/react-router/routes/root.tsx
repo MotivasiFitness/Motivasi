@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router';
+import { useLoaderData } from 'react-router-dom';
 import { useEffect, useState, type ReactNode } from 'react';
 
 import { loadCurrentCartServiceConfig } from '@wix/ecom/services';
@@ -10,7 +10,7 @@ import {
   NavigationProvider,
   type NavigationComponent,
 } from '@/components/NavigationContext';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import '@wix/wix-vibe-plugins/plugins-vars.css';
 import {
   MiniCartContextProvider,
