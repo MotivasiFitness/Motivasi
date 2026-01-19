@@ -141,7 +141,6 @@ export async function post_parq(request: any) {
       lastName: requestData.lastName,
       email: requestData.email,
       clientName: `${requestData.firstName} ${requestData.lastName}`,
-      clientEmail: requestData.email,
 
       dateOfBirth: requestData.dateOfBirth ? new Date(requestData.dateOfBirth) : undefined,
 
@@ -158,9 +157,6 @@ export async function post_parq(request: any) {
       status: 'New',
       assignedTrainerId: requestData.assignedTrainerId || undefined,
       notes: '',
-
-      // Legacy field for backwards compatibility
-      submittedAt: new Date(),
     };
 
     const insertResult = await wixData.insert('ParqSubmissions', submissionData);

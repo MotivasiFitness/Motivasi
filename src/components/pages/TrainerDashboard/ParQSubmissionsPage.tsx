@@ -62,7 +62,6 @@ export default function ParQSubmissionsPage() {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(sub => 
         sub.clientName?.toLowerCase().includes(query) ||
-        sub.clientEmail?.toLowerCase().includes(query) ||
         sub.firstName?.toLowerCase().includes(query) ||
         sub.lastName?.toLowerCase().includes(query) ||
         sub.email?.toLowerCase().includes(query)
@@ -265,7 +264,7 @@ export default function ParQSubmissionsPage() {
                         {getStatusBadge(submission.status)}
                       </div>
                       <div className="flex items-center gap-6 text-sm text-warm-grey">
-                        <span>{submission.email || submission.clientEmail || 'No email'}</span>
+                        <span>{submission.email || 'No email'}</span>
                         <span>
                           {submission.submissionDate 
                             ? new Date(submission.submissionDate).toLocaleDateString('en-GB', {
@@ -329,7 +328,7 @@ export default function ParQSubmissionsPage() {
                     <div>
                       <p className="font-paragraph text-sm text-warm-grey">Email</p>
                       <p className="font-paragraph text-base text-charcoal-black font-medium">
-                        {selectedSubmission.email || selectedSubmission.clientEmail || 'No email'}
+                        {selectedSubmission.email || 'No email'}
                       </p>
                     </div>
                     <div>
