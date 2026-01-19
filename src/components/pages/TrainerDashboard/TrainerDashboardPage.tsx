@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { FitnessPrograms } from '@/entities';
-import { Users, BookOpen, MessageSquare, TrendingUp, Video } from 'lucide-react';
+import { FitnessPrograms, ParqSubmissions } from '@/entities';
+import { Users, BookOpen, MessageSquare, TrendingUp, Video, ClipboardList } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import WeeklyRetentionSnapshot from './WeeklyRetentionSnapshot';
 import WeeklyCoachNotesPanel from './WeeklyCoachNotesPanel';
@@ -15,6 +15,7 @@ export default function TrainerDashboardPage() {
     totalClients: 0,
     activePrograms: 0,
     completedPrograms: 0,
+    newParqSubmissions: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -25,11 +26,16 @@ export default function TrainerDashboardPage() {
       const { items } = await BaseCrudService.getAll<FitnessPrograms>('programs');
       const trainerPrograms = items.filter(p => p.trainerId === member._id);
       
+      // Fetch PAR-Q submissions
+      const parqResult = await BaseCrudService.getAll<ParqSubmissions>('ParqSubmissions');
+      const newParqCount = parqResult.items.filter(sub => sub.status === 'New').length;
+      
       setPrograms(trainerPrograms);
       setStats({
         totalClients: new Set(trainerPrograms.map(p => p.clientId)).size,
         activePrograms: trainerPrograms.filter(p => p.status === 'Active').length,
         completedPrograms: trainerPrograms.filter(p => p.status === 'Completed').length,
+        newParqSubmissions: newParqCount,
       });
       setLoading(false);
     };
@@ -96,17 +102,25 @@ export default function TrainerDashboardPage() {
             </p>
           </div>
 
-          <div className="bg-soft-white border-2 border-warm-sand-beige rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow">
+          <Link
+            to="/trainer/parq-submissions"
+            className="bg-soft-white border-2 border-warm-sand-beige rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow relative"
+          >
             <div className="flex items-center justify-between mb-5">
               <h3 className="font-paragraph text-sm text-warm-grey uppercase tracking-widest font-bold">
-                Messages
+                PAR-Q Forms
               </h3>
-              <MessageSquare className="text-soft-bronze" size={28} />
+              <ClipboardList className="text-soft-bronze" size={28} />
             </div>
             <p className="font-heading text-5xl font-bold text-charcoal-black">
-              0
+              {stats.newParqSubmissions}
             </p>
-          </div>
+            {stats.newParqSubmissions > 0 && (
+              <div className="absolute top-4 right-4 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                NEW
+              </div>
+            )}
+          </Link>
         </div>
 
         {/* Quick Actions - PRIMARY HERO CARDS */}

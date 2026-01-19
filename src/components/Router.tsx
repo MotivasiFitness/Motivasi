@@ -58,6 +58,7 @@ import ClientNutritionPage from '@/components/pages/TrainerDashboard/ClientNutri
 import ProgramsCreatedPage from '@/components/pages/TrainerDashboard/ProgramsCreatedPage';
 import CompletedWorkoutsFeedbackPage from '@/components/pages/TrainerDashboard/CompletedWorkoutsFeedbackPage';
 import ClientProfilePage from '@/components/pages/TrainerDashboard/ClientProfilePage';
+import ParQSubmissionsPage from '@/components/pages/TrainerDashboard/ParQSubmissionsPage';
 
 import AdminDashboard from '@/components/pages/AdminDashboard';
 import ExerciseVideoReviewPage from '@/components/pages/ExerciseVideoReviewPage';
@@ -320,6 +321,10 @@ const router = createBrowserRouter([
           {
             path: "client-profile/:clientId",
             element: <ClientProfilePage />,
+          },
+          {
+            path: "parq-submissions",
+            element: <ParQSubmissionsPage />,
           },
         ],
       },

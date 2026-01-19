@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { useMember } from '@/integrations';
 import { getBackendEndpoint, BACKEND_FUNCTIONS } from '@/lib/backend-config';
 
 type ParQFormData = {
@@ -232,6 +233,7 @@ function YesNoField({
 
 export default function ParQPage() {
   const { t } = useLanguage();
+  const { member } = useMember();
 
   const [formData, setFormData] = useState<ParQFormData>(INITIAL_FORM_DATA);
 
@@ -377,6 +379,18 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
           // Map to your existing CMS booleans if you have them
           hasHeartCondition: formData.medicalConditions === 'yes',
           currentlyTakingMedication: formData.medications === 'yes',
+
+          // Include member ID if user is logged in
+          memberId: member?._id || undefined,
+
+          // Medical risk indicators for flagsYes calculation
+          medicalConditions: formData.medicalConditions,
+          medications: formData.medications,
+          surgery: formData.surgery,
+          familyHistory: formData.familyHistory,
+          currentPain: formData.currentPain,
+          pastInjuries: formData.pastInjuries,
+          redFlagSymptoms: formData.redFlagSymptoms,
 
           // Store the entire submission (best for automations + audit trail)
           formData: emailBody,

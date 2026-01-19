@@ -25,6 +25,20 @@ export interface ParqSubmissions {
   lastName?: string;
   /** @wixFieldType email */
   email?: string;
+  /** @wixFieldType text */
+  memberId?: string;
+  /** @wixFieldType datetime */
+  submissionDate?: Date | string;
+  /** @wixFieldType text */
+  answers?: string;
+  /** @wixFieldType boolean */
+  flagsYes?: boolean;
+  /** @wixFieldType text */
+  status?: string;
+  /** @wixFieldType text */
+  assignedTrainerId?: string;
+  /** @wixFieldType text */
+  notes?: string;
 }
 
 

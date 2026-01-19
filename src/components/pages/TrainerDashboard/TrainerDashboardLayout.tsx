@@ -1,7 +1,7 @@
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
-import { Users, BookOpen, Settings, LogOut, Menu, X, Loader, Sparkles, Video, Apple, MessageSquare, LayoutDashboard, FolderOpen, Dumbbell, TrendingUp, ChevronDown, User } from 'lucide-react';
+import { Users, BookOpen, Settings, LogOut, Menu, X, Loader, Sparkles, Video, Apple, MessageSquare, LayoutDashboard, FolderOpen, Dumbbell, TrendingUp, ChevronDown, User, ClipboardList } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useRole } from '@/hooks/useRole';
 import PortalHeader from '@/components/layout/PortalHeader';
@@ -106,6 +106,7 @@ export default function TrainerDashboardLayout() {
         { path: '/trainer/workout-feedback', label: 'Client Feedback', icon: MessageSquare },
         { path: '/trainer/progress', label: 'Client Progress', icon: TrendingUp },
         { path: '/trainer/nutrition', label: 'Nutrition', icon: Apple },
+        { path: '/trainer/parq-submissions', label: 'PAR-Q Submissions', icon: ClipboardList },
       ]
     },
     {

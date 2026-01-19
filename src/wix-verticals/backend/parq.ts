@@ -122,24 +122,44 @@ export async function post_parq(request: any) {
       });
     }
 
+    // Determine if any medical risk flags are present
+    const flagsYes = Boolean(
+      requestData.hasHeartCondition ||
+      requestData.currentlyTakingMedication ||
+      requestData.medicalConditions === 'yes' ||
+      requestData.medications === 'yes' ||
+      requestData.surgery === 'yes' ||
+      requestData.familyHistory === 'yes' ||
+      requestData.currentPain === 'yes' ||
+      requestData.pastInjuries === 'yes' ||
+      (requestData.redFlagSymptoms && requestData.redFlagSymptoms.length > 0 && !requestData.redFlagSymptoms.includes('none'))
+    );
+
     // Build item for CMS (collection ID appears to be case-sensitive)
     const submissionData: any = {
       firstName: requestData.firstName,
       lastName: requestData.lastName,
       email: requestData.email,
       clientName: `${requestData.firstName} ${requestData.lastName}`,
+      clientEmail: requestData.email,
 
       dateOfBirth: requestData.dateOfBirth ? new Date(requestData.dateOfBirth) : undefined,
 
       hasHeartCondition: Boolean(requestData.hasHeartCondition),
       currentlyTakingMedication: Boolean(requestData.currentlyTakingMedication),
 
-      // ✅ Store full submission (string). If you prefer the formatted emailBody string, send that instead.
-      formData:
-        typeof requestData.formData === 'string'
-          ? requestData.formData
-          : JSON.stringify(requestData, null, 2),
+      // New fields for trainer portal
+      memberId: requestData.memberId || undefined, // Will be set by frontend if user is logged in
+      submissionDate: new Date(),
+      answers: typeof requestData.formData === 'string'
+        ? requestData.formData
+        : JSON.stringify(requestData, null, 2),
+      flagsYes: flagsYes,
+      status: 'New',
+      assignedTrainerId: requestData.assignedTrainerId || undefined,
+      notes: '',
 
+      // Legacy field for backwards compatibility
       submittedAt: new Date(),
     };
 
@@ -161,26 +181,29 @@ export async function post_parq(request: any) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          _subject: `New PAR-Q Submission - ${requestData.firstName} ${requestData.lastName}`,
+          _subject: `New PAR-Q Submission${flagsYes ? ' - MEDICAL CLEARANCE REQUIRED' : ''} - ${requestData.firstName} ${requestData.lastName}`,
           _replyto: requestData.email,
           _to: 'hello@motivasi.co.uk',
           message: `
 New PAR-Q & Health Questionnaire Submission
+${flagsYes ? '\n⚠️ MEDICAL CLEARANCE REQUIRED - Client answered YES to medical risk questions\n' : ''}
 
 Name: ${requestData.firstName} ${requestData.lastName}
 Email: ${requestData.email}
 Submitted: ${submittedDate}
+Status: New
 
-${submissionData.formData}
+This submission is now available in the Trainer Portal under "PAR-Q Submissions".
+View full details and add notes: [Login to Trainer Portal]
 
 ---
-This PAR-Q submission has been saved to the CMS database.
+This is a notification only. Full questionnaire details are available in the Trainer Portal.
           `,
           first_name: requestData.firstName,
           last_name: requestData.lastName,
           email: requestData.email,
-          form_data: submissionData.formData,
           submitted_date: submittedDate,
+          has_medical_flags: flagsYes,
         })
       });
       
