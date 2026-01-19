@@ -5,7 +5,7 @@ import ErrorPage from '@/integrations/errorHandlers/ErrorPage';
 import { rootRouteLoader, WixServicesProvider } from '@/wix-verticals/react-pages/react-router/routes/root';
 import { LanguageProvider } from '@/i18n/LanguageContext';
 import { ProductDetailsRoute, productRouteLoader } from '@/wix-verticals/react-pages/react-router/routes/product-details';
-import { StoreCollectionRoute, storeCollectionRouteLoader } from '@/wix-verticals/react-pages/react-router/routes/store-collection';
+import { storeCollectionRouteLoader } from '@/wix-verticals/react-pages/react-router/routes/store-collection';
 import { defaultStoreCollectionRouteRedirectLoader } from '@/wix-verticals/react-pages/react-router/routes/store-redirect';
 import { Cart } from '@/wix-verticals/react-pages/react-router/routes/cart';
 import { MemberProtectedRoute } from '@/components/ui/member-protected-route';
