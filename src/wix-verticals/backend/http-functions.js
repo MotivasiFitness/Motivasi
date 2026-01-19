@@ -12,6 +12,21 @@ function json(helper, payload) {
 }
 
 /**
+ * PAR-Q Ping Endpoint
+ * GET /_functions/parq
+ * 
+ * Simple verification endpoint to confirm the HTTP function is live
+ * Returns JSON response with ok: true
+ */
+export function get_parq() {
+  return json(ok, {
+    ok: true,
+    message: "parq endpoint live",
+    timestamp: new Date().toISOString()
+  });
+}
+
+/**
  * PAR-Q Submission Endpoint
  * POST /_functions/parq
  * 
