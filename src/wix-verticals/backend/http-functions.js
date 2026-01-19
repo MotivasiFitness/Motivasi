@@ -5,9 +5,8 @@ import wixData from "wix-data";
  * Helper function to ensure JSON responses with proper Content-Type
  */
 function json(helper, payload) {
-  return helper({
-    headers: { "Content-Type": "application/json; charset=utf-8" },
-    body: JSON.stringify(payload),
+  return helper(JSON.stringify(payload), {
+    headers: { "Content-Type": "application/json; charset=utf-8" }
   });
 }
 

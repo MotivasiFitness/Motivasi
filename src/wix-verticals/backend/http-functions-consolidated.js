@@ -3,24 +3,24 @@ import wixData from 'wix-data';
 import { mediaManager } from 'wix-media-backend';
 
 const JSON_HEADERS = {
-  'Content-Type': 'application/json',
+  'Content-Type': 'application/json; charset=utf-8',
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
 function jsonOk(body) {
-  return ok(body, { headers: JSON_HEADERS });
+  return ok(JSON.stringify(body), { headers: JSON_HEADERS });
 }
 function jsonBadRequest(body) {
-  return badRequest(body, { headers: JSON_HEADERS });
+  return badRequest(JSON.stringify(body), { headers: JSON_HEADERS });
 }
 function jsonServerError(body) {
-  return serverError(body, { headers: JSON_HEADERS });
+  return serverError(JSON.stringify(body), { headers: JSON_HEADERS });
 }
 
 function corsPreflight() {
-  return ok({ success: true, statusCode: 200 }, { headers: JSON_HEADERS });
+  return ok(JSON.stringify({ success: true, statusCode: 200 }), { headers: JSON_HEADERS });
 }
 
 // -----------------------------------------------------------------------------
@@ -58,12 +58,12 @@ export function options_parq() {
 export function get_parq() {
   // Wix doesn't provide a 405 helper, so we still return JSON via ok()
   return ok(
-    {
+    JSON.stringify({
       success: false,
       statusCode: 405,
       error: 'Method Not Allowed. Use POST to submit PAR-Q data.',
       allowedMethods: ['POST', 'OPTIONS'],
-    },
+    }),
     { headers: JSON_HEADERS }
   );
 }
