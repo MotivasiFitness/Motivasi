@@ -167,14 +167,43 @@ export async function post_parqSubmit(request: AnyRequest) {
     console.log('👤 Assigned to trainer:', submissionData.assignedTrainerId);
 
     console.log('💾 Attempting to save to ParqSubmissions collection...');
+    console.log('📦 EXACT PAYLOAD BEING INSERTED:', JSON.stringify(submissionData, null, 2));
 
     // Insert into database
     let insertResult;
     try {
       insertResult = await wixData.insert('ParqSubmissions', submissionData);
-      console.log('✅ Successfully saved to database:', insertResult._id);
+      
+      // HARD VERIFICATION: Confirm _id is returned
+      if (!insertResult || !insertResult._id) {
+        console.error('❌ CRITICAL: Insert returned but NO _id present!');
+        console.error('❌ Insert result:', JSON.stringify(insertResult, null, 2));
+        return serverError({
+          ok: false,
+          code: 'INSERT_VERIFICATION_FAILED',
+          error: 'Database insert did not return a valid ID. Please contact support.',
+        } as ParqResponse, { headers: JSON_HEADERS });
+      }
+      
+      console.log('✅ Successfully saved to database with _id:', insertResult._id);
+      console.log('✅ Full insert result:', JSON.stringify(insertResult, null, 2));
+      
+      // ADDITIONAL VERIFICATION: Try to immediately read back the record
+      try {
+        const verifyRead = await wixData.get('ParqSubmissions', insertResult._id);
+        if (verifyRead) {
+          console.log('✅ VERIFICATION PASSED: Record can be read back immediately');
+          console.log('✅ Verified record:', JSON.stringify(verifyRead, null, 2));
+        } else {
+          console.error('⚠️ WARNING: Record inserted but cannot be read back immediately');
+        }
+      } catch (verifyError) {
+        console.error('⚠️ WARNING: Failed to verify record read-back:', verifyError);
+      }
+      
     } catch (dbError: any) {
       console.error('❌ Database insert failed:', dbError);
+      console.error('❌ Error details:', JSON.stringify(dbError, null, 2));
       return serverError({
         ok: false,
         code: 'DATABASE_ERROR',
