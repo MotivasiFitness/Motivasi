@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useMember } from '@/integrations';
+import wixData from 'wix-data';
 
 
 type ParQFormData = {
@@ -294,6 +295,16 @@ export default function ParQPage() {
       return;
     }
 
+    // A) Diagnostic: Confirm wix-data works in this React runtime
+    console.log("wixData exists?", typeof wixData, wixData);
+    
+    if (typeof wixData === 'undefined' || !wixData) {
+      console.error('❌ CRITICAL: wix-data is not available in this React runtime');
+      setSubmitError('We couldn\'t submit your PAR-Q right now. Please contact hello@motivasi.co.uk');
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       const hasRedFlags =
         formData.redFlagSymptoms.length > 0 && !formData.redFlagSymptoms.includes('none');
@@ -358,66 +369,62 @@ Full Name: ${formData.fullName}
 Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       `;
 
-      // ✅ Call Wix HTTP Function at /_functions/parq
-      const response = await fetch('/_functions/parq', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          clientName: `${formData.firstName} ${formData.lastName}`.trim(),
-          email: formData.email,
-          memberId: member?._id || undefined,
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          dateOfBirth: formData.dateOfBirth,
-          hasHeartCondition: formData.medicalConditions === 'yes',
-          currentlyTakingMedication: formData.medications === 'yes',
-          medicalConditions: formData.medicalConditions,
-          medications: formData.medications,
-          surgery: formData.surgery,
-          familyHistory: formData.familyHistory,
-          currentPain: formData.currentPain,
-          pastInjuries: formData.pastInjuries,
-          redFlagSymptoms: formData.redFlagSymptoms,
-          formData: emailBody,
-        }),
-      });
+      // Compute flagsYes from medical yes answers and redFlagSymptoms
+      const flagsYes = 
+        formData.medicalConditions === 'yes' ||
+        formData.medications === 'yes' ||
+        formData.surgery === 'yes' ||
+        formData.familyHistory === 'yes' ||
+        formData.currentPain === 'yes' ||
+        formData.pastInjuries === 'yes' ||
+        (formData.redFlagSymptoms.length > 0 && !formData.redFlagSymptoms.includes('none'));
 
-      // Check if response is JSON
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        console.error('❌ Non-JSON response received:', contentType);
-        setSubmitError(
-          'Unexpected response format from server. Please contact us at hello@motivasi.co.uk'
-        );
-        return;
-      }
+      // Prepare data for ParqSubmissions collection
+      const parqData = {
+        clientName: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        phone: formData.phone,
+        dateOfBirth: formData.dateOfBirth,
+        memberId: member?._id || '',
+        submissionDate: new Date(),
+        status: 'New',
+        flagsYes: flagsYes,
+        answers: JSON.stringify({ ...formData, emailBody, hasRedFlags }),
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+      };
 
-      // Parse JSON response
-      const result = await response.json();
+      console.log('📤 Attempting to insert PAR-Q submission:', parqData);
 
-      if (!response.ok || !result?.ok) {
-        const msg = result?.error || 'Submission failed. Please try again.';
-        setSubmitError(`${msg} If the problem continues, contact us at hello@motivasi.co.uk`);
-        return;
-      }
+      // Insert into ParqSubmissions collection using wix-data
+      const insertedItem = await wixData.insert('ParqSubmissions', parqData);
 
-      if (!result.id) {
-        setSubmitError(
-          'Your submission may not have been saved. Please contact us at hello@motivasi.co.uk to confirm.'
-        );
+      console.log('✅ Insert result:', insertedItem);
+
+      // B) Success only if returned item has _id
+      if (!insertedItem || !insertedItem._id) {
+        console.error('❌ Insert failed: No _id returned', insertedItem);
+        setSubmitError('We couldn\'t submit your PAR-Q right now. Please contact hello@motivasi.co.uk');
         return;
       }
 
       // ✅ SUCCESS
+      console.log('✅ PAR-Q submission successful with ID:', insertedItem._id);
       setIsSubmitted(true);
       setFormData(INITIAL_FORM_DATA);
       setTimeout(() => setIsSubmitted(false), 5000);
 
     } catch (error) {
-      console.error('❌ Form submission error:', error);
-      setSubmitError('An error occurred while submitting the form. Please contact us directly at hello@motivasi.co.uk');
+      // B) Log full error object for debugging
+      console.error('❌ PAR-Q submission error (full object):', error);
+      console.error('❌ Error details:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+        errorObject: error
+      });
+      
+      // Always show user-friendly message on any insert failure
+      setSubmitError('We couldn\'t submit your PAR-Q right now. Please contact hello@motivasi.co.uk');
     } finally {
       setIsSubmitting(false);
     }
