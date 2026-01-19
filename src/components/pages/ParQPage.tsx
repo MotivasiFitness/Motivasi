@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useMember } from '@/integrations';
-import { submitParq } from '@/wix-verticals/backend/parq.web';
 
 
 type ParQFormData = {
@@ -359,19 +358,41 @@ Full Name: ${formData.fullName}
 Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       `;
 
-      // ✅ Call Wix Web Module (server-side) instead of /_functions/*
-      const result = await submitParq({
-        clientName: `${formData.firstName} ${formData.lastName}`.trim(),
-        email: formData.email,
-        memberId: member?._id || undefined,
-        answers: {
-          ...formData,
-          emailBody,
-          hasRedFlags,
+      // ✅ Call Wix HTTP Function at /_functions/parq
+      const response = await fetch('/_functions/parq', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          clientName: `${formData.firstName} ${formData.lastName}`.trim(),
+          email: formData.email,
+          memberId: member?._id || undefined,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          dateOfBirth: formData.dateOfBirth,
+          answers: {
+            ...formData,
+            emailBody,
+            hasRedFlags,
+          },
+        }),
       });
 
-      if (!result?.ok) {
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        console.error('❌ Non-JSON response received:', contentType);
+        setSubmitError(
+          'Unexpected response format from server. Please contact us at hello@motivasi.co.uk'
+        );
+        return;
+      }
+
+      // Parse JSON response
+      const result = await response.json();
+
+      if (!response.ok || !result?.ok) {
         const msg = result?.error || 'Submission failed. Please try again.';
         setSubmitError(`${msg} If the problem continues, contact us at hello@motivasi.co.uk`);
         return;
