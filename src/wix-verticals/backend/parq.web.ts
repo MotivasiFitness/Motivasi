@@ -1,13 +1,16 @@
 import wixData from "wix-data";
+import { webMethod, Permissions } from "wix-web-module";
 
-export async function submitParq(payload: {
+type SubmitParqPayload = {
   clientName: string;
   email: string;
   answers: Record<string, any>;
   memberId?: string;
-}) {
+};
+
+export const submitParq = webMethod(Permissions.Anyone, async (payload: SubmitParqPayload) => {
   try {
-    const { clientName, email, answers, memberId } = payload;
+    const { clientName, email, answers, memberId } = payload || ({} as SubmitParqPayload);
 
     if (!clientName || !email || !answers) {
       return {
@@ -17,8 +20,6 @@ export async function submitParq(payload: {
       };
     }
 
-    // Flag if any yes/no risk questions are "yes" (case-insensitive), any boolean true,
-    // or if redFlagSymptoms contains anything other than "none".
     const redFlags =
       Array.isArray((answers as any).redFlagSymptoms) &&
       (answers as any).redFlagSymptoms.length > 0 &&
@@ -51,4 +52,4 @@ export async function submitParq(payload: {
       error: "Unable to submit PAR-Q. Please try again.",
     };
   }
-}
+});
