@@ -1,52 +1,48 @@
-/**
- * HTTP Functions for Wix Backend
- * This file contains HTTP function handlers for the application
- */
+import { ok, badRequest, serverError } from "wix-http-functions";
+import wixData from "wix-data";
 
-import { ok, badRequest, serverError } from 'wix-http-functions';
-
-/**
- * Example HTTP function handler
- * Access via: https://yoursite.com/_functions/example
- */
-export function get_example(request) {
-  const response = {
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: {
-      message: 'Example HTTP function',
-      timestamp: new Date().toISOString()
-    }
-  };
-  
-  return ok(response);
+function json(helper, payload) {
+  return helper({
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+    body: JSON.stringify(payload),
+  });
 }
 
-/**
- * Example POST handler
- * Access via: https://yoursite.com/_functions/example (POST)
- */
-export function post_example(request) {
+export async function post_parq(request) {
   try {
-    const body = request.body;
-    
-    const response = {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: {
-        message: 'Data received',
-        data: body
-      }
-    };
-    
-    return ok(response);
-  } catch (error) {
-    return serverError({
-      body: {
-        error: error.message
-      }
+    let body;
+    try {
+      body = await request.body.json();
+    } catch (e) {
+      return json(badRequest, { ok: false, code: "INVALID_JSON", error: "Invalid JSON body" });
+    }
+
+    const { clientName, email, answers, memberId } = body || {};
+
+    if (!clientName || !email || !answers) {
+      return json(badRequest, { ok: false, code: "VALIDATION_ERROR", error: "Missing required fields" });
+    }
+
+    // Compute flagsYes (adjust if you have specific questions)
+    const flagsYes = Object.values(answers).some((v) => v === true || v === "Yes");
+
+    const inserted = await wixData.insert("ParqSubmissions", {
+      clientName,
+      email,
+      answers: JSON.stringify(answers),
+      flagsYes,
+      status: "New",
+      submissionDate: new Date(),
+      memberId: memberId || null,
+    });
+
+    return json(ok, { ok: true, id: inserted._id });
+  } catch (err) {
+    console.error("PARQ endpoint error:", err);
+    return json(serverError, {
+      ok: false,
+      code: "PARQ_SUBMIT_FAILED",
+      error: "Unable to submit PAR-Q. Please try again.",
     });
   }
 }
