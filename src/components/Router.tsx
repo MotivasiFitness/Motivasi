@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { MemberProvider } from '@/integrations';
 import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
 import { ScrollToTop } from '@/lib/scroll-to-top';
@@ -9,60 +10,62 @@ import { storeCollectionRouteLoader } from '@/wix-verticals/react-pages/react-ro
 import { defaultStoreCollectionRouteRedirectLoader } from '@/wix-verticals/react-pages/react-router/routes/store-redirect';
 import { Cart } from '@/wix-verticals/react-pages/react-router/routes/cart';
 import { MemberProtectedRoute } from '@/components/ui/member-protected-route';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 import Header from '@/components/layout/Header';
-import PortalHeader from '@/components/layout/PortalHeader';
 import Footer from '@/components/layout/Footer';
 import CookieBanner from '@/components/CookieBanner';
-import RoleSetup from '@/components/RoleSetup';
-import HomePage from '@/components/pages/HomePage';
-import AboutPage from '@/components/pages/AboutPage';
-import BlogPage from '@/components/pages/BlogPage';
-import BlogPostPage from '@/components/pages/BlogPostPage';
-import ParQPage from '@/components/pages/ParQPage';
-import CheckoutPage from '@/components/pages/CheckoutPage';
-import PaymentSuccessPage from '@/components/pages/PaymentSuccessPage';
-import OnlineTrainingPage from '@/components/pages/OnlineTrainingPage';
-import PrivacyPage from '@/components/pages/PrivacyPage';
-import TermsPage from '@/components/pages/TermsPage';
-import DisclaimerPage from '@/components/pages/DisclaimerPage';
-import AccessibilityPage from '@/components/pages/AccessibilityPage';
-import CoachingPackages from '@/components/store/CoachingPackages';
+
+// Lazy load pages
+const RoleSetup = lazy(() => import('@/components/RoleSetup'));
+const HomePage = lazy(() => import('@/components/pages/HomePage'));
+const AboutPage = lazy(() => import('@/components/pages/AboutPage'));
+const BlogPage = lazy(() => import('@/components/pages/BlogPage'));
+const BlogPostPage = lazy(() => import('@/components/pages/BlogPostPage'));
+const ParQPage = lazy(() => import('@/components/pages/ParQPage'));
+const CheckoutPage = lazy(() => import('@/components/pages/CheckoutPage'));
+const PaymentSuccessPage = lazy(() => import('@/components/pages/PaymentSuccessPage'));
+const OnlineTrainingPage = lazy(() => import('@/components/pages/OnlineTrainingPage'));
+const PrivacyPage = lazy(() => import('@/components/pages/PrivacyPage'));
+const TermsPage = lazy(() => import('@/components/pages/TermsPage'));
+const DisclaimerPage = lazy(() => import('@/components/pages/DisclaimerPage'));
+const AccessibilityPage = lazy(() => import('@/components/pages/AccessibilityPage'));
+const CoachingPackages = lazy(() => import('@/components/store/CoachingPackages'));
 
 // Client Portal Pages
-import ClientPortalLayout from '@/components/pages/ClientPortal/ClientPortalLayout';
-import DashboardPage from '@/components/pages/ClientPortal/DashboardPage';
-import MyProgramPage from '@/components/pages/ClientPortal/MyProgramPage';
-import NutritionPage from '@/components/pages/ClientPortal/NutritionPage';
-import ProgressPage from '@/components/pages/ClientPortal/ProgressPage';
-import BookingsPage from '@/components/pages/ClientPortal/BookingsPage';
-import VideoLibraryPage from '@/components/pages/ClientPortal/VideoLibraryPage';
-import WorkoutHistoryPage from '@/components/pages/ClientPortal/WorkoutHistoryPage';
-import ProfilePage from '@/components/pages/ClientPortal/ProfilePage';
+const ClientPortalLayout = lazy(() => import('@/components/pages/ClientPortal/ClientPortalLayout'));
+const DashboardPage = lazy(() => import('@/components/pages/ClientPortal/DashboardPage'));
+const MyProgramPage = lazy(() => import('@/components/pages/ClientPortal/MyProgramPage'));
+const NutritionPage = lazy(() => import('@/components/pages/ClientPortal/NutritionPage'));
+const ProgressPage = lazy(() => import('@/components/pages/ClientPortal/ProgressPage'));
+const BookingsPage = lazy(() => import('@/components/pages/ClientPortal/BookingsPage'));
+const VideoLibraryPage = lazy(() => import('@/components/pages/ClientPortal/VideoLibraryPage'));
+const WorkoutHistoryPage = lazy(() => import('@/components/pages/ClientPortal/WorkoutHistoryPage'));
+const ProfilePage = lazy(() => import('@/components/pages/ClientPortal/ProfilePage'));
 
 // Trainer Dashboard Pages
-import TrainerDashboardLayout from '@/components/pages/TrainerDashboard/TrainerDashboardLayout';
-import TrainerDashboardPage from '@/components/pages/TrainerDashboard/TrainerDashboardPage';
-import TrainerClientsPage from '@/components/pages/TrainerDashboard/TrainerClientsPage';
-import CreateProgramPage from '@/components/pages/TrainerDashboard/CreateProgramPage';
-import VideoReviewsPage from '@/components/pages/TrainerDashboard/VideoReviewsPage';
-import ClientProgressPage from '@/components/pages/TrainerDashboard/ClientProgressPage';
-import AIAssistantPage from '@/components/pages/TrainerDashboard/AIAssistantPage';
-import ProgramEditorPage from '@/components/pages/TrainerDashboard/ProgramEditorPage';
-import ProgramEditorEnhanced from '@/components/pages/TrainerDashboard/ProgramEditorEnhanced';
-import TrainerPreferencesPage from '@/components/pages/TrainerDashboard/TrainerPreferencesPage';
-import TrainerProfilePage from '@/components/pages/TrainerDashboard/TrainerProfilePage';
-import WorkoutAssignmentPage from '@/components/pages/TrainerDashboard/WorkoutAssignmentPage';
-import VideoLibraryManagementPage from '@/components/pages/TrainerDashboard/VideoLibraryManagementPage';
-import ClientNutritionPage from '@/components/pages/TrainerDashboard/ClientNutritionPage';
-import ProgramsCreatedPage from '@/components/pages/TrainerDashboard/ProgramsCreatedPage';
-import CompletedWorkoutsFeedbackPage from '@/components/pages/TrainerDashboard/CompletedWorkoutsFeedbackPage';
-import ClientProfilePage from '@/components/pages/TrainerDashboard/ClientProfilePage';
-import ParQSubmissionsPage from '@/components/pages/TrainerDashboard/ParQSubmissionsPage';
+const TrainerDashboardLayout = lazy(() => import('@/components/pages/TrainerDashboard/TrainerDashboardLayout'));
+const TrainerDashboardPage = lazy(() => import('@/components/pages/TrainerDashboard/TrainerDashboardPage'));
+const TrainerClientsPage = lazy(() => import('@/components/pages/TrainerDashboard/TrainerClientsPage'));
+const CreateProgramPage = lazy(() => import('@/components/pages/TrainerDashboard/CreateProgramPage'));
+const VideoReviewsPage = lazy(() => import('@/components/pages/TrainerDashboard/VideoReviewsPage'));
+const ClientProgressPage = lazy(() => import('@/components/pages/TrainerDashboard/ClientProgressPage'));
+const AIAssistantPage = lazy(() => import('@/components/pages/TrainerDashboard/AIAssistantPage'));
+const ProgramEditorPage = lazy(() => import('@/components/pages/TrainerDashboard/ProgramEditorPage'));
+const ProgramEditorEnhanced = lazy(() => import('@/components/pages/TrainerDashboard/ProgramEditorEnhanced'));
+const TrainerPreferencesPage = lazy(() => import('@/components/pages/TrainerDashboard/TrainerPreferencesPage'));
+const TrainerProfilePage = lazy(() => import('@/components/pages/TrainerDashboard/TrainerProfilePage'));
+const WorkoutAssignmentPage = lazy(() => import('@/components/pages/TrainerDashboard/WorkoutAssignmentPage'));
+const VideoLibraryManagementPage = lazy(() => import('@/components/pages/TrainerDashboard/VideoLibraryManagementPage'));
+const ClientNutritionPage = lazy(() => import('@/components/pages/TrainerDashboard/ClientNutritionPage'));
+const ProgramsCreatedPage = lazy(() => import('@/components/pages/TrainerDashboard/ProgramsCreatedPage'));
+const CompletedWorkoutsFeedbackPage = lazy(() => import('@/components/pages/TrainerDashboard/CompletedWorkoutsFeedbackPage'));
+const ClientProfilePage = lazy(() => import('@/components/pages/TrainerDashboard/ClientProfilePage'));
+const ParQSubmissionsPage = lazy(() => import('@/components/pages/TrainerDashboard/ParQSubmissionsPage'));
 
-import AdminDashboard from '@/components/pages/AdminDashboard';
-import ExerciseVideoReviewPage from '@/components/pages/ExerciseVideoReviewPage';
-import TrainerAssignmentMigration from '@/components/pages/TrainerAssignmentMigration';
+const AdminDashboard = lazy(() => import('@/components/pages/AdminDashboard'));
+const ExerciseVideoReviewPage = lazy(() => import('@/components/pages/ExerciseVideoReviewPage'));
+const TrainerAssignmentMigration = lazy(() => import('@/components/pages/TrainerAssignmentMigration'));
 
 // Main Layout with Header and Footer
 function SiteLayout() {
@@ -97,54 +100,102 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <HomePage />,
+        element: (
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+            <HomePage />
+          </Suspense>
+        ),
         routeMetadata: {
           pageIdentifier: 'home',
         },
       },
       {
         path: "about",
-        element: <AboutPage />,
+        element: (
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+            <AboutPage />
+          </Suspense>
+        ),
       },
       {
         path: "blog",
-        element: <BlogPage />,
+        element: (
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+            <BlogPage />
+          </Suspense>
+        ),
       },
       {
         path: "blog/:slug",
-        element: <BlogPostPage />,
+        element: (
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+            <BlogPostPage />
+          </Suspense>
+        ),
       },
       {
         path: "parq",
-        element: <ParQPage />,
+        element: (
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+            <ParQPage />
+          </Suspense>
+        ),
       },
       {
         path: "online-training",
-        element: <OnlineTrainingPage />,
+        element: (
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+            <OnlineTrainingPage />
+          </Suspense>
+        ),
       },
       {
         path: "privacy",
-        element: <PrivacyPage />,
+        element: (
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+            <PrivacyPage />
+          </Suspense>
+        ),
       },
       {
         path: "terms",
-        element: <TermsPage />,
+        element: (
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+            <TermsPage />
+          </Suspense>
+        ),
       },
       {
         path: "disclaimer",
-        element: <DisclaimerPage />,
+        element: (
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+            <DisclaimerPage />
+          </Suspense>
+        ),
       },
       {
         path: "accessibility",
-        element: <AccessibilityPage />,
+        element: (
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+            <AccessibilityPage />
+          </Suspense>
+        ),
       },
       {
         path: "checkout",
-        element: <CheckoutPage />,
+        element: (
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+            <CheckoutPage />
+          </Suspense>
+        ),
       },
       {
         path: "payment-success",
-        element: <PaymentSuccessPage />,
+        element: (
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+            <PaymentSuccessPage />
+          </Suspense>
+        ),
       },
       {
         path: "store",
@@ -155,14 +206,16 @@ const router = createBrowserRouter([
       {
         path: "store/:categorySlug",
         element: (
-          <div className="bg-soft-white py-12 px-8 lg:px-20">
-            <div className="max-w-[100rem] mx-auto">
-              <h1 className="font-heading text-5xl font-bold text-charcoal-black mb-12">
-                Book Your Coaching Package
-              </h1>
-              <CoachingPackages />
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+            <div className="bg-soft-white py-12 px-8 lg:px-20">
+              <div className="max-w-[100rem] mx-auto">
+                <h1 className="font-heading text-5xl font-bold text-charcoal-black mb-12">
+                  Book Your Coaching Package
+                </h1>
+                <CoachingPackages />
+              </div>
             </div>
-          </div>
+          </Suspense>
         ),
         loader: storeCollectionRouteLoader,
         routeMetadata: {
@@ -206,47 +259,85 @@ const router = createBrowserRouter([
       },
       {
         path: "role-setup",
-        element: <RoleSetup />,
+        element: (
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+            <RoleSetup />
+          </Suspense>
+        ),
       },
       {
         path: "portal",
         element: (
           <MemberProtectedRoute>
-            <ClientPortalLayout />
+            <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+              <ClientPortalLayout />
+            </Suspense>
           </MemberProtectedRoute>
         ),
         children: [
           {
             index: true,
-            element: <DashboardPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <DashboardPage />
+              </Suspense>
+            ),
           },
           {
             path: "program",
-            element: <MyProgramPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <MyProgramPage />
+              </Suspense>
+            ),
           },
           {
             path: "nutrition",
-            element: <NutritionPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <NutritionPage />
+              </Suspense>
+            ),
           },
           {
             path: "progress",
-            element: <ProgressPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <ProgressPage />
+              </Suspense>
+            ),
           },
           {
             path: "bookings",
-            element: <BookingsPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <BookingsPage />
+              </Suspense>
+            ),
           },
           {
             path: "video-library",
-            element: <VideoLibraryPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <VideoLibraryPage />
+              </Suspense>
+            ),
           },
           {
             path: "history",
-            element: <WorkoutHistoryPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <WorkoutHistoryPage />
+              </Suspense>
+            ),
           },
           {
             path: "profile",
-            element: <ProfilePage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <ProfilePage />
+              </Suspense>
+            ),
           },
         ],
       },
@@ -254,77 +345,147 @@ const router = createBrowserRouter([
         path: "trainer",
         element: (
           <MemberProtectedRoute>
-            <TrainerDashboardLayout />
+            <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+              <TrainerDashboardLayout />
+            </Suspense>
           </MemberProtectedRoute>
         ),
         children: [
           {
             index: true,
-            element: <TrainerDashboardPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <TrainerDashboardPage />
+              </Suspense>
+            ),
           },
           {
             path: "clients",
-            element: <TrainerClientsPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <TrainerClientsPage />
+              </Suspense>
+            ),
           },
           {
             path: "programs",
-            element: <CreateProgramPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <CreateProgramPage />
+              </Suspense>
+            ),
           },
           {
             path: "programs-created",
-            element: <ProgramsCreatedPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <ProgramsCreatedPage />
+              </Suspense>
+            ),
           },
           {
             path: "ai-assistant",
-            element: <AIAssistantPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <AIAssistantPage />
+              </Suspense>
+            ),
           },
           {
             path: "program-editor",
-            element: <ProgramEditorPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <ProgramEditorPage />
+              </Suspense>
+            ),
           },
           {
             path: "program-editor-enhanced",
-            element: <ProgramEditorEnhanced />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <ProgramEditorEnhanced />
+              </Suspense>
+            ),
           },
           {
             path: "preferences",
-            element: <TrainerPreferencesPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <TrainerPreferencesPage />
+              </Suspense>
+            ),
           },
           {
             path: "profile",
-            element: <TrainerProfilePage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <TrainerProfilePage />
+              </Suspense>
+            ),
           },
           {
             path: "workout-assignment",
-            element: <WorkoutAssignmentPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <WorkoutAssignmentPage />
+              </Suspense>
+            ),
           },
           {
             path: "video-reviews",
-            element: <VideoReviewsPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <VideoReviewsPage />
+              </Suspense>
+            ),
           },
           {
             path: "video-library",
-            element: <VideoLibraryManagementPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <VideoLibraryManagementPage />
+              </Suspense>
+            ),
           },
           {
             path: "progress",
-            element: <ClientProgressPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <ClientProgressPage />
+              </Suspense>
+            ),
           },
           {
             path: "nutrition",
-            element: <ClientNutritionPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <ClientNutritionPage />
+              </Suspense>
+            ),
           },
           {
             path: "workout-feedback",
-            element: <CompletedWorkoutsFeedbackPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <CompletedWorkoutsFeedbackPage />
+              </Suspense>
+            ),
           },
           {
             path: "client-profile/:clientId",
-            element: <ClientProfilePage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <ClientProfilePage />
+              </Suspense>
+            ),
           },
           {
             path: "parq-submissions",
-            element: <ParQSubmissionsPage />,
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <ParQSubmissionsPage />
+              </Suspense>
+            ),
           },
         ],
       },
@@ -332,7 +493,9 @@ const router = createBrowserRouter([
         path: "exercise-video-review",
         element: (
           <MemberProtectedRoute>
-            <ExerciseVideoReviewPage />
+            <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+              <ExerciseVideoReviewPage />
+            </Suspense>
           </MemberProtectedRoute>
         ),
       },
@@ -340,7 +503,9 @@ const router = createBrowserRouter([
         path: "admin",
         element: (
           <MemberProtectedRoute>
-            <AdminDashboard />
+            <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+              <AdminDashboard />
+            </Suspense>
           </MemberProtectedRoute>
         ),
       },
@@ -348,7 +513,9 @@ const router = createBrowserRouter([
         path: "admin/trainer-assignment",
         element: (
           <MemberProtectedRoute>
-            <TrainerAssignmentMigration />
+            <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+              <TrainerAssignmentMigration />
+            </Suspense>
           </MemberProtectedRoute>
         ),
       },
