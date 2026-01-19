@@ -84,16 +84,39 @@ export function get_parq() {
 }
 
 export async function post_parq(request: any) {
+  // CRITICAL: Wrap entire function in try/catch to ensure JSON response even on unexpected errors
   try {
     console.log('=== PAR-Q Submission Backend ===');
 
+    // ✅ Validate request object exists
+    if (!request) {
+      console.error('❌ No request object received');
+      return jsonBadRequest({
+        success: false,
+        statusCode: 400,
+        error: 'No request object received',
+      });
+    }
+
     // ✅ Correct body parsing for Wix HTTP functions
-    const raw = request?.body ? await request.body.text() : '';
+    let raw = '';
+    try {
+      raw = request?.body ? await request.body.text() : '';
+    } catch (bodyError) {
+      console.error('❌ Failed to read request body:', bodyError);
+      return jsonBadRequest({
+        success: false,
+        statusCode: 400,
+        error: 'Failed to read request body',
+      });
+    }
+
     let requestData: any = {};
 
     try {
       requestData = raw ? JSON.parse(raw) : {};
     } catch (e) {
+      console.error('❌ Invalid JSON in request body:', e);
       return jsonBadRequest({
         success: false,
         statusCode: 400,
@@ -101,10 +124,18 @@ export async function post_parq(request: any) {
       });
     }
 
+    console.log('📥 Request data received:', {
+      firstName: requestData.firstName,
+      lastName: requestData.lastName,
+      email: requestData.email,
+      memberId: requestData.memberId,
+    });
+
     // Validate required fields
     const requiredFields = ['firstName', 'lastName', 'email'];
     const missingFields = requiredFields.filter((f) => !requestData?.[f]);
     if (missingFields.length > 0) {
+      console.error('❌ Missing required fields:', missingFields);
       return jsonBadRequest({
         success: false,
         statusCode: 400,
@@ -115,6 +146,7 @@ export async function post_parq(request: any) {
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(requestData.email)) {
+      console.error('❌ Invalid email format:', requestData.email);
       return jsonBadRequest({
         success: false,
         statusCode: 400,
@@ -134,6 +166,8 @@ export async function post_parq(request: any) {
       requestData.pastInjuries === 'yes' ||
       (requestData.redFlagSymptoms && requestData.redFlagSymptoms.length > 0 && !requestData.redFlagSymptoms.includes('none'))
     );
+
+    console.log('🏥 Medical flags detected:', flagsYes);
 
     // Build item for CMS (collection ID appears to be case-sensitive)
     const submissionData: any = {
@@ -159,7 +193,20 @@ export async function post_parq(request: any) {
       notes: '',
     };
 
-    const insertResult = await wixData.insert('ParqSubmissions', submissionData);
+    console.log('💾 Attempting to save to ParqSubmissions collection...');
+
+    let insertResult;
+    try {
+      insertResult = await wixData.insert('ParqSubmissions', submissionData);
+      console.log('✅ Successfully saved to database:', insertResult._id);
+    } catch (dbError: any) {
+      console.error('❌ Database insert failed:', dbError);
+      return jsonServerError({
+        success: false,
+        statusCode: 500,
+        error: `Database error: ${dbError?.message || 'Failed to save submission'}`,
+      });
+    }
 
     // Send email notification to hello@motivasi.co.uk
     try {
@@ -206,9 +253,12 @@ This is a notification only. Full questionnaire details are available in the Tra
       console.log('✅ Email notification sent to hello@motivasi.co.uk');
     } catch (emailError) {
       console.error('⚠️ Failed to send email notification:', emailError);
-      // Don't fail the submission if email fails
+      // Don't fail the submission if email fails - submission is already saved
     }
 
+    console.log('✅ PAR-Q submission completed successfully');
+
+    // CRITICAL: Return success response with all required fields
     return jsonOk({
       success: true,
       statusCode: 200,
@@ -217,12 +267,14 @@ This is a notification only. Full questionnaire details are available in the Tra
       message: 'PAR-Q submission saved successfully',
     });
   } catch (error: any) {
-    console.error('PAR-Q error:', error);
+    // CRITICAL: Catch ANY unexpected error and return JSON
+    console.error('❌ Unexpected error in PAR-Q handler:', error);
 
     return jsonServerError({
       success: false,
       statusCode: 500,
-      error: error?.message || 'Failed to save PAR-Q submission',
+      error: error?.message || 'Unexpected server error',
+      details: process.env.NODE_ENV === 'development' ? error?.stack : undefined,
     });
   }
 }

@@ -402,9 +402,21 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       console.log('📥 PAR-Q Submit - Response Status:', response.status);
       console.log('📥 PAR-Q Submit - Content-Type:', contentType);
 
-      // CRITICAL: Only accept JSON responses
+      // Read response body once
+      let responseText = '';
+      try {
+        responseText = await response.text();
+        console.log('📥 PAR-Q Submit - Raw response:', responseText.substring(0, 500));
+      } catch (readError) {
+        console.error('❌ PAR-Q Submit - Failed to read response:', readError);
+        setSubmitError('Failed to read server response. Please contact us directly at hello@motivasi.co.uk');
+        return;
+      }
+
+      // CRITICAL: Check if response is JSON
       if (!contentType.includes('application/json')) {
         console.error('❌ PAR-Q Submit - Expected JSON but got:', contentType);
+        console.error('❌ Response body:', responseText.substring(0, 200));
         console.error('❌ This indicates the endpoint is not deployed or returning HTML homepage');
         setSubmitError('Server configuration error: endpoint not returning JSON. Please contact us directly at hello@motivasi.co.uk');
         return;
@@ -413,12 +425,22 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       // Parse JSON response
       let data;
       try {
-        const text = await response.text();
-        console.log('📥 PAR-Q Submit - Raw response:', text.substring(0, 500));
-        data = JSON.parse(text);
+        data = JSON.parse(responseText);
+        console.log('📥 PAR-Q Submit - Parsed JSON:', data);
       } catch (parseError) {
         console.error('❌ PAR-Q Submit - Failed to parse JSON:', parseError);
-        setSubmitError('Invalid server response. Please contact us directly at hello@motivasi.co.uk');
+        console.error('❌ Response text:', responseText.substring(0, 200));
+        setSubmitError('Invalid server response format. Please contact us directly at hello@motivasi.co.uk');
+        return;
+      }
+
+      // CRITICAL: Check HTTP status code first
+      if (!response.ok || response.status >= 400) {
+        console.error('❌ PAR-Q Submit - HTTP error status:', response.status);
+        console.error('Response data:', data);
+        
+        const errorMessage = data.error || data.message || `Server returned error status ${response.status}`;
+        setSubmitError(`Failed to submit form: ${errorMessage}. Please contact us directly at hello@motivasi.co.uk`);
         return;
       }
 
