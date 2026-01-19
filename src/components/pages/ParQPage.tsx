@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useMember } from '@/integrations';
-import { getBackendEndpoint, BACKEND_FUNCTIONS } from '@/lib/backend-config';
+import { submitParq } from '@/wix-verticals/backend/parq.web';
 
 type ParQFormData = {
   // Basic Information
@@ -358,87 +358,46 @@ Full Name: ${formData.fullName}
 Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       `;
 
-      // Use environment-aware backend endpoint
-      const endpoint = getBackendEndpoint(BACKEND_FUNCTIONS.PARQ);
-      console.log('📤 PAR-Q Submit - Request URL:', endpoint);
+      // Call Velo Web Module directly (no HTTP routing)
+      console.log('📤 PAR-Q Submit - Calling Velo Web Module');
 
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          // Core fields (match your CMS)
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-          phone: formData.phone,
-          dateOfBirth: formData.dateOfBirth, // YYYY-MM-DD
+      const result = await submitParq({
+        // Core fields (match your CMS)
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        dateOfBirth: formData.dateOfBirth, // YYYY-MM-DD
 
-          // Map to your existing CMS booleans if you have them
-          hasHeartCondition: formData.medicalConditions === 'yes',
-          currentlyTakingMedication: formData.medications === 'yes',
+        // Map to your existing CMS booleans if you have them
+        hasHeartCondition: formData.medicalConditions === 'yes',
+        currentlyTakingMedication: formData.medications === 'yes',
 
-          // Include member ID if user is logged in
-          memberId: member?._id || undefined,
+        // Include member ID if user is logged in
+        memberId: member?._id || undefined,
 
-          // Medical risk indicators for flagsYes calculation
-          medicalConditions: formData.medicalConditions,
-          medications: formData.medications,
-          surgery: formData.surgery,
-          familyHistory: formData.familyHistory,
-          currentPain: formData.currentPain,
-          pastInjuries: formData.pastInjuries,
-          redFlagSymptoms: formData.redFlagSymptoms,
+        // Medical risk indicators for flagsYes calculation
+        medicalConditions: formData.medicalConditions,
+        medications: formData.medications,
+        surgery: formData.surgery,
+        familyHistory: formData.familyHistory,
+        currentPain: formData.currentPain,
+        pastInjuries: formData.pastInjuries,
+        redFlagSymptoms: formData.redFlagSymptoms,
 
-          // Store the entire submission (best for automations + audit trail)
-          formData: emailBody,
-        }),
+        // Store the entire submission (best for automations + audit trail)
+        formData: emailBody,
       });
 
-      // Log response details for debugging
-      const contentType = response.headers.get('content-type') || '';
-      console.log('📥 PAR-Q Submit - Response Status:', response.status);
-      console.log('📥 PAR-Q Submit - Content-Type:', contentType);
+      console.log('📥 PAR-Q Submit - Result:', result);
 
-      // CRITICAL: Check if response is JSON BEFORE reading body
-      if (!contentType.includes('application/json')) {
-        console.error('❌ PAR-Q Submit - Expected JSON but got:', contentType);
-        console.error('❌ This indicates the endpoint is not deployed or returning HTML');
-        
-        // Read response text for logging only
-        let responseText = '';
-        try {
-          responseText = await response.text();
-          console.error('❌ Response body (first 500 chars):', responseText.substring(0, 500));
-        } catch (readError) {
-          console.error('❌ Could not read response body:', readError);
-        }
-        
-        // User-friendly error message (no technical jargon)
-        setSubmitError('We couldn\'t submit your PAR-Q right now. Please try again or contact us directly at hello@motivasi.co.uk');
-        return;
-      }
-
-      // Read response body once (we know it's JSON now)
-      let data;
-      try {
-        data = await response.json();
-        console.log('📥 PAR-Q Submit - Parsed JSON:', data);
-      } catch (parseError) {
-        console.error('❌ PAR-Q Submit - Failed to parse JSON:', parseError);
-        setSubmitError('We couldn\'t process your submission. Please try again or contact us directly at hello@motivasi.co.uk');
-        return;
-      }
-
-      // Check for success using the backend's response format
-      // Backend returns: { success: true, statusCode: 200, itemId: '...', submissionId: '...', message: '...' }
-      if (!data.success || !response.ok) {
+      // Check for success using the web module's response format
+      // Web module returns: { ok: true, id: '...' } or { ok: false, code: '...', error: '...' }
+      if (!result.ok) {
         console.error('❌ PAR-Q Submit - Backend returned error');
-        console.error('Response data:', data);
+        console.error('Result:', result);
         
-        const errorMessage = data.error || 'Submission failed';
+        const errorMessage = result.error || 'Submission failed';
         console.error(`❌ Error: ${errorMessage}`);
         
         // User-friendly error message
@@ -447,18 +406,16 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       }
 
       // Verify we have a submission ID
-      const submissionId = data.submissionId || data.itemId;
-      if (!submissionId) {
+      if (!result.id) {
         console.error('❌ PAR-Q Submit - Success but no submission ID returned');
-        console.error('Response data:', data);
+        console.error('Result:', result);
         setSubmitError('Your submission may not have been saved. Please contact us at hello@motivasi.co.uk to confirm.');
         return;
       }
 
       // SUCCESS - All checks passed
       console.log('✅ PAR-Q submitted successfully!');
-      console.log('✅ Submission ID:', submissionId);
-      console.log('✅ Response:', data);
+      console.log('✅ Submission ID:', result.id);
 
       setIsSubmitted(true);
       setFormData(INITIAL_FORM_DATA);
