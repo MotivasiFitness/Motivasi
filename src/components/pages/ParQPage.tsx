@@ -358,38 +358,35 @@ Full Name: ${formData.fullName}
 Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       `;
 
-           // ✅ Call Wix Web Module (server-side) instead of /_functions/*
+      // ✅ Call Wix Web Module (server-side) instead of /_functions/*
       const result = await submitParq({
-        ...
+        clientName: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        memberId: member?._id || undefined,
+        answers: {
+          ...formData,
+          emailBody,
+          hasRedFlags,
+        },
       });
 
-  clientName: `${formData.firstName} ${formData.lastName}`.trim(),
-  email: formData.email,
-  memberId: member?._id || undefined,
-  answers: {
-    ...formData,
-    emailBody,
-    hasRedFlags,
-  },
-});
+      if (!result?.ok) {
+        const msg = result?.error || 'Submission failed. Please try again.';
+        setSubmitError(`${msg} If the problem continues, contact us at hello@motivasi.co.uk`);
+        return;
+      }
 
-if (!result?.ok) {
-  const msg = result?.error || 'Submission failed. Please try again.';
-  setSubmitError(`${msg} If the problem continues, contact us at hello@motivasi.co.uk`);
-  return;
-}
+      if (!result.id) {
+        setSubmitError(
+          'Your submission may not have been saved. Please contact us at hello@motivasi.co.uk to confirm.'
+        );
+        return;
+      }
 
-if (!result.id) {
-  setSubmitError(
-    'Your submission may not have been saved. Please contact us at hello@motivasi.co.uk to confirm.'
-  );
-  return;
-}
-
-// ✅ SUCCESS
-setIsSubmitted(true);
-setFormData(INITIAL_FORM_DATA);
-setTimeout(() => setIsSubmitted(false), 5000);
+      // ✅ SUCCESS
+      setIsSubmitted(true);
+      setFormData(INITIAL_FORM_DATA);
+      setTimeout(() => setIsSubmitted(false), 5000);
 
     } catch (error) {
       console.error('❌ Form submission error:', error);
