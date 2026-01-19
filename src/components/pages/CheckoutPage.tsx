@@ -42,12 +42,14 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     // Load cart items from localStorage or session
-    const storedItems = localStorage.getItem('checkoutItems');
-    if (storedItems) {
-      setCartItems(JSON.parse(storedItems));
-    } else {
-      // If no items, redirect back to store
-      navigate('/store');
+    if (typeof window !== 'undefined') {
+      const storedItems = localStorage.getItem('checkoutItems');
+      if (storedItems) {
+        setCartItems(JSON.parse(storedItems));
+      } else {
+        // If no items, redirect back to store
+        navigate('/store');
+      }
     }
   }, [navigate]);
 
@@ -178,7 +180,9 @@ export default function CheckoutPage() {
 
       // Simulate successful payment
       setPaymentSuccess(true);
-      localStorage.removeItem('checkoutItems');
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('checkoutItems');
+      }
 
       // Redirect to success page after 3 seconds
       setTimeout(() => {

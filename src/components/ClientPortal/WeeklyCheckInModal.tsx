@@ -39,8 +39,10 @@ export default function WeeklyCheckInModal({
   // Check if this is the first check-in
   useEffect(() => {
     if (isOpen && clientId) {
-      const hasCompletedCheckIn = localStorage.getItem(`firstCheckInCompleted_${clientId}`);
-      setIsFirstCheckIn(!hasCompletedCheckIn);
+      if (typeof window !== 'undefined') {
+        const hasCompletedCheckIn = localStorage.getItem(`firstCheckInCompleted_${clientId}`);
+        setIsFirstCheckIn(!hasCompletedCheckIn);
+      }
     }
   }, [isOpen, clientId]);
 
@@ -70,7 +72,9 @@ export default function WeeklyCheckInModal({
 
       // Mark first check-in as completed
       if (isFirstCheckIn) {
-        localStorage.setItem(`firstCheckInCompleted_${clientId}`, 'true');
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(`firstCheckInCompleted_${clientId}`, 'true');
+        }
       }
 
       onSubmitSuccess?.();

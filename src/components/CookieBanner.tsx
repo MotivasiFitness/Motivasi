@@ -18,11 +18,13 @@ export default function CookieBanner() {
 
   // Check if user has already made a cookie choice
   useEffect(() => {
-    const savedPreferences = localStorage.getItem('cookiePreferences');
-    if (!savedPreferences) {
-      setIsVisible(true);
-    } else {
-      setPreferences(JSON.parse(savedPreferences));
+    if (typeof window !== 'undefined') {
+      const savedPreferences = localStorage.getItem('cookiePreferences');
+      if (!savedPreferences) {
+        setIsVisible(true);
+      } else {
+        setPreferences(JSON.parse(savedPreferences));
+      }
     }
   }, []);
 
@@ -32,7 +34,9 @@ export default function CookieBanner() {
       analytics: true,
       marketing: true,
     };
-    localStorage.setItem('cookiePreferences', JSON.stringify(allAccepted));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('cookiePreferences', JSON.stringify(allAccepted));
+    }
     setPreferences(allAccepted);
     setIsVisible(false);
   };
@@ -43,13 +47,17 @@ export default function CookieBanner() {
       analytics: false,
       marketing: false,
     };
-    localStorage.setItem('cookiePreferences', JSON.stringify(rejected));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('cookiePreferences', JSON.stringify(rejected));
+    }
     setPreferences(rejected);
     setIsVisible(false);
   };
 
   const handleSavePreferences = () => {
-    localStorage.setItem('cookiePreferences', JSON.stringify(preferences));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('cookiePreferences', JSON.stringify(preferences));
+    }
     setIsVisible(false);
     setShowPreferences(false);
   };

@@ -100,7 +100,9 @@ export default function CoachingPackages() {
       currency: currencySymbols[selectedCurrency],
       quantity: 1,
     };
-    localStorage.setItem('checkoutItems', JSON.stringify([checkoutItem]));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('checkoutItems', JSON.stringify([checkoutItem]));
+    }
     // Navigate to checkout page
     navigate('/checkout');
   };

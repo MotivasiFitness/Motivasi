@@ -46,9 +46,11 @@ export default function DashboardPage() {
         setClientProfile(profile || null);
 
         // Check if this is the first login (profile complete but no welcome shown)
-        const hasSeenWelcome = localStorage.getItem(`welcomeShown_${member.loginEmail}`);
-        if (profile && !isProfileIncomplete(profile) && !hasSeenWelcome) {
-          setShowWelcomeMessage(true);
+        if (typeof window !== 'undefined') {
+          const hasSeenWelcome = localStorage.getItem(`welcomeShown_${member.loginEmail}`);
+          if (profile && !isProfileIncomplete(profile) && !hasSeenWelcome) {
+            setShowWelcomeMessage(true);
+          }
         }
 
         // Fetch upcoming bookings
@@ -195,7 +197,9 @@ export default function DashboardPage() {
 
   const handleDismissWelcome = () => {
     if (member?.loginEmail) {
-      localStorage.setItem(`welcomeShown_${member.loginEmail}`, 'true');
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(`welcomeShown_${member.loginEmail}`, 'true');
+      }
     }
     setShowWelcomeMessage(false);
   };

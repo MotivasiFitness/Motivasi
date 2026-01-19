@@ -131,9 +131,11 @@ export default function MyProgramPage() {
         setClientProfile(profile || null);
 
         // Check if this is the first workout view
-        const hasSeenFirstWorkout = localStorage.getItem(`firstWorkoutSeen_${member.loginEmail}`);
-        if (!hasSeenFirstWorkout) {
-          setShowFirstWorkoutReassurance(true);
+        if (typeof window !== 'undefined') {
+          const hasSeenFirstWorkout = localStorage.getItem(`firstWorkoutSeen_${member.loginEmail}`);
+          if (!hasSeenFirstWorkout) {
+            setShowFirstWorkoutReassurance(true);
+          }
         }
 
         // Fetch active program cycle
@@ -347,7 +349,9 @@ export default function MyProgramPage() {
     try {
       // Hide first workout reassurance after first completion
       if (showFirstWorkoutReassurance && member?.loginEmail) {
-        localStorage.setItem(`firstWorkoutSeen_${member.loginEmail}`, 'true');
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(`firstWorkoutSeen_${member.loginEmail}`, 'true');
+        }
         setShowFirstWorkoutReassurance(false);
       }
 
@@ -411,7 +415,10 @@ export default function MyProgramPage() {
       setSessionCompleteMessage(true);
 
       // Check if this is the first workout ever completed
-      const hasCompletedFirstWorkout = localStorage.getItem(`firstWorkoutCompleted_${member?._id}`);
+      let hasCompletedFirstWorkout = null;
+      if (typeof window !== 'undefined') {
+        hasCompletedFirstWorkout = localStorage.getItem(`firstWorkoutCompleted_${member?._id}`);
+      }
       const isFirstWorkout = !hasCompletedFirstWorkout;
 
       // Show feedback prompt after a brief celebration
@@ -422,7 +429,9 @@ export default function MyProgramPage() {
         
         // Show first workout reinforcement if applicable
         if (isFirstWorkout && member?._id) {
-          localStorage.setItem(`firstWorkoutCompleted_${member._id}`, 'true');
+          if (typeof window !== 'undefined') {
+            localStorage.setItem(`firstWorkoutCompleted_${member._id}`, 'true');
+          }
           // Show subtle reinforcement before feedback prompt
           alert('✓ First workout complete! You\'re on track. Consistency is what builds results, and logging your workouts helps your coach support you better. Keep going!');
         }
