@@ -76,22 +76,35 @@ export async function post_parq(request) {
     try {
       data = raw ? JSON.parse(raw) : {};
     } catch (e) {
-      return jsonBadRequest({ success: false, statusCode: 400, error: 'Invalid JSON in request body' });
+      return jsonBadRequest({ ok: false, code: 'INVALID_JSON', error: 'Invalid JSON in request body' });
     }
 
     const missing = ['firstName', 'lastName', 'email'].filter((k) => !data[k]);
     if (missing.length) {
       return jsonBadRequest({
-        success: false,
-        statusCode: 400,
+        ok: false,
+        code: 'VALIDATION_ERROR',
         error: `Missing required fields: ${missing.join(', ')}`,
       });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(String(data.email))) {
-      return jsonBadRequest({ success: false, statusCode: 400, error: 'Invalid email format' });
+      return jsonBadRequest({ ok: false, code: 'VALIDATION_ERROR', error: 'Invalid email format' });
     }
+
+    // Determine if any medical risk flags are present
+    const flagsYes = Boolean(
+      data.hasHeartCondition ||
+      data.currentlyTakingMedication ||
+      data.medicalConditions === 'yes' ||
+      data.medications === 'yes' ||
+      data.surgery === 'yes' ||
+      data.familyHistory === 'yes' ||
+      data.currentPain === 'yes' ||
+      data.pastInjuries === 'yes' ||
+      (data.redFlagSymptoms && data.redFlagSymptoms.length > 0 && !data.redFlagSymptoms.includes('none'))
+    );
 
     const item = {
       firstName: data.firstName,
@@ -104,9 +117,14 @@ export async function post_parq(request) {
       hasHeartCondition: Boolean(data.hasHeartCondition),
       currentlyTakingMedication: Boolean(data.currentlyTakingMedication),
 
-      // Save full submission for audit + email body
-      formData: typeof data.formData === 'string' ? data.formData : JSON.stringify(data, null, 2),
-      submittedAt: new Date(),
+      // New fields for trainer portal
+      memberId: data.memberId || undefined,
+      submissionDate: new Date(),
+      answers: typeof data.formData === 'string' ? data.formData : JSON.stringify(data, null, 2),
+      flagsYes: flagsYes,
+      status: 'New',
+      assignedTrainerId: data.assignedTrainerId || undefined,
+      notes: '',
     };
 
     const inserted = await wixData.insert('ParqSubmissions', item);
@@ -127,26 +145,29 @@ export async function post_parq(request) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          _subject: `New PAR-Q Submission - ${data.firstName} ${data.lastName}`,
+          _subject: `New PAR-Q Submission${flagsYes ? ' - MEDICAL CLEARANCE REQUIRED' : ''} - ${data.firstName} ${data.lastName}`,
           _replyto: data.email,
           _to: 'hello@motivasi.co.uk',
           message: `
 New PAR-Q & Health Questionnaire Submission
+${flagsYes ? '\n⚠️ MEDICAL CLEARANCE REQUIRED - Client answered YES to medical risk questions\n' : ''}
 
 Name: ${data.firstName} ${data.lastName}
 Email: ${data.email}
 Submitted: ${submittedDate}
+Status: New
 
-${item.formData}
+This submission is now available in the Trainer Portal under "PAR-Q Submissions".
+View full details and add notes: [Login to Trainer Portal]
 
 ---
-This PAR-Q submission has been saved to the CMS database.
+This is a notification only. Full questionnaire details are available in the Trainer Portal.
           `,
           first_name: data.firstName,
           last_name: data.lastName,
           email: data.email,
-          form_data: item.formData,
           submitted_date: submittedDate,
+          has_medical_flags: flagsYes,
         })
       });
       
@@ -157,17 +178,14 @@ This PAR-Q submission has been saved to the CMS database.
     }
 
     return jsonOk({
-      success: true,
-      statusCode: 200,
-      itemId: inserted._id,
-      submissionId: inserted._id,
-      message: 'PAR-Q submission saved successfully',
+      ok: true,
+      id: inserted._id,
     });
   } catch (err) {
     return jsonServerError({
-      success: false,
-      statusCode: 500,
-      error: (err && err.message) || 'Failed to save PAR-Q submission',
+      ok: false,
+      code: 'PARQ_SUBMIT_FAILED',
+      error: 'Unable to submit PAR-Q. Please try again.',
     });
   }
 }
