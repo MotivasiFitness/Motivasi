@@ -17,9 +17,20 @@ export async function submitParq(payload: {
       };
     }
 
-    const flagsYes = Object.values(answers).some(
-      v => v === true || v === "Yes"
-    );
+    // Flag if any yes/no risk questions are "yes" (case-insensitive), any boolean true,
+    // or if redFlagSymptoms contains anything other than "none".
+    const redFlags =
+      Array.isArray((answers as any).redFlagSymptoms) &&
+      (answers as any).redFlagSymptoms.length > 0 &&
+      !(answers as any).redFlagSymptoms.includes("none");
+
+    const flagsYes =
+      redFlags ||
+      Object.values(answers).some((v) => {
+        if (v === true) return true;
+        if (typeof v === "string") return v.toLowerCase() === "yes";
+        return false;
+      });
 
     const record = await wixData.insert("ParqSubmissions", {
       clientName,
