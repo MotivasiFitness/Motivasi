@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useMember } from '@/integrations';
-import { submitParq } from '@/wix-verticals/backend/parq.web';
 
 type ParQFormData = {
   // Basic Information
@@ -358,10 +357,10 @@ Full Name: ${formData.fullName}
 Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       `;
 
-      // Call Velo Web Module directly (no HTTP routing)
-      console.log('📤 PAR-Q Submit - Calling Velo Web Module');
+      // Call HTTP Function endpoint (proper JSON response)
+      console.log('📤 PAR-Q Submit - Calling HTTP Function');
 
-      const result = await submitParq({
+      const payload = {
         // Core fields (match your CMS)
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -387,12 +386,31 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
 
         // Store the entire submission (best for automations + audit trail)
         formData: emailBody,
+      };
+
+      const response = await fetch('/_functions/parq-submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
       });
 
-      console.log('📥 PAR-Q Submit - Result:', result);
+      console.log('📥 PAR-Q Submit - Response status:', response.status);
 
-      // Check for success using the web module's response format
-      // Web module returns: { ok: true, id: '...' } or { ok: false, code: '...', error: '...' }
+      // Parse JSON response
+      let result;
+      try {
+        result = await response.json();
+        console.log('📥 PAR-Q Submit - Result:', result);
+      } catch (parseError) {
+        console.error('❌ Failed to parse response as JSON:', parseError);
+        setSubmitError('Unable to submit your PAR-Q. Please try again or contact us at hello@motivasi.co.uk');
+        return;
+      }
+
+      // Check for success using the HTTP function's response format
+      // HTTP function returns: { ok: true, id: '...' } or { ok: false, code: '...', error: '...' }
       if (!result.ok) {
         console.error('❌ PAR-Q Submit - Backend returned error');
         console.error('Result:', result);
