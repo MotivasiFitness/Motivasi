@@ -144,6 +144,9 @@ export async function post_parqSubmit(request: AnyRequest) {
     console.log('🏥 Medical flags detected:', flagsYes);
 
     // Build submission data for CMS
+    // CRITICAL: All PAR-Q submissions are automatically assigned to trainer d18a21c8-be77-496f-a2fd-ec6479ecba6d
+    const DEFAULT_TRAINER_ID = 'd18a21c8-be77-496f-a2fd-ec6479ecba6d';
+    
     const submissionData: any = {
       firstName: payload.firstName,
       lastName: payload.lastName,
@@ -157,9 +160,11 @@ export async function post_parqSubmit(request: AnyRequest) {
       answers: payload.formData || JSON.stringify(payload, null, 2),
       flagsYes: flagsYes,
       status: 'New',
-      assignedTrainerId: payload.assignedTrainerId || undefined,
+      assignedTrainerId: payload.assignedTrainerId || DEFAULT_TRAINER_ID,
       notes: '',
     };
+    
+    console.log('👤 Assigned to trainer:', submissionData.assignedTrainerId);
 
     console.log('💾 Attempting to save to ParqSubmissions collection...');
 
