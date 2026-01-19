@@ -402,60 +402,50 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
       console.log('📥 PAR-Q Submit - Response Status:', response.status);
       console.log('📥 PAR-Q Submit - Content-Type:', contentType);
 
-      // Read response body once
-      let responseText = '';
-      try {
-        responseText = await response.text();
-        console.log('📥 PAR-Q Submit - Raw response:', responseText.substring(0, 500));
-      } catch (readError) {
-        console.error('❌ PAR-Q Submit - Failed to read response:', readError);
-        setSubmitError('Failed to read server response. Please contact us directly at hello@motivasi.co.uk');
-        return;
-      }
-
-      // CRITICAL: Check if response is JSON
+      // CRITICAL: Check if response is JSON BEFORE reading body
       if (!contentType.includes('application/json')) {
         console.error('❌ PAR-Q Submit - Expected JSON but got:', contentType);
-        console.error('❌ Response body:', responseText.substring(0, 200));
         console.error('❌ This indicates the endpoint is not deployed or returning HTML homepage');
+        
+        // Read response text for logging only
+        let responseText = '';
+        try {
+          responseText = await response.text();
+          console.error('❌ Response body (first 500 chars):', responseText.substring(0, 500));
+        } catch (readError) {
+          console.error('❌ Could not read response body:', readError);
+        }
+        
         setSubmitError('Server configuration error: endpoint not returning JSON. Please contact us directly at hello@motivasi.co.uk');
         return;
       }
 
-      // Parse JSON response
+      // Read response body once (we know it's JSON now)
       let data;
       try {
-        data = JSON.parse(responseText);
+        data = await response.json();
         console.log('📥 PAR-Q Submit - Parsed JSON:', data);
       } catch (parseError) {
         console.error('❌ PAR-Q Submit - Failed to parse JSON:', parseError);
-        console.error('❌ Response text:', responseText.substring(0, 200));
         setSubmitError('Invalid server response format. Please contact us directly at hello@motivasi.co.uk');
         return;
       }
 
-      // CRITICAL: Check HTTP status code first
-      if (!response.ok || response.status >= 400) {
-        console.error('❌ PAR-Q Submit - HTTP error status:', response.status);
+      // CRITICAL: Check unified response format { ok: boolean, id?: string, code?: string, error?: string }
+      if (!data.ok || data.ok !== true) {
+        console.error('❌ PAR-Q Submit - Backend returned ok=false');
         console.error('Response data:', data);
         
-        const errorMessage = data.error || data.message || `Server returned error status ${response.status}`;
-        setSubmitError(`Failed to submit form: ${errorMessage}. Please contact us directly at hello@motivasi.co.uk`);
-        return;
-      }
-
-      // CRITICAL: Only show success if backend explicitly confirms success
-      if (!data.success || data.success !== true) {
-        console.error('❌ PAR-Q Submit - Backend returned success=false or missing');
-        console.error('Response data:', data);
+        const errorMessage = data.error || 'Submission failed';
+        const errorCode = data.code || 'UNKNOWN_ERROR';
+        console.error(`❌ Error code: ${errorCode}`);
         
-        const errorMessage = data.error || data.message || 'Submission failed - backend did not confirm success';
         setSubmitError(`Failed to submit form: ${errorMessage}. Please contact us directly at hello@motivasi.co.uk`);
         return;
       }
 
       // Verify we have a submission ID
-      if (!data.submissionId && !data.itemId) {
+      if (!data.id) {
         console.error('❌ PAR-Q Submit - Success but no submission ID returned');
         console.error('Response data:', data);
         setSubmitError('Submission may have failed - no confirmation ID received. Please contact us directly at hello@motivasi.co.uk');
@@ -464,7 +454,7 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
 
       // SUCCESS - All checks passed
       console.log('✅ PAR-Q submitted successfully!');
-      console.log('✅ Submission ID:', data.submissionId || data.itemId);
+      console.log('✅ Submission ID:', data.id);
       console.log('✅ Response:', data);
 
       setIsSubmitted(true);

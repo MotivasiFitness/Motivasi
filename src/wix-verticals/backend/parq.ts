@@ -2,17 +2,17 @@
  * Wix Velo HTTP Function: PAR-Q Submission
  * 
  * ENVIRONMENT-AWARE ROUTING:
- * - Preview/Dev: POST /_functions-dev/parq
- * - Production: POST /_functions/parq
+ * - Preview/Dev: POST /_functions-dev/parq (Wix auto-routes in preview)
+ * - Production: POST /_functions/parq (published site)
  * 
  * Frontend automatically routes to correct endpoint via getBackendEndpoint('parq')
  * 
  * Handles PAR-Q form submissions and saves to ParqSubmissions collection
  * 
  * CRITICAL REQUIREMENTS:
- * - ALWAYS returns JSON with Content-Type: application/json
+ * - ALWAYS returns JSON with Content-Type: application/json; charset=utf-8
  * - NEVER redirects (returns 400/500 as JSON)
- * - Standardized response format with { success, statusCode }
+ * - Unified response format: { ok: boolean, id?: string, code?: string, error?: string }
  * - Saves to ParqSubmissions CMS collection
  * - Sends email notification to hello@motivasi.co.uk
  * 
@@ -29,19 +29,26 @@
  *   ...other fields
  * }
  * 
- * Success Response (200):
+ * UNIFIED RESPONSE CONTRACT:
+ * 
+ * Success (200):
  * {
- *   "success": true,
- *   "statusCode": 200,
- *   "submissionId": "abc123",
- *   "message": "PAR-Q submission saved successfully"
+ *   "ok": true,
+ *   "id": "<recordId>"
  * }
  * 
- * Error Response (400/500):
+ * Validation Error (400):
  * {
- *   "success": false,
- *   "statusCode": number,
- *   "error": "Error message"
+ *   "ok": false,
+ *   "code": "VALIDATION_ERROR",
+ *   "error": "Missing required fields: firstName, email"
+ * }
+ * 
+ * Server Error (500):
+ * {
+ *   "ok": false,
+ *   "code": "PARQ_SUBMIT_FAILED",
+ *   "error": "Unable to submit PAR-Q. Please try again."
  * }
  */
 
@@ -50,37 +57,36 @@ import wixData from 'wix-data';
 import { fetch } from 'wix-fetch';
 
 const JSON_HEADERS = {
-  'Content-Type': 'application/json',
+  'Content-Type': 'application/json; charset=utf-8',
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
+/**
+ * Helper to return JSON responses with unified format
+ */
 function jsonOk(body: any) {
-  return ok(body, { headers: JSON_HEADERS });
+  return ok(JSON.stringify(body), { headers: JSON_HEADERS });
 }
 function jsonBadRequest(body: any) {
-  return badRequest(body, { headers: JSON_HEADERS });
+  return badRequest(JSON.stringify(body), { headers: JSON_HEADERS });
 }
 function jsonServerError(body: any) {
-  return serverError(body, { headers: JSON_HEADERS });
+  return serverError(JSON.stringify(body), { headers: JSON_HEADERS });
 }
 
 export function options_parq() {
-  return ok({ success: true, statusCode: 200 }, { headers: JSON_HEADERS });
+  return jsonOk({ ok: true });
 }
 
 export function get_parq() {
-  // Wix doesn't have a 405 helper; still return JSON with ok()
-  return ok(
-    {
-      success: false,
-      statusCode: 405,
-      error: 'Method Not Allowed. Use POST to submit PAR-Q data.',
-      allowedMethods: ['POST', 'OPTIONS'],
-    },
-    { headers: JSON_HEADERS }
-  );
+  // Wix doesn't have a 405 helper; return JSON with unified format
+  return jsonOk({
+    ok: false,
+    code: 'METHOD_NOT_ALLOWED',
+    error: 'Method Not Allowed. Use POST to submit PAR-Q data.',
+  });
 }
 
 export async function post_parq(request: any) {
@@ -92,8 +98,8 @@ export async function post_parq(request: any) {
     if (!request) {
       console.error('❌ No request object received');
       return jsonBadRequest({
-        success: false,
-        statusCode: 400,
+        ok: false,
+        code: 'VALIDATION_ERROR',
         error: 'No request object received',
       });
     }
@@ -105,8 +111,8 @@ export async function post_parq(request: any) {
     } catch (bodyError) {
       console.error('❌ Failed to read request body:', bodyError);
       return jsonBadRequest({
-        success: false,
-        statusCode: 400,
+        ok: false,
+        code: 'VALIDATION_ERROR',
         error: 'Failed to read request body',
       });
     }
@@ -118,8 +124,8 @@ export async function post_parq(request: any) {
     } catch (e) {
       console.error('❌ Invalid JSON in request body:', e);
       return jsonBadRequest({
-        success: false,
-        statusCode: 400,
+        ok: false,
+        code: 'VALIDATION_ERROR',
         error: 'Invalid JSON in request body',
       });
     }
@@ -137,8 +143,8 @@ export async function post_parq(request: any) {
     if (missingFields.length > 0) {
       console.error('❌ Missing required fields:', missingFields);
       return jsonBadRequest({
-        success: false,
-        statusCode: 400,
+        ok: false,
+        code: 'VALIDATION_ERROR',
         error: `Missing required fields: ${missingFields.join(', ')}`,
       });
     }
@@ -148,8 +154,8 @@ export async function post_parq(request: any) {
     if (!emailRegex.test(requestData.email)) {
       console.error('❌ Invalid email format:', requestData.email);
       return jsonBadRequest({
-        success: false,
-        statusCode: 400,
+        ok: false,
+        code: 'VALIDATION_ERROR',
         error: 'Invalid email format',
       });
     }
@@ -202,9 +208,9 @@ export async function post_parq(request: any) {
     } catch (dbError: any) {
       console.error('❌ Database insert failed:', dbError);
       return jsonServerError({
-        success: false,
-        statusCode: 500,
-        error: `Database error: ${dbError?.message || 'Failed to save submission'}`,
+        ok: false,
+        code: 'PARQ_SUBMIT_FAILED',
+        error: 'Unable to submit PAR-Q. Please try again.',
       });
     }
 
@@ -258,23 +264,19 @@ This is a notification only. Full questionnaire details are available in the Tra
 
     console.log('✅ PAR-Q submission completed successfully');
 
-    // CRITICAL: Return success response with all required fields
+    // CRITICAL: Return unified success response
     return jsonOk({
-      success: true,
-      statusCode: 200,
-      itemId: insertResult._id,
-      submissionId: insertResult._id,
-      message: 'PAR-Q submission saved successfully',
+      ok: true,
+      id: insertResult._id,
     });
   } catch (error: any) {
-    // CRITICAL: Catch ANY unexpected error and return JSON
+    // CRITICAL: Catch ANY unexpected error and return unified JSON format
     console.error('❌ Unexpected error in PAR-Q handler:', error);
 
     return jsonServerError({
-      success: false,
-      statusCode: 500,
-      error: error?.message || 'Unexpected server error',
-      details: process.env.NODE_ENV === 'development' ? error?.stack : undefined,
+      ok: false,
+      code: 'PARQ_SUBMIT_FAILED',
+      error: 'Unable to submit PAR-Q. Please try again.',
     });
   }
 }
