@@ -371,11 +371,16 @@ Submission Date/Time: ${new Date().toLocaleString('en-GB')}
           firstName: formData.firstName,
           lastName: formData.lastName,
           dateOfBirth: formData.dateOfBirth,
-          answers: {
-            ...formData,
-            emailBody,
-            hasRedFlags,
-          },
+          hasHeartCondition: formData.medicalConditions === 'yes',
+          currentlyTakingMedication: formData.medications === 'yes',
+          medicalConditions: formData.medicalConditions,
+          medications: formData.medications,
+          surgery: formData.surgery,
+          familyHistory: formData.familyHistory,
+          currentPain: formData.currentPain,
+          pastInjuries: formData.pastInjuries,
+          redFlagSymptoms: formData.redFlagSymptoms,
+          formData: emailBody,
         }),
       });
 
