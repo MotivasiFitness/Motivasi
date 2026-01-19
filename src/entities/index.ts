@@ -39,6 +39,8 @@ export interface ParqSubmissions {
   lastName?: string;
   /** @wixFieldType email */
   email?: string;
+  /** @wixFieldType text */
+  phone?: string;
 }
 
 
