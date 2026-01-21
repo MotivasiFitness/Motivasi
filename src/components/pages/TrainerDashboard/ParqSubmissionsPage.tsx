@@ -74,21 +74,34 @@ export default function ParqSubmissionsPage() {
   };
 
   const renderQuestionAnswer = (label: string, value: boolean | undefined | null) => {
-    if (value === undefined || value === null) return null;
+    const answer = value === true ? 'Yes' : value === false ? 'No' : 'Not answered';
+    const isAnswered = value !== undefined && value !== null;
     
     return (
-      <div className="flex items-start gap-3 py-2">
-        <div className="flex-shrink-0 mt-0.5">
-          {value ? (
-            <CheckCircle className="text-green-600" size={18} />
-          ) : (
-            <div className="w-[18px] h-[18px] rounded-full border-2 border-warm-grey" />
-          )}
-        </div>
+      <div className="flex items-start justify-between gap-3 py-2 border-b border-warm-sand-beige/30 last:border-0">
         <div className="flex-1">
-          <p className={`font-paragraph text-sm ${value ? 'text-charcoal-black font-medium' : 'text-warm-grey'}`}>
+          <p className="font-paragraph text-sm text-charcoal-black">
             {label}
           </p>
+        </div>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {isAnswered ? (
+            <>
+              {value ? (
+                <>
+                  <CheckCircle className="text-green-600" size={16} />
+                  <span className="font-paragraph text-sm font-semibold text-green-600">Yes</span>
+                </>
+              ) : (
+                <>
+                  <div className="w-[16px] h-[16px] rounded-full border-2 border-warm-grey" />
+                  <span className="font-paragraph text-sm text-warm-grey">No</span>
+                </>
+              )}
+            </>
+          ) : (
+            <span className="font-paragraph text-sm text-warm-grey italic">Not answered</span>
+          )}
         </div>
       </div>
     );
