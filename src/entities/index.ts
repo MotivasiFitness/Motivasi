@@ -11,6 +11,78 @@ export interface ParQ {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
+  /** @wixFieldType boolean */
+  highStress?: boolean;
+  /** @wixFieldType boolean */
+  declarationAgreed?: boolean;
+  /** @wixFieldType boolean */
+  toldNeedMedicalClearance?: boolean;
+  /** @wixFieldType boolean */
+  toldNotToExercise?: boolean;
+  /** @wixFieldType boolean */
+  fearAvoidExercise?: boolean;
+  /** @wixFieldType boolean */
+  prolongedSoreness?: boolean;
+  /** @wixFieldType boolean */
+  eatingDisorderHistory?: boolean;
+  /** @wixFieldType boolean */
+  sleepBelow6to7?: boolean;
+  /** @wixFieldType text */
+  signatureFullName?: string;
+  /** @wixFieldType boolean */
+  thyroidOrUnexplainedFatigueSymptoms?: boolean;
+  /** @wixFieldType boolean */
+  periOrPostMenopause?: boolean;
+  /** @wixFieldType boolean */
+  irregularPainfulAbsentCycles?: boolean;
+  /** @wixFieldType boolean */
+  endoOrPCOS?: boolean;
+  /** @wixFieldType boolean */
+  pelvicFloorSymptoms?: boolean;
+  /** @wixFieldType boolean */
+  cSectionHistory?: boolean;
+  /** @wixFieldType boolean */
+  postpartumWithin12Months?: boolean;
+  /** @wixFieldType boolean */
+  pregnantOrPossible?: boolean;
+  /** @wixFieldType boolean */
+  balanceIssuesOrFalls?: boolean;
+  /** @wixFieldType boolean */
+  osteoporosisOrOsteopenia?: boolean;
+  /** @wixFieldType boolean */
+  lowBackPain?: boolean;
+  /** @wixFieldType boolean */
+  pastInjuryOrSurgery?: boolean;
+  /** @wixFieldType boolean */
+  jointPainOrArthritis?: boolean;
+  /** @wixFieldType boolean */
+  exerciseAffectingMedication?: boolean;
+  /** @wixFieldType boolean */
+  respiratoryCondition?: boolean;
+  /** @wixFieldType boolean */
+  diabetes?: boolean;
+  /** @wixFieldType boolean */
+  highBloodPressure?: boolean;
+  /** @wixFieldType boolean */
+  dizzinessFainting?: boolean;
+  /** @wixFieldType boolean */
+  chestPain?: boolean;
+  /** @wixFieldType text */
+  signatureDate?: string;
+  /** @wixFieldType text */
+  email?: string;
+  /** @wixFieldType text */
+  medicalClearanceDetails?: string;
+  /** @wixFieldType text */
+  lifestyleDetails?: string;
+  /** @wixFieldType text */
+  womensHealthDetails?: string;
+  /** @wixFieldType text */
+  orthoDetails?: string;
+  /** @wixFieldType text */
+  generalHealthDetails?: string;
+  /** @wixFieldType text */
+  phone?: string;
   /** @wixFieldType text */
   clientName?: string;
   /** @wixFieldType date */
