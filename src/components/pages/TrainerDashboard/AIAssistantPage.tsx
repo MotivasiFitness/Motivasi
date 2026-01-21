@@ -27,15 +27,8 @@ const EQUIPMENT_OPTIONS = [
 
 const TRAINING_STYLES = [
   'Strength Building',
-  'Hypertrophy',
   'Endurance',
-  'Functional',
-  'HIIT',
-  'Circuit Training',
-  'Powerlifting',
-  'CrossFit-style',
-  'Yoga-based',
-  'Pilates',
+  'Recovery',
 ];
 
 export default function AIAssistantPage() {
