@@ -6,6 +6,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card } from '@/components/ui/card';
 import { AlertCircle, CheckCircle2 } from 'lucide-react';
+import { BaseCrudService } from '@/integrations';
+import { ParQ } from '@/entities';
 
 interface FormData {
   // Client Info
@@ -112,6 +114,8 @@ export default function WomensPARQForm() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [warnings, setWarnings] = useState<FormErrors>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Check if any question in a section is answered "Yes"
   const hasGeneralHealthYes = [
@@ -232,58 +236,36 @@ export default function WomensPARQForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) {
       return;
     }
 
-    // Build payload with exact keys
-    const payload = {
-      fullName: formData.fullName,
-      dateOfBirth: formData.dateOfBirth,
-      email: formData.email,
-      phone: formData.phone,
-      heartCondition: formData.heartCondition === true,
-      chestPain: formData.chestPain === true,
-      dizzinessFainting: formData.dizzinessFainting === true,
-      highBloodPressure: formData.highBloodPressure === true,
-      diabetes: formData.diabetes === true,
-      respiratoryCondition: formData.respiratoryCondition === true,
-      exerciseAffectingMedication: formData.exerciseAffectingMedication === true,
-      generalHealthDetails: formData.generalHealthDetails,
-      jointPainOrArthritis: formData.jointPainOrArthritis === true,
-      pastInjuryOrSurgery: formData.pastInjuryOrSurgery === true,
-      lowBackPain: formData.lowBackPain === true,
-      osteoporosisOrOsteopenia: formData.osteoporosisOrOsteopenia === true,
-      balanceIssuesOrFalls: formData.balanceIssuesOrFalls === true,
-      orthoDetails: formData.orthoDetails,
-      pregnantOrPossible: formData.pregnantOrPossible === true,
-      postpartumWithin12Months: formData.postpartumWithin12Months === true,
-      cSectionHistory: formData.cSectionHistory === true,
-      pelvicFloorSymptoms: formData.pelvicFloorSymptoms === true,
-      endoOrPCOS: formData.endoOrPCOS === true,
-      irregularPainfulAbsentCycles: formData.irregularPainfulAbsentCycles === true,
-      periOrPostMenopause: formData.periOrPostMenopause === true,
-      thyroidOrUnexplainedFatigueSymptoms: formData.thyroidOrUnexplainedFatigueSymptoms === true,
-      womensHealthDetails: formData.womensHealthDetails,
-      highStress: formData.highStress === true,
-      sleepBelow6to7: formData.sleepBelow6to7 === true,
-      eatingDisorderHistory: formData.eatingDisorderHistory === true,
-      prolongedSoreness: formData.prolongedSoreness === true,
-      fearAvoidExercise: formData.fearAvoidExercise === true,
-      lifestyleDetails: formData.lifestyleDetails,
-      toldNotToExercise: formData.toldNotToExercise === true,
-      toldNeedMedicalClearance: formData.toldNeedMedicalClearance === true,
-      medicalClearanceDetails: formData.medicalClearanceDetails,
-      declarationAgreed: formData.declarationAgreed,
-      signatureFullName: formData.signatureFullName,
-      signatureDate: formData.signatureDate,
-    };
+    setIsSubmitting(true);
+    setSubmitError(null);
 
-    console.log('PAR-Q Form Payload:', payload);
-    setIsSubmitted(true);
+    try {
+      // Create the PAR-Q submission in CMS
+      const parqData: ParQ = {
+        _id: crypto.randomUUID(),
+        clientName: formData.fullName,
+        dateOfBirth: formData.dateOfBirth,
+        hasHeartCondition: formData.heartCondition === true,
+        emergencyContactNumber: formData.phone,
+        submissionDateTime: new Date().toISOString(),
+      };
+
+      await BaseCrudService.create('ParqSubmission', parqData);
+
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error('Error submitting PAR-Q form:', error);
+      setSubmitError('Failed to submit the form. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: keyof FormData, value: string | boolean | null) => {
@@ -338,13 +320,13 @@ export default function WomensPARQForm() {
         <Card className="p-8 text-center">
           <CheckCircle2 className="w-16 h-16 text-green-600 mx-auto mb-4" />
           <h2 className="font-heading text-3xl font-bold text-charcoal-black mb-2">
-            Form Ready to Submit
+            Form Submitted Successfully
           </h2>
           <p className="font-paragraph text-base text-warm-grey mb-4">
-            Your PAR-Q form has been validated successfully. Check the console for the payload data.
+            Your PAR-Q form has been submitted and saved to the database.
           </p>
           <p className="font-paragraph text-sm text-warm-grey">
-            In Phase 2, this will be saved to the database and made available to your trainer.
+            Your trainer will review this information to design a safe and effective exercise program for you.
           </p>
         </Card>
       </div>
@@ -706,12 +688,21 @@ export default function WomensPARQForm() {
 
         {/* Submit Button */}
         <div className="flex justify-center pt-4">
+          {submitError && (
+            <div className="w-full mb-4 p-4 bg-destructive/10 border border-destructive rounded-lg">
+              <p className="text-destructive text-sm flex items-center gap-2">
+                <AlertCircle className="w-4 h-4" />
+                {submitError}
+              </p>
+            </div>
+          )}
           <Button
             type="submit"
             size="lg"
             className="px-12 py-6 text-lg font-paragraph"
+            disabled={isSubmitting}
           >
-            Review & Submit
+            {isSubmitting ? 'Submitting...' : 'Review & Submit'}
           </Button>
         </div>
       </form>
