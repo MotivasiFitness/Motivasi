@@ -74,8 +74,8 @@ export default function ParqSubmissionsPage() {
   };
 
   const renderQuestionAnswer = (label: string, value: boolean | undefined | null) => {
-    const answer = value === true ? 'Yes' : value === false ? 'No' : 'Not answered';
-    const isAnswered = value !== undefined && value !== null;
+    // Check if the value is explicitly true or false (answered)
+    const isAnswered = typeof value === 'boolean';
     
     return (
       <div className="flex items-start justify-between gap-3 py-2 border-b border-warm-sand-beige/30 last:border-0">
@@ -87,7 +87,7 @@ export default function ParqSubmissionsPage() {
         <div className="flex items-center gap-2 flex-shrink-0">
           {isAnswered ? (
             <>
-              {value ? (
+              {value === true ? (
                 <>
                   <CheckCircle className="text-green-600" size={16} />
                   <span className="font-paragraph text-sm font-semibold text-green-600">Yes</span>
