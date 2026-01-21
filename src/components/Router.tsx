@@ -64,6 +64,7 @@ const ClientProfilePage = lazy(() => import('@/components/pages/TrainerDashboard
 const AdminDashboard = lazy(() => import('@/components/pages/AdminDashboard'));
 const ExerciseVideoReviewPage = lazy(() => import('@/components/pages/ExerciseVideoReviewPage'));
 const TrainerAssignmentMigration = lazy(() => import('@/components/pages/TrainerAssignmentMigration'));
+const WomensPARQForm = lazy(() => import('@/components/WomensPARQForm'));
 
 // Main Layout with Header and Footer
 function SiteLayout() {
@@ -499,6 +500,14 @@ const router = createBrowserRouter([
               <TrainerAssignmentMigration />
             </Suspense>
           </MemberProtectedRoute>
+        ),
+      },
+      {
+        path: "parq",
+        element: (
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+            <WomensPARQForm />
+          </Suspense>
         ),
       },
       {

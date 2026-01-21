@@ -4,43 +4,23 @@
  */
 
 /**
- * Collection ID: ParqSubmissions
- * Interface for ParqSubmissions
+ * Collection ID: ParqSubmission
+ * Interface for ParQ
  */
-export interface ParqSubmissions {
+export interface ParQ {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
-  /** @wixFieldType boolean */
-  flagsYes?: boolean;
-  /** @wixFieldType text */
-  phone?: string;
-  /** @wixFieldType text */
-  notes?: string;
-  /** @wixFieldType text */
-  assignedTrainerId?: string;
-  /** @wixFieldType text */
-  status?: string;
-  /** @wixFieldType datetime */
-  submissionDate?: Date | string;
-  /** @wixFieldType text */
-  answers?: string;
   /** @wixFieldType text */
   clientName?: string;
-  /** @wixFieldType text */
-  memberId?: string;
   /** @wixFieldType date */
   dateOfBirth?: Date | string;
   /** @wixFieldType boolean */
   hasHeartCondition?: boolean;
-  /** @wixFieldType boolean */
-  currentlyTakingMedication?: boolean;
   /** @wixFieldType text */
-  firstName?: string;
-  /** @wixFieldType text */
-  lastName?: string;
-  /** @wixFieldType email */
-  email?: string;
+  emergencyContactNumber?: string;
+  /** @wixFieldType datetime */
+  submissionDateTime?: Date | string;
 }
 
 
