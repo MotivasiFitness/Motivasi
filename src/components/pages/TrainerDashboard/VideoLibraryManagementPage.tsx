@@ -29,6 +29,7 @@ interface VideoFormData {
   category: string;
   isPublic: boolean;
   accessTags: string;
+  uploadType: 'url' | 'file';
 }
 
 interface ClientInfo {
@@ -57,6 +58,8 @@ export default function VideoLibraryManagementPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [submitSuccess, setSubmitSuccess] = useState('');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
     fetchData();
@@ -113,8 +116,11 @@ export default function VideoLibraryManagementPage() {
       category: 'Strength',
       isPublic: false,
       accessTags: '',
+      uploadType: 'file',
     });
     setSelectedClients([]);
+    setSelectedFile(null);
+    setUploadProgress(0);
     setShowCreateModal(true);
     setSubmitError('');
     setSubmitSuccess('');
@@ -129,6 +135,7 @@ export default function VideoLibraryManagementPage() {
       category: video.category || 'Strength',
       isPublic: video.isPublic || false,
       accessTags: video.accessTags || '',
+      uploadType: 'url',
     });
     
     // Parse selected clients from accessTags
@@ -136,6 +143,8 @@ export default function VideoLibraryManagementPage() {
     const clientIds = tags.filter(tag => clients.some(c => c.clientId === tag));
     setSelectedClients(clientIds);
     
+    setSelectedFile(null);
+    setUploadProgress(0);
     setShowCreateModal(true);
     setSubmitError('');
     setSubmitSuccess('');
@@ -158,10 +167,84 @@ export default function VideoLibraryManagementPage() {
     }
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ['video/mp4', 'video/quicktime', 'video/x-msvideo', 'video/webm'];
+    if (!allowedTypes.includes(file.type)) {
+      setSubmitError('Please upload a valid video file (MP4, MOV, AVI, or WebM)');
+      return;
+    }
+
+    // Validate file size (100MB limit)
+    const maxSize = 100 * 1024 * 1024;
+    if (file.size > maxSize) {
+      setSubmitError(`File size must be less than 100MB (current: ${(file.size / 1024 / 1024).toFixed(2)}MB)`);
+      return;
+    }
+
+    setSelectedFile(file);
+    setSubmitError('');
+  };
+
+  const uploadVideoFile = async (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      
+      reader.onload = async () => {
+        try {
+          const base64 = reader.result as string;
+          
+          setUploadProgress(50);
+          
+          const response = await fetch('/_functions/uploadVideo', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              fileName: file.name,
+              mimeType: file.type,
+              base64: base64,
+            }),
+          });
+
+          setUploadProgress(75);
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Upload failed');
+          }
+
+          const data = await response.json();
+          
+          setUploadProgress(100);
+          
+          if (!data.url) {
+            throw new Error('No URL returned from upload');
+          }
+
+          resolve(data.url);
+        } catch (error) {
+          reject(error);
+        }
+      };
+
+      reader.onerror = () => {
+        reject(new Error('Failed to read file'));
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitError('');
     setIsSubmitting(true);
+    setUploadProgress(0);
 
     try {
       // Validation
@@ -171,19 +254,36 @@ export default function VideoLibraryManagementPage() {
         return;
       }
 
-      if (!formData.videoUrl.trim()) {
-        setSubmitError('Please enter a video URL');
-        setIsSubmitting(false);
-        return;
-      }
+      let videoUrl = formData.videoUrl;
 
-      // Validate URL format
-      try {
-        new URL(formData.videoUrl);
-      } catch {
-        setSubmitError('Please enter a valid video URL');
-        setIsSubmitting(false);
-        return;
+      // Handle file upload
+      if (formData.uploadType === 'file') {
+        if (!selectedFile && !editingVideo) {
+          setSubmitError('Please select a video file to upload');
+          setIsSubmitting(false);
+          return;
+        }
+
+        if (selectedFile) {
+          setUploadProgress(10);
+          videoUrl = await uploadVideoFile(selectedFile);
+        }
+      } else {
+        // URL validation
+        if (!formData.videoUrl.trim()) {
+          setSubmitError('Please enter a video URL');
+          setIsSubmitting(false);
+          return;
+        }
+
+        // Validate URL format
+        try {
+          new URL(formData.videoUrl);
+        } catch {
+          setSubmitError('Please enter a valid video URL');
+          setIsSubmitting(false);
+          return;
+        }
       }
 
       // Build accessTags: include trainer ID and selected client IDs
@@ -194,7 +294,7 @@ export default function VideoLibraryManagementPage() {
         _id: editingVideo?._id || crypto.randomUUID(),
         videoTitle: formData.videoTitle,
         description: formData.description,
-        videoUrl: formData.videoUrl,
+        videoUrl: videoUrl,
         category: formData.category,
         isPublic: formData.isPublic,
         accessTags: accessTagsString,
@@ -216,10 +316,12 @@ export default function VideoLibraryManagementPage() {
       setTimeout(() => {
         setShowCreateModal(false);
         setSubmitSuccess('');
+        setUploadProgress(0);
       }, 1500);
     } catch (error) {
       console.error('Error saving video:', error);
-      setSubmitError('Failed to save video. Please try again.');
+      setSubmitError(error instanceof Error ? error.message : 'Failed to save video. Please try again.');
+      setUploadProgress(0);
     } finally {
       setIsSubmitting(false);
     }
@@ -490,19 +592,100 @@ export default function VideoLibraryManagementPage() {
                     />
                   </div>
 
-                  {/* Video URL */}
+                  {/* Upload Type Selection */}
                   <div>
-                    <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
-                      Video URL *
+                    <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-3">
+                      Video Source *
                     </label>
-                    <input
-                      type="url"
-                      value={formData.videoUrl}
-                      onChange={(e) => setFormData(prev => ({ ...prev, videoUrl: e.target.value }))}
-                      placeholder="https://youtube.com/watch?v=..."
-                      className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
-                    />
+                    <div className="flex gap-4">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="uploadType"
+                          value="file"
+                          checked={formData.uploadType === 'file'}
+                          onChange={(e) => setFormData(prev => ({ ...prev, uploadType: 'file' }))}
+                          className="w-4 h-4 text-soft-bronze border-warm-sand-beige focus:ring-soft-bronze"
+                        />
+                        <span className="text-sm text-charcoal-black">Upload File</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="uploadType"
+                          value="url"
+                          checked={formData.uploadType === 'url'}
+                          onChange={(e) => setFormData(prev => ({ ...prev, uploadType: 'url' }))}
+                          className="w-4 h-4 text-soft-bronze border-warm-sand-beige focus:ring-soft-bronze"
+                        />
+                        <span className="text-sm text-charcoal-black">Video URL</span>
+                      </label>
+                    </div>
                   </div>
+
+                  {/* File Upload or URL Input */}
+                  {formData.uploadType === 'file' ? (
+                    <div>
+                      <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
+                        Upload Video File *
+                      </label>
+                      <div className="border-2 border-dashed border-warm-sand-beige rounded-lg p-6 text-center hover:border-soft-bronze transition-colors">
+                        <input
+                          type="file"
+                          accept="video/mp4,video/quicktime,video/x-msvideo,video/webm"
+                          onChange={handleFileChange}
+                          className="hidden"
+                          id="video-file-input"
+                        />
+                        <label
+                          htmlFor="video-file-input"
+                          className="cursor-pointer flex flex-col items-center gap-2"
+                        >
+                          <Video className="text-warm-grey" size={32} />
+                          {selectedFile ? (
+                            <div className="text-sm">
+                              <p className="font-medium text-charcoal-black">{selectedFile.name}</p>
+                              <p className="text-warm-grey">
+                                {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                              </p>
+                            </div>
+                          ) : (
+                            <div className="text-sm">
+                              <p className="font-medium text-charcoal-black">Click to upload video</p>
+                              <p className="text-warm-grey">MP4, MOV, AVI, or WebM (max 100MB)</p>
+                            </div>
+                          )}
+                        </label>
+                      </div>
+                      {uploadProgress > 0 && uploadProgress < 100 && (
+                        <div className="mt-3">
+                          <div className="flex items-center justify-between text-sm text-warm-grey mb-1">
+                            <span>Uploading...</span>
+                            <span>{uploadProgress}%</span>
+                          </div>
+                          <div className="w-full bg-warm-sand-beige rounded-full h-2">
+                            <div
+                              className="bg-soft-bronze h-2 rounded-full transition-all duration-300"
+                              style={{ width: `${uploadProgress}%` }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div>
+                      <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
+                        Video URL *
+                      </label>
+                      <input
+                        type="url"
+                        value={formData.videoUrl}
+                        onChange={(e) => setFormData(prev => ({ ...prev, videoUrl: e.target.value }))}
+                        placeholder="https://youtube.com/watch?v=..."
+                        className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
+                      />
+                    </div>
+                  )}
 
                   {/* Description */}
                   <div>
