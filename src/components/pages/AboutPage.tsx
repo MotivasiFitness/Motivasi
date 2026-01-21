@@ -246,51 +246,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      {/* Condensed Why Choose Me Section - Before Final CTA */}
-      <section className="py-16 px-8 lg:px-20 bg-soft-white">
-        <div className="max-w-[100rem] mx-auto">
-          <div className="max-w-3xl mx-auto bg-warm-sand-beige/20 rounded-2xl p-8 md:p-12">
-            <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-8 text-center">
-              Why Women Choose to Train With Me
-            </h3>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="flex gap-4 items-start">
-                <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-soft-white font-heading font-bold text-sm">✓</span>
-                </div>
-                <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
-                  I understand the physical and emotional realities of motherhood
-                </p>
-              </div>
-              <div className="flex gap-4 items-start">
-                <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-soft-white font-heading font-bold text-sm">✓</span>
-                </div>
-                <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
-                  I specialise in pre- and postnatal training and women's health
-                </p>
-              </div>
-              <div className="flex gap-4 items-start">
-                <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-soft-white font-heading font-bold text-sm">✓</span>
-                </div>
-                <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
-                  I create programmes that fit around busy lives — not unrealistic routines
-                </p>
-              </div>
-              <div className="flex gap-4 items-start">
-                <div className="w-6 h-6 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-soft-white font-heading font-bold text-sm">✓</span>
-                </div>
-                <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
-                  I focus on long-term strength, confidence, and health
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
