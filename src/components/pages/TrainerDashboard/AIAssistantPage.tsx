@@ -215,14 +215,18 @@ export default function AIAssistantPage() {
                 <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
                   Program Length *
                 </label>
-                <input
-                  type="text"
+                <select
                   name="programLength"
                   value={formData.programLength}
                   onChange={handleInputChange}
-                  placeholder="e.g., 8 weeks, 12 weeks, 3 months"
                   className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
-                />
+                >
+                  <option value="4 weeks">4 weeks</option>
+                  <option value="8 weeks">8 weeks</option>
+                  <option value="12 weeks">12 weeks</option>
+                  <option value="16 weeks">16 weeks</option>
+                  <option value="20 weeks">20 weeks</option>
+                </select>
               </div>
 
               {/* Days Per Week */}
