@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMember } from '@/integrations';
 import { useNavigate } from 'react-router-dom';
-import { Loader, AlertCircle, CheckCircle, Sparkles, ArrowRight } from 'lucide-react';
+import { Loader, AlertCircle, CheckCircle, Sparkles, ArrowRight, Wand2 } from 'lucide-react';
 import {
   generateProgramWithAI,
   saveProgramDraft,
@@ -9,6 +9,7 @@ import {
   GeneratedProgram,
   isSafeProgram,
 } from '@/lib/ai-program-generator-mock';
+import { generateProgramDescription } from '@/lib/ai-description-generator';
 
 type Step = 'input' | 'generating' | 'review' | 'success';
 
@@ -39,6 +40,7 @@ export default function AIAssistantPage() {
   const [generatedProgram, setGeneratedProgram] = useState<GeneratedProgram | null>(null);
   const [error, setError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [isGeneratingGoal, setIsGeneratingGoal] = useState(false);
 
   const [formData, setFormData] = useState<ProgramGeneratorInput>({
     programTitle: '',
@@ -151,6 +153,42 @@ export default function AIAssistantPage() {
     }
   };
 
+  const handleGenerateGoalDescription = async () => {
+    if (!formData.programTitle.trim()) {
+      setError('Please enter a program title first');
+      return;
+    }
+
+    setIsGeneratingGoal(true);
+    setError('');
+
+    try {
+      const result = await generateProgramDescription({
+        programTitle: formData.programTitle,
+        duration: formData.programLength,
+        focusArea: formData.trainingStyle,
+        trainingStyle: formData.trainingStyle,
+        equipment: formData.equipment,
+        level: formData.experienceLevel,
+        additionalContext: formData.injuries || formData.additionalNotes,
+      });
+
+      if (result.success && result.description) {
+        setFormData(prev => ({
+          ...prev,
+          programGoal: result.description,
+        }));
+      } else {
+        throw new Error('Failed to generate description');
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to generate goal description';
+      setError(errorMessage);
+    } finally {
+      setIsGeneratingGoal(false);
+    }
+  };
+
   // Input Step
   if (step === 'input') {
     return (
@@ -209,17 +247,40 @@ export default function AIAssistantPage() {
 
             {/* Program Goal */}
             <div>
-              <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
-                Program Goal *
-              </label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block font-paragraph text-sm font-medium text-charcoal-black">
+                  Program Goal *
+                </label>
+                <button
+                  type="button"
+                  onClick={handleGenerateGoalDescription}
+                  disabled={isGeneratingGoal || !formData.programTitle.trim()}
+                  className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-soft-bronze hover:text-charcoal-black border border-soft-bronze hover:bg-soft-bronze/10 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isGeneratingGoal ? (
+                    <>
+                      <Loader className="w-4 h-4 animate-spin" />
+                      Generating...
+                    </>
+                  ) : (
+                    <>
+                      <Wand2 className="w-4 h-4" />
+                      Generate with AI
+                    </>
+                  )}
+                </button>
+              </div>
               <textarea
                 name="programGoal"
                 value={formData.programGoal}
                 onChange={handleInputChange}
                 placeholder="e.g., Build strength and muscle for postpartum recovery, Improve cardiovascular endurance, Lose weight while maintaining muscle"
-                rows={3}
+                rows={5}
                 className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph resize-none"
               />
+              <p className="mt-2 text-xs text-warm-grey font-paragraph">
+                Click "Generate with AI" to automatically create a detailed program goal based on your program title
+              </p>
             </div>
 
             {/* Package Length */}
