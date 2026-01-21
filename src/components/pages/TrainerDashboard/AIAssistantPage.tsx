@@ -24,6 +24,8 @@ const EQUIPMENT_OPTIONS = [
   'Medicine Balls',
   'Slam Balls',
   'Weight Plate',
+  'Bench',
+  'Ankle Weights',
 ];
 
 const TRAINING_STYLES = [
