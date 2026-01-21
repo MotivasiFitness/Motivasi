@@ -25,13 +25,17 @@ export async function generateProgramWithAI(
     throw new Error('Program goal is required');
   }
 
+  if (!input.programTitle || input.programTitle.trim().length === 0) {
+    throw new Error('Program title is required');
+  }
+
   if (input.equipment.length === 0) {
     throw new Error('At least one equipment type must be selected');
   }
 
   // Generate program based on input
   const program: GeneratedProgram = {
-    programName: generateProgramName(input),
+    programName: input.programTitle,
     overview: generateOverview(input),
     duration: input.programLength,
     focusArea: input.programGoal,

@@ -41,6 +41,7 @@ export default function AIAssistantPage() {
   const [isSaving, setIsSaving] = useState(false);
 
   const [formData, setFormData] = useState<ProgramGeneratorInput>({
+    programTitle: '',
     programGoal: '',
     programLength: '8 weeks',
     daysPerWeek: 4,
@@ -92,6 +93,10 @@ export default function AIAssistantPage() {
 
     try {
       // Validate input
+      if (!formData.programTitle.trim()) {
+        throw new Error('Program title is required');
+      }
+
       if (!formData.programGoal.trim()) {
         throw new Error('Program goal is required');
       }
@@ -187,6 +192,21 @@ export default function AIAssistantPage() {
 
           {/* Form */}
           <form onSubmit={handleGenerateProgram} className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 space-y-8">
+            {/* Program Title */}
+            <div>
+              <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
+                Program Title *
+              </label>
+              <input
+                type="text"
+                name="programTitle"
+                value={formData.programTitle}
+                onChange={handleInputChange}
+                placeholder="e.g., Postpartum Strength Builder, Advanced Endurance Program"
+                className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
+              />
+            </div>
+
             {/* Program Goal */}
             <div>
               <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
@@ -222,10 +242,10 @@ export default function AIAssistantPage() {
                 </select>
               </div>
 
-              {/* Days Per Week */}
+              {/* Programs Per Week */}
               <div>
                 <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
-                  Days Per Week *
+                  Programs Per Week *
                 </label>
                 <select
                   name="daysPerWeek"
@@ -234,7 +254,7 @@ export default function AIAssistantPage() {
                   className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
                 >
                   {[1, 2, 3, 4, 5, 6, 7].map(day => (
-                    <option key={day} value={day}>{day} days</option>
+                    <option key={day} value={day}>{day} programs</option>
                   ))}
                 </select>
               </div>

@@ -17,6 +17,7 @@ import { safeFetch } from './api-response-handler';
 import { getBackendEndpoint, BACKEND_FUNCTIONS } from '@/lib/backend-config';
 
 export interface ProgramGeneratorInput {
+  programTitle?: string;
   programGoal: string;
   programLength: string; // e.g., "8 weeks", "12 weeks"
   daysPerWeek: number;
