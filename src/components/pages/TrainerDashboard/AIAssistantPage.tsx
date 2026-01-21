@@ -222,11 +222,11 @@ export default function AIAssistantPage() {
               />
             </div>
 
-            {/* Program Length */}
+            {/* Package Length */}
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
-                  Program Length *
+                  Package Length *
                 </label>
                 <select
                   name="programLength"
