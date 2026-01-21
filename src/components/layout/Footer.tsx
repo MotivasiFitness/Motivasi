@@ -1,25 +1,10 @@
 import { Link } from 'react-router-dom';
 import { Instagram, Mail } from 'lucide-react';
-import { useState } from 'react';
 import { Image } from '@/components/ui/image';
 import { useLanguage } from '@/i18n/LanguageContext';
-import { sendNewsletterSubscriptionNotification } from '@/lib/email-service';
 
 export default function Footer() {
-  const [email, setEmail] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const { t } = useLanguage();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Send notification email to hello@motivasi.co.uk
-    await sendNewsletterSubscriptionNotification(email);
-    
-    setIsSubmitted(true);
-    setEmail('');
-    setTimeout(() => setIsSubmitted(false), 3000);
-  };
 
   return (
     <footer className="bg-charcoal-black text-soft-white">
@@ -104,28 +89,6 @@ export default function Footer() {
                 🛡️ Motivasi holds appropriate professional and public liability insurance.
               </p>
             </nav>
-          </div>
-          <div>
-            <h4 className="font-heading text-xl font-bold mb-4">{t.footer.stayConnected}</h4>
-            <p className="font-paragraph text-base text-warm-grey mb-4">
-              {t.footer.getWeeklyTips}
-            </p>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Your email address"
-                required
-                className="px-4 py-3 rounded-lg bg-warm-sand-beige text-charcoal-black font-paragraph text-base focus:outline-none focus:ring-2 focus:ring-soft-bronze"
-              />
-              <button
-                type="submit"
-                className="px-6 py-3 bg-soft-bronze text-soft-white rounded-lg font-paragraph text-base hover:bg-opacity-90 transition-colors"
-              >
-                {isSubmitted ? t.footer.subscribed : t.footer.subscribe}
-              </button>
-            </form>
           </div>
         </div>
 
