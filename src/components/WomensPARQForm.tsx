@@ -247,13 +247,61 @@ export default function WomensPARQForm() {
     setSubmitError(null);
 
     try {
-      // Create the PAR-Q submission in CMS
-      const parqData: Partial<ParQ> = {
+      // Create the PAR-Q submission in CMS with all form data
+      const parqData: any = {
         clientName: formData.fullName,
         dateOfBirth: formData.dateOfBirth,
+        email: formData.email,
+        phone: formData.phone,
         hasHeartCondition: formData.heartCondition === true,
         emergencyContactNumber: formData.phone,
         submissionDateTime: new Date().toISOString(),
+        
+        // General Health
+        chestPain: formData.chestPain === true,
+        dizzinessFainting: formData.dizzinessFainting === true,
+        highBloodPressure: formData.highBloodPressure === true,
+        diabetes: formData.diabetes === true,
+        respiratoryCondition: formData.respiratoryCondition === true,
+        exerciseAffectingMedication: formData.exerciseAffectingMedication === true,
+        generalHealthDetails: formData.generalHealthDetails,
+        
+        // Musculoskeletal & Orthopedic
+        jointPainOrArthritis: formData.jointPainOrArthritis === true,
+        pastInjuryOrSurgery: formData.pastInjuryOrSurgery === true,
+        lowBackPain: formData.lowBackPain === true,
+        osteoporosisOrOsteopenia: formData.osteoporosisOrOsteopenia === true,
+        balanceIssuesOrFalls: formData.balanceIssuesOrFalls === true,
+        orthoDetails: formData.orthoDetails,
+        
+        // Women-Specific Health
+        pregnantOrPossible: formData.pregnantOrPossible === true,
+        postpartumWithin12Months: formData.postpartumWithin12Months === true,
+        cSectionHistory: formData.cSectionHistory === true,
+        pelvicFloorSymptoms: formData.pelvicFloorSymptoms === true,
+        endoOrPCOS: formData.endoOrPCOS === true,
+        irregularPainfulAbsentCycles: formData.irregularPainfulAbsentCycles === true,
+        periOrPostMenopause: formData.periOrPostMenopause === true,
+        thyroidOrUnexplainedFatigueSymptoms: formData.thyroidOrUnexplainedFatigueSymptoms === true,
+        womensHealthDetails: formData.womensHealthDetails,
+        
+        // Lifestyle & Recovery
+        highStress: formData.highStress === true,
+        sleepBelow6to7: formData.sleepBelow6to7 === true,
+        eatingDisorderHistory: formData.eatingDisorderHistory === true,
+        prolongedSoreness: formData.prolongedSoreness === true,
+        fearAvoidExercise: formData.fearAvoidExercise === true,
+        lifestyleDetails: formData.lifestyleDetails,
+        
+        // Medical Clearance
+        toldNotToExercise: formData.toldNotToExercise === true,
+        toldNeedMedicalClearance: formData.toldNeedMedicalClearance === true,
+        medicalClearanceDetails: formData.medicalClearanceDetails,
+        
+        // Consent
+        declarationAgreed: formData.declarationAgreed,
+        signatureFullName: formData.signatureFullName,
+        signatureDate: formData.signatureDate,
       };
 
       await BaseCrudService.create('ParqSubmission', {
