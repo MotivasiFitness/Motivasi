@@ -180,11 +180,14 @@ export default function WomensPARQForm() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="font-heading text-4xl font-bold text-charcoal-black mb-4">
+          <h1 className="font-heading text-4xl font-bold text-charcoal-black mb-2">
             Health & Fitness Questionnaire
           </h1>
-          <p className="font-paragraph text-lg text-warm-grey mb-6">
-            This information is confidential and reviewed personally by your coach.
+          <p className="font-paragraph text-xl text-charcoal-black mb-3">
+            Physical Activity Readiness Questionnaire (PAR-Q)
+          </p>
+          <p className="font-paragraph text-base text-warm-grey mb-6">
+            This confidential questionnaire helps us tailor your training safely and effectively.
           </p>
           
           {/* Progress Indicator */}

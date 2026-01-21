@@ -114,7 +114,7 @@ export default function ParqSubmissionsPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="font-heading text-4xl font-bold text-charcoal-black mb-2">
-              PAR-Q Submissions
+              PAR-Q (Health & Fitness Questionnaire)
             </h1>
             <p className="font-paragraph text-warm-grey">
               View all Physical Activity Readiness Questionnaire submissions from clients

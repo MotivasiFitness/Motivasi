@@ -106,7 +106,7 @@ export default function TrainerDashboardLayout() {
         { path: '/trainer/workout-feedback', label: 'Client Feedback', icon: MessageSquare },
         { path: '/trainer/progress', label: 'Client Progress', icon: TrendingUp },
         { path: '/trainer/nutrition', label: 'Nutrition', icon: Apple },
-        { path: '/trainer/parq-submissions', label: 'PAR-Q Submissions', icon: ClipboardList },
+        { path: '/trainer/parq-submissions', label: 'PAR-Q (Health & Fitness)', icon: ClipboardList },
       ]
     },
     {
