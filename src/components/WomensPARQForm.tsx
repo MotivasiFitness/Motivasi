@@ -248,8 +248,7 @@ export default function WomensPARQForm() {
 
     try {
       // Create the PAR-Q submission in CMS
-      const parqData: ParQ = {
-        _id: crypto.randomUUID(),
+      const parqData: Partial<ParQ> = {
         clientName: formData.fullName,
         dateOfBirth: formData.dateOfBirth,
         hasHeartCondition: formData.heartCondition === true,
@@ -257,12 +256,15 @@ export default function WomensPARQForm() {
         submissionDateTime: new Date().toISOString(),
       };
 
-      await BaseCrudService.create('ParqSubmission', parqData);
+      await BaseCrudService.create('ParqSubmission', {
+        ...parqData,
+        _id: crypto.randomUUID()
+      });
 
       setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting PAR-Q form:', error);
-      setSubmitError('Failed to submit the form. Please try again.');
+      setSubmitError(`Failed to submit the form. Please try again. Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsSubmitting(false);
     }
