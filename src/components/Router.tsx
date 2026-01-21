@@ -60,6 +60,7 @@ const ClientNutritionPage = lazy(() => import('@/components/pages/TrainerDashboa
 const ProgramsCreatedPage = lazy(() => import('@/components/pages/TrainerDashboard/ProgramsCreatedPage'));
 const CompletedWorkoutsFeedbackPage = lazy(() => import('@/components/pages/TrainerDashboard/CompletedWorkoutsFeedbackPage'));
 const ClientProfilePage = lazy(() => import('@/components/pages/TrainerDashboard/ClientProfilePage'));
+const ParqSubmissionsPage = lazy(() => import('@/components/pages/TrainerDashboard/ParqSubmissionsPage'));
 
 const AdminDashboard = lazy(() => import('@/components/pages/AdminDashboard'));
 const ExerciseVideoReviewPage = lazy(() => import('@/components/pages/ExerciseVideoReviewPage'));
@@ -467,6 +468,14 @@ const router = createBrowserRouter([
             element: (
               <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
                 <ClientProfilePage />
+              </Suspense>
+            ),
+          },
+          {
+            path: "parq-submissions",
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <ParqSubmissionsPage />
               </Suspense>
             ),
           },
