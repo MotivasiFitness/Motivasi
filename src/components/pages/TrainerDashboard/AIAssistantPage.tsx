@@ -21,8 +21,8 @@ const EQUIPMENT_OPTIONS = [
   'Bodyweight',
   'Kettlebells',
   'Medicine Balls',
-  'TRX',
-  'Foam Roller',
+  'Slam Balls',
+  'Weight Plate',
 ];
 
 const TRAINING_STYLES = [
