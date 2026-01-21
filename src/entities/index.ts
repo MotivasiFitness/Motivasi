@@ -14,6 +14,8 @@ export interface ParqSubmissions {
   /** @wixFieldType boolean */
   flagsYes?: boolean;
   /** @wixFieldType text */
+  phone?: string;
+  /** @wixFieldType text */
   notes?: string;
   /** @wixFieldType text */
   assignedTrainerId?: string;
@@ -39,8 +41,6 @@ export interface ParqSubmissions {
   lastName?: string;
   /** @wixFieldType email */
   email?: string;
-  /** @wixFieldType text */
-  phone?: string;
 }
 
 

@@ -22,7 +22,6 @@ const HomePage = lazy(() => import('@/components/pages/HomePage'));
 const AboutPage = lazy(() => import('@/components/pages/AboutPage'));
 const BlogPage = lazy(() => import('@/components/pages/BlogPage'));
 const BlogPostPage = lazy(() => import('@/components/pages/BlogPostPage'));
-const ParQPage = lazy(() => import('@/components/pages/ParQPage'));
 const CheckoutPage = lazy(() => import('@/components/pages/CheckoutPage'));
 const PaymentSuccessPage = lazy(() => import('@/components/pages/PaymentSuccessPage'));
 const OnlineTrainingPage = lazy(() => import('@/components/pages/OnlineTrainingPage'));
@@ -130,14 +129,6 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
             <BlogPostPage />
-          </Suspense>
-        ),
-      },
-      {
-        path: "parq",
-        element: (
-          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
-            <ParQPage />
           </Suspense>
         ),
       },
