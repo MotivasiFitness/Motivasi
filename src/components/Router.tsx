@@ -38,7 +38,6 @@ const MyProgramPage = lazy(() => import('@/components/pages/ClientPortal/MyProgr
 const NutritionPage = lazy(() => import('@/components/pages/ClientPortal/NutritionPage'));
 const ProgressPage = lazy(() => import('@/components/pages/ClientPortal/ProgressPage'));
 const BookingsPage = lazy(() => import('@/components/pages/ClientPortal/BookingsPage'));
-const VideoLibraryPage = lazy(() => import('@/components/pages/ClientPortal/VideoLibraryPage'));
 const WorkoutHistoryPage = lazy(() => import('@/components/pages/ClientPortal/WorkoutHistoryPage'));
 const ProfilePage = lazy(() => import('@/components/pages/ClientPortal/ProfilePage'));
 
@@ -304,14 +303,6 @@ const router = createBrowserRouter([
             element: (
               <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
                 <BookingsPage />
-              </Suspense>
-            ),
-          },
-          {
-            path: "video-library",
-            element: (
-              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
-                <VideoLibraryPage />
               </Suspense>
             ),
           },

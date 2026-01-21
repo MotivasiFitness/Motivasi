@@ -3,7 +3,7 @@ import { Link, Outlet, useLocation, Navigate } from 'react-router-dom';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { ClientProfiles } from '@/entities';
-import { Menu, X, LogOut, LayoutDashboard, Dumbbell, Apple, TrendingUp, Calendar, Video, User, Loader, AlertCircle, Archive, MoreHorizontal } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, Dumbbell, Apple, TrendingUp, Calendar, User, Loader, AlertCircle, Archive, MoreHorizontal } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { useRole } from '@/hooks/useRole';
 import PortalHeader from '@/components/layout/PortalHeader';
@@ -123,7 +123,6 @@ export default function ClientPortalLayout() {
   const secondaryNavItems = [
     { path: '/portal/bookings', label: 'Bookings', icon: Calendar, color: 'text-purple-400' },
     { path: '/portal/nutrition', label: 'Nutrition', icon: Apple, color: 'text-yellow-400' },
-    { path: '/portal/video-library', label: 'Video Library', icon: Video, color: 'text-cyan-400' },
   ];
 
   // All navigation items for desktop sidebar (primary + secondary)
