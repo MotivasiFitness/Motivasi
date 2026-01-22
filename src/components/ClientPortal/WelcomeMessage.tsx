@@ -48,7 +48,7 @@ export default function WelcomeMessage({ clientName, onDismiss }: WelcomeMessage
                 📋 Your workouts
               </h3>
               <p className="font-paragraph text-charcoal-black leading-relaxed">
-                Find your personalized program in the <strong>"My Program"</strong> section. Each week includes 3–4 workouts designed specifically for you.
+                Find your personalised program in the <strong>"My Program"</strong> section. Each week includes 3–4 workouts designed specifically for you.
               </p>
             </div>
 
