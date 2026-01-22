@@ -46,7 +46,9 @@ export default function WeeklyCheckInModal({
     }
   }, [isOpen, clientId]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e?: React.MouseEvent) => {
+    e?.preventDefault();
+    
     if (!difficultyRating || !energyRating || !sorenessRating) {
       alert('Please answer all required questions');
       return;
