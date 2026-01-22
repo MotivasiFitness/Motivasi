@@ -250,7 +250,7 @@ export default function WeeklyCheckInModal({
           {/* Soreness Notes (Optional) */}
           {sorenessRating && sorenessRating !== 'None' && (
             <div className="space-y-2">
-              <Label htmlFor="soreness-notes" className="font-paragraph text-base text-charcoal-black">
+              <Label htmlFor="soreness-notes" className="font-paragraph text-base font-bold text-charcoal-black">
                 Which body areas? (Optional)
               </Label>
               <Textarea
@@ -265,7 +265,7 @@ export default function WeeklyCheckInModal({
 
           {/* Client Notes (Optional) */}
           <div className="space-y-2">
-            <Label htmlFor="client-notes" className="font-paragraph text-base text-charcoal-black">
+            <Label htmlFor="client-notes" className="font-paragraph text-base font-bold text-charcoal-black">
               Any notes for your coach? (Optional)
             </Label>
             <Textarea
