@@ -145,7 +145,7 @@ export default function WeeklyCheckInModal({
         <div className="space-y-6 py-4">
           {/* Difficulty Rating */}
           <div className="space-y-3">
-            <Label className="font-paragraph text-lg font-medium text-charcoal-black flex items-center gap-2">
+            <Label className="font-paragraph text-lg font-bold text-charcoal-black flex items-center gap-2">
               <Activity className="w-5 h-5 text-soft-bronze" />
               How was this week overall? *
             </Label>
@@ -173,7 +173,7 @@ export default function WeeklyCheckInModal({
 
           {/* Energy Rating */}
           <div className="space-y-3">
-            <Label className="font-paragraph text-lg font-medium text-charcoal-black flex items-center gap-2">
+            <Label className="font-paragraph text-lg font-bold text-charcoal-black flex items-center gap-2">
               <Zap className="w-5 h-5 text-soft-bronze" />
               Energy levels *
             </Label>
@@ -215,7 +215,7 @@ export default function WeeklyCheckInModal({
 
           {/* Soreness Rating */}
           <div className="space-y-3">
-            <Label className="font-paragraph text-lg font-medium text-charcoal-black flex items-center gap-2">
+            <Label className="font-paragraph text-lg font-bold text-charcoal-black flex items-center gap-2">
               <AlertCircle className="w-5 h-5 text-soft-bronze" />
               Soreness / aches *
             </Label>
