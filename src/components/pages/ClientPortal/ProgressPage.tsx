@@ -34,7 +34,14 @@ export default function ProgressPage() {
     photoFront: '',
     photoSide: '',
     photoBack: '',
-    measurements: ''
+    chest: '',
+    waist: '',
+    hips: ''
+  });
+  const [photoPreview, setPhotoPreview] = useState({
+    front: '',
+    side: '',
+    back: ''
   });
 
   useEffect(() => {
@@ -113,6 +120,33 @@ export default function ProgressPage() {
     }));
   };
 
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>, photoType: 'front' | 'side' | 'back') => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Create a preview
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result as string;
+      setPhotoPreview(prev => ({
+        ...prev,
+        [photoType]: base64String
+      }));
+      
+      // Store the base64 string in formData
+      const photoFieldMap = {
+        front: 'photoFront',
+        side: 'photoSide',
+        back: 'photoBack'
+      };
+      setFormData(prev => ({
+        ...prev,
+        [photoFieldMap[photoType]]: base64String
+      }));
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -128,7 +162,7 @@ export default function ProgressPage() {
         progressPhotoFront: formData.photoFront,
         progressPhotoSide: formData.photoSide,
         progressPhotoBack: formData.photoBack,
-        bodyMeasurements: formData.measurements
+        bodyMeasurements: `Chest: ${formData.chest}cm, Waist: ${formData.waist}cm, Hips: ${formData.hips}cm`
       };
 
       await BaseCrudService.create('progresscheckins', newCheckin);
@@ -148,7 +182,14 @@ export default function ProgressPage() {
         photoFront: '',
         photoSide: '',
         photoBack: '',
-        measurements: ''
+        chest: '',
+        waist: '',
+        hips: ''
+      });
+      setPhotoPreview({
+        front: '',
+        side: '',
+        back: ''
       });
       setShowForm(false);
     } catch (error) {
@@ -336,14 +377,50 @@ export default function ProgressPage() {
               <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
                 Body Measurements
               </label>
-              <input
-                type="text"
-                name="measurements"
-                value={formData.measurements}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
-                placeholder="e.g., Chest: 95cm, Waist: 78cm, Hips: 98cm"
-              />
+              <div className="grid md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block font-paragraph text-xs font-medium text-charcoal-black mb-2">
+                    Chest (cm)
+                  </label>
+                  <input
+                    type="number"
+                    name="chest"
+                    value={formData.chest}
+                    onChange={handleInputChange}
+                    step="0.1"
+                    className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
+                    placeholder="e.g., 95"
+                  />
+                </div>
+                <div>
+                  <label className="block font-paragraph text-xs font-medium text-charcoal-black mb-2">
+                    Waist (cm)
+                  </label>
+                  <input
+                    type="number"
+                    name="waist"
+                    value={formData.waist}
+                    onChange={handleInputChange}
+                    step="0.1"
+                    className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
+                    placeholder="e.g., 78"
+                  />
+                </div>
+                <div>
+                  <label className="block font-paragraph text-xs font-medium text-charcoal-black mb-2">
+                    Hips (cm)
+                  </label>
+                  <input
+                    type="number"
+                    name="hips"
+                    value={formData.hips}
+                    onChange={handleInputChange}
+                    step="0.1"
+                    className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
+                    placeholder="e.g., 98"
+                  />
+                </div>
+              </div>
             </div>
 
             <div>
@@ -370,42 +447,90 @@ export default function ProgressPage() {
               <div className="grid md:grid-cols-3 gap-6">
                 <div>
                   <label className="block font-paragraph text-xs font-medium text-charcoal-black mb-2">
-                    Front Photo URL
+                    Front Photo
                   </label>
-                  <input
-                    type="url"
-                    name="photoFront"
-                    value={formData.photoFront}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
-                    placeholder="https://..."
-                  />
+                  <div className="relative">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handlePhotoUpload(e, 'front')}
+                      className="hidden"
+                      id="photo-front"
+                    />
+                    <label
+                      htmlFor="photo-front"
+                      className="flex items-center justify-center w-full px-4 py-8 rounded-lg border-2 border-dashed border-warm-sand-beige hover:border-soft-bronze hover:bg-soft-bronze/5 transition-all cursor-pointer"
+                    >
+                      {photoPreview.front ? (
+                        <div className="w-full h-32 rounded overflow-hidden">
+                          <Image src={photoPreview.front} alt="Front preview" className="w-full h-full object-cover" />
+                        </div>
+                      ) : (
+                        <div className="text-center">
+                          <Upload size={24} className="mx-auto mb-2 text-warm-grey" />
+                          <p className="font-paragraph text-xs text-warm-grey">Click to upload</p>
+                        </div>
+                      )}
+                    </label>
+                  </div>
                 </div>
                 <div>
                   <label className="block font-paragraph text-xs font-medium text-charcoal-black mb-2">
-                    Side Photo URL
+                    Side Photo
                   </label>
-                  <input
-                    type="url"
-                    name="photoSide"
-                    value={formData.photoSide}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
-                    placeholder="https://..."
-                  />
+                  <div className="relative">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handlePhotoUpload(e, 'side')}
+                      className="hidden"
+                      id="photo-side"
+                    />
+                    <label
+                      htmlFor="photo-side"
+                      className="flex items-center justify-center w-full px-4 py-8 rounded-lg border-2 border-dashed border-warm-sand-beige hover:border-soft-bronze hover:bg-soft-bronze/5 transition-all cursor-pointer"
+                    >
+                      {photoPreview.side ? (
+                        <div className="w-full h-32 rounded overflow-hidden">
+                          <Image src={photoPreview.side} alt="Side preview" className="w-full h-full object-cover" />
+                        </div>
+                      ) : (
+                        <div className="text-center">
+                          <Upload size={24} className="mx-auto mb-2 text-warm-grey" />
+                          <p className="font-paragraph text-xs text-warm-grey">Click to upload</p>
+                        </div>
+                      )}
+                    </label>
+                  </div>
                 </div>
                 <div>
                   <label className="block font-paragraph text-xs font-medium text-charcoal-black mb-2">
-                    Back Photo URL
+                    Back Photo
                   </label>
-                  <input
-                    type="url"
-                    name="photoBack"
-                    value={formData.photoBack}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
-                    placeholder="https://..."
-                  />
+                  <div className="relative">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handlePhotoUpload(e, 'back')}
+                      className="hidden"
+                      id="photo-back"
+                    />
+                    <label
+                      htmlFor="photo-back"
+                      className="flex items-center justify-center w-full px-4 py-8 rounded-lg border-2 border-dashed border-warm-sand-beige hover:border-soft-bronze hover:bg-soft-bronze/5 transition-all cursor-pointer"
+                    >
+                      {photoPreview.back ? (
+                        <div className="w-full h-32 rounded overflow-hidden">
+                          <Image src={photoPreview.back} alt="Back preview" className="w-full h-full object-cover" />
+                        </div>
+                      ) : (
+                        <div className="text-center">
+                          <Upload size={24} className="mx-auto mb-2 text-warm-grey" />
+                          <p className="font-paragraph text-xs text-warm-grey">Click to upload</p>
+                        </div>
+                      )}
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
