@@ -401,8 +401,11 @@ export default function DashboardPage() {
             <h2 className="font-heading text-3xl font-bold text-charcoal-black mb-2">
               Weekly Check-In
             </h2>
-            <p className="text-warm-grey text-base">
-              Help your coach understand how you're feeling
+            <p className="text-warm-grey text-base mb-2">
+              Share how you're feeling so your coach can adjust your training if needed
+            </p>
+            <p className="text-warm-grey text-sm">
+              There are no right or wrong answers — this helps us support you better.
             </p>
           </div>
           <Badge 
