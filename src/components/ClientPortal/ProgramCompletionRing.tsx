@@ -65,11 +65,9 @@ export default function ProgramCompletionRing({
   const circumference = 2 * Math.PI * 45; // radius = 45
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
-  // Color progression: warm-grey → soft-bronze (neutral to warm)
+  // Brand gold color for progress stroke
   const getProgressColor = () => {
-    if (percentage < 33) return '#B8B2AA'; // warm-grey
-    if (percentage < 66) return '#C4A57B'; // transitional warm tone
-    return '#B08D57'; // soft-bronze
+    return '#C9A24D'; // brand gold at 88% opacity (applied via strokeOpacity)
   };
 
   // Compact version for overview
@@ -101,6 +99,7 @@ export default function ProgramCompletionRing({
               strokeWidth="2.5"
               strokeLinecap="round"
               strokeDasharray={circumference}
+              strokeOpacity={0.88}
               initial={{ strokeDashoffset: circumference }}
               animate={{
                 strokeDashoffset: strokeDashoffset,
@@ -179,6 +178,7 @@ export default function ProgramCompletionRing({
             strokeWidth="3"
             strokeLinecap="round"
             strokeDasharray={circumference}
+            strokeOpacity={0.88}
             initial={{ strokeDashoffset: circumference }}
             animate={{
               strokeDashoffset: strokeDashoffset,
@@ -264,7 +264,8 @@ export default function ProgramCompletionRing({
           <motion.div
             className="h-full rounded-full"
             style={{
-              background: `linear-gradient(to right, #B8B2AA, ${getProgressColor()})`,
+              background: `linear-gradient(to right, #E8DED3, ${getProgressColor()})`,
+              opacity: 0.88,
             }}
             initial={{ width: 0 }}
             animate={{ width: `${percentage}%` }}
