@@ -433,15 +433,19 @@ export default function ProgressPage() {
       {checkins.length > 0 ? (
         <div className="space-y-4">
           {/* Recent Check-ins (always visible) */}
-          {checkins.slice(0, 2).map((checkin, idx) => (
-            <CheckinCard
-              key={checkin._id}
-              checkin={checkin}
-              checkinNumber={checkins.length - idx}
-              isExpanded={expandedCheckins.has(checkin._id)}
-              onToggleExpand={() => toggleCheckinExpanded(checkin._id)}
-            />
-          ))}
+          {checkins.slice(0, 2).map((checkin, idx) => {
+            const previousCheckin = idx < checkins.length - 1 ? checkins[idx + 1] : undefined;
+            return (
+              <CheckinCard
+                key={checkin._id}
+                checkin={checkin}
+                checkinNumber={checkins.length - idx}
+                isExpanded={expandedCheckins.has(checkin._id)}
+                onToggleExpand={() => toggleCheckinExpanded(checkin._id)}
+                previousCheckin={previousCheckin}
+              />
+            );
+          })}
 
           {/* Older Check-ins Toggle */}
           {checkins.length > 2 && (
@@ -466,15 +470,20 @@ export default function ProgressPage() {
               {/* Older Check-ins */}
               {showOlderCheckins && (
                 <div className="space-y-4">
-                  {checkins.slice(2).map((checkin, idx) => (
-                    <CheckinCard
-                      key={checkin._id}
-                      checkin={checkin}
-                      checkinNumber={checkins.length - (idx + 2)}
-                      isExpanded={expandedCheckins.has(checkin._id)}
-                      onToggleExpand={() => toggleCheckinExpanded(checkin._id)}
-                    />
-                  ))}
+                  {checkins.slice(2).map((checkin, idx) => {
+                    const currentIndex = idx + 2;
+                    const previousCheckin = currentIndex < checkins.length - 1 ? checkins[currentIndex + 1] : undefined;
+                    return (
+                      <CheckinCard
+                        key={checkin._id}
+                        checkin={checkin}
+                        checkinNumber={checkins.length - currentIndex}
+                        isExpanded={expandedCheckins.has(checkin._id)}
+                        onToggleExpand={() => toggleCheckinExpanded(checkin._id)}
+                        previousCheckin={previousCheckin}
+                      />
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -623,9 +632,34 @@ interface CheckinCardProps {
   checkinNumber: number;
   isExpanded: boolean;
   onToggleExpand: () => void;
+  previousCheckin?: ProgressCheckins;
 }
 
-function CheckinCard({ checkin, checkinNumber, isExpanded, onToggleExpand }: CheckinCardProps) {
+// Helper function to calculate energy trend
+function getEnergyTrend(current: number, previous?: number): string {
+  if (!previous) return '';
+  if (current > previous) return `Up from last week (${previous}/10)`;
+  if (current < previous) return `Slightly lower than last week (${previous}/10)`;
+  return 'Stable week to week';
+}
+
+// Helper function to calculate weight change
+function getWeightContext(current: number, previous?: number): { text: string; change: number } {
+  if (!previous) return { text: 'First check-in', change: 0 };
+  const change = current - previous;
+  if (Math.abs(change) < 0.5) {
+    return { text: 'No significant change since last check-in', change: 0 };
+  }
+  if (change < 0) {
+    return { text: `Down ${Math.abs(change).toFixed(1)}kg since last check-in`, change };
+  }
+  return { text: `Up ${change.toFixed(1)}kg since last check-in`, change };
+}
+
+function CheckinCard({ checkin, checkinNumber, isExpanded, onToggleExpand, previousCheckin }: CheckinCardProps) {
+  const energyTrend = checkin.energyLevel ? getEnergyTrend(checkin.energyLevel, previousCheckin?.energyLevel) : '';
+  const weightContext = checkin.currentWeight ? getWeightContext(checkin.currentWeight, previousCheckin?.currentWeight) : null;
+
   return (
     <div className="bg-soft-white border border-warm-sand-beige rounded-2xl overflow-hidden transition-all duration-300">
       {/* Header - Always Visible */}
@@ -674,7 +708,25 @@ function CheckinCard({ checkin, checkinNumber, isExpanded, onToggleExpand }: Che
       {/* Expanded Content */}
       {isExpanded && (
         <div className="border-t border-warm-sand-beige px-6 lg:px-8 py-6 space-y-6">
-          {/* Energy Level with Context */}
+          {/* Weight with Context */}
+          {checkin.currentWeight && (
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Heart size={16} className="text-soft-bronze" />
+                <p className="font-paragraph font-bold text-charcoal-black">Weight</p>
+              </div>
+              <p className="font-paragraph text-base font-medium text-charcoal-black mb-1">
+                {checkin.currentWeight} kg
+              </p>
+              {weightContext && (
+                <p className="font-paragraph text-xs text-warm-grey">
+                  {weightContext.text}
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* Energy Level with Trend Context */}
           {checkin.energyLevel && (
             <div>
               <div className="flex items-center gap-2 mb-3">
@@ -692,16 +744,21 @@ function CheckinCard({ checkin, checkinNumber, isExpanded, onToggleExpand }: Che
                   {checkin.energyLevel}/10
                 </span>
               </div>
+              {energyTrend && (
+                <p className="font-paragraph text-xs text-warm-grey mb-2">
+                  {energyTrend}
+                </p>
+              )}
               <p className="font-paragraph text-xs text-warm-grey/70">
                 Higher energy usually means recovery and nutrition are on track.
               </p>
             </div>
           )}
 
-          {/* Measurements - Grid/Tag Style */}
+          {/* Body Measurements - Grid/Tag Style */}
           {checkin.bodyMeasurements && (
             <div>
-              <p className="font-paragraph font-bold text-charcoal-black mb-3">Measurements</p>
+              <p className="font-paragraph font-bold text-charcoal-black mb-3">Body Measurements (cm)</p>
               <div className="flex flex-wrap gap-2">
                 {checkin.bodyMeasurements.split(',').map((measurement, idx) => (
                   <div
@@ -769,7 +826,7 @@ function CheckinCard({ checkin, checkinNumber, isExpanded, onToggleExpand }: Che
             </div>
           )}
 
-          {/* Trainer Feedback Loop */}
+          {/* Trainer Feedback Status */}
           <div className="bg-soft-bronze/5 border border-soft-bronze/20 rounded-lg p-4">
             <div className="flex items-start gap-3">
               <MessageSquare size={16} className="text-soft-bronze flex-shrink-0 mt-0.5" />
@@ -778,10 +835,20 @@ function CheckinCard({ checkin, checkinNumber, isExpanded, onToggleExpand }: Che
                   Trainer Feedback
                 </p>
                 <p className="font-paragraph text-sm text-warm-grey/80">
-                  Trainer feedback coming soon — check back for personalised insights on your progress.
+                  Awaiting coach review — you'll be notified when personalised feedback is added.
                 </p>
               </div>
             </div>
+          </div>
+
+          {/* This Week's Focus */}
+          <div className="bg-soft-bronze/10 border border-soft-bronze/30 rounded-lg p-4">
+            <p className="font-paragraph text-xs font-bold text-soft-bronze uppercase tracking-wide mb-2">
+              This week's focus
+            </p>
+            <p className="font-paragraph text-sm text-charcoal-black leading-relaxed">
+              Prioritise sleep and keep training intensity moderate. Your energy levels suggest recovery is important right now.
+            </p>
           </div>
         </div>
       )}
