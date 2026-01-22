@@ -10,6 +10,8 @@ import PostWorkoutFeedbackPrompt from '@/components/ClientPortal/PostWorkoutFeed
 import ProgramCompletionRing from '@/components/ClientPortal/ProgramCompletionRing';
 import ProgramTimeline from '@/components/ClientPortal/ProgramTimeline';
 import WeeklySummaryCard from '@/components/ClientPortal/WeeklySummaryCard';
+import ExerciseCompleteCard from '@/components/ClientPortal/ExerciseCompleteCard';
+import ExerciseHeaderCard from '@/components/ClientPortal/ExerciseHeaderCard';
 import { recordWorkoutCompletion } from '@/lib/adherence-tracking';
 import { 
   getActiveWorkoutsForCurrentWeek, 
