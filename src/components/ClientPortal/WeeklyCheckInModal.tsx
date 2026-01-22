@@ -3,7 +3,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { BaseCrudService } from '@/integrations';
 import { CheckCircle2, Activity, Zap, AlertCircle } from 'lucide-react';
 
@@ -35,6 +34,38 @@ export default function WeeklyCheckInModal({
   const [clientNotes, setClientNotes] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isFirstCheckIn, setIsFirstCheckIn] = useState(false);
+
+  // Option card component for reusability
+  const OptionCard = ({ 
+    value, 
+    label, 
+    isSelected, 
+    onClick, 
+    icon 
+  }: { 
+    value: string; 
+    label: string; 
+    isSelected: boolean; 
+    onClick: () => void;
+    icon?: React.ReactNode;
+  }) => (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+        isSelected
+          ? 'border-soft-bronze bg-soft-bronze/5'
+          : 'border-warm-grey/20 bg-soft-white hover:border-warm-grey/40'
+      }`}
+    >
+      <div className="flex items-start gap-3">
+        {icon && <div className="flex-shrink-0 mt-0.5">{icon}</div>}
+        <div className="flex-1">
+          <p className="font-paragraph text-base text-charcoal-black">{label}</p>
+        </div>
+      </div>
+    </button>
+  );
 
   // Check if this is the first check-in
   useEffect(() => {
@@ -95,7 +126,7 @@ export default function WeeklyCheckInModal({
         <DialogHeader>
           <DialogTitle className="font-heading text-3xl text-charcoal-black flex items-center gap-2">
             <CheckCircle2 className="w-8 h-8 text-soft-bronze" />
-            ✨ How was your week?
+            How was your week?
           </DialogTitle>
           <DialogDescription className="font-paragraph text-base text-warm-grey">
             Share your feedback to help your coach support you better. Your responses help us personalize your program and ensure you're progressing safely and effectively.
@@ -118,26 +149,26 @@ export default function WeeklyCheckInModal({
               <Activity className="w-5 h-5 text-soft-bronze" />
               How was this week overall? *
             </Label>
-            <RadioGroup value={difficultyRating} onValueChange={setDifficultyRating}>
-              <div className="flex items-center space-x-2 p-3 border border-warm-grey/30 rounded-lg hover:border-soft-bronze transition-colors">
-                <RadioGroupItem value="Easy" id="difficulty-easy" />
-                <Label htmlFor="difficulty-easy" className="font-paragraph cursor-pointer flex-1">
-                  Easy - Felt comfortable throughout
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2 p-3 border border-warm-grey/30 rounded-lg hover:border-soft-bronze transition-colors">
-                <RadioGroupItem value="Moderate" id="difficulty-moderate" />
-                <Label htmlFor="difficulty-moderate" className="font-paragraph cursor-pointer flex-1">
-                  Moderate - Challenging but manageable
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2 p-3 border border-warm-grey/30 rounded-lg hover:border-soft-bronze transition-colors">
-                <RadioGroupItem value="Hard" id="difficulty-hard" />
-                <Label htmlFor="difficulty-hard" className="font-paragraph cursor-pointer flex-1">
-                  Hard - Really pushed my limits
-                </Label>
-              </div>
-            </RadioGroup>
+            <div className="space-y-2">
+              <OptionCard
+                value="Easy"
+                label="Easy - Felt comfortable throughout"
+                isSelected={difficultyRating === 'Easy'}
+                onClick={() => setDifficultyRating('Easy')}
+              />
+              <OptionCard
+                value="Moderate"
+                label="Moderate - Challenging but manageable"
+                isSelected={difficultyRating === 'Moderate'}
+                onClick={() => setDifficultyRating('Moderate')}
+              />
+              <OptionCard
+                value="Hard"
+                label="Hard - Really pushed my limits"
+                isSelected={difficultyRating === 'Hard'}
+                onClick={() => setDifficultyRating('Hard')}
+              />
+            </div>
           </div>
 
           {/* Energy Rating */}
@@ -146,26 +177,40 @@ export default function WeeklyCheckInModal({
               <Zap className="w-5 h-5 text-soft-bronze" />
               Energy levels *
             </Label>
-            <RadioGroup value={energyRating} onValueChange={setEnergyRating}>
-              <div className="flex items-center space-x-2 p-3 border border-warm-grey/30 rounded-lg hover:border-soft-bronze transition-colors">
-                <RadioGroupItem value="Low" id="energy-low" />
-                <Label htmlFor="energy-low" className="font-paragraph cursor-pointer flex-1">
-                  Low - Felt tired most of the week
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2 p-3 border border-warm-grey/30 rounded-lg hover:border-soft-bronze transition-colors">
-                <RadioGroupItem value="OK" id="energy-ok" />
-                <Label htmlFor="energy-ok" className="font-paragraph cursor-pointer flex-1">
-                  OK - Normal energy levels
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2 p-3 border border-warm-grey/30 rounded-lg hover:border-soft-bronze transition-colors">
-                <RadioGroupItem value="High" id="energy-high" />
-                <Label htmlFor="energy-high" className="font-paragraph cursor-pointer flex-1">
-                  High - Felt energized and strong
-                </Label>
-              </div>
-            </RadioGroup>
+            <div className="space-y-2">
+              <OptionCard
+                value="Low"
+                label="Low - Felt tired most of the week"
+                isSelected={energyRating === 'Low'}
+                onClick={() => setEnergyRating('Low')}
+                icon={<Zap className="w-4 h-4 text-soft-bronze" />}
+              />
+              <OptionCard
+                value="OK"
+                label="OK - Normal energy levels"
+                isSelected={energyRating === 'OK'}
+                onClick={() => setEnergyRating('OK')}
+                icon={
+                  <div className="flex gap-0.5">
+                    <Zap className="w-4 h-4 text-soft-bronze" />
+                    <Zap className="w-4 h-4 text-soft-bronze" />
+                  </div>
+                }
+              />
+              <OptionCard
+                value="High"
+                label="High - Felt energized and strong"
+                isSelected={energyRating === 'High'}
+                onClick={() => setEnergyRating('High')}
+                icon={
+                  <div className="flex gap-0.5">
+                    <Zap className="w-4 h-4 text-soft-bronze" />
+                    <Zap className="w-4 h-4 text-soft-bronze" />
+                    <Zap className="w-4 h-4 text-soft-bronze" />
+                  </div>
+                }
+              />
+            </div>
           </div>
 
           {/* Soreness Rating */}
@@ -174,32 +219,32 @@ export default function WeeklyCheckInModal({
               <AlertCircle className="w-5 h-5 text-soft-bronze" />
               Soreness / aches *
             </Label>
-            <RadioGroup value={sorenessRating} onValueChange={setSorenessRating}>
-              <div className="flex items-center space-x-2 p-3 border border-warm-grey/30 rounded-lg hover:border-soft-bronze transition-colors">
-                <RadioGroupItem value="None" id="soreness-none" />
-                <Label htmlFor="soreness-none" className="font-paragraph cursor-pointer flex-1">
-                  None - No soreness
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2 p-3 border border-warm-grey/30 rounded-lg hover:border-soft-bronze transition-colors">
-                <RadioGroupItem value="Mild" id="soreness-mild" />
-                <Label htmlFor="soreness-mild" className="font-paragraph cursor-pointer flex-1">
-                  Mild - Some soreness, nothing concerning
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2 p-3 border border-warm-grey/30 rounded-lg hover:border-soft-bronze transition-colors">
-                <RadioGroupItem value="Moderate" id="soreness-moderate" />
-                <Label htmlFor="soreness-moderate" className="font-paragraph cursor-pointer flex-1">
-                  Moderate - Noticeable soreness
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2 p-3 border border-warm-grey/30 rounded-lg hover:border-soft-bronze transition-colors">
-                <RadioGroupItem value="High" id="soreness-high" />
-                <Label htmlFor="soreness-high" className="font-paragraph cursor-pointer flex-1">
-                  High - Significant soreness or pain
-                </Label>
-              </div>
-            </RadioGroup>
+            <div className="space-y-2">
+              <OptionCard
+                value="None"
+                label="None - No soreness"
+                isSelected={sorenessRating === 'None'}
+                onClick={() => setSorenessRating('None')}
+              />
+              <OptionCard
+                value="Mild"
+                label="Mild - Some soreness, nothing concerning"
+                isSelected={sorenessRating === 'Mild'}
+                onClick={() => setSorenessRating('Mild')}
+              />
+              <OptionCard
+                value="Moderate"
+                label="Moderate - Noticeable soreness"
+                isSelected={sorenessRating === 'Moderate'}
+                onClick={() => setSorenessRating('Moderate')}
+              />
+              <OptionCard
+                value="High"
+                label="High - Significant soreness or pain"
+                isSelected={sorenessRating === 'High'}
+                onClick={() => setSorenessRating('High')}
+              />
+            </div>
           </div>
 
           {/* Soreness Notes (Optional) */}
