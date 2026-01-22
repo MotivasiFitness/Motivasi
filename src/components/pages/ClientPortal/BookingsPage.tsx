@@ -12,11 +12,14 @@ export default function BookingsPage() {
   const [showForm, setShowForm] = useState(false);
   const [clientProfile, setClientProfile] = useState<ClientProfiles | null>(null);
   const [formData, setFormData] = useState({
-    serviceType: 'consultation',
+    serviceType: 'weekly-checkin',
     appointmentDate: '',
     appointmentTime: '',
     notes: ''
   });
+  const [showAdditionalNotice, setShowAdditionalNotice] = useState(false);
+
+  const ADDITIONAL_SESSION_PRICE = '50'; // Agreed additional session price in £
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -53,6 +56,12 @@ export default function BookingsPage() {
       ...prev,
       [name]: value
     }));
+
+    // Show notice if "Additional" service is selected
+    if (name === 'serviceType') {
+      const isAdditional = ['training', 'nutrition', 'form-review', 'progress-review'].includes(value);
+      setShowAdditionalNotice(isAdditional);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -86,11 +95,12 @@ export default function BookingsPage() {
 
       // Reset form
       setFormData({
-        serviceType: 'consultation',
+        serviceType: 'weekly-checkin',
         appointmentDate: '',
         appointmentTime: '',
         notes: ''
       });
+      setShowAdditionalNotice(false);
       setShowForm(false);
     } catch (error) {
       console.error('Error creating booking:', error);
@@ -184,7 +194,7 @@ export default function BookingsPage() {
       {showForm && (
         <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
           <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
-            Schedule a Session
+            Request a Session
           </h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -197,13 +207,28 @@ export default function BookingsPage() {
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
               >
-                <option value="consultation">Initial Consultation</option>
-                <option value="training">Training Session</option>
-                <option value="check-in">Progress Check-in Call</option>
-                <option value="nutrition">Nutrition Consultation</option>
-                <option value="form-review">Form Review Session</option>
+                <option value="initial-consultation">Initial Consultation (Included – one time)</option>
+                <option value="weekly-checkin">Weekly Check-In Call (Included)</option>
+                <option value="training">Training Session (Additional – £{ADDITIONAL_SESSION_PRICE})</option>
+                <option value="nutrition">Nutrition Consultation (Additional – £{ADDITIONAL_SESSION_PRICE})</option>
+                <option value="form-review">Form Review Session (Additional – £{ADDITIONAL_SESSION_PRICE})</option>
+                <option value="progress-review">Progress Review Call (Additional – £{ADDITIONAL_SESSION_PRICE})</option>
               </select>
+              
+              {/* Helper Text */}
+              <p className="text-xs text-warm-grey mt-2 leading-relaxed">
+                Your programme includes one weekly check-in call. Additional sessions are charged separately and confirmed before booking.
+              </p>
             </div>
+
+            {/* Conditional Notice for Additional Sessions */}
+            {showAdditionalNotice && (
+              <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-lg p-4">
+                <p className="text-sm text-charcoal-black leading-relaxed">
+                  <span className="font-medium">ℹ️ This session is not included in your current package.</span> We'll confirm availability and pricing before finalising the booking.
+                </p>
+              </div>
+            )}
 
             <div className="grid md:grid-cols-2 gap-6">
               <div>
@@ -257,7 +282,10 @@ export default function BookingsPage() {
               </button>
               <button
                 type="button"
-                onClick={() => setShowForm(false)}
+                onClick={() => {
+                  setShowForm(false);
+                  setShowAdditionalNotice(false);
+                }}
                 className="flex-1 border border-warm-sand-beige text-charcoal-black px-8 py-3 rounded-lg font-medium hover:bg-warm-sand-beige/30 transition-colors"
               >
                 Cancel
@@ -280,20 +308,26 @@ export default function BookingsPage() {
                   <div className="flex-1">
                     {/* Session Title */}
                     <h3 className="font-heading text-2xl lg:text-3xl font-bold text-charcoal-black mb-2">
-                      {booking.serviceType === 'consultation' && 'Initial Consultation'}
+                      {booking.serviceType === 'initial-consultation' && 'Initial Consultation'}
+                      {booking.serviceType === 'weekly-checkin' && 'Weekly Check-In Call'}
                       {booking.serviceType === 'training' && 'Training Session'}
-                      {booking.serviceType === 'check-in' && 'Progress Check-in Call'}
                       {booking.serviceType === 'nutrition' && 'Nutrition Consultation'}
                       {booking.serviceType === 'form-review' && 'Form Review Session'}
+                      {booking.serviceType === 'progress-review' && 'Progress Review Call'}
+                      {booking.serviceType === 'consultation' && 'Initial Consultation'}
+                      {booking.serviceType === 'check-in' && 'Progress Check-in Call'}
                     </h3>
 
                     {/* Context Line */}
                     <p className="text-sm text-warm-grey font-medium mb-4">
-                      {booking.serviceType === 'consultation' && 'Get to know each other & plan your journey'}
+                      {booking.serviceType === 'initial-consultation' && 'Get to know each other & plan your journey'}
+                      {booking.serviceType === 'weekly-checkin' && 'Weekly accountability & progress review'}
                       {booking.serviceType === 'training' && 'Personalised workout with form guidance'}
-                      {booking.serviceType === 'check-in' && 'Weekly accountability & progress review'}
                       {booking.serviceType === 'nutrition' && 'Nutrition guidance tailored to you'}
                       {booking.serviceType === 'form-review' && 'Technique analysis & improvement tips'}
+                      {booking.serviceType === 'progress-review' && 'Progress tracking & programme adjustments'}
+                      {booking.serviceType === 'consultation' && 'Get to know each other & plan your journey'}
+                      {booking.serviceType === 'check-in' && 'Weekly accountability & progress review'}
                     </p>
 
                     {/* Date & Time */}
