@@ -31,17 +31,9 @@ export default function ProgressPage() {
     weight: '',
     energyLevel: '',
     notes: '',
-    photoFront: '',
-    photoSide: '',
-    photoBack: '',
     chest: '',
     waist: '',
     hips: ''
-  });
-  const [photoPreview, setPhotoPreview] = useState({
-    front: '',
-    side: '',
-    back: ''
   });
 
   useEffect(() => {
@@ -120,32 +112,7 @@ export default function ProgressPage() {
     }));
   };
 
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>, photoType: 'front' | 'side' | 'back') => {
-    const file = e.target.files?.[0];
-    if (!file) return;
 
-    // Create a preview
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64String = reader.result as string;
-      setPhotoPreview(prev => ({
-        ...prev,
-        [photoType]: base64String
-      }));
-      
-      // Store the base64 string in formData
-      const photoFieldMap = {
-        front: 'photoFront',
-        side: 'photoSide',
-        back: 'photoBack'
-      };
-      setFormData(prev => ({
-        ...prev,
-        [photoFieldMap[photoType]]: base64String
-      }));
-    };
-    reader.readAsDataURL(file);
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -159,9 +126,6 @@ export default function ProgressPage() {
         currentWeight: formData.weight ? parseFloat(formData.weight) : undefined,
         energyLevel: formData.energyLevel ? parseInt(formData.energyLevel) : undefined,
         clientNotes: formData.notes,
-        progressPhotoFront: formData.photoFront,
-        progressPhotoSide: formData.photoSide,
-        progressPhotoBack: formData.photoBack,
         bodyMeasurements: `Chest: ${formData.chest}cm, Waist: ${formData.waist}cm, Hips: ${formData.hips}cm`
       };
 
@@ -179,17 +143,9 @@ export default function ProgressPage() {
         weight: '',
         energyLevel: '',
         notes: '',
-        photoFront: '',
-        photoSide: '',
-        photoBack: '',
         chest: '',
         waist: '',
         hips: ''
-      });
-      setPhotoPreview({
-        front: '',
-        side: '',
-        back: ''
       });
       setShowForm(false);
     } catch (error) {
@@ -437,103 +393,7 @@ export default function ProgressPage() {
               />
             </div>
 
-            <div>
-              <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-3">
-                Progress Photos
-              </label>
-              <p className="font-paragraph text-xs text-warm-grey/70 mb-4">
-                Progress photos are optional and for your eyes only. They're a powerful way to see changes that the scale doesn't capture.
-              </p>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div>
-                  <label className="block font-paragraph text-xs font-medium text-charcoal-black mb-2">
-                    Front Photo
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handlePhotoUpload(e, 'front')}
-                      className="hidden"
-                      id="photo-front"
-                    />
-                    <label
-                      htmlFor="photo-front"
-                      className="flex items-center justify-center w-full px-4 py-8 rounded-lg border-2 border-dashed border-warm-sand-beige hover:border-soft-bronze hover:bg-soft-bronze/5 transition-all cursor-pointer"
-                    >
-                      {photoPreview.front ? (
-                        <div className="w-full h-32 rounded overflow-hidden">
-                          <Image src={photoPreview.front} alt="Front preview" className="w-full h-full object-cover" />
-                        </div>
-                      ) : (
-                        <div className="text-center">
-                          <Upload size={24} className="mx-auto mb-2 text-warm-grey" />
-                          <p className="font-paragraph text-xs text-warm-grey">Click to upload</p>
-                        </div>
-                      )}
-                    </label>
-                  </div>
-                </div>
-                <div>
-                  <label className="block font-paragraph text-xs font-medium text-charcoal-black mb-2">
-                    Side Photo
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handlePhotoUpload(e, 'side')}
-                      className="hidden"
-                      id="photo-side"
-                    />
-                    <label
-                      htmlFor="photo-side"
-                      className="flex items-center justify-center w-full px-4 py-8 rounded-lg border-2 border-dashed border-warm-sand-beige hover:border-soft-bronze hover:bg-soft-bronze/5 transition-all cursor-pointer"
-                    >
-                      {photoPreview.side ? (
-                        <div className="w-full h-32 rounded overflow-hidden">
-                          <Image src={photoPreview.side} alt="Side preview" className="w-full h-full object-cover" />
-                        </div>
-                      ) : (
-                        <div className="text-center">
-                          <Upload size={24} className="mx-auto mb-2 text-warm-grey" />
-                          <p className="font-paragraph text-xs text-warm-grey">Click to upload</p>
-                        </div>
-                      )}
-                    </label>
-                  </div>
-                </div>
-                <div>
-                  <label className="block font-paragraph text-xs font-medium text-charcoal-black mb-2">
-                    Back Photo
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handlePhotoUpload(e, 'back')}
-                      className="hidden"
-                      id="photo-back"
-                    />
-                    <label
-                      htmlFor="photo-back"
-                      className="flex items-center justify-center w-full px-4 py-8 rounded-lg border-2 border-dashed border-warm-sand-beige hover:border-soft-bronze hover:bg-soft-bronze/5 transition-all cursor-pointer"
-                    >
-                      {photoPreview.back ? (
-                        <div className="w-full h-32 rounded overflow-hidden">
-                          <Image src={photoPreview.back} alt="Back preview" className="w-full h-full object-cover" />
-                        </div>
-                      ) : (
-                        <div className="text-center">
-                          <Upload size={24} className="mx-auto mb-2 text-warm-grey" />
-                          <p className="font-paragraph text-xs text-warm-grey">Click to upload</p>
-                        </div>
-                      )}
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
+
 
             <div className="flex gap-4">
               <button
