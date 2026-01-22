@@ -120,7 +120,7 @@ export default function ProgressPage() {
     }));
   };
 
-  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>, photoType: 'front' | 'side' | 'back') => {
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>, photoType: 'front' | 'side' | 'back') => {
     const file = e.target.files?.[0];
     if (!file) return;
 
