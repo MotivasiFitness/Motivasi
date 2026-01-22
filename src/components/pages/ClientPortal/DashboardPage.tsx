@@ -477,7 +477,7 @@ export default function DashboardPage() {
       </div>
 
       {/* TERTIARY SECTION - Upcoming Sessions */}
-      <div className="bg-soft-white border border-warm-sand-beige rounded-xl p-10 shadow-sm">
+      <div className="bg-warm-sand-beige/50 border-l-4 border-muted-rose rounded-xl p-10 shadow-md">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-2">
@@ -499,7 +499,7 @@ export default function DashboardPage() {
         {upcomingBookings.length > 0 ? (
           <div className="space-y-4">
             {upcomingBookings.slice(0, 2).map((booking) => (
-              <div key={booking._id} className="flex items-center justify-between p-5 bg-warm-sand-beige/30 rounded-xl">
+              <div key={booking._id} className="flex items-center justify-between p-5 bg-soft-white rounded-xl">
                 <div>
                   <h3 className="font-paragraph font-bold text-charcoal-black text-lg">
                     {booking.serviceType}
@@ -566,7 +566,7 @@ export default function DashboardPage() {
       <div className="grid md:grid-cols-3 gap-6">
         <Link
           to="/portal/nutrition"
-          className="bg-soft-white border-2 border-warm-sand-beige rounded-xl p-8 hover:border-soft-bronze hover:shadow-md transition-all duration-200 group"
+          className="bg-warm-sand-beige/50 border-l-4 border-muted-rose rounded-xl p-8 hover:shadow-md transition-all duration-200 group"
         >
           <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-bronze transition-colors">
             Nutrition
@@ -576,7 +576,7 @@ export default function DashboardPage() {
 
         <Link
           to="/portal/video-library"
-          className="bg-soft-white border-2 border-warm-sand-beige rounded-xl p-8 hover:border-soft-bronze hover:shadow-md transition-all duration-200 group"
+          className="bg-warm-sand-beige/50 border-l-4 border-muted-rose rounded-xl p-8 hover:shadow-md transition-all duration-200 group"
         >
           <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-bronze transition-colors">
             Video Library
@@ -586,7 +586,7 @@ export default function DashboardPage() {
 
         <Link
           to="/portal/progress"
-          className="bg-soft-white border-2 border-warm-sand-beige rounded-xl p-8 hover:border-soft-bronze hover:shadow-md transition-all duration-200 group"
+          className="bg-warm-sand-beige/50 border-l-4 border-muted-rose rounded-xl p-8 hover:shadow-md transition-all duration-200 group"
         >
           <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-bronze transition-colors">
             Progress
@@ -596,7 +596,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Coach Support Footer - TERTIARY INFO BANNER */}
-      <div className="bg-soft-white border-2 border-soft-bronze/30 rounded-xl p-8 shadow-sm">
+      <div className="bg-warm-sand-beige/50 border-l-4 border-muted-rose rounded-xl p-8 shadow-md">
         <div className="flex items-start gap-4">
           <Heart className="text-soft-bronze flex-shrink-0 mt-1" size={28} />
           <div>
