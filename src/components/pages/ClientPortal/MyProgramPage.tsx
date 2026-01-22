@@ -66,6 +66,10 @@ interface ExerciseCompleteState {
   [exerciseId: string]: boolean;
 }
 
+interface ExerciseReflectionState {
+  [exerciseId: string]: string;
+}
+
 export default function MyProgramPage() {
   const { member } = useMember();
   const [programs, setPrograms] = useState<ClientPrograms[]>([]);
@@ -102,6 +106,8 @@ export default function MyProgramPage() {
   const [modificationNotes, setModificationNotes] = useState('');
   const [submittingModification, setSubmittingModification] = useState(false);
   const [showFirstWorkoutReassurance, setShowFirstWorkoutReassurance] = useState(false);
+  const [exerciseReflectionStates, setExerciseReflectionStates] = useState<ExerciseReflectionState>({});
+  const [showExerciseReflection, setShowExerciseReflection] = useState<string | null>(null);
 
   // Rest timer effect
   useEffect(() => {
@@ -850,6 +856,7 @@ export default function MyProgramPage() {
                         <div>
                           <p className="text-xs text-warm-grey mb-1">Intensity</p>
                           <p className="font-bold text-sm text-charcoal-black">Moderate</p>
+                          <p className="text-xs text-warm-grey mt-2 leading-relaxed">You should feel challenged but in control throughout.</p>
                         </div>
                         <div>
                           <p className="text-xs text-warm-grey mb-1">Equipment</p>
@@ -860,6 +867,14 @@ export default function MyProgramPage() {
                           <p className="font-bold text-sm text-charcoal-black">{workout.restTimeSeconds || 60}s</p>
                         </div>
                       </div>
+                    </div>
+
+                    {/* Today's Intention */}
+                    <div className="bg-gradient-to-r from-soft-bronze/10 to-soft-bronze/5 border border-soft-bronze/30 rounded-xl p-4">
+                      <p className="text-sm text-warm-grey mb-2 font-medium">Today's Intention</p>
+                      <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
+                        Build strength with controlled movement and excellent form. Focus on quality over speed.
+                      </p>
                     </div>
 
                     {/* Exercise Details */}
