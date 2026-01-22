@@ -20,69 +20,69 @@ export default function WelcomeMessage({ clientName, onDismiss }: WelcomeMessage
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-charcoal-black/60 flex items-center justify-center z-50 p-4 animate-in fade-in duration-300">
-      <div className="bg-soft-white rounded-2xl max-w-2xl w-full p-8 lg:p-10 shadow-2xl animate-in slide-in-from-bottom-4 duration-500">
+    <div className="fixed inset-0 bg-charcoal-black/60 flex items-center justify-center z-50 p-3 sm:p-4 animate-in fade-in duration-300 overflow-y-auto">
+      <div className="bg-soft-white rounded-2xl max-w-2xl w-full p-5 sm:p-6 lg:p-8 shadow-2xl animate-in slide-in-from-bottom-4 duration-500 my-4 sm:my-6 relative">
         {/* Close button */}
         <button
           onClick={handleDismiss}
-          className="absolute top-4 right-4 text-warm-grey hover:text-charcoal-black transition-colors"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 text-warm-grey hover:text-charcoal-black transition-colors flex-shrink-0"
           aria-label="Close welcome message"
         >
-          <X size={24} />
+          <X size={20} className="sm:w-6 sm:h-6" />
         </button>
 
         {/* Welcome content */}
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-5 lg:space-y-6 pr-8 sm:pr-0">
           <div>
-            <h2 className="font-heading text-3xl lg:text-4xl font-bold text-charcoal-black mb-3">
+            <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-charcoal-black mb-2 sm:mb-3 break-words">
               Welcome to your training portal, {clientName}
             </h2>
-            <p className="font-paragraph text-lg text-warm-grey leading-relaxed">
+            <p className="font-paragraph text-base sm:text-lg text-warm-grey leading-relaxed">
               You're all set. Here's what you need to know to get started.
             </p>
           </div>
 
-          <div className="space-y-4 bg-warm-sand-beige/30 rounded-xl p-6">
+          <div className="space-y-3 sm:space-y-4 bg-warm-sand-beige/30 rounded-xl p-4 sm:p-5 lg:p-6">
             <div>
-              <h3 className="font-heading text-lg font-bold text-charcoal-black mb-2">
+              <h3 className="font-heading text-base sm:text-lg font-bold text-charcoal-black mb-1 sm:mb-2">
                 📋 Your workouts
               </h3>
-              <p className="font-paragraph text-charcoal-black leading-relaxed">
+              <p className="font-paragraph text-sm sm:text-base text-charcoal-black leading-relaxed">
                 Find your personalised program in the <strong>"My Program"</strong> section. Each week includes 3–4 workouts designed specifically for you.
               </p>
             </div>
 
             <div>
-              <h3 className="font-heading text-lg font-bold text-charcoal-black mb-2">
+              <h3 className="font-heading text-base sm:text-lg font-bold text-charcoal-black mb-1 sm:mb-2">
                 📅 How weekly training works
               </h3>
-              <p className="font-paragraph text-charcoal-black leading-relaxed">
+              <p className="font-paragraph text-sm sm:text-base text-charcoal-black leading-relaxed">
                 Complete your workouts at your own pace throughout the week. When you finish all workouts for the week, it moves to your history automatically, and the next week begins. <strong>Don't worry if you miss a workout—life happens, and your coach will help you adjust.</strong>
               </p>
             </div>
 
             <div>
-              <h3 className="font-heading text-lg font-bold text-charcoal-black mb-2">
+              <h3 className="font-heading text-base sm:text-lg font-bold text-charcoal-black mb-1 sm:mb-2">
                 💬 Coach support & check-ins
               </h3>
-              <p className="font-paragraph text-charcoal-black leading-relaxed">
+              <p className="font-paragraph text-sm sm:text-base text-charcoal-black leading-relaxed">
                 <strong>Your coach is here for you.</strong> They review your progress regularly and will adjust your program based on how you're feeling. After each week, you'll be prompted to share a quick check-in—this helps your coach tailor your training to suit you better.
               </p>
             </div>
           </div>
 
-          <div className="pt-4">
+          <div className="pt-2 sm:pt-4">
             <Link
               to="/portal/program"
               onClick={handleDismiss}
-              className="inline-flex items-center justify-center gap-2 w-full bg-soft-bronze text-soft-white px-8 py-4 rounded-lg font-heading text-lg font-bold hover:bg-soft-bronze/90 transition-all duration-300 shadow-md hover:shadow-lg"
+              className="inline-flex items-center justify-center gap-2 w-full bg-soft-bronze text-soft-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-heading text-base sm:text-lg font-bold hover:bg-soft-bronze/90 transition-all duration-300 shadow-md hover:shadow-lg"
             >
               Take me to my program
-              <ArrowRight size={20} />
+              <ArrowRight size={18} className="sm:w-5 sm:h-5" />
             </Link>
           </div>
 
-          <p className="text-center text-sm text-warm-grey italic">
+          <p className="text-center text-xs sm:text-sm text-warm-grey italic">
             This message will only show once
           </p>
         </div>
