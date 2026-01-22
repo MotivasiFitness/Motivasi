@@ -1264,7 +1264,7 @@ export default function MyProgramPage() {
             return (
               <div
                 key={day}
-                className={isActive ? SECONDARY_SECTION.containerActive : SECONDARY_SECTION.container}
+                className="bg-warm-sand-beige/50 border-l-4 border-muted-rose rounded-xl p-6 lg:p-8 shadow-md"
               >
                 {/* Workout Card Header */}
                 <button
@@ -1272,10 +1272,10 @@ export default function MyProgramPage() {
                     setExpandedDay(isExpanded ? null : day);
                     setActiveWorkoutDay(isExpanded ? null : day);
                   }}
-                  className={`w-full px-6 lg:px-8 py-5 lg:py-6 flex items-center justify-between transition-all duration-300 ${
+                  className={`w-full px-6 lg:px-8 py-5 lg:py-6 flex items-center justify-between transition-all duration-300 rounded-lg ${
                     isActive
                       ? 'bg-soft-bronze text-soft-white'
-                      : 'hover:bg-soft-bronze hover:text-soft-white'
+                      : 'bg-soft-white hover:bg-soft-bronze hover:text-soft-white'
                   }`}
                 >
                   <div className="flex-1 text-left">
