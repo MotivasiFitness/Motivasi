@@ -1771,33 +1771,48 @@ export default function MyProgramPage() {
           </div>
         )}
       </div>
-      {/* TERTIARY SECTION: Programme Tips */}
-      <div className={TERTIARY_SECTION.container}>
-        <h3 className={TERTIARY_SECTION.heading}>
-          Programme Tips
-        </h3>
+      {/* SECONDARY SECTION: Programme Tips - Matching Weekly Check-In Design */}
+      <div className="bg-warm-sand-beige/50 border-l-4 border-muted-rose rounded-xl p-10 shadow-md">
+        <div className="flex items-center gap-4 mb-8">
+          <Lightbulb className="w-7 h-7 text-muted-rose flex-shrink-0" />
+          <h3 className="font-heading text-3xl font-bold text-charcoal-black">
+            Programme Tips
+          </h3>
+        </div>
         <div className="grid md:grid-cols-2 gap-6">
-          <div className={TERTIARY_SECTION.tipItem}>
-            <h4 className={TERTIARY_SECTION.tipHeading}>✓ Form First</h4>
-            <p className={TERTIARY_SECTION.tipText}>
+          <div className="bg-soft-white rounded-xl p-6 shadow-sm">
+            <div className="flex items-start gap-3 mb-3">
+              <CheckCircle2 className="w-5 h-5 text-muted-rose flex-shrink-0 mt-1" />
+              <h4 className="font-paragraph font-bold text-charcoal-black">Form First</h4>
+            </div>
+            <p className="text-charcoal-black/80 text-sm leading-relaxed">
               Always prioritize proper form over heavy weight. Quality reps build better results.
             </p>
           </div>
-          <div className={TERTIARY_SECTION.tipItem}>
-            <h4 className={TERTIARY_SECTION.tipHeading}>✓ Rest Days Matter</h4>
-            <p className={TERTIARY_SECTION.tipText}>
+          <div className="bg-soft-white rounded-xl p-6 shadow-sm">
+            <div className="flex items-start gap-3 mb-3">
+              <CheckCircle2 className="w-5 h-5 text-muted-rose flex-shrink-0 mt-1" />
+              <h4 className="font-paragraph font-bold text-charcoal-black">Rest Days Matter</h4>
+            </div>
+            <p className="text-charcoal-black/80 text-sm leading-relaxed">
               Recovery is when your body adapts. Don't skip rest days—they're part of your programme.
             </p>
           </div>
-          <div className={TERTIARY_SECTION.tipItem}>
-            <h4 className={TERTIARY_SECTION.tipHeading}>✓ Progressive Overload</h4>
-            <p className={TERTIARY_SECTION.tipText}>
+          <div className="bg-soft-white rounded-xl p-6 shadow-sm">
+            <div className="flex items-start gap-3 mb-3">
+              <CheckCircle2 className="w-5 h-5 text-muted-rose flex-shrink-0 mt-1" />
+              <h4 className="font-paragraph font-bold text-charcoal-black">Progressive Overload</h4>
+            </div>
+            <p className="text-charcoal-black/80 text-sm leading-relaxed">
               Gradually increase weight, reps, or sets each week to continue making progress.
             </p>
           </div>
-          <div className={TERTIARY_SECTION.tipItem}>
-            <h4 className={TERTIARY_SECTION.tipHeading}>✓ Track Your Trainings</h4>
-            <p className={TERTIARY_SECTION.tipText}>
+          <div className="bg-soft-white rounded-xl p-6 shadow-sm">
+            <div className="flex items-start gap-3 mb-3">
+              <CheckCircle2 className="w-5 h-5 text-muted-rose flex-shrink-0 mt-1" />
+              <h4 className="font-paragraph font-bold text-charcoal-black">Track Your Trainings</h4>
+            </div>
+            <p className="text-charcoal-black/80 text-sm leading-relaxed">
               Keep notes on how you felt and any modifications. This helps us adjust your programme.
             </p>
           </div>
