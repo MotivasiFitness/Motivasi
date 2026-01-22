@@ -20,6 +20,7 @@ export default function BookingsPage() {
   const [showAdditionalNotice, setShowAdditionalNotice] = useState(false);
 
   const ADDITIONAL_SESSION_PRICE = '50'; // Agreed additional session price in £
+  const REVIEW_SESSION_PRICE = '30'; // Form Review & Progress Review pricing in £
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -211,8 +212,8 @@ export default function BookingsPage() {
                 <option value="weekly-checkin">Weekly Check-In Call (Included)</option>
                 <option value="training">Training Session (Additional – £{ADDITIONAL_SESSION_PRICE})</option>
                 <option value="nutrition">Nutrition Consultation (Additional – £{ADDITIONAL_SESSION_PRICE})</option>
-                <option value="form-review">Form Review Session (Additional – £{ADDITIONAL_SESSION_PRICE})</option>
-                <option value="progress-review">Progress Review Call (Additional – £{ADDITIONAL_SESSION_PRICE})</option>
+                <option value="form-review">Form Review Session (Additional – £{REVIEW_SESSION_PRICE})</option>
+                <option value="progress-review">Progress Review Call (Additional – £{REVIEW_SESSION_PRICE})</option>
               </select>
               
               {/* Helper Text */}
