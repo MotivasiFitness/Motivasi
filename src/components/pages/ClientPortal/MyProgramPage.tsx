@@ -130,7 +130,9 @@ export default function MyProgramPage() {
 
   useEffect(() => {
     const fetchPrograms = async () => {
-      if (!member?.loginEmail) return;
+      if (!member?.loginEmail || !member?._id) {
+        return;
+      }
 
       try {
         // Fetch client profile
@@ -245,7 +247,7 @@ export default function MyProgramPage() {
     };
 
     fetchPrograms();
-  }, [member?._id]);
+  }, [member?.loginEmail, member?._id]);
 
   const handleSetComplete = (exerciseId: string, setNumber: number, restTime: number, totalSets: number) => {
     // Mark set as completed
