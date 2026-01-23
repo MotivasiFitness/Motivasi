@@ -1154,35 +1154,13 @@ export default function MyProgramPage() {
 
   const workoutDays = Object.keys(groupedPrograms).sort();
   
-  // Detect if this is a single-session structure (Training 1, Training 2, Training 3, Training 4)
-  const isSingleSessionStructure = workoutDays.length === 4 && 
-    workoutDays.every((day, idx) => day === `Training ${idx + 1}`);
-  
-  // Map section names for single-session structure
-  const sectionNameMap: Record<string, string> = {
-    'Training 1': 'Warm-Up',
-    'Training 2': 'Main Workout',
-    'Training 3': 'Accessory Work',
-    'Training 4': 'Core & Finisher'
-  };
-  
-  // Create a mapping of day to display name
-  const dayDisplayNameMap = new Map<string, string>();
-  workoutDays.forEach((day, index) => {
-    if (isSingleSessionStructure) {
-      dayDisplayNameMap.set(day, sectionNameMap[day] || day);
-    } else {
-      dayDisplayNameMap.set(day, day);
-    }
-  });
-
-  // Create a mapping of day to workout number
+  // Create a mapping of day to workout number for display
   const workoutNumberMap = new Map<string, number>();
   workoutDays.forEach((day, index) => {
     workoutNumberMap.set(day, index + 1);
   });
 
-  // Find next incomplete workout in legacy system (sorted by order)
+  // Find next incomplete workout in legacy system (sorted by workout number)
   const nextIncompleteDay = workoutDays.find(day => !completedWorkouts.has(day));
 
   // Calculate workout overview stats
@@ -1286,7 +1264,7 @@ export default function MyProgramPage() {
             return (
               <div
                 key={day}
-                className="bg-warm-sand-beige/50 border-l-4 border-muted-rose rounded-xl p-6 lg:p-8 shadow-md"
+                className={isActive ? SECONDARY_SECTION.containerActive : SECONDARY_SECTION.container}
               >
                 {/* Workout Card Header */}
                 <button
@@ -1294,10 +1272,10 @@ export default function MyProgramPage() {
                     setExpandedDay(isExpanded ? null : day);
                     setActiveWorkoutDay(isExpanded ? null : day);
                   }}
-                  className={`w-full px-6 lg:px-8 py-5 lg:py-6 flex items-center justify-between transition-all duration-300 rounded-lg ${
+                  className={`w-full px-6 lg:px-8 py-5 lg:py-6 flex items-center justify-between transition-all duration-300 ${
                     isActive
                       ? 'bg-soft-bronze text-soft-white'
-                      : 'bg-soft-white hover:bg-soft-bronze hover:text-soft-white'
+                      : 'hover:bg-soft-bronze hover:text-soft-white'
                   }`}
                 >
                   <div className="flex-1 text-left">
