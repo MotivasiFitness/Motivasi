@@ -1154,13 +1154,35 @@ export default function MyProgramPage() {
 
   const workoutDays = Object.keys(groupedPrograms).sort();
   
-  // Create a mapping of day to workout number for display
+  // Detect if this is a single-session structure (Training 1, Training 2, Training 3, Training 4)
+  const isSingleSessionStructure = workoutDays.length === 4 && 
+    workoutDays.every((day, idx) => day === `Training ${idx + 1}`);
+  
+  // Map section names for single-session structure
+  const sectionNameMap: Record<string, string> = {
+    'Training 1': 'Warm-Up',
+    'Training 2': 'Main Workout',
+    'Training 3': 'Accessory Work',
+    'Training 4': 'Core & Finisher'
+  };
+  
+  // Create a mapping of day to display name
+  const dayDisplayNameMap = new Map<string, string>();
+  workoutDays.forEach((day, index) => {
+    if (isSingleSessionStructure) {
+      dayDisplayNameMap.set(day, sectionNameMap[day] || day);
+    } else {
+      dayDisplayNameMap.set(day, day);
+    }
+  });
+
+  // Create a mapping of day to workout number
   const workoutNumberMap = new Map<string, number>();
   workoutDays.forEach((day, index) => {
     workoutNumberMap.set(day, index + 1);
   });
 
-  // Find next incomplete workout in legacy system (sorted by workout number)
+  // Find next incomplete workout in legacy system (sorted by order)
   const nextIncompleteDay = workoutDays.find(day => !completedWorkouts.has(day));
 
   // Calculate workout overview stats
