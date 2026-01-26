@@ -421,7 +421,7 @@ export default function BookingsPage() {
         <div className="bg-soft-bronze/5 border border-soft-bronze/20 rounded-2xl p-6 flex gap-4 items-start">
           <Lightbulb size={20} className="text-soft-bronze flex-shrink-0 mt-0.5" />
           <p className="text-sm text-charcoal-black leading-relaxed">
-            <span className="font-bold">💡 Clients who book ahead are more likely to stay consistent.</span> Having sessions in your calendar makes it easier to prioritize your health alongside family commitments.
+            <span className="font-bold">💡 Clients who book ahead are more likely to stay consistent.</span> Having sessions in your calendar makes it easier to prioritise your health alongside family commitments.
           </p>
         </div>
       )}

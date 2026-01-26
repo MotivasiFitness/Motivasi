@@ -1823,7 +1823,7 @@ export default function MyProgramPage() {
               <h4 className="font-paragraph font-bold text-charcoal-black">Form First</h4>
             </div>
             <p className="text-charcoal-black/80 text-sm leading-relaxed">
-              Always prioritize proper form over heavy weight. Quality reps build better results.
+              Always prioritise proper form over heavy weight. Quality reps build better results.
             </p>
           </div>
           <div className="bg-soft-white rounded-xl p-6 shadow-sm">
