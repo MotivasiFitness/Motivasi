@@ -72,14 +72,15 @@ export default function WorkoutCard({
         } ${nextUpHeaderClasses}`}
       >
         <div className="flex-1 text-left">
-          {/* Title Row with Number and Badge */}
+          {/* Title Row with Badge */}
           <div className="flex items-center gap-3 mb-2">
+            {/* Primary Title: sessionDescription if available, otherwise Training X */}
             <h3
               className={`font-heading text-lg lg:text-xl font-bold ${
                 isActive ? 'text-soft-white' : 'text-charcoal-black'
               }`}
             >
-              Training {workoutNumber}
+              {metadata.sessionDescription || `Training ${workoutNumber}`}
             </h3>
             {isNextRecommended && !isCompleted && (
               <span
@@ -95,14 +96,14 @@ export default function WorkoutCard({
             )}
           </div>
 
-          {/* Session Title/Description - if available */}
+          {/* Secondary Label: Show Training X when sessionDescription is the primary title */}
           {metadata.sessionDescription && (
             <p
-              className={`text-sm font-medium mb-2 ${
-                isActive ? 'text-soft-white/90' : 'text-soft-bronze'
+              className={`text-xs font-medium mb-2 ${
+                isActive ? 'text-soft-white/70' : 'text-warm-grey'
               }`}
             >
-              {metadata.sessionDescription}
+              Training {workoutNumber}
             </p>
           )}
 
