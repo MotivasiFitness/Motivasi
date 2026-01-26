@@ -922,7 +922,7 @@ export default function MyProgramPage() {
                           />
                         </button>
                         {expandedHowToPerform.has(workout._id || '') && (
-                          <div className="p-4 bg-warm-sand-beige/10 border-t border-warm-sand-beige">
+                          <div className="p-4 bg-white border-t border-warm-sand-beige">
                             <p className="text-sm text-charcoal-black leading-relaxed">
                               Complete all sets with controlled movement. Rest between sets as indicated. Focus on form over speed.
                             </p>
@@ -976,7 +976,7 @@ export default function MyProgramPage() {
                           />
                         </button>
                         {expandedProgression.has(workout._id || '') && (
-                          <div className="p-4 bg-warm-sand-beige/10 border-t border-warm-sand-beige">
+                          <div className="p-4 bg-white border-t border-warm-sand-beige">
                             <p className="text-sm text-charcoal-black">
                               When you complete all reps with good form, increase weight by 2.5-5kg next session.
                             </p>
@@ -1432,7 +1432,7 @@ export default function MyProgramPage() {
                               />
                             </button>
                             {expandedHowToPerform.has(exercise._id || '') && (
-                              <div className="p-4 bg-warm-sand-beige/10 border-t border-warm-sand-beige">
+                              <div className="p-4 bg-white border-t border-warm-sand-beige">
                                 <p className="text-sm text-charcoal-black leading-relaxed">
                                   Complete all sets with controlled movement. Rest {exercise.restTimeSeconds || 60}s between sets. Focus on maintaining proper form throughout.
                                 </p>
@@ -1486,7 +1486,7 @@ export default function MyProgramPage() {
                               />
                             </button>
                             {expandedProgression.has(exercise._id || '') && (
-                              <div className="p-4 bg-warm-sand-beige/10 border-t border-warm-sand-beige">
+                              <div className="p-4 bg-white border-t border-warm-sand-beige">
                                 <p className="text-sm text-charcoal-black">
                                   When you complete all reps with good form, increase weight by 2.5-5kg next session.
                                 </p>
@@ -1513,7 +1513,7 @@ export default function MyProgramPage() {
                                 />
                               </button>
                               {expandedCoachTip.has(exercise._id || '') && (
-                                <div className="p-4 bg-warm-sand-beige/10 border-t border-warm-sand-beige">
+                                <div className="p-4 bg-white border-t border-warm-sand-beige">
                                   <p className="text-sm text-charcoal-black leading-relaxed">{exercise.exerciseNotes}</p>
                                 </div>
                               )}
