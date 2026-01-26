@@ -280,7 +280,13 @@ export interface ClientPrograms {
   _createdDate?: Date;
   _updatedDate?: Date;
   /** @wixFieldType text */
+  estimatedDuration?: string;
+  /** @wixFieldType text */
+  exerciseCountLabel?: string;
+  /** @wixFieldType text */
   secondaryMuscles?: string;
+  /** @wixFieldType text */
+  sessionDescription?: string;
   /** @wixFieldType text */
   progression?: string;
   /** @wixFieldType text */

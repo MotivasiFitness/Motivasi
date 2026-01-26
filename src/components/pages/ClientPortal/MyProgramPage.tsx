@@ -41,6 +41,12 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { getClientDisplayName } from '@/lib/client-name-service';
 import { 
+  extractWorkoutCardMetadata,
+  getNextUpCardClasses,
+  getNextUpHeaderClasses,
+  getNextUpBadgeClasses
+} from '@/lib/workout-card-utils';
+import { 
   PRIMARY_HERO_SECTION, 
   SECONDARY_SECTION, 
   TERTIARY_SECTION, 
@@ -1265,10 +1271,17 @@ export default function MyProgramPage() {
             const workoutNumber = workoutNumberMap.get(day) || dayIndex + 1;
             const isNextRecommended = nextIncompleteDay === day;
 
+            // Extract session metadata from first exercise of the day
+            const firstExercise = dayExercises[0];
+            const metadata = extractWorkoutCardMetadata(dayExercises);
+            const nextUpCardClasses = getNextUpCardClasses(isNextRecommended, isCompleted, isActive);
+            const nextUpHeaderClasses = getNextUpHeaderClasses(isNextRecommended, isCompleted, isActive);
+            const nextUpBadgeClasses = getNextUpBadgeClasses(isActive);
+            
             return (
               <div
                 key={day}
-                className={isActive ? SECONDARY_SECTION.containerActive : SECONDARY_SECTION.container}
+                className={`${nextUpCardClasses} ${isActive ? SECONDARY_SECTION.containerActive : SECONDARY_SECTION.container}`}
               >
                 {/* Workout Card Header */}
                 <button
@@ -1276,33 +1289,53 @@ export default function MyProgramPage() {
                     setExpandedDay(isExpanded ? null : day);
                     setActiveWorkoutDay(isExpanded ? null : day);
                   }}
-                  className={`w-full px-6 lg:px-8 py-5 lg:py-6 flex items-center justify-between transition-all duration-300 ${
+                  className={`w-full px-6 lg:px-8 py-5 lg:py-6 flex items-center justify-between transition-all duration-300 ${nextUpHeaderClasses} ${
                     isActive
                       ? 'bg-soft-bronze text-soft-white'
                       : 'hover:bg-soft-bronze hover:text-soft-white'
                   }`}
                 >
                   <div className="flex-1 text-left">
-                    <div className="flex items-center gap-3 mb-1">
+                    {/* Title Row with Number and Badge */}
+                    <div className="flex items-center gap-3 mb-2">
                       <h3 className={`font-heading text-lg lg:text-xl font-bold ${
                         isActive ? 'text-soft-white' : 'text-charcoal-black'
                       }`}>
                         Training {workoutNumber}
                       </h3>
                       {isNextRecommended && !isCompleted && (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-soft-bronze/20 text-soft-bronze rounded-full text-xs font-medium border border-soft-bronze/40">
+                        <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold border ${nextUpBadgeClasses}`}>
                           <Star size={12} className="fill-current" /> Next up
                         </span>
                       )}
                       {isCompleted && (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                        <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold border border-green-300">
                           <CheckCircle2 size={14} /> Completed
                         </span>
                       )}
                     </div>
-                    <p className={`text-sm ${isActive ? 'text-soft-white/80' : 'text-warm-grey'}`}>
-                      {dayExercises.length} exercises
-                    </p>
+
+                    {/* Session Title/Description - if available */}
+                    {metadata.sessionDescription && (
+                      <p className={`text-sm font-medium mb-2 ${
+                        isActive ? 'text-soft-white/90' : 'text-soft-bronze'
+                      }`}>
+                        {metadata.sessionDescription}
+                      </p>
+                    )}
+
+                    {/* Session Focus and Duration Row */}
+                    <div className="flex flex-wrap items-center gap-4 text-xs">
+                      <span className={`${isActive ? 'text-soft-white/70' : 'text-warm-grey'}`}>
+                        {dayExercises.length} {metadata.exerciseCountLabel}
+                      </span>
+                      {metadata.estimatedDuration && (
+                        <span className={`flex items-center gap-1 ${isActive ? 'text-soft-white/70' : 'text-warm-grey'}`}>
+                          <Clock size={14} />
+                          {metadata.estimatedDuration}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <div className="flex items-center gap-3 ml-4">
