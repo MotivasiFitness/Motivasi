@@ -563,7 +563,7 @@ export default function DashboardPage() {
       )}
 
       {/* Quick Links - Simplified */}
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-2 gap-6">
         <Link
           to="/portal/nutrition"
           className="bg-warm-sand-beige/50 border-l-4 border-muted-rose rounded-xl p-8 hover:shadow-md transition-all duration-200 group"
@@ -572,16 +572,6 @@ export default function DashboardPage() {
             Nutrition
           </h3>
           <p className="text-warm-grey text-base">Meal plans & guidance</p>
-        </Link>
-
-        <Link
-          to="/portal/video-library"
-          className="bg-warm-sand-beige/50 border-l-4 border-muted-rose rounded-xl p-8 hover:shadow-md transition-all duration-200 group"
-        >
-          <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2 group-hover:text-soft-bronze transition-colors">
-            Video Library
-          </h3>
-          <p className="text-warm-grey text-base">Exercise demos</p>
         </Link>
 
         <Link
