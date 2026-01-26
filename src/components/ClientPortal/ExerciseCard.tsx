@@ -112,7 +112,7 @@ export default function ExerciseCard({
 
   if (compact) {
     return (
-      <div className="bg-soft-white border border-warm-grey/20 rounded-lg p-4">
+      <div className="bg-soft-white border border-warm-grey/15 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
             <h4 className="font-heading text-lg font-semibold text-charcoal-black mb-2">
@@ -141,10 +141,10 @@ export default function ExerciseCard({
   }
 
   return (
-    <div className="bg-soft-white border border-warm-grey/20 rounded-lg overflow-hidden">
+    <div className="bg-soft-white border border-warm-grey/15 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
       {/* Header - Always Visible */}
       <div
-        className="p-4 lg:p-6 cursor-pointer hover:bg-warm-sand-beige/30 transition-colors"
+        className="p-5 lg:p-6 cursor-pointer hover:bg-warm-sand-beige/20 transition-colors duration-200"
         onClick={() => onToggleExpand?.(exercise._id)}
       >
         <div className="flex items-start justify-between gap-4">
@@ -214,10 +214,10 @@ export default function ExerciseCard({
 
       {/* Expanded Content */}
       {isExpanded && (
-        <div className="border-t border-warm-grey/20 bg-soft-white/50">
+        <div className="border-t border-warm-grey/15 bg-soft-white/50">
           {/* 5. How to Perform */}
           {exercise.exerciseNotes && (
-            <div className="p-4 lg:p-6 border-b border-warm-grey/20">
+            <div className="p-5 lg:p-6 border-b border-warm-grey/15">
               <button
                 onClick={() => toggleSection('howToPerform')}
                 className="flex items-center justify-between w-full mb-3 hover:text-soft-bronze transition-colors"
@@ -241,7 +241,7 @@ export default function ExerciseCard({
 
           {/* 6. Tempo (with session-level tempo key) */}
           {(exercise.tempo || sessionContext?.tempoKey) && (
-            <div className="p-4 lg:p-6 border-b border-warm-grey/20">
+            <div className="p-5 lg:p-6 border-b border-warm-grey/15">
               <button
                 onClick={() => toggleSection('tempo')}
                 className="flex items-center justify-between w-full mb-3 hover:text-soft-bronze transition-colors"
@@ -294,7 +294,7 @@ export default function ExerciseCard({
 
           {/* 7. Common Mistake and/or Modification */}
           {hasModifications && (
-            <div className="p-4 lg:p-6 border-b border-warm-grey/20">
+            <div className="p-5 lg:p-6 border-b border-warm-grey/15">
               <button
                 onClick={() => toggleSection('modifications')}
                 className="flex items-center justify-between w-full mb-3 hover:text-soft-bronze transition-colors"
@@ -330,7 +330,7 @@ export default function ExerciseCard({
 
           {/* 8. Progression */}
           {exercise.progression && (
-            <div className="p-4 lg:p-6 border-b border-warm-grey/20">
+            <div className="p-5 lg:p-6 border-b border-warm-grey/15">
               <button
                 onClick={() => toggleSection('progression')}
                 className="flex items-center justify-between w-full mb-3 hover:text-soft-bronze transition-colors"
@@ -357,7 +357,7 @@ export default function ExerciseCard({
 
           {/* Video Link */}
           {showVideo && exercise.exerciseVideoUrl && (
-            <div className="p-4 lg:p-6">
+            <div className="p-5 lg:p-6">
               <button
                 onClick={() => onVideoClick?.(exercise.exerciseVideoUrl!)}
                 className="w-full bg-soft-bronze text-soft-white px-4 py-2 rounded-lg font-medium hover:bg-soft-bronze/90 transition-colors"

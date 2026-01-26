@@ -1392,7 +1392,7 @@ export default function MyProgramPage() {
                       return (
                         <div
                           key={exercise._id}
-                          className="pb-6 border-b border-warm-sand-beige last:border-b-0 last:pb-0"
+                          className="bg-soft-white border border-warm-grey/15 rounded-xl p-5 lg:p-6 shadow-sm hover:shadow-md transition-shadow duration-200 mb-6 lg:mb-8 last:mb-0"
                         >
                           {/* Exercise Header */}
                           <div className="mb-4">
