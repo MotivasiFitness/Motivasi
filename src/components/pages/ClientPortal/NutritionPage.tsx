@@ -253,6 +253,14 @@ export default function NutritionPage() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Why This Plate Stays Consistent */}
+                  <div className="bg-soft-bronze/5 border border-soft-bronze/20 rounded-xl p-6 mt-6">
+                    <h4 className="font-heading font-bold text-charcoal-black mb-3">Why this plate stays consistent:</h4>
+                    <p className="font-paragraph text-charcoal-black leading-relaxed">
+                      While individual needs vary by life stage, goals, and activity level, the foundation of balanced nutrition remains the same. What changes is portion size, food choices, and nutrient emphasis — not the structure of the plate.
+                    </p>
+                  </div>
                 </div>
 
                 {/* Meal Plan Details */}
@@ -277,7 +285,7 @@ export default function NutritionPage() {
                   <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-5">
                     How to Use This Plan
                   </h3>
-                  <div className="space-y-3">
+                  <div className="space-y-3 mb-6">
                     {[
                       'Aim for 3 meals + 1–2 snacks most days',
                       'Focus on protein and plants at each meal',
@@ -290,11 +298,19 @@ export default function NutritionPage() {
                       </div>
                     ))}
                   </div>
+
+                  {/* Portion Awareness */}
+                  <div className="bg-soft-bronze/5 border border-soft-bronze/20 rounded-xl p-6">
+                    <h4 className="font-heading font-bold text-charcoal-black mb-3">Portion awareness:</h4>
+                    <p className="font-paragraph text-charcoal-black leading-relaxed mb-3">
+                      Portion sizes are personalised based on hunger, activity, recovery needs, and life stage. Use hunger and energy levels as your primary guide. If helpful, hand portions may be used as a reference (palm = protein, fist = vegetables, cupped hand = carbohydrates, thumb = fats).
+                    </p>
+                  </div>
                 </div>
 
                 {/* Helpful Nutrition Guidelines */}
                 {guidance.dietaryNotes && (
-                  <div className="p-6 bg-soft-white border border-warm-sand-beige rounded-xl">
+                  <div className="p-6 bg-soft-white border border-warm-sand-beige rounded-xl mb-8">
                     <h3 className="font-heading text-xl font-bold text-charcoal-black mb-4">
                       Helpful Nutrition Guidelines
                     </h3>
@@ -302,8 +318,16 @@ export default function NutritionPage() {
                       {guidance.dietaryNotes}
                     </p>
                     <div className="pt-4 border-t border-warm-sand-beige">
-                      <p className="font-paragraph text-sm text-charcoal-black/80 italic">
+                      <p className="font-paragraph text-sm text-charcoal-black/80 italic mb-4">
                         ✨ Small, consistent choices matter more than perfect days.
+                      </p>
+                    </div>
+
+                    {/* Hunger, Fullness & Progress Cues */}
+                    <div className="mt-6 pt-6 border-t border-warm-sand-beige">
+                      <h4 className="font-heading font-bold text-charcoal-black mb-3">Hunger, Fullness & Progress Cues:</h4>
+                      <p className="font-paragraph text-charcoal-black leading-relaxed">
+                        Eat until comfortably satisfied — not overly full or still hungry. Energy levels, strength, digestion, mood, and recovery are important markers of progress, not just changes in body weight.
                       </p>
                     </div>
                   </div>
@@ -318,6 +342,21 @@ export default function NutritionPage() {
                     Not sure how this fits into your routine? Use the chat bubble in the bottom corner to message your coach and we'll adjust it together.
                   </p>
                 </div>
+              </div>
+
+              {/* Progress Beyond the Scale */}
+              <div className="bg-muted-rose/10 border border-muted-rose/20 rounded-2xl p-6 lg:p-8">
+                <h3 className="font-heading text-xl font-bold text-charcoal-black mb-3">Progress Beyond the Scale</h3>
+                <p className="font-paragraph text-charcoal-black leading-relaxed">
+                  Progress may show up as improved strength, better energy, reduced cravings, improved digestion, or better sleep — not only changes on the scale.
+                </p>
+              </div>
+
+              {/* Medical Disclaimer */}
+              <div className="text-center pt-6 border-t border-warm-sand-beige">
+                <p className="font-paragraph text-xs text-warm-grey leading-relaxed">
+                  This guidance is for general nutrition support and does not replace personalised medical advice. Please consult a healthcare professional for specific medical conditions or dietary needs.
+                </p>
               </div>
             </div>
           ))}
