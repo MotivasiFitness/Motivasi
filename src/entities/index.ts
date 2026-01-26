@@ -130,6 +130,14 @@ export interface ClientAssignedWorkouts {
   _createdDate?: Date;
   _updatedDate?: Date;
   /** @wixFieldType text */
+  secondaryMuscles?: string;
+  /** @wixFieldType text */
+  progression?: string;
+  /** @wixFieldType text */
+  coachCue?: string;
+  /** @wixFieldType text */
+  primaryMuscles?: string;
+  /** @wixFieldType text */
   modification1Description?: string;
   /** @wixFieldType text */
   modification3Description?: string;
@@ -271,6 +279,14 @@ export interface ClientPrograms {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
+  /** @wixFieldType text */
+  secondaryMuscles?: string;
+  /** @wixFieldType text */
+  progression?: string;
+  /** @wixFieldType text */
+  coachCue?: string;
+  /** @wixFieldType text */
+  primaryMuscles?: string;
   /** @wixFieldType text */
   modification1Description?: string;
   /** @wixFieldType text */
