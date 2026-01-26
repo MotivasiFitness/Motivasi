@@ -1301,7 +1301,7 @@ export default function MyProgramPage() {
                       <h3 className={`font-heading text-lg lg:text-xl font-bold ${
                         isActive ? 'text-soft-white' : 'text-charcoal-black'
                       }`}>
-                        Training {workoutNumber}
+                        {trainingFocus} - PART {workoutNumber}
                       </h3>
                       {isNextRecommended && !isCompleted && (
                         <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold border ${nextUpBadgeClasses}`}>
