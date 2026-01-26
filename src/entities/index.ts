@@ -423,6 +423,8 @@ export interface NutritionGuidance {
   _createdDate?: Date;
   _updatedDate?: Date;
   /** @wixFieldType text */
+  targetedNutrientFocus?: string;
+  /** @wixFieldType text */
   guidanceTitle?: string;
   /** @wixFieldType text */
   overview?: string;

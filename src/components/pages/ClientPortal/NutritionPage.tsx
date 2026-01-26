@@ -124,6 +124,20 @@ export default function NutritionPage() {
                   </div>
                 )}
 
+                {/* Targeted Nutrient Focus */}
+                {guidance.targetedNutrientFocus && (
+                  <div className="mb-8 pb-8 border-b border-warm-sand-beige">
+                    <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-5">
+                      Targeted Nutrient Focus
+                    </h3>
+                    <div className="bg-soft-bronze/5 border border-soft-bronze/20 rounded-xl p-6">
+                      <p className="font-paragraph text-charcoal-black leading-relaxed whitespace-pre-wrap">
+                        {guidance.targetedNutrientFocus}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 {/* Daily Plate Guide */}
                 <div className="mb-8 pb-8 border-b border-warm-sand-beige">
                   <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
