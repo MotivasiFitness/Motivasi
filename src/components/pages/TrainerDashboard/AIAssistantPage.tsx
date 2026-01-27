@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useMember } from '@/integrations';
 import { useNavigate } from 'react-router-dom';
-import { Loader, AlertCircle, CheckCircle, Sparkles, ArrowRight, Wand2 } from 'lucide-react';
+import { Loader, AlertCircle, CheckCircle, Sparkles, ArrowRight, Wand2, X } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 import {
   generateProgramWithAI,
   saveProgramDraft,
@@ -39,6 +40,7 @@ const TRAINING_STYLES = [
 export default function AIAssistantPage() {
   const { member } = useMember();
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const [step, setStep] = useState<Step>('input');
   const [generatedProgram, setGeneratedProgram] = useState<GeneratedProgram | null>(null);
@@ -165,12 +167,24 @@ export default function AIAssistantPage() {
 
   const handleSaveProgram = async () => {
     if (!generatedProgram) {
-      setError('No program data to save');
+      const errorMsg = 'No program data to save';
+      setError(errorMsg);
+      toast({
+        title: 'Error',
+        description: errorMsg,
+        variant: 'destructive',
+      });
       return;
     }
 
     if (!member?._id) {
-      setError('Unable to identify trainer. Please log in again.');
+      const errorMsg = 'Unable to identify trainer. Please log in again.';
+      setError(errorMsg);
+      toast({
+        title: 'Error',
+        description: errorMsg,
+        variant: 'destructive',
+      });
       return;
     }
 
@@ -189,6 +203,13 @@ export default function AIAssistantPage() {
 
       // Pass clientId if selected, otherwise save as template/draft
       const programId = await saveProgramDraft(generatedProgram, member._id, selectedClientId || undefined);
+      
+      // Show success toast
+      toast({
+        title: 'Success',
+        description: 'Program saved successfully! Redirecting to your programs...',
+      });
+      
       setStep('success');
 
       // Redirect after 2 seconds to programs created list
@@ -199,6 +220,14 @@ export default function AIAssistantPage() {
       const errorMessage = err instanceof Error ? err.message : 'Failed to save program';
       console.error('Save program error:', err);
       setError(errorMessage);
+      
+      // Show error toast
+      toast({
+        title: 'Error',
+        description: errorMessage,
+        variant: 'destructive',
+      });
+      
       setIsSaving(false);
     }
   };
