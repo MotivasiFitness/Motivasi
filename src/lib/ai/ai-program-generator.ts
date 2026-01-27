@@ -186,11 +186,30 @@ export async function saveProgramDraft(
   clientId?: string
 ): Promise<string> {
   try {
+    // Validate inputs
+    if (!program || !program.programName) {
+      throw new Error('Program data is invalid or missing program name');
+    }
+
+    if (!trainerId) {
+      throw new Error('Trainer ID is required');
+    }
+
     const programId = crypto.randomUUID();
     const now = new Date().toISOString();
 
     // Standardized status: "draft", "assigned", or "template" (lowercase)
     const status = clientId ? 'assigned' : 'draft';
+
+    // Validate program JSON serialization
+    let programJsonString: string;
+    try {
+      programJsonString = JSON.stringify(program);
+      // Verify it can be parsed back
+      JSON.parse(programJsonString);
+    } catch (jsonError) {
+      throw new Error('Program data cannot be serialized to JSON');
+    }
 
     // Save to programdrafts collection with full JSON
     const programDraft = {
@@ -198,35 +217,47 @@ export async function saveProgramDraft(
       programId,
       trainerId,
       clientId: clientId || undefined,
-      programJson: JSON.stringify(program),
+      programJson: programJsonString,
       status,
       createdAt: now,
       updatedAt: now,
     };
 
-    await BaseCrudService.create('programdrafts', programDraft);
+    try {
+      await BaseCrudService.create('programdrafts', programDraft);
+    } catch (draftError) {
+      const errorMsg = draftError instanceof Error ? draftError.message : 'Unknown error';
+      throw new Error(`Failed to save program draft to database: ${errorMsg}`);
+    }
 
     // Also save basic metadata to programs collection for backward compatibility
     const fitnessProgram: FitnessPrograms = {
       _id: programId,
       programName: program.programName,
-      description: program.overview,
-      duration: program.duration,
-      focusArea: program.focusArea,
+      description: program.overview || '',
+      duration: program.duration || '',
+      focusArea: program.focusArea || '',
       trainerId,
       clientId: clientId || undefined,
       status: status.charAt(0).toUpperCase() + status.slice(1), // Capitalize for programs collection
     };
 
-    await BaseCrudService.create('programs', fitnessProgram);
+    try {
+      await BaseCrudService.create('programs', fitnessProgram);
+    } catch (programError) {
+      const errorMsg = programError instanceof Error ? programError.message : 'Unknown error';
+      console.warn(`Warning: Failed to save program metadata: ${errorMsg}. Draft was saved successfully.`);
+      // Don't throw here - the draft was saved successfully, this is just metadata
+    }
 
     // Cache in sessionStorage for quick access
     sessionStorage.setItem(`program_draft_${programId}`, JSON.stringify(program));
 
     return programId;
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     console.error('Error saving program draft:', error);
-    throw new Error('Failed to save program draft');
+    throw new Error(`Failed to save program draft: ${errorMessage}`);
   }
 }
 

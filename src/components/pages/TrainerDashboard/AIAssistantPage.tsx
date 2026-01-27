@@ -127,13 +127,30 @@ export default function AIAssistantPage() {
   };
 
   const handleSaveProgram = async () => {
-    if (!generatedProgram) return;
+    if (!generatedProgram) {
+      setError('No program data to save');
+      return;
+    }
+
+    if (!member?._id) {
+      setError('Unable to identify trainer. Please log in again.');
+      return;
+    }
 
     setIsSaving(true);
     setError('');
 
     try {
-      const programId = await saveProgramDraft(generatedProgram, member?._id || '');
+      // Validate program data before saving
+      if (!generatedProgram.programName || !generatedProgram.programName.trim()) {
+        throw new Error('Program name is missing');
+      }
+
+      if (!generatedProgram.workoutDays || generatedProgram.workoutDays.length === 0) {
+        throw new Error('Program has no workout days');
+      }
+
+      const programId = await saveProgramDraft(generatedProgram, member._id);
       setStep('success');
 
       // Redirect after 2 seconds to programs created list
@@ -142,6 +159,7 @@ export default function AIAssistantPage() {
       }, 2000);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to save program';
+      console.error('Save program error:', err);
       setError(errorMessage);
       setIsSaving(false);
     }
