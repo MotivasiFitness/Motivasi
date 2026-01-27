@@ -6,8 +6,8 @@
  * proper data isolation between clients and trainers.
  */
 
-import { BaseCrudService } from '@/integrations';
 import { getClientWorkouts } from './client-workout-access-control';
+import ProtectedDataService from './protected-data-service';
 
 export interface WeeklySummary {
   _id: string;
@@ -52,7 +52,7 @@ export async function checkAndGenerateWeeklySummary(
 ): Promise<WeeklySummary | null> {
   try {
     // Check if summary already exists for this week
-    const existingSummaries = await BaseCrudService.getAll<WeeklySummary>('weeklysummaries');
+    const existingSummaries = await ProtectedDataService.getAll<WeeklySummary>('weeklysummaries');
     const existingSummary = existingSummaries.items.find(
       s => s.clientId === clientId && s.weekNumber === weekNumber && s.programTitle === programTitle
     );
@@ -110,7 +110,7 @@ export async function checkAndGenerateWeeklySummary(
       encouragingMessage: randomMessage
     };
 
-    await BaseCrudService.create('weeklysummaries', summary);
+    await ProtectedDataService.create('weeklysummaries', summary);
     return summary;
   } catch (error) {
     console.error('Error generating weekly summary:', error);
@@ -127,7 +127,7 @@ export async function getWeeklySummary(
   programTitle: string
 ): Promise<WeeklySummary | null> {
   try {
-    const summaries = await BaseCrudService.getAll<WeeklySummary>('weeklysummaries');
+    const summaries = await ProtectedDataService.getAll<WeeklySummary>('weeklysummaries');
     return summaries.items.find(
       s => s.clientId === clientId && s.weekNumber === weekNumber && s.programTitle === programTitle
     ) || null;
@@ -142,7 +142,7 @@ export async function getWeeklySummary(
  */
 export async function getClientWeeklySummaries(clientId: string): Promise<WeeklySummary[]> {
   try {
-    const summaries = await BaseCrudService.getAll<WeeklySummary>('weeklysummaries');
+    const summaries = await ProtectedDataService.getAll<WeeklySummary>('weeklysummaries');
     return summaries.items.filter(s => s.clientId === clientId);
   } catch (error) {
     console.error('Error fetching client summaries:', error);

@@ -6,9 +6,9 @@
  * - Trainers can only read assignments for their managed clients
  */
 
-import { BaseCrudService } from '@/integrations';
 import type { ProgramAssignments } from '@/entities/programassignments';
 import type { TrainerClientAssignments } from '@/entities/trainerclientassignments';
+import ProtectedDataService from './protected-data-service';
 
 export interface ProgramAssignmentFilters {
   memberId: string;
@@ -27,9 +27,8 @@ export async function getAuthorizedProgramAssignments(
 
   if (role === 'client') {
     // Clients can only see their own assignments
-    const result = await BaseCrudService.getAll<ProgramAssignments>(
+    const result = await ProtectedDataService.getAll<ProgramAssignments>(
       'programassignments',
-      [],
       { limit: 100 }
     );
     
@@ -39,9 +38,8 @@ export async function getAuthorizedProgramAssignments(
     // Trainers can only see assignments for their managed clients
     
     // First, get all clients assigned to this trainer
-    const trainerAssignments = await BaseCrudService.getAll<TrainerClientAssignments>(
+    const trainerAssignments = await ProtectedDataService.getAll<TrainerClientAssignments>(
       'trainerclientassignments',
-      [],
       { limit: 100 }
     );
     
@@ -53,9 +51,8 @@ export async function getAuthorizedProgramAssignments(
       .map(assignment => assignment.clientId);
     
     // Get all program assignments
-    const result = await BaseCrudService.getAll<ProgramAssignments>(
+    const result = await ProtectedDataService.getAll<ProgramAssignments>(
       'programassignments',
-      [],
       { limit: 100 }
     );
     

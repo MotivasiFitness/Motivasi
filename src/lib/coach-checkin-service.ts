@@ -4,9 +4,9 @@
  * Reuses existing adherence data to identify clients needing check-ins
  */
 
-import { BaseCrudService } from '@/integrations';
 import { ClientCoachMessages } from '@/entities';
 import { getClientAdherenceSignal, AdherenceStatus, getActivitySummary } from '@/lib/adherence-tracking';
+import ProtectedDataService from './protected-data-service';
 
 export interface ClientCheckInPrompt {
   clientId: string;
@@ -57,10 +57,10 @@ export async function getFollowUpReminders(
   daysSinceLastInteraction: number = 6 // 5-7 days, default 6
 ): Promise<ClientCheckInPrompt[]> {
   try {
-    const { items: programs } = await BaseCrudService.getAll<any>('programs');
+    const { items: programs } = await ProtectedDataService.getAll<any>('programs');
     const trainerPrograms = programs.filter((p) => p.trainerId === trainerId);
 
-    const { items: checkInMessages } = await BaseCrudService.getAll<ClientCoachMessages>(
+    const { items: checkInMessages } = await ProtectedDataService.getAll<ClientCoachMessages>(
       'clientcoachmessages'
     );
 

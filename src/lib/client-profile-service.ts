@@ -8,8 +8,8 @@
  * Cache invalidation ensures real-time updates between Client Portal and Trainer Portal.
  */
 
-import { BaseCrudService } from '@/integrations';
 import { ClientProfiles } from '@/entities';
+import ProtectedDataService from './protected-data-service';
 
 // In-memory cache for client profiles with timestamp tracking
 interface CachedProfile {
@@ -46,7 +46,7 @@ export async function getClientProfile(
   }
 
   try {
-    const { items } = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
+    const { items } = await ProtectedDataService.getAll<ClientProfiles>('clientprofiles');
     const profile = items.find(p => p.memberId === memberId);
     
     if (profile) {
@@ -85,7 +85,7 @@ export async function getClientProfiles(
   // Fetch uncached or stale profiles
   if (uncachedIds.length > 0) {
     try {
-      const { items } = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
+      const { items } = await ProtectedDataService.getAll<ClientProfiles>('clientprofiles');
       
       uncachedIds.forEach(id => {
         const profile = items.find(p => p.memberId === id);

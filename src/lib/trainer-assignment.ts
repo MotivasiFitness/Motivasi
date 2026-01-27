@@ -4,8 +4,8 @@
  * Ensures idempotency and prevents duplicate assignments
  */
 
-import { BaseCrudService } from '@/integrations';
 import { TrainerClientAssignments, MemberRoles } from '@/entities';
+import ProtectedDataService from './protected-data-service';
 
 const DEFAULT_TRAINER_ID = 'd18a21c8-be77-496f-a2fd-ec6479ecba6d';
 
@@ -39,7 +39,7 @@ export async function assignClientToTrainer(
     }
 
     // Check if assignment already exists
-    const { items: existingAssignments } = await BaseCrudService.getAll<TrainerClientAssignments>(
+    const { items: existingAssignments } = await ProtectedDataService.getAll<TrainerClientAssignments>(
       'trainerclientassignments'
     );
 
@@ -69,7 +69,7 @@ export async function assignClientToTrainer(
       notes: 'Auto-assigned to default trainer',
     };
 
-    await BaseCrudService.create('trainerclientassignments', newAssignment);
+    await ProtectedDataService.create('trainerclientassignments', newAssignment);
 
     return {
       success: true,

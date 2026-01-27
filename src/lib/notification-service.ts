@@ -3,8 +3,8 @@
  * Handles creation and management of trainer notifications for client workout activities
  */
 
-import { BaseCrudService } from '@/integrations';
 import { TrainerNotifications } from '@/entities';
+import ProtectedDataService from './protected-data-service';
 
 export type NotificationType = 'workout_completed' | 'week_completed' | 'reflection_submitted';
 
@@ -56,14 +56,14 @@ export async function createTrainerNotification(params: CreateNotificationParams
     relatedWeekNumber,
   };
 
-  await BaseCrudService.create('trainernotifications', notification);
+  await ProtectedDataService.create('trainernotifications', notification);
 }
 
 /**
  * Fetches unread notifications for a trainer
  */
 export async function getUnreadNotifications(trainerId: string): Promise<TrainerNotifications[]> {
-  const { items } = await BaseCrudService.getAll<TrainerNotifications>('trainernotifications');
+  const { items } = await ProtectedDataService.getAll<TrainerNotifications>('trainernotifications');
   return items.filter(n => n.trainerId === trainerId && !n.isRead && !n.isDismissed);
 }
 
@@ -71,7 +71,7 @@ export async function getUnreadNotifications(trainerId: string): Promise<Trainer
  * Fetches all notifications for a trainer (paginated)
  */
 export async function getTrainerNotifications(trainerId: string, limit = 50, skip = 0) {
-  const result = await BaseCrudService.getAll<TrainerNotifications>('trainernotifications', {}, { limit, skip });
+  const result = await ProtectedDataService.getAll<TrainerNotifications>('trainernotifications', { limit, skip });
   const filtered = result.items.filter(n => n.trainerId === trainerId && !n.isDismissed);
   
   return {

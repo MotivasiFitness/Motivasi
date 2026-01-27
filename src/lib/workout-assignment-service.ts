@@ -1,6 +1,6 @@
-import { BaseCrudService } from '@/integrations';
 import { ClientAssignedWorkouts } from '@/entities';
 import { startOfWeek, endOfWeek, format, isSameWeek, parseISO } from 'date-fns';
+import ProtectedDataService from './protected-data-service';
 
 /**
  * Get the week start date (Monday) for a given date
@@ -59,7 +59,7 @@ export async function getActiveWorkoutsForWeek(
   clientId: string,
   weekStartDate: Date | string
 ): Promise<ClientAssignedWorkouts[]> {
-  const { items } = await BaseCrudService.getAll<ClientAssignedWorkouts>('clientassignedworkouts');
+  const { items } = await ProtectedDataService.getAll<ClientAssignedWorkouts>('clientassignedworkouts');
   
   const weekStart = typeof weekStartDate === 'string' ? parseISO(weekStartDate) : weekStartDate;
   
@@ -93,7 +93,7 @@ export async function checkWorkoutConflict(
   weekStartDate: Date | string,
   workoutSlot: number
 ): Promise<ClientAssignedWorkouts | null> {
-  const { items } = await BaseCrudService.getAll<ClientAssignedWorkouts>('clientassignedworkouts');
+  const { items } = await ProtectedDataService.getAll<ClientAssignedWorkouts>('clientassignedworkouts');
   
   const weekStart = typeof weekStartDate === 'string' ? parseISO(weekStartDate) : weekStartDate;
   
@@ -119,7 +119,7 @@ export async function checkWorkoutConflict(
  * Marks them as 'archived' instead of 'active'
  */
 export async function archivePreviousWeekWorkouts(clientId: string): Promise<void> {
-  const { items } = await BaseCrudService.getAll<ClientAssignedWorkouts>('clientassignedworkouts');
+  const { items } = await ProtectedDataService.getAll<ClientAssignedWorkouts>('clientassignedworkouts');
   
   const previousWeekStart = new Date();
   previousWeekStart.setDate(previousWeekStart.getDate() - 7);
