@@ -201,8 +201,17 @@ export default function AIAssistantPage() {
         throw new Error('Program has no workout days');
       }
 
+      console.log('🔄 Saving program...', {
+        programName: generatedProgram.programName,
+        trainerId: member._id,
+        clientId: selectedClientId || 'none (template/draft)',
+        workoutDays: generatedProgram.workoutDays.length,
+      });
+
       // Pass clientId if selected, otherwise save as template/draft
       const programId = await saveProgramDraft(generatedProgram, member._id, selectedClientId || undefined);
+      
+      console.log('✅ Program saved successfully:', { programId });
       
       // Show success toast
       toast({
@@ -218,7 +227,7 @@ export default function AIAssistantPage() {
       }, 2000);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to save program';
-      console.error('Save program error:', err);
+      console.error('❌ Save program error:', err);
       setError(errorMessage);
       
       // Show error toast

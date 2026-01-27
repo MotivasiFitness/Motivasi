@@ -33,11 +33,26 @@ export default function ProgramsCreatedPage() {
     loadPrograms();
   }, [member?._id]);
 
+  // Refresh programs when page becomes visible (after redirect from save)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        console.log('📄 Page became visible, refreshing programs...');
+        loadPrograms();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
   const loadPrograms = async () => {
     if (!member?._id) return;
 
     try {
       setIsLoading(true);
+
+      console.log('🔄 Loading programs for trainer:', member._id);
 
       // Load programs from both collections
       const [programsResult, draftsResult] = await Promise.all([
@@ -49,10 +64,17 @@ export default function ProgramsCreatedPage() {
       const trainerPrograms = programsResult.items.filter(p => p.trainerId === member._id);
       const trainerDrafts = draftsResult.items.filter(d => d.trainerId === member._id);
 
+      console.log('✅ Programs loaded:', {
+        totalPrograms: trainerPrograms.length,
+        totalDrafts: trainerDrafts.length,
+        programs: trainerPrograms.map(p => ({ id: p._id, name: p.programName, status: p.status })),
+        drafts: trainerDrafts.map(d => ({ id: d._id, programId: d.programId, status: d.status })),
+      });
+
       setPrograms(trainerPrograms);
       setProgramDrafts(trainerDrafts);
     } catch (error) {
-      console.error('Error loading programs:', error);
+      console.error('❌ Error loading programs:', error);
     } finally {
       setIsLoading(false);
     }

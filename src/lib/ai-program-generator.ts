@@ -226,12 +226,15 @@ export async function saveProgramDraft(
 
     try {
       await BaseCrudService.create('programdrafts', programDraft);
+      console.log('✅ Program draft saved successfully:', { programId, trainerId, status, draftId: programDraft._id });
     } catch (draftError) {
       const errorMsg = draftError instanceof Error ? draftError.message : 'Unknown error';
+      console.error('❌ Failed to save program draft:', errorMsg);
       throw new Error(`Failed to save program draft to database: ${errorMsg}`);
     }
 
     // Also save basic metadata to programs collection for backward compatibility
+    // CRITICAL: Use lowercase status to match filter expectations in ProgramsCreatedPage
     const fitnessProgram: FitnessPrograms = {
       _id: programId,
       programName: program.programName,
@@ -240,14 +243,15 @@ export async function saveProgramDraft(
       focusArea: program.focusArea || '',
       trainerId,
       clientId: clientId || undefined,
-      status: status.charAt(0).toUpperCase() + status.slice(1), // Capitalize for programs collection
+      status: status, // Keep lowercase: "draft", "assigned", "template"
     };
 
     try {
       await BaseCrudService.create('programs', fitnessProgram);
+      console.log('✅ Program metadata saved successfully:', { programId, trainerId, status });
     } catch (programError) {
       const errorMsg = programError instanceof Error ? programError.message : 'Unknown error';
-      console.warn(`Warning: Failed to save program metadata: ${errorMsg}. Draft was saved successfully.`);
+      console.warn(`⚠️ Warning: Failed to save program metadata: ${errorMsg}. Draft was saved successfully.`);
       // Don't throw here - the draft was saved successfully, this is just metadata
     }
 
