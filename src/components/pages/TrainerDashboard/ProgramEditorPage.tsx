@@ -136,7 +136,7 @@ export default function ProgramEditorPage() {
     try {
       // Use programId if available, otherwise generate one
       const idToUse = programId || crypto.randomUUID();
-      await saveProgramAsTemplate(idToUse, templateName);
+      await saveProgramAsTemplate(idToUse, templateName, member?._id);
       setSuccess('Program saved as template');
       setShowTemplateModal(false);
       setTemplateName('');

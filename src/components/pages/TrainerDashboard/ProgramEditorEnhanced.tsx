@@ -200,7 +200,7 @@ export default function ProgramEditorEnhanced() {
     setError('');
 
     try {
-      await saveProgramAsTemplate(program._id || '', templateName);
+      await saveProgramAsTemplate(program._id || '', templateName, member?._id);
       setSuccess('Program saved as template');
       setShowTemplateModal(false);
       setTemplateName('');
