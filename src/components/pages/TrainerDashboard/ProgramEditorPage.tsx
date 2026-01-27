@@ -19,6 +19,7 @@ export default function ProgramEditorPage() {
   const navigate = useNavigate();
 
   const [program, setProgram] = useState<GeneratedProgram | null>(null);
+  const [programId, setProgramId] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState('');
@@ -33,9 +34,13 @@ export default function ProgramEditorPage() {
   // Load program from session storage
   useEffect(() => {
     const draftProgram = sessionStorage.getItem('draft_program');
+    const draftProgramId = sessionStorage.getItem('draft_program_id');
     if (draftProgram) {
       try {
         setProgram(JSON.parse(draftProgram));
+        if (draftProgramId) {
+          setProgramId(draftProgramId);
+        }
       } catch (err) {
         setError('Failed to load program');
       }
@@ -91,12 +96,24 @@ export default function ProgramEditorPage() {
     setError('');
 
     try {
+      // Use programId if available, otherwise generate one
+      const idToUse = programId || crypto.randomUUID();
+      
       // Save to session storage
       sessionStorage.setItem('draft_program', JSON.stringify(program));
+      sessionStorage.setItem('draft_program_id', idToUse);
+      
+      // Update in database if programId exists
+      if (programId) {
+        await updateProgramDraft(programId, program);
+      }
+      
       setSuccess('Program updated successfully');
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
-      setError('Failed to update program');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to update program';
+      setError(errorMessage);
+      console.error('Update error:', err);
     } finally {
       setIsSaving(false);
     }
@@ -108,17 +125,26 @@ export default function ProgramEditorPage() {
       return;
     }
 
+    if (!program) {
+      setError('No program data to save');
+      return;
+    }
+
     setIsSaving(true);
     setError('');
 
     try {
-      await saveProgramAsTemplate(program._id || '', templateName);
+      // Use programId if available, otherwise generate one
+      const idToUse = programId || crypto.randomUUID();
+      await saveProgramAsTemplate(idToUse, templateName);
       setSuccess('Program saved as template');
       setShowTemplateModal(false);
       setTemplateName('');
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
-      setError('Failed to save template');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to save template';
+      setError(errorMessage);
+      console.error('Template save error:', err);
     } finally {
       setIsSaving(false);
     }
@@ -130,11 +156,18 @@ export default function ProgramEditorPage() {
       return;
     }
 
+    if (!program) {
+      setError('No program data to assign');
+      return;
+    }
+
     setIsSaving(true);
     setError('');
 
     try {
-      await assignProgramToClient(program._id || '', selectedClientId);
+      // Use programId if available, otherwise generate one
+      const idToUse = programId || crypto.randomUUID();
+      await assignProgramToClient(idToUse, selectedClientId);
       setSuccess('Program assigned to client');
       setShowAssignModal(false);
       setSelectedClientId('');
@@ -142,7 +175,9 @@ export default function ProgramEditorPage() {
         navigate('/trainer');
       }, 2000);
     } catch (err) {
-      setError('Failed to assign program');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to assign program';
+      setError(errorMessage);
+      console.error('Assign error:', err);
     } finally {
       setIsSaving(false);
     }

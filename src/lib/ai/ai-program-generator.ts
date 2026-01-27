@@ -360,22 +360,47 @@ export async function updateProgramDraft(
  * Save a program draft as a template
  * @param programId - ID of the program to save as template
  * @param templateName - Name for the template
+ * @param trainerId - Optional trainer ID (for new programs without draft)
  */
 export async function saveProgramAsTemplate(
   programId: string,
-  templateName: string
+  templateName: string,
+  trainerId?: string
 ): Promise<void> {
   try {
-    // Load current draft
-    const results = await BaseCrudService.getAll<any>('programdrafts');
-    const draft = results.items.find((d: any) => d.programId === programId);
+    // Try to load existing draft first
+    let draft: any = null;
+    let program: GeneratedProgram | null = null;
+    let draftTrainerId = trainerId;
 
-    if (!draft) {
-      throw new Error('Program draft not found');
+    try {
+      const results = await BaseCrudService.getAll<any>('programdrafts');
+      draft = results.items.find((d: any) => d.programId === programId);
+      
+      if (draft) {
+        program = JSON.parse(draft.programJson);
+        draftTrainerId = draft.trainerId;
+      }
+    } catch (err) {
+      console.warn('Could not load existing draft:', err);
     }
 
-    // Parse program
-    const program = JSON.parse(draft.programJson);
+    // If no existing draft, try to load from session storage
+    if (!program) {
+      const sessionProgram = sessionStorage.getItem('draft_program');
+      if (sessionProgram) {
+        program = JSON.parse(sessionProgram);
+      }
+    }
+
+    if (!program) {
+      throw new Error('Program data not found. Please ensure the program is loaded.');
+    }
+
+    if (!draftTrainerId) {
+      throw new Error('Trainer ID is required to save template');
+    }
+
     const templateId = crypto.randomUUID();
     const now = new Date().toISOString();
 
@@ -383,7 +408,7 @@ export async function saveProgramAsTemplate(
     const template = {
       _id: crypto.randomUUID(),
       programId: templateId,
-      trainerId: draft.trainerId,
+      trainerId: draftTrainerId,
       clientId: undefined,
       programJson: JSON.stringify({
         ...program,
@@ -398,8 +423,9 @@ export async function saveProgramAsTemplate(
 
     console.log(`Template saved: ${templateId}`);
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error saving template:', error);
-    throw new Error('Failed to save template');
+    throw new Error(`Failed to save template: ${errorMessage}`);
   }
 }
 
@@ -407,22 +433,48 @@ export async function saveProgramAsTemplate(
  * Assign a program to a client
  * @param programId - ID of the program to assign
  * @param clientId - ID of the client to assign to
+ * @param trainerId - Optional trainer ID (for new programs without draft)
  * @returns Updated program ID
  */
 export async function assignProgramToClient(
   programId: string,
-  clientId: string
+  clientId: string,
+  trainerId?: string
 ): Promise<string> {
   try {
-    // Load the program draft
-    const results = await BaseCrudService.getAll<any>('programdrafts');
-    const draft = results.items.find((d: any) => d.programId === programId);
+    // Try to load existing draft first
+    let draft: any = null;
+    let program: GeneratedProgram | null = null;
+    let draftTrainerId = trainerId;
 
-    if (!draft) {
-      throw new Error('Program draft not found');
+    try {
+      const results = await BaseCrudService.getAll<any>('programdrafts');
+      draft = results.items.find((d: any) => d.programId === programId);
+      
+      if (draft) {
+        program = JSON.parse(draft.programJson);
+        draftTrainerId = draft.trainerId;
+      }
+    } catch (err) {
+      console.warn('Could not load existing draft:', err);
     }
 
-    const program: GeneratedProgram = JSON.parse(draft.programJson);
+    // If no existing draft, try to load from session storage
+    if (!program) {
+      const sessionProgram = sessionStorage.getItem('draft_program');
+      if (sessionProgram) {
+        program = JSON.parse(sessionProgram);
+      }
+    }
+
+    if (!program) {
+      throw new Error('Program data not found. Please ensure the program is loaded.');
+    }
+
+    if (!draftTrainerId) {
+      throw new Error('Trainer ID is required to assign program');
+    }
+
     const clientProgramId = crypto.randomUUID();
     const now = new Date().toISOString();
 
@@ -430,9 +482,9 @@ export async function assignProgramToClient(
     const clientDraft = {
       _id: crypto.randomUUID(),
       programId: clientProgramId,
-      trainerId: draft.trainerId,
+      trainerId: draftTrainerId,
       clientId,
-      programJson: draft.programJson,
+      programJson: JSON.stringify(program),
       status: 'assigned',
       createdAt: now,
       updatedAt: now,
@@ -447,7 +499,7 @@ export async function assignProgramToClient(
       description: program.overview,
       duration: program.duration,
       focusArea: program.focusArea,
-      trainerId: draft.trainerId,
+      trainerId: draftTrainerId,
       clientId,
       status: 'Assigned',
     };
@@ -491,8 +543,9 @@ export async function assignProgramToClient(
 
     return clientProgramId;
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error assigning program:', error);
-    throw new Error('Failed to assign program to client');
+    throw new Error(`Failed to assign program to client: ${errorMessage}`);
   }
 }
 

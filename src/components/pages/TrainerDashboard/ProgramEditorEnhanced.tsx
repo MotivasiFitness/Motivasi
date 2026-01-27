@@ -39,6 +39,7 @@ export default function ProgramEditorEnhanced() {
   const navigate = useNavigate();
 
   const [program, setProgram] = useState<GeneratedProgram | null>(null);
+  const [programId, setProgramId] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState('');
@@ -60,10 +61,14 @@ export default function ProgramEditorEnhanced() {
   // Load program from session storage
   useEffect(() => {
     const draftProgram = sessionStorage.getItem('draft_program');
+    const draftProgramId = sessionStorage.getItem('draft_program_id');
     if (draftProgram) {
       try {
         const parsed = JSON.parse(draftProgram);
         setProgram(parsed);
+        if (draftProgramId) {
+          setProgramId(draftProgramId);
+        }
 
         // Assess quality
         const { score, flags } = assessProgramQuality(parsed);
@@ -225,7 +230,9 @@ export default function ProgramEditorEnhanced() {
         navigate('/trainer');
       }, 2000);
     } catch (err) {
-      setError('Failed to assign program');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to assign program';
+      setError(errorMessage);
+      console.error('Assign error:', err);
     } finally {
       setIsSaving(false);
     }
