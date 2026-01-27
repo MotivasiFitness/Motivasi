@@ -3,7 +3,7 @@ import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { FitnessPrograms, ProgramDrafts } from '@/entities';
 import { Link, useNavigate } from 'react-router-dom';
-import { Loader, BookOpen, Calendar, Target, User, Sparkles, FileText, Plus, Edit2, Trash2 } from 'lucide-react';
+import { Loader, BookOpen, Calendar, Target, User, Sparkles, FileText, Plus, Edit2, Trash2, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
 import {
   AlertDialog,
@@ -14,6 +14,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import ProgramAssignmentModal from './ProgramAssignmentModal';
 
 export default function ProgramsCreatedPage() {
   const { member } = useMember();
@@ -25,6 +26,8 @@ export default function ProgramsCreatedPage() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [programToDelete, setProgramToDelete] = useState<FitnessPrograms | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [assignmentModalOpen, setAssignmentModalOpen] = useState(false);
+  const [programToAssign, setProgramToAssign] = useState<FitnessPrograms | null>(null);
 
   useEffect(() => {
     loadPrograms();
@@ -107,6 +110,13 @@ export default function ProgramsCreatedPage() {
     e.preventDefault();
     e.stopPropagation();
     navigate(`/trainer/program-editor?id=${programId}`);
+  };
+
+  const handleAssignClick = (e: React.MouseEvent, program: FitnessPrograms) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setProgramToAssign(program);
+    setAssignmentModalOpen(true);
   };
 
   const getStatusBadge = (status?: string) => {
@@ -280,6 +290,13 @@ export default function ProgramsCreatedPage() {
                   {/* Action Buttons */}
                   <div className="mt-6 pt-4 border-t border-warm-sand-beige flex gap-2">
                     <button
+                      onClick={(e) => handleAssignClick(e, program)}
+                      className="flex-1 flex items-center justify-center gap-2 bg-primary text-soft-white px-4 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors text-sm"
+                    >
+                      <Send size={16} />
+                      Assign
+                    </button>
+                    <button
                       onClick={(e) => handleEditClick(e, program._id)}
                       className="flex-1 flex items-center justify-center gap-2 bg-soft-bronze text-soft-white px-4 py-2 rounded-lg font-medium hover:bg-soft-bronze/90 transition-colors text-sm"
                     >
@@ -355,6 +372,18 @@ export default function ProgramsCreatedPage() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Program Assignment Modal */}
+        {programToAssign && member?._id && (
+          <ProgramAssignmentModal
+            open={assignmentModalOpen}
+            onOpenChange={setAssignmentModalOpen}
+            programId={programToAssign._id}
+            programName={programToAssign.programName || 'Untitled Program'}
+            trainerId={member._id}
+            onAssignSuccess={loadPrograms}
+          />
         )}
       </div>
     </div>
