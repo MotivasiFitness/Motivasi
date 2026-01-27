@@ -122,6 +122,7 @@ export default function ProgressPage() {
     try {
       const newCheckin: ProgressCheckins = {
         _id: crypto.randomUUID(),
+        clientId: member._id,  // ✅ PHASE 2 FIX: Add clientId for data scoping
         checkinDate: new Date().toISOString(),
         currentWeight: formData.weight ? parseFloat(formData.weight) : undefined,
         energyLevel: formData.energyLevel ? parseInt(formData.energyLevel) : undefined,
