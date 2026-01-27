@@ -2,16 +2,29 @@ import { useState, useEffect } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { FitnessPrograms, ProgramDrafts } from '@/entities';
-import { Link } from 'react-router-dom';
-import { Loader, BookOpen, Calendar, Target, User, Sparkles, FileText, Plus } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Loader, BookOpen, Calendar, Target, User, Sparkles, FileText, Plus, Edit2, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 export default function ProgramsCreatedPage() {
   const { member } = useMember();
+  const navigate = useNavigate();
   const [programs, setPrograms] = useState<FitnessPrograms[]>([]);
   const [programDrafts, setProgramDrafts] = useState<ProgramDrafts[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'draft' | 'assigned' | 'template'>('all');
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [programToDelete, setProgramToDelete] = useState<FitnessPrograms | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     loadPrograms();
@@ -56,6 +69,45 @@ export default function ProgramsCreatedPage() {
   };
 
   const filteredPrograms = getFilteredPrograms();
+
+  const handleDeleteClick = (e: React.MouseEvent, program: FitnessPrograms) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setProgramToDelete(program);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!programToDelete) return;
+
+    try {
+      setIsDeleting(true);
+      // Delete the program
+      await BaseCrudService.delete('programs', programToDelete._id);
+      
+      // Delete associated draft if exists
+      const associatedDraft = programDrafts.find(d => d.programId === programToDelete._id);
+      if (associatedDraft) {
+        await BaseCrudService.delete('programdrafts', associatedDraft._id);
+      }
+
+      // Update state
+      setPrograms(programs.filter(p => p._id !== programToDelete._id));
+      setProgramDrafts(programDrafts.filter(d => d.programId !== programToDelete._id));
+      setDeleteDialogOpen(false);
+      setProgramToDelete(null);
+    } catch (error) {
+      console.error('Error deleting program:', error);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleEditClick = (e: React.MouseEvent, programId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/trainer/program-editor?id=${programId}`);
+  };
 
   const getStatusBadge = (status?: string) => {
     const statusLower = status?.toLowerCase() || 'draft';
@@ -172,10 +224,7 @@ export default function ProgramsCreatedPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
               >
-                <Link
-                  to={`/trainer/program-editor?id=${program._id}`}
-                  className="block bg-soft-white border border-warm-sand-beige rounded-2xl p-6 hover:border-soft-bronze transition-colors group"
-                >
+                <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-6 hover:border-soft-bronze transition-colors group h-full flex flex-col">
                   {/* Header */}
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
@@ -195,7 +244,7 @@ export default function ProgramsCreatedPage() {
                   )}
 
                   {/* Meta Info */}
-                  <div className="space-y-2 pt-4 border-t border-warm-sand-beige">
+                  <div className="space-y-2 pt-4 border-t border-warm-sand-beige flex-1">
                     {program.duration && (
                       <div className="flex items-center gap-2 text-sm text-charcoal-black">
                         <Calendar size={16} className="text-soft-bronze" />
@@ -227,11 +276,51 @@ export default function ProgramsCreatedPage() {
                       </div>
                     </div>
                   )}
-                </Link>
+
+                  {/* Action Buttons */}
+                  <div className="mt-6 pt-4 border-t border-warm-sand-beige flex gap-2">
+                    <button
+                      onClick={(e) => handleEditClick(e, program._id)}
+                      className="flex-1 flex items-center justify-center gap-2 bg-soft-bronze text-soft-white px-4 py-2 rounded-lg font-medium hover:bg-soft-bronze/90 transition-colors text-sm"
+                    >
+                      <Edit2 size={16} />
+                      Edit
+                    </button>
+                    <button
+                      onClick={(e) => handleDeleteClick(e, program)}
+                      className="flex-1 flex items-center justify-center gap-2 bg-destructive/10 text-destructive px-4 py-2 rounded-lg font-medium hover:bg-destructive/20 transition-colors text-sm"
+                    >
+                      <Trash2 size={16} />
+                      Delete
+                    </button>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
         )}
+
+        {/* Delete Confirmation Dialog */}
+        <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete Program</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete "{programToDelete?.programName || 'Untitled Program'}"? This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <div className="flex gap-3 justify-end">
+              <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleConfirmDelete}
+                disabled={isDeleting}
+                className="bg-destructive hover:bg-destructive/90"
+              >
+                {isDeleting ? 'Deleting...' : 'Delete'}
+              </AlertDialogAction>
+            </div>
+          </AlertDialogContent>
+        </AlertDialog>
 
         {/* Stats Summary */}
         {programs.length > 0 && (
