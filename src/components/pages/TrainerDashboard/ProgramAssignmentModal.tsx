@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BaseCrudService } from '@/integrations';
+import { ProtectedDataService } from '@/lib/protected-data-service';
 import { ClientProfiles, TrainerClientAssignments, ProgramAssignments } from '@/entities';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -40,13 +41,17 @@ export default function ProgramAssignmentModal({
       setIsLoading(true);
       setError(null);
 
-      // Get all trainer-client assignments for this trainer
-      const assignmentsResult = await BaseCrudService.getAll<TrainerClientAssignments>('trainerclientassignments');
-      const trainerAssignments = assignmentsResult.items.filter(a => a.trainerId === trainerId);
-      const clientIds = trainerAssignments.map(a => a.clientId);
+      // Get trainer-client assignments for this trainer using protected service
+      const assignmentsResult = await ProtectedDataService.getForTrainer<TrainerClientAssignments>('trainerclientassignments', trainerId);
+      const clientIds = assignmentsResult.items.map(a => a.clientId);
 
-      // Get all client profiles
-      const clientsResult = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
+      if (clientIds.length === 0) {
+        setClients([]);
+        return;
+      }
+
+      // Get client profiles for the assigned clients
+      const clientsResult = await ProtectedDataService.getAll<ClientProfiles>('clientprofiles');
       
       // Filter to only show clients assigned to this trainer
       const trainerClients = clientsResult.items.filter(c => clientIds.includes(c._id));
@@ -70,8 +75,8 @@ export default function ProgramAssignmentModal({
       setIsAssigning(true);
       setError(null);
 
-      // Create program assignment
-      await BaseCrudService.create('programassignments', {
+      // Create program assignment using protected service
+      await ProtectedDataService.create('programassignments', {
         _id: crypto.randomUUID(),
         programId,
         clientId: selectedClientId,
@@ -80,9 +85,8 @@ export default function ProgramAssignmentModal({
         status: 'active',
       });
 
-      // Update program status to assigned
-      await BaseCrudService.update('programs', {
-        _id: programId,
+      // Update program status to assigned using protected service
+      await ProtectedDataService.update('programs', programId, {
         status: 'assigned',
       });
 
