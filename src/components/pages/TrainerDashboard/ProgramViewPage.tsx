@@ -50,13 +50,65 @@ export default function ProgramViewPage() {
 
       setProgram(programData);
 
-      // Load all exercises for this program - match by programTitle or programName
+      // First, try to load exercises from clientprograms (for assigned programs)
       const { items: allExercises } = await BaseCrudService.getAll<ClientPrograms>('clientprograms');
-      const programExercises = allExercises.filter(e => {
+      let programExercises = allExercises.filter(e => {
         // Match exercises by program title or program name
         return e.programTitle === programData?.programName || 
                e.programTitle === programData?.programName;
       });
+
+      // If no exercises found in clientprograms, try loading from programdrafts
+      if (programExercises.length === 0) {
+        try {
+          const { items: drafts } = await BaseCrudService.getAll<any>('programdrafts');
+          const programDraft = drafts.find(d => d.programId === programId);
+          
+          if (programDraft && programDraft.programJson) {
+            const parsedProgram = JSON.parse(programDraft.programJson);
+            
+            // Convert workout days and exercises to ClientPrograms format
+            if (parsedProgram.workoutDays && Array.isArray(parsedProgram.workoutDays)) {
+              const convertedExercises: ClientPrograms[] = [];
+              
+              parsedProgram.workoutDays.forEach((day: any, dayIndex: number) => {
+                if (day.exercises && Array.isArray(day.exercises)) {
+                  day.exercises.forEach((exercise: any, exerciseIndex: number) => {
+                    convertedExercises.push({
+                      _id: `${programId}-${dayIndex}-${exerciseIndex}`,
+                      programTitle: programData?.programName || '',
+                      workoutDay: day.day || `Day ${dayIndex + 1}`,
+                      exerciseName: exercise.name || '',
+                      sets: exercise.sets || 0,
+                      reps: parseInt(exercise.reps?.split('-')[0] || '0'),
+                      weightOrResistance: exercise.weight || '',
+                      tempo: '3-1-1',
+                      restTimeSeconds: exercise.restSeconds || 90,
+                      exerciseNotes: exercise.notes || '',
+                      exerciseVideoUrl: '',
+                      primaryMuscles: '',
+                      secondaryMuscles: '',
+                      modification1Title: '',
+                      modification1Description: '',
+                      modification2Title: '',
+                      modification2Description: '',
+                      modification3Title: '',
+                      modification3Description: '',
+                      progression: '',
+                      coachCue: '',
+                      exerciseOrder: exerciseIndex,
+                    });
+                  });
+                }
+              });
+              
+              programExercises = convertedExercises;
+            }
+          }
+        } catch (draftError) {
+          console.warn('Could not load program from draft:', draftError);
+        }
+      }
 
       // Sort by workout day and exercise order
       const sorted = programExercises.sort((a, b) => {

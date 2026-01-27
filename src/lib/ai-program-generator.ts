@@ -251,57 +251,53 @@ export async function saveProgramDraft(
       // Don't throw here - the draft was saved successfully, this is just metadata
     }
 
-    // CRITICAL FIX: If program is assigned to a client, create entries in clientassignedworkouts
-    // This ensures the program shows up in the client portal immediately
-    if (clientId && program.workoutDays && program.workoutDays.length > 0) {
+    // CRITICAL FIX: Create entries in clientprograms collection for the program exercises
+    // This ensures the program shows up on the Review Generated Program page and in the client portal
+    if (program.workoutDays && program.workoutDays.length > 0) {
       try {
-        const programDurationWeeks = parseInt(program.duration?.split(' ')[0]) || 8;
-        
-        // Create a workout entry for each day in the program
-        for (let weekNum = 1; weekNum <= programDurationWeeks; weekNum++) {
-          for (let dayIndex = 0; dayIndex < program.workoutDays.length; dayIndex++) {
-            const workoutDay = program.workoutDays[dayIndex];
+        // Create an entry for each exercise in each workout day
+        for (let dayIndex = 0; dayIndex < program.workoutDays.length; dayIndex++) {
+          const workoutDay = program.workoutDays[dayIndex];
+          
+          // Create an entry for each exercise in the workout day
+          for (let exerciseIndex = 0; exerciseIndex < (workoutDay.exercises?.length || 0); exerciseIndex++) {
+            const exercise = workoutDay.exercises[exerciseIndex];
             
-            // Create an entry for each exercise in the workout day
-            for (let exerciseIndex = 0; exerciseIndex < (workoutDay.exercises?.length || 0); exerciseIndex++) {
-              const exercise = workoutDay.exercises[exerciseIndex];
-              
-              const workoutEntry = {
-                _id: crypto.randomUUID(),
-                clientId,
-                trainerId,
-                weekNumber: weekNum,
-                weekStartDate: new Date(now).toISOString().split('T')[0],
-                workoutSlot: dayIndex + 1,
-                status: 'active',
-                exerciseName: exercise.name,
-                sets: exercise.sets,
-                reps: parseInt(exercise.reps?.split('-')[0] || '0'),
-                weightOrResistance: exercise.weight || '',
-                tempo: '3-1-1',
-                restTimeSeconds: exercise.restSeconds || 90,
-                exerciseNotes: exercise.notes || '',
-                exerciseVideoUrl: '',
-                primaryMuscles: '',
-                secondaryMuscles: '',
-                modification1Title: '',
-                modification1Description: '',
-                modification2Title: '',
-                modification2Description: '',
-                modification3Title: '',
-                modification3Description: '',
-                progression: '',
-                coachCue: '',
-              };
-              
-              await BaseCrudService.create('clientassignedworkouts', workoutEntry);
-            }
+            const clientProgramEntry = {
+              _id: crypto.randomUUID(),
+              programTitle: program.programName,
+              workoutDay: workoutDay.day || `Day ${dayIndex + 1}`,
+              exerciseName: exercise.name,
+              sets: exercise.sets,
+              reps: parseInt(exercise.reps?.split('-')[0] || '0'),
+              weightOrResistance: exercise.weight || '',
+              tempo: '3-1-1',
+              restTimeSeconds: exercise.restSeconds || 90,
+              exerciseNotes: exercise.notes || '',
+              exerciseVideoUrl: '',
+              primaryMuscles: '',
+              secondaryMuscles: '',
+              modification1Title: '',
+              modification1Description: '',
+              modification2Title: '',
+              modification2Description: '',
+              modification3Title: '',
+              modification3Description: '',
+              progression: exercise.substitutions?.join(', ') || '',
+              coachCue: '',
+              exerciseOrder: exerciseIndex,
+              sessionDescription: workoutDay.notes || '',
+              estimatedDuration: program.duration || '',
+              exerciseCountLabel: `${workoutDay.exercises?.length || 0} exercises`,
+            };
+            
+            await BaseCrudService.create('clientprograms', clientProgramEntry);
           }
         }
-      } catch (workoutError) {
-        const errorMsg = workoutError instanceof Error ? workoutError.message : 'Unknown error';
-        console.warn(`Warning: Failed to create client assigned workouts: ${errorMsg}. Program draft was saved successfully.`);
-        // Don't throw here - the draft was saved successfully, this is just for client visibility
+      } catch (exerciseError) {
+        const errorMsg = exerciseError instanceof Error ? exerciseError.message : 'Unknown error';
+        console.warn(`Warning: Failed to create client program exercises: ${errorMsg}. Program draft was saved successfully.`);
+        // Don't throw here - the draft was saved successfully, this is just for visibility
       }
     }
 
