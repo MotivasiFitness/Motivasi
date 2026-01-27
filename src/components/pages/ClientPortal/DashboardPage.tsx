@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
+import ProtectedDataService from '@/lib/protected-data-service';
 import { ClientBookings, ProgressCheckins, NutritionGuidance, ClientPrograms, ClientAssignedWorkouts, WeeklyCoachesNotes, ClientProfiles, WeeklyCheckins } from '@/entities';
 import { getClientWorkouts } from '@/lib/client-workout-access-control';
 import { Calendar, CheckCircle, TrendingUp, Zap, Heart, ArrowRight, MessageCircle, Smile, Activity, AlertCircle, Eye } from 'lucide-react';
