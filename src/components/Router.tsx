@@ -57,6 +57,7 @@ const WorkoutAssignmentPage = lazy(() => import('@/components/pages/TrainerDashb
 const VideoLibraryManagementPage = lazy(() => import('@/components/pages/TrainerDashboard/VideoLibraryManagementPage'));
 const ClientNutritionPage = lazy(() => import('@/components/pages/TrainerDashboard/ClientNutritionPage'));
 const ProgramsCreatedPage = lazy(() => import('@/components/pages/TrainerDashboard/ProgramsCreatedPage'));
+const ProgramViewPage = lazy(() => import('@/components/pages/TrainerDashboard/ProgramViewPage'));
 const CompletedWorkoutsFeedbackPage = lazy(() => import('@/components/pages/TrainerDashboard/CompletedWorkoutsFeedbackPage'));
 const ClientProfilePage = lazy(() => import('@/components/pages/TrainerDashboard/ClientProfilePage'));
 const ParqSubmissionsPage = lazy(() => import('@/components/pages/TrainerDashboard/ParqSubmissionsPage'));
@@ -363,6 +364,14 @@ const router = createBrowserRouter([
             element: (
               <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
                 <ProgramsCreatedPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: "program-view",
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <ProgramViewPage />
               </Suspense>
             ),
           },

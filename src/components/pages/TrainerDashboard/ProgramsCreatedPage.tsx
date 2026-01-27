@@ -109,7 +109,7 @@ export default function ProgramsCreatedPage() {
   const handleEditClick = (e: React.MouseEvent, programId: string) => {
     e.preventDefault();
     e.stopPropagation();
-    navigate(`/trainer/program-editor?id=${programId}`);
+    navigate(`/trainer/program-view?id=${programId}`);
   };
 
   const handleAssignClick = (e: React.MouseEvent, program: FitnessPrograms) => {
