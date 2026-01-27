@@ -3,7 +3,8 @@ import { BaseCrudService } from '@/integrations';
 import { ClientProfiles, TrainerClientAssignments, ProgramAssignments } from '@/entities';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Loader, Search } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Loader } from 'lucide-react';
 
 interface ProgramAssignmentModalProps {
   open: boolean;
@@ -23,11 +24,9 @@ export default function ProgramAssignmentModal({
   onAssignSuccess,
 }: ProgramAssignmentModalProps) {
   const [clients, setClients] = useState<ClientProfiles[]>([]);
-  const [filteredClients, setFilteredClients] = useState<ClientProfiles[]>([]);
   const [selectedClientId, setSelectedClientId] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [isAssigning, setIsAssigning] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -35,15 +34,6 @@ export default function ProgramAssignmentModal({
       loadClients();
     }
   }, [open]);
-
-  useEffect(() => {
-    // Filter clients based on search term
-    const filtered = clients.filter(client => {
-      const fullName = `${client.firstName || ''} ${client.lastName || ''}`.toLowerCase();
-      return fullName.includes(searchTerm.toLowerCase());
-    });
-    setFilteredClients(filtered);
-  }, [searchTerm, clients]);
 
   const loadClients = async () => {
     try {
@@ -62,7 +52,6 @@ export default function ProgramAssignmentModal({
       const trainerClients = clientsResult.items.filter(c => clientIds.includes(c._id));
       
       setClients(trainerClients);
-      setFilteredClients(trainerClients);
     } catch (err) {
       console.error('Error loading clients:', err);
       setError('Failed to load clients');
@@ -99,7 +88,6 @@ export default function ProgramAssignmentModal({
 
       onOpenChange(false);
       setSelectedClientId('');
-      setSearchTerm('');
       onAssignSuccess?.();
     } catch (err) {
       console.error('Error assigning program:', err);
@@ -122,59 +110,47 @@ export default function ProgramAssignmentModal({
         </DialogHeader>
 
         <div className="space-y-4">
-          {/* Search Input */}
-          <div className="relative">
-            <Search className="absolute left-3 top-3 w-4 h-4 text-warm-grey" />
-            <input
-              type="text"
-              placeholder="Search clients..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-warm-sand-beige rounded-lg font-paragraph text-sm focus:outline-none focus:border-soft-bronze"
-            />
-          </div>
-
-          {/* Client List */}
+          {/* Client Dropdown */}
           {isLoading ? (
             <div className="flex items-center justify-center py-8">
               <Loader className="w-5 h-5 text-soft-bronze animate-spin" />
             </div>
-          ) : filteredClients.length === 0 ? (
+          ) : clients.length === 0 ? (
             <div className="py-8 text-center">
               <p className="font-paragraph text-sm text-warm-grey">
-                {clients.length === 0 ? 'No clients assigned to you yet' : 'No clients match your search'}
+                No clients assigned to you yet
               </p>
             </div>
           ) : (
-            <div className="max-h-64 overflow-y-auto space-y-2 border border-warm-sand-beige rounded-lg p-2">
-              {filteredClients.map(client => (
-                <button
-                  key={client._id}
-                  onClick={() => setSelectedClientId(client._id)}
-                  className={`w-full text-left px-4 py-3 rounded-lg transition-colors font-paragraph text-sm ${
-                    selectedClientId === client._id
-                      ? 'bg-soft-bronze text-soft-white'
-                      : 'bg-soft-white border border-warm-sand-beige hover:border-soft-bronze'
-                  }`}
-                >
-                  <div className="font-medium">
-                    {client.firstName} {client.lastName}
-                  </div>
-                  {client.fitnessGoals && (
-                    <div className="text-xs opacity-75 mt-1">
-                      Goal: {client.fitnessGoals}
-                    </div>
-                  )}
-                </button>
-              ))}
+            <div className="space-y-2">
+              <label className="font-paragraph text-sm font-medium text-charcoal-black">
+                Select a Client
+              </label>
+              <Select value={selectedClientId} onValueChange={setSelectedClientId}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Choose a client..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {clients.map(client => (
+                    <SelectItem key={client._id} value={client._id}>
+                      <div className="flex flex-col">
+                        <span>{client.firstName} {client.lastName}</span>
+                        {client.fitnessGoals && (
+                          <span className="text-xs text-warm-grey">Goal: {client.fitnessGoals}</span>
+                        )}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           )}
 
           {/* Selected Client Summary */}
-          {selectedClient && (
+          {selectedClientId && clients.find(c => c._id === selectedClientId) && (
             <div className="bg-soft-bronze/10 border border-soft-bronze/20 rounded-lg p-4">
               <p className="font-paragraph text-sm text-charcoal-black">
-                <span className="font-medium">Selected:</span> {selectedClient.firstName} {selectedClient.lastName}
+                <span className="font-medium">Selected:</span> {clients.find(c => c._id === selectedClientId)?.firstName} {clients.find(c => c._id === selectedClientId)?.lastName}
               </p>
             </div>
           )}
