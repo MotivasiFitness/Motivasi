@@ -15,6 +15,7 @@ import { BaseCrudService } from '@/integrations';
 import { FitnessPrograms } from '@/entities';
 import { safeFetch } from './api-response-handler';
 import { getBackendEndpoint, BACKEND_FUNCTIONS } from '@/lib/backend-config';
+import { PROGRAM_STATUS, normalizeStatus } from '@/lib/program-status';
 
 export interface ProgramGeneratorInput {
   programTitle?: string;
@@ -200,7 +201,8 @@ export async function saveProgramDraft(
     const now = new Date().toISOString();
 
     // Standardized status: "draft", "assigned", or "template" (lowercase)
-    const status = clientId ? 'assigned' : 'draft';
+    // Use PROGRAM_STATUS constant for single source of truth
+    const status = clientId ? PROGRAM_STATUS.ASSIGNED : PROGRAM_STATUS.DRAFT;
 
     // Validate program JSON serialization
     let programJsonString: string;
@@ -243,7 +245,7 @@ export async function saveProgramDraft(
       focusArea: program.focusArea || '',
       trainerId,
       clientId: clientId || undefined,
-      status: status, // Keep lowercase: "draft", "assigned", "template"
+      status: status, // Use PROGRAM_STATUS constant (always lowercase)
     };
 
     try {

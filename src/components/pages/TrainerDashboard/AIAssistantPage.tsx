@@ -221,9 +221,9 @@ export default function AIAssistantPage() {
       
       setStep('success');
 
-      // Redirect after 2 seconds to programs created list
+      // Redirect with programId parameter for deterministic refresh
       setTimeout(() => {
-        navigate('/trainer/programs-created');
+        navigate(`/trainer/programs-created?newProgramId=${programId}`);
       }, 2000);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to save program';

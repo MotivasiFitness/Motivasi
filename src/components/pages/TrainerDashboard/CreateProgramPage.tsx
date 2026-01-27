@@ -5,6 +5,7 @@ import { FitnessPrograms, ProgramDrafts, TrainerClientAssignments } from '@/enti
 import { useNavigate } from 'react-router-dom';
 import { AlertCircle, CheckCircle, Sparkles, Loader, X } from 'lucide-react';
 import { getTrainerClients } from '@/lib/role-utils';
+import { PROGRAM_STATUS, normalizeStatus } from '@/lib/program-status';
 import {
   generateProgramDescription,
   generateFallbackDescription,
@@ -31,7 +32,7 @@ export default function CreateProgramPage() {
     clientId: '',
     duration: '',
     focusArea: '',
-    status: 'Active',
+    status: PROGRAM_STATUS.DRAFT,
   });
 
   // Load assigned clients
@@ -187,8 +188,9 @@ export default function CreateProgramPage() {
       const now = new Date().toISOString();
 
       // Determine if this is a template (no client assigned) or assigned program
+      // Use PROGRAM_STATUS constant for consistency
       const isTemplate = !formData.clientId || formData.clientId === '';
-      const finalStatus = isTemplate ? 'Template' : formData.status;
+      const finalStatus = isTemplate ? PROGRAM_STATUS.TEMPLATE : PROGRAM_STATUS.ASSIGNED;
 
       // Create program in programs collection
       const newProgram: FitnessPrograms = {
@@ -216,7 +218,7 @@ export default function CreateProgramPage() {
           duration: formData.duration,
           focusArea: formData.focusArea,
         }),
-        status: finalStatus.toLowerCase(),
+        status: finalStatus, // Already lowercase from PROGRAM_STATUS constant
         createdAt: now,
         updatedAt: now,
       };
@@ -253,7 +255,7 @@ export default function CreateProgramPage() {
         clientId: '',
         duration: '',
         focusArea: '',
-        status: 'Active',
+        status: PROGRAM_STATUS.DRAFT,
       });
 
       setTimeout(() => {

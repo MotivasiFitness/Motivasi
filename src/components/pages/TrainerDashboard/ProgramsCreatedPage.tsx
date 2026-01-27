@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
 import { FitnessPrograms, ProgramDrafts } from '@/entities';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Loader, BookOpen, Calendar, Target, User, Sparkles, FileText, Plus, Edit2, Trash2, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { PROGRAM_STATUS, normalizeStatus, getStatusBadgeClasses, getStatusLabel } from '@/lib/program-status';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,6 +20,7 @@ import ProgramAssignmentModal from './ProgramAssignmentModal';
 export default function ProgramsCreatedPage() {
   const { member } = useMember();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [programs, setPrograms] = useState<FitnessPrograms[]>([]);
   const [programDrafts, setProgramDrafts] = useState<ProgramDrafts[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,18 +35,16 @@ export default function ProgramsCreatedPage() {
     loadPrograms();
   }, [member?._id]);
 
-  // Refresh programs when page becomes visible (after redirect from save)
+  // Deterministic refresh: Check for newly created program via URL params
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        console.log('📄 Page became visible, refreshing programs...');
-        loadPrograms();
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, []);
+    const newProgramId = searchParams.get('newProgramId');
+    if (newProgramId) {
+      console.log('🔄 New program created, refreshing list:', newProgramId);
+      loadPrograms();
+      // Clean up URL params
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [searchParams]);
 
   const loadPrograms = async () => {
     if (!member?._id) return;
@@ -85,10 +85,11 @@ export default function ProgramsCreatedPage() {
       return programs;
     }
     return programs.filter(p => {
-      const status = p.status?.toLowerCase();
-      if (filter === 'draft') return status === 'draft';
-      if (filter === 'assigned') return status === 'assigned' || status === 'active';
-      if (filter === 'template') return status === 'template';
+      // Use normalizeStatus to ensure consistent lowercase comparison
+      const status = normalizeStatus(p.status);
+      if (filter === 'draft') return status === PROGRAM_STATUS.DRAFT;
+      if (filter === 'assigned') return status === PROGRAM_STATUS.ASSIGNED || status === PROGRAM_STATUS.ACTIVE;
+      if (filter === 'template') return status === PROGRAM_STATUS.TEMPLATE;
       return true;
     });
   };
@@ -142,22 +143,13 @@ export default function ProgramsCreatedPage() {
   };
 
   const getStatusBadge = (status?: string) => {
-    const statusLower = status?.toLowerCase() || 'draft';
-    
-    const styles = {
-      draft: 'bg-warm-grey/20 text-warm-grey',
-      assigned: 'bg-soft-bronze/20 text-soft-bronze',
-      active: 'bg-soft-bronze/20 text-soft-bronze',
-      template: 'bg-muted-rose/20 text-muted-rose',
-      completed: 'bg-green-100 text-green-700',
-      paused: 'bg-amber-100 text-amber-700',
-    };
-
-    const style = styles[statusLower as keyof typeof styles] || styles.draft;
+    // Use utility function from program-status module
+    const badgeClasses = getStatusBadgeClasses(status);
+    const label = getStatusLabel(status);
 
     return (
-      <span className={`px-3 py-1 rounded-full text-xs font-medium ${style}`}>
-        {status || 'Draft'}
+      <span className={`px-3 py-1 rounded-full text-xs font-medium ${badgeClasses}`}>
+        {label}
       </span>
     );
   };
@@ -377,19 +369,22 @@ export default function ProgramsCreatedPage() {
               <div>
                 <p className="font-paragraph text-sm text-warm-grey mb-1">Drafts</p>
                 <p className="font-heading text-3xl font-bold text-charcoal-black">
-                  {programs.filter(p => p.status?.toLowerCase() === 'draft').length}
+                  {programs.filter(p => normalizeStatus(p.status) === PROGRAM_STATUS.DRAFT).length}
                 </p>
               </div>
               <div>
                 <p className="font-paragraph text-sm text-warm-grey mb-1">Assigned</p>
                 <p className="font-heading text-3xl font-bold text-charcoal-black">
-                  {programs.filter(p => ['assigned', 'active'].includes(p.status?.toLowerCase() || '')).length}
+                  {programs.filter(p => {
+                    const status = normalizeStatus(p.status);
+                    return status === PROGRAM_STATUS.ASSIGNED || status === PROGRAM_STATUS.ACTIVE;
+                  }).length}
                 </p>
               </div>
               <div>
                 <p className="font-paragraph text-sm text-warm-grey mb-1">Templates</p>
                 <p className="font-heading text-3xl font-bold text-charcoal-black">
-                  {programs.filter(p => p.status?.toLowerCase() === 'template').length}
+                  {programs.filter(p => normalizeStatus(p.status) === PROGRAM_STATUS.TEMPLATE).length}
                 </p>
               </div>
             </div>
