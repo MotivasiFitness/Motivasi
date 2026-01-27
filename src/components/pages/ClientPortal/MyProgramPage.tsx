@@ -118,6 +118,8 @@ export default function MyProgramPage() {
   const [showFirstWorkoutReassurance, setShowFirstWorkoutReassurance] = useState(false);
   const [exerciseReflectionStates, setExerciseReflectionStates] = useState<ExerciseReflectionState>({});
   const [showExerciseReflection, setShowExerciseReflection] = useState<string | null>(null);
+  const [editMode, setEditMode] = useState(false);
+  const [editingProgram, setEditingProgram] = useState<ClientAssignedWorkouts | null>(null);
 
   // Rest timer effect
   useEffect(() => {
@@ -473,6 +475,47 @@ export default function MyProgramPage() {
       alert('Failed to submit modification request. Please try again.');
     } finally {
       setSubmittingModification(false);
+    }
+  };
+
+  const handleEditProgram = (workout: ClientAssignedWorkouts) => {
+    setEditingProgram(workout);
+    setEditMode(true);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editingProgram) return;
+
+    try {
+      await BaseCrudService.update<ClientAssignedWorkouts>('clientassignedworkouts', {
+        _id: editingProgram._id,
+        exerciseName: editingProgram.exerciseName,
+        sets: editingProgram.sets,
+        reps: editingProgram.reps,
+        weightOrResistance: editingProgram.weightOrResistance,
+        tempo: editingProgram.tempo,
+        restTimeSeconds: editingProgram.restTimeSeconds,
+        exerciseNotes: editingProgram.exerciseNotes,
+        primaryMuscles: editingProgram.primaryMuscles,
+        secondaryMuscles: editingProgram.secondaryMuscles,
+        progression: editingProgram.progression,
+        coachCue: editingProgram.coachCue,
+        modification1Title: editingProgram.modification1Title,
+        modification1Description: editingProgram.modification1Description,
+        modification2Title: editingProgram.modification2Title,
+        modification2Description: editingProgram.modification2Description,
+        modification3Title: editingProgram.modification3Title,
+        modification3Description: editingProgram.modification3Description,
+      });
+
+      // Update local state
+      setAssignedWorkouts(prev => prev.map(w => w._id === editingProgram._id ? editingProgram : w));
+      setEditMode(false);
+      setEditingProgram(null);
+      alert('Program updated successfully!');
+    } catch (error) {
+      console.error('Error saving program:', error);
+      alert('Failed to save program. Please try again.');
     }
   };
 
@@ -849,6 +892,108 @@ export default function MyProgramPage() {
                         </div>
                       </div>
                     </div>
+
+                    {/* Edit Button */}
+                    {!editMode && (
+                      <button
+                        onClick={() => handleEditProgram(workout)}
+                        className="mb-4 px-4 py-2 bg-soft-bronze text-soft-white rounded-lg font-medium hover:bg-soft-bronze/90 transition-colors"
+                      >
+                        Edit Program
+                      </button>
+                    )}
+
+                    {/* Edit Mode */}
+                    {editMode && editingProgram?._id === workout._id && (
+                      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 space-y-4 mb-4">
+                        <h4 className="font-heading text-lg font-bold text-charcoal-black">Edit Program Details</h4>
+                        
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-warm-grey mb-1">Exercise Name</label>
+                            <input
+                              type="text"
+                              value={editingProgram.exerciseName || ''}
+                              onChange={(e) => setEditingProgram({ ...editingProgram, exerciseName: e.target.value })}
+                              className="w-full px-3 py-2 rounded border border-warm-sand-beige focus:border-soft-bronze focus:outline-none"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-warm-grey mb-1">Sets</label>
+                            <input
+                              type="number"
+                              value={editingProgram.sets || 0}
+                              onChange={(e) => setEditingProgram({ ...editingProgram, sets: parseInt(e.target.value) })}
+                              className="w-full px-3 py-2 rounded border border-warm-sand-beige focus:border-soft-bronze focus:outline-none"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-warm-grey mb-1">Reps</label>
+                            <input
+                              type="number"
+                              value={editingProgram.reps || 0}
+                              onChange={(e) => setEditingProgram({ ...editingProgram, reps: parseInt(e.target.value) })}
+                              className="w-full px-3 py-2 rounded border border-warm-sand-beige focus:border-soft-bronze focus:outline-none"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-warm-grey mb-1">Weight/Resistance</label>
+                            <input
+                              type="text"
+                              value={editingProgram.weightOrResistance || ''}
+                              onChange={(e) => setEditingProgram({ ...editingProgram, weightOrResistance: e.target.value })}
+                              className="w-full px-3 py-2 rounded border border-warm-sand-beige focus:border-soft-bronze focus:outline-none"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-warm-grey mb-1">Rest Time (seconds)</label>
+                            <input
+                              type="number"
+                              value={editingProgram.restTimeSeconds || 60}
+                              onChange={(e) => setEditingProgram({ ...editingProgram, restTimeSeconds: parseInt(e.target.value) })}
+                              className="w-full px-3 py-2 rounded border border-warm-sand-beige focus:border-soft-bronze focus:outline-none"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-warm-grey mb-1">Tempo</label>
+                            <input
+                              type="text"
+                              value={editingProgram.tempo || ''}
+                              onChange={(e) => setEditingProgram({ ...editingProgram, tempo: e.target.value })}
+                              className="w-full px-3 py-2 rounded border border-warm-sand-beige focus:border-soft-bronze focus:outline-none"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-warm-grey mb-1">Exercise Notes</label>
+                          <textarea
+                            value={editingProgram.exerciseNotes || ''}
+                            onChange={(e) => setEditingProgram({ ...editingProgram, exerciseNotes: e.target.value })}
+                            className="w-full px-3 py-2 rounded border border-warm-sand-beige focus:border-soft-bronze focus:outline-none"
+                            rows={3}
+                          />
+                        </div>
+
+                        <div className="flex gap-3">
+                          <button
+                            onClick={handleSaveEdit}
+                            className="flex-1 bg-green-600 text-white px-4 py-2 rounded font-medium hover:bg-green-700 transition-colors"
+                          >
+                            Save Changes
+                          </button>
+                          <button
+                            onClick={() => {
+                              setEditMode(false);
+                              setEditingProgram(null);
+                            }}
+                            className="flex-1 bg-warm-sand-beige text-charcoal-black px-4 py-2 rounded font-medium hover:bg-warm-sand-beige/80 transition-colors"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    )}
 
                     {/* Today's Intention */}
                     <div className="bg-gradient-to-r from-soft-bronze/10 to-soft-bronze/5 border border-soft-bronze/30 rounded-xl p-4">
