@@ -171,6 +171,12 @@ export default function CreateProgramPage() {
     setSubmitError('');
 
     try {
+      if (!member?._id) {
+        setSubmitError('User not authenticated. Please log in again.');
+        setIsSubmitting(false);
+        return;
+      }
+
       if (!formData.programName || !formData.duration || !formData.focusArea) {
         setSubmitError('Please fill in all required fields');
         setIsSubmitting(false);
@@ -189,7 +195,7 @@ export default function CreateProgramPage() {
         _id: programId,
         programName: formData.programName,
         description: formData.description,
-        trainerId: member?._id,
+        trainerId: member._id,
         clientId: formData.clientId || undefined,
         duration: formData.duration,
         focusArea: formData.focusArea,
@@ -202,7 +208,7 @@ export default function CreateProgramPage() {
       const programDraft: ProgramDrafts = {
         _id: crypto.randomUUID(),
         programId: programId,
-        trainerId: member?._id,
+        trainerId: member._id,
         clientId: formData.clientId || undefined,
         programJson: JSON.stringify({
           programName: formData.programName,
