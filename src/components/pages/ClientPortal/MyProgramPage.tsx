@@ -138,14 +138,15 @@ export default function MyProgramPage() {
 
   useEffect(() => {
     const fetchPrograms = async () => {
-      if (!member?.loginEmail || !member?._id) {
+      // SECURITY: Strict early validation - must have member._id before any fetch
+      if (!member?._id) {
         return;
       }
 
       try {
-        // Fetch client profile
+        // Fetch client profile - scoped to current member
         const { items: profiles } = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
-        const profile = profiles.find(p => p.memberId === member.loginEmail);
+        const profile = profiles.find(p => p.memberId === member._id);
         setClientProfile(profile || null);
 
         // Check if this is the first workout view
@@ -156,8 +157,8 @@ export default function MyProgramPage() {
           }
         }
 
-        // Fetch active program cycle
-        const cycle = await getActiveCycle(member.loginEmail);
+        // Fetch active program cycle - scoped by member._id
+        const cycle = await getActiveCycle(member._id);
         setActiveCycle(cycle);
 
         // SECURITY: Fetch workouts using access-controlled method
@@ -209,43 +210,11 @@ export default function MyProgramPage() {
           return;
         }
         
-        // Fall back to legacy system - fetch ALL items without filtering
-        // The clientprograms collection doesn't have owner filtering, so we get all items
-        const { items } = await BaseCrudService.getAll<ClientPrograms>('clientprograms');
-        
-        console.log('[MyProgramPage] Fetched clientprograms:', items.length, 'items');
-        console.log('[MyProgramPage] Current member ID:', member._id);
-        
-        // IMPORTANT: clientprograms collection doesn't have a clientId field to filter by
-        // All programs are shown to all clients - this is the legacy system behavior
-        // Programs are identified by programTitle, not by client assignment
-        
-        // Group by workout day
-        const grouped = items.reduce((acc, program) => {
-          const day = program.workoutDay || 'Unassigned';
-          if (!acc[day]) acc[day] = [];
-          acc[day].push(program);
-          return acc;
-        }, {} as Record<string, ClientPrograms[]>);
-
-        // Sort exercises within each day by order
-        Object.keys(grouped).forEach(day => {
-          grouped[day].sort((a, b) => (a.exerciseOrder || 0) - (b.exerciseOrder || 0));
-        });
-
-        setPrograms(items);
-
-        // Initialize set states for all exercises
-        const initialSetStates: ExerciseSetState = {};
-        items.forEach(exercise => {
-          if (exercise._id && exercise.sets) {
-            initialSetStates[exercise._id] = Array.from({ length: exercise.sets }, (_, i) => ({
-              setNumber: i + 1,
-              completed: false,
-            }));
-          }
-        });
-        setExerciseSetStates(initialSetStates);
+        // Fall back to legacy system - DISABLED FOR PRIVACY
+        // The clientprograms collection doesn't have clientId field to filter by
+        // This creates a privacy vulnerability where all clients can see all programs
+        // Legacy fallback is disabled - only new system (clientassignedworkouts) is supported
+        console.warn('[MyProgramPage] Legacy clientprograms system disabled for privacy');
         setUseNewSystem(false);
       } catch (error) {
         console.error('Error fetching programs:', error);
@@ -255,7 +224,7 @@ export default function MyProgramPage() {
     };
 
     fetchPrograms();
-  }, [member?.loginEmail, member?._id]);
+  }, [member?._id]);
 
   const handleSetComplete = (exerciseId: string, setNumber: number, restTime: number, totalSets: number) => {
     // Mark set as completed

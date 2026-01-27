@@ -37,12 +37,13 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!member?.loginEmail) return;
+      // SECURITY: Strict early validation - must have member._id before any fetch
+      if (!member?._id || !member?.loginEmail) return;
 
       try {
-        // Fetch client profile
+        // Fetch client profile - scoped to current member
         const { items: profiles } = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
-        const profile = profiles.find(p => p.memberId === member.loginEmail);
+        const profile = profiles.find(p => p.memberId === member._id);
         setClientProfile(profile || null);
 
         // Check if this is the first login (profile complete but no welcome shown)
@@ -53,7 +54,8 @@ export default function DashboardPage() {
           }
         }
 
-        // Fetch upcoming bookings
+        // Fetch upcoming bookings - no clientId field, so fetch all and filter client-side
+        // NOTE: This collection lacks clientId, so filtering is limited
         const { items: bookings } = await BaseCrudService.getAll<ClientBookings>('clientbookings');
         const upcomingFiltered = bookings
           .filter(b => {
@@ -64,7 +66,8 @@ export default function DashboardPage() {
           .slice(0, 3);
         setUpcomingBookings(upcomingFiltered);
 
-        // Fetch latest check-in
+        // Fetch latest check-in - no clientId field, so fetch all and filter client-side
+        // NOTE: This collection lacks clientId, so filtering is limited
         const { items: checkins } = await BaseCrudService.getAll<ProgressCheckins>('progresscheckins');
         if (checkins.length > 0) {
           const sorted = checkins.sort((a, b) => 
@@ -83,8 +86,8 @@ export default function DashboardPage() {
           }
         }
 
-        // Fetch active program cycle
-        const cycle = await getActiveCycle(member.loginEmail);
+        // Fetch active program cycle - scoped by member._id
+        const cycle = await getActiveCycle(member._id);
         setActiveCycleId(cycle?._id || '');
         
         // Calculate current week start date
@@ -142,15 +145,11 @@ export default function DashboardPage() {
           setCompletedWorkouts(currentWeekCompleted.length);
           setTotalWorkouts(currentWeekWorkouts.length);
         } else {
-          // LEGACY SYSTEM: Fall back to clientprograms
+          // LEGACY SYSTEM REMOVED: clientprograms collection lacks clientId field
+          // This creates a privacy vulnerability where all clients can see all programs
+          // Legacy fallback is disabled - only new system (clientassignedworkouts) is supported
+          console.warn('[DashboardPage] Legacy clientprograms system disabled for privacy');
           setUseNewSystem(false);
-          const { items: programItems } = await BaseCrudService.getAll<ClientPrograms>('clientprograms');
-          setPrograms(programItems);
-          
-          // Calculate completed workouts (unique workout days)
-          const uniqueDays = new Set(programItems.map(p => p.workoutDay));
-          setTotalWorkouts(uniqueDays.size);
-          setCompletedWorkouts(Math.floor(uniqueDays.size * 0.6)); // Mock: 60% completion for demo
         }
 
         // Fetch latest weekly check-in
@@ -182,7 +181,7 @@ export default function DashboardPage() {
     };
 
     fetchData();
-  }, [member?.loginEmail, member?._id]);
+  }, [member?._id]);
 
   if (loading) {
     return (
