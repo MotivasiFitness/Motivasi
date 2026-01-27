@@ -3,7 +3,7 @@ import { useMember } from '@/integrations';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { BaseCrudService } from '@/integrations';
 import { ClientPrograms, FitnessPrograms } from '@/entities';
-import { ChevronDown, ChevronUp, Edit2, Save, X, Loader, AlertCircle, ArrowLeft } from 'lucide-react';
+import { ChevronDown, ChevronUp, Edit2, Save, X, Loader, AlertCircle, ArrowLeft, Plus, Trash2, Volume2, Lightbulb } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface WorkoutSession {
@@ -21,11 +21,13 @@ export default function ProgramViewPage() {
   const [exercises, setExercises] = useState<ClientPrograms[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [expandedDay, setExpandedDay] = useState<string | null>(null);
-  const [expandedExercise, setExpandedExercise] = useState<string | null>(null);
+  const [expandedExercise, setExpandedExercise] = useState<Set<string>>(new Set());
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const [editMode, setEditMode] = useState(false);
   const [editingExercise, setEditingExercise] = useState<ClientPrograms | null>(null);
   const [editFormData, setEditFormData] = useState<Partial<ClientPrograms>>({});
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     loadProgram();
@@ -48,14 +50,24 @@ export default function ProgramViewPage() {
 
       setProgram(programData);
 
-      // Load all exercises for this program
+      // Load all exercises for this program - match by programTitle or programName
       const { items: allExercises } = await BaseCrudService.getAll<ClientPrograms>('clientprograms');
       const programExercises = allExercises.filter(e => {
-        // Match exercises by program title or other identifiers
-        return e.programTitle === programData?.programName;
+        // Match exercises by program title or program name
+        return e.programTitle === programData?.programName || 
+               e.programTitle === programData?.programName;
       });
 
-      setExercises(programExercises);
+      // Sort by workout day and exercise order
+      const sorted = programExercises.sort((a, b) => {
+        const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        const dayA = dayOrder.indexOf(a.workoutDay || '');
+        const dayB = dayOrder.indexOf(b.workoutDay || '');
+        if (dayA !== dayB) return dayA - dayB;
+        return (a.exerciseOrder || 0) - (b.exerciseOrder || 0);
+      });
+
+      setExercises(sorted);
     } catch (error) {
       console.error('Error loading program:', error);
     } finally {
@@ -64,6 +76,7 @@ export default function ProgramViewPage() {
   };
 
   const groupExercisesByDay = (): WorkoutSession[] => {
+    const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     const grouped: { [key: string]: ClientPrograms[] } = {};
 
     exercises.forEach(exercise => {
@@ -74,10 +87,40 @@ export default function ProgramViewPage() {
       grouped[day].push(exercise);
     });
 
-    return Object.entries(grouped).map(([day, exs]) => ({
-      day,
-      exercises: exs.sort((a, b) => (a.exerciseOrder || 0) - (b.exerciseOrder || 0)),
-    }));
+    return Object.entries(grouped)
+      .sort(([dayA], [dayB]) => {
+        const indexA = dayOrder.indexOf(dayA);
+        const indexB = dayOrder.indexOf(dayB);
+        return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+      })
+      .map(([day, exs]) => ({
+        day,
+        exercises: exs.sort((a, b) => (a.exerciseOrder || 0) - (b.exerciseOrder || 0)),
+      }));
+  };
+
+  const toggleExercise = (exerciseId: string) => {
+    setExpandedExercise(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(exerciseId)) {
+        newSet.delete(exerciseId);
+      } else {
+        newSet.add(exerciseId);
+      }
+      return newSet;
+    });
+  };
+
+  const toggleSection = (sectionId: string) => {
+    setExpandedSections(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(sectionId)) {
+        newSet.delete(sectionId);
+      } else {
+        newSet.add(sectionId);
+      }
+      return newSet;
+    });
   };
 
   const handleEditExercise = (exercise: ClientPrograms) => {
@@ -106,6 +149,20 @@ export default function ProgramViewPage() {
       console.error('Error saving exercise:', error);
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleDeleteExercise = async (exerciseId: string) => {
+    if (!confirm('Are you sure you want to delete this exercise?')) return;
+
+    try {
+      setIsDeleting(true);
+      await BaseCrudService.delete('clientprograms', exerciseId);
+      setExercises(exercises.filter(e => e._id !== exerciseId));
+    } catch (error) {
+      console.error('Error deleting exercise:', error);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -245,7 +302,7 @@ export default function ProgramViewPage() {
                   {/* Exercises */}
                   {expandedDay === session.day && (
                     <div className="border-t border-warm-sand-beige divide-y divide-warm-sand-beige">
-                      {session.exercises.map((exercise, exerciseIndex) => (
+                      {session.exercises.map((exercise) => (
                         <div key={exercise._id} className="p-8">
                           {editingExercise?._id === exercise._id ? (
                             // Edit Form
@@ -361,6 +418,102 @@ export default function ProgramViewPage() {
 
                               <div>
                                 <label className="font-paragraph text-sm font-medium text-charcoal-black mb-2 block">
+                                  Progression
+                                </label>
+                                <textarea
+                                  value={editFormData.progression || ''}
+                                  onChange={(e) => setEditFormData({ ...editFormData, progression: e.target.value })}
+                                  className="w-full px-4 py-2 border border-warm-sand-beige rounded-lg font-paragraph focus:outline-none focus:border-soft-bronze"
+                                  rows={3}
+                                />
+                              </div>
+
+                              <div>
+                                <label className="font-paragraph text-sm font-medium text-charcoal-black mb-2 block">
+                                  Modification 1 Title
+                                </label>
+                                <input
+                                  type="text"
+                                  value={editFormData.modification1Title || ''}
+                                  onChange={(e) => setEditFormData({ ...editFormData, modification1Title: e.target.value })}
+                                  className="w-full px-4 py-2 border border-warm-sand-beige rounded-lg font-paragraph focus:outline-none focus:border-soft-bronze"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="font-paragraph text-sm font-medium text-charcoal-black mb-2 block">
+                                  Modification 1 Description
+                                </label>
+                                <textarea
+                                  value={editFormData.modification1Description || ''}
+                                  onChange={(e) => setEditFormData({ ...editFormData, modification1Description: e.target.value })}
+                                  className="w-full px-4 py-2 border border-warm-sand-beige rounded-lg font-paragraph focus:outline-none focus:border-soft-bronze"
+                                  rows={2}
+                                />
+                              </div>
+
+                              <div>
+                                <label className="font-paragraph text-sm font-medium text-charcoal-black mb-2 block">
+                                  Modification 2 Title
+                                </label>
+                                <input
+                                  type="text"
+                                  value={editFormData.modification2Title || ''}
+                                  onChange={(e) => setEditFormData({ ...editFormData, modification2Title: e.target.value })}
+                                  className="w-full px-4 py-2 border border-warm-sand-beige rounded-lg font-paragraph focus:outline-none focus:border-soft-bronze"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="font-paragraph text-sm font-medium text-charcoal-black mb-2 block">
+                                  Modification 2 Description
+                                </label>
+                                <textarea
+                                  value={editFormData.modification2Description || ''}
+                                  onChange={(e) => setEditFormData({ ...editFormData, modification2Description: e.target.value })}
+                                  className="w-full px-4 py-2 border border-warm-sand-beige rounded-lg font-paragraph focus:outline-none focus:border-soft-bronze"
+                                  rows={2}
+                                />
+                              </div>
+
+                              <div>
+                                <label className="font-paragraph text-sm font-medium text-charcoal-black mb-2 block">
+                                  Modification 3 Title
+                                </label>
+                                <input
+                                  type="text"
+                                  value={editFormData.modification3Title || ''}
+                                  onChange={(e) => setEditFormData({ ...editFormData, modification3Title: e.target.value })}
+                                  className="w-full px-4 py-2 border border-warm-sand-beige rounded-lg font-paragraph focus:outline-none focus:border-soft-bronze"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="font-paragraph text-sm font-medium text-charcoal-black mb-2 block">
+                                  Modification 3 Description
+                                </label>
+                                <textarea
+                                  value={editFormData.modification3Description || ''}
+                                  onChange={(e) => setEditFormData({ ...editFormData, modification3Description: e.target.value })}
+                                  className="w-full px-4 py-2 border border-warm-sand-beige rounded-lg font-paragraph focus:outline-none focus:border-soft-bronze"
+                                  rows={2}
+                                />
+                              </div>
+
+                              <div>
+                                <label className="font-paragraph text-sm font-medium text-charcoal-black mb-2 block">
+                                  Exercise Video URL
+                                </label>
+                                <input
+                                  type="url"
+                                  value={editFormData.exerciseVideoUrl || ''}
+                                  onChange={(e) => setEditFormData({ ...editFormData, exerciseVideoUrl: e.target.value })}
+                                  className="w-full px-4 py-2 border border-warm-sand-beige rounded-lg font-paragraph focus:outline-none focus:border-soft-bronze"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="font-paragraph text-sm font-medium text-charcoal-black mb-2 block">
                                   Exercise Notes
                                 </label>
                                 <textarea
@@ -390,14 +543,16 @@ export default function ProgramViewPage() {
                               </div>
                             </div>
                           ) : (
-                            // Display Mode
+                            // Display Mode - Client-like format
                             <div>
                               <div className="flex items-start justify-between mb-4">
-                                <div>
-                                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-2">
+                                <div className="flex-1">
+                                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-3">
                                     {exercise.exerciseName || 'Untitled Exercise'}
                                   </h3>
-                                  <div className="flex flex-wrap gap-4 text-sm">
+                                  
+                                  {/* Quick Stats */}
+                                  <div className="flex flex-wrap gap-4 text-sm mb-4">
                                     {exercise.sets && (
                                       <span className="font-paragraph text-warm-grey">
                                         <strong className="text-charcoal-black">{exercise.sets}</strong> sets
@@ -425,10 +580,11 @@ export default function ProgramViewPage() {
                                     )}
                                   </div>
                                 </div>
+                                
                                 {editMode && (
                                   <button
                                     onClick={() => handleEditExercise(exercise)}
-                                    className="flex items-center gap-2 px-4 py-2 bg-soft-bronze/10 text-soft-bronze rounded-lg font-medium hover:bg-soft-bronze/20 transition-colors"
+                                    className="flex items-center gap-2 px-4 py-2 bg-soft-bronze/10 text-soft-bronze rounded-lg font-medium hover:bg-soft-bronze/20 transition-colors ml-4"
                                   >
                                     <Edit2 size={16} />
                                     Edit
@@ -436,29 +592,122 @@ export default function ProgramViewPage() {
                                 )}
                               </div>
 
-                              {exercise.primaryMuscles && (
-                                <div className="mt-4 pt-4 border-t border-warm-sand-beige">
-                                  <p className="font-paragraph text-sm text-warm-grey mb-1">Primary Muscles</p>
-                                  <p className="font-paragraph text-charcoal-black">{exercise.primaryMuscles}</p>
+                              {/* Muscle Groups */}
+                              {(exercise.primaryMuscles || exercise.secondaryMuscles) && (
+                                <div className="grid md:grid-cols-2 gap-4 mb-4 p-4 bg-soft-white rounded-lg border border-warm-sand-beige">
+                                  {exercise.primaryMuscles && (
+                                    <div>
+                                      <p className="font-paragraph text-xs text-warm-grey uppercase tracking-wide mb-1">Primary Muscles</p>
+                                      <p className="font-paragraph text-charcoal-black">{exercise.primaryMuscles}</p>
+                                    </div>
+                                  )}
+                                  {exercise.secondaryMuscles && (
+                                    <div>
+                                      <p className="font-paragraph text-xs text-warm-grey uppercase tracking-wide mb-1">Secondary Muscles</p>
+                                      <p className="font-paragraph text-charcoal-black">{exercise.secondaryMuscles}</p>
+                                    </div>
+                                  )}
                                 </div>
                               )}
 
-                              {exercise.secondaryMuscles && (
-                                <div className="mt-3">
-                                  <p className="font-paragraph text-sm text-warm-grey mb-1">Secondary Muscles</p>
-                                  <p className="font-paragraph text-charcoal-black">{exercise.secondaryMuscles}</p>
-                                </div>
-                              )}
-
+                              {/* Coach Cue */}
                               {exercise.coachCue && (
-                                <div className="mt-4 p-4 bg-soft-white rounded-lg border border-warm-sand-beige">
-                                  <p className="font-paragraph text-sm text-warm-grey mb-2">Coach Cue</p>
-                                  <p className="font-paragraph text-charcoal-black">{exercise.coachCue}</p>
+                                <div className="mb-4">
+                                  <button
+                                    onClick={() => toggleSection(`cue-${exercise._id}`)}
+                                    className="w-full flex items-center justify-between p-4 bg-soft-white rounded-lg border border-warm-sand-beige hover:bg-soft-white/80 transition-colors"
+                                  >
+                                    <div className="flex items-center gap-3">
+                                      <Volume2 size={18} className="text-soft-bronze" />
+                                      <span className="font-paragraph font-medium text-charcoal-black">Coach Cue</span>
+                                    </div>
+                                    {expandedSections.has(`cue-${exercise._id}`) ? (
+                                      <ChevronUp size={18} className="text-soft-bronze" />
+                                    ) : (
+                                      <ChevronDown size={18} className="text-soft-bronze" />
+                                    )}
+                                  </button>
+                                  {expandedSections.has(`cue-${exercise._id}`) && (
+                                    <div className="mt-2 p-4 bg-soft-white rounded-lg border border-warm-sand-beige border-t-0">
+                                      <p className="font-paragraph text-charcoal-black">{exercise.coachCue}</p>
+                                    </div>
+                                  )}
                                 </div>
                               )}
 
+                              {/* Progression */}
+                              {exercise.progression && (
+                                <div className="mb-4">
+                                  <button
+                                    onClick={() => toggleSection(`prog-${exercise._id}`)}
+                                    className="w-full flex items-center justify-between p-4 bg-soft-white rounded-lg border border-warm-sand-beige hover:bg-soft-white/80 transition-colors"
+                                  >
+                                    <div className="flex items-center gap-3">
+                                      <Lightbulb size={18} className="text-soft-bronze" />
+                                      <span className="font-paragraph font-medium text-charcoal-black">Progression</span>
+                                    </div>
+                                    {expandedSections.has(`prog-${exercise._id}`) ? (
+                                      <ChevronUp size={18} className="text-soft-bronze" />
+                                    ) : (
+                                      <ChevronDown size={18} className="text-soft-bronze" />
+                                    )}
+                                  </button>
+                                  {expandedSections.has(`prog-${exercise._id}`) && (
+                                    <div className="mt-2 p-4 bg-soft-white rounded-lg border border-warm-sand-beige border-t-0">
+                                      <p className="font-paragraph text-charcoal-black">{exercise.progression}</p>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+
+                              {/* Modifications */}
+                              {(exercise.modification1Title || exercise.modification2Title || exercise.modification3Title) && (
+                                <div className="mb-4">
+                                  <button
+                                    onClick={() => toggleSection(`mod-${exercise._id}`)}
+                                    className="w-full flex items-center justify-between p-4 bg-soft-white rounded-lg border border-warm-sand-beige hover:bg-soft-white/80 transition-colors"
+                                  >
+                                    <span className="font-paragraph font-medium text-charcoal-black">Modifications</span>
+                                    {expandedSections.has(`mod-${exercise._id}`) ? (
+                                      <ChevronUp size={18} className="text-soft-bronze" />
+                                    ) : (
+                                      <ChevronDown size={18} className="text-soft-bronze" />
+                                    )}
+                                  </button>
+                                  {expandedSections.has(`mod-${exercise._id}`) && (
+                                    <div className="mt-2 space-y-3 p-4 bg-soft-white rounded-lg border border-warm-sand-beige border-t-0">
+                                      {exercise.modification1Title && (
+                                        <div>
+                                          <p className="font-paragraph font-medium text-charcoal-black mb-1">{exercise.modification1Title}</p>
+                                          {exercise.modification1Description && (
+                                            <p className="font-paragraph text-warm-grey text-sm">{exercise.modification1Description}</p>
+                                          )}
+                                        </div>
+                                      )}
+                                      {exercise.modification2Title && (
+                                        <div>
+                                          <p className="font-paragraph font-medium text-charcoal-black mb-1">{exercise.modification2Title}</p>
+                                          {exercise.modification2Description && (
+                                            <p className="font-paragraph text-warm-grey text-sm">{exercise.modification2Description}</p>
+                                          )}
+                                        </div>
+                                      )}
+                                      {exercise.modification3Title && (
+                                        <div>
+                                          <p className="font-paragraph font-medium text-charcoal-black mb-1">{exercise.modification3Title}</p>
+                                          {exercise.modification3Description && (
+                                            <p className="font-paragraph text-warm-grey text-sm">{exercise.modification3Description}</p>
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+
+                              {/* Exercise Notes */}
                               {exercise.exerciseNotes && (
-                                <div className="mt-4 p-4 bg-soft-white rounded-lg border border-warm-sand-beige">
+                                <div className="p-4 bg-soft-white rounded-lg border border-warm-sand-beige">
                                   <p className="font-paragraph text-sm text-warm-grey mb-2">Notes</p>
                                   <p className="font-paragraph text-charcoal-black">{exercise.exerciseNotes}</p>
                                 </div>
