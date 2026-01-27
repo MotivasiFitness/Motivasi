@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
-import { BaseCrudService } from '@/integrations';
+import ProtectedDataService from '@/lib/protected-data-service';
 import { ClientAssignedWorkouts, TrainerClientAssignments } from '@/entities';
 import { getAuthorizedClientWorkouts } from '@/lib/client-workout-access-control';
 import { MessageSquare, Save, CheckCircle, Calendar, User, Dumbbell, ChevronDown, Filter, Trophy } from 'lucide-react';

@@ -5,7 +5,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Bell, Save } from 'lucide-react';
-import { BaseCrudService } from '@/integrations';
+import ProtectedDataService from '@/lib/protected-data-service';
 
 interface NotificationPreferences {
   _id: string;
@@ -28,19 +28,19 @@ export default function TrainerNotificationSettings() {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    if (member?.loginEmail) {
+    if (member?._id) {
       loadPreferences();
     }
   }, [member]);
 
   const loadPreferences = async () => {
-    if (!member?.loginEmail) return;
+    if (!member?._id) return;
 
     setIsLoading(true);
     try {
-      // Try to fetch existing preferences
-      const { items } = await BaseCrudService.getAll<NotificationPreferences>('trainernotificationpreferences');
-      const existing = items.find(p => p.trainerId === member.loginEmail);
+      // Fetch preferences via protected gateway
+      const result = await ProtectedDataService.getAll<NotificationPreferences>('trainernotificationpreferences');
+      const existing = result.items.length > 0 ? result.items[0] : null;
 
       if (existing) {
         setPreferences(existing);
@@ -48,7 +48,7 @@ export default function TrainerNotificationSettings() {
         // Create default preferences
         const defaultPrefs: NotificationPreferences = {
           _id: crypto.randomUUID(),
-          trainerId: member.loginEmail,
+          trainerId: member._id,
           workoutCompletedEnabled: true,
           weekCompletedEnabled: true,
           reflectionSubmittedEnabled: true,
@@ -62,25 +62,24 @@ export default function TrainerNotificationSettings() {
   };
 
   const handleSave = async () => {
-    if (!member?.loginEmail) return;
+    if (!member?._id) return;
 
     setIsSaving(true);
     try {
-      // Check if preferences exist
-      const { items } = await BaseCrudService.getAll<NotificationPreferences>('trainernotificationpreferences');
-      const existing = items.find(p => p.trainerId === member.loginEmail);
+      // Check if preferences exist via protected gateway
+      const result = await ProtectedDataService.getAll<NotificationPreferences>('trainernotificationpreferences');
+      const existing = result.items.length > 0 ? result.items[0] : null;
 
       if (existing) {
-        // Update existing
-        await BaseCrudService.update<NotificationPreferences>('trainernotificationpreferences', {
-          _id: existing._id,
+        // Update existing via protected gateway
+        await ProtectedDataService.update<NotificationPreferences>('trainernotificationpreferences', existing._id, {
           workoutCompletedEnabled: preferences.workoutCompletedEnabled,
           weekCompletedEnabled: preferences.weekCompletedEnabled,
           reflectionSubmittedEnabled: preferences.reflectionSubmittedEnabled,
         });
       } else {
-        // Create new
-        await BaseCrudService.create('trainernotificationpreferences', preferences);
+        // Create new via protected gateway
+        await ProtectedDataService.create('trainernotificationpreferences', preferences);
       }
     } catch (error) {
       console.error('Error saving notification preferences:', error);

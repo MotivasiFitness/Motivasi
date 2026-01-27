@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
-import { BaseCrudService } from '@/integrations';
+import ProtectedDataService from '@/lib/protected-data-service';
 import { WeeklyCoachesNotes, TrainerClientAssignments } from '@/entities';
 import { Edit2, Save, X, Plus, Loader, AlertCircle, CheckCircle } from 'lucide-react';
 
@@ -36,17 +36,19 @@ export default function WeeklyCoachNotesPanel() {
       try {
         setLoading(true);
 
-        // Fetch trainer's assigned clients
-        const { items: assignments } = await BaseCrudService.getAll<TrainerClientAssignments>(
-          'trainerclientassignments'
+        // Fetch trainer's assigned clients via protected gateway
+        const assignmentsResult = await ProtectedDataService.getForTrainer<TrainerClientAssignments>(
+          'trainerclientassignments',
+          member._id
         );
-        const trainerClients = assignments.filter(a => a.trainerId === member._id && a.status === 'active');
+        const trainerClients = assignmentsResult.items.filter(a => a.status === 'active');
 
-        // Fetch all weekly notes
-        const { items: allNotes } = await BaseCrudService.getAll<WeeklyCoachesNotes>(
-          'weeklycoachesnotes'
+        // Fetch all weekly notes for this trainer via protected gateway
+        const notesResult = await ProtectedDataService.getForTrainer<WeeklyCoachesNotes>(
+          'weeklycoachesnotes',
+          member._id
         );
-        setNotes(allNotes);
+        setNotes(notesResult.items);
 
         // Get current week's start date
         const weekStart = getWeekStartDate();
@@ -54,7 +56,7 @@ export default function WeeklyCoachNotesPanel() {
 
         // Build client list with their current notes
         const clientList: ClientWithNote[] = trainerClients.map(assignment => {
-          const currentNote = allNotes.find(
+          const currentNote = notesResult.items.find(
             n =>
               n.clientId === assignment.clientId &&
               n.trainerId === member._id &&
@@ -101,9 +103,8 @@ export default function WeeklyCoachNotesPanel() {
       const existingNote = clients.find(c => c.clientId === clientId)?.currentNote;
 
       if (existingNote && editingNoteId === existingNote._id) {
-        // Update existing note
-        await BaseCrudService.update<WeeklyCoachesNotes>('weeklycoachesnotes', {
-          _id: existingNote._id,
+        // Update existing note via protected gateway
+        await ProtectedDataService.update<WeeklyCoachesNotes>('weeklycoachesnotes', existingNote._id, {
           noteContent: editContent,
           lastUpdated: new Date(),
           isPublished: true,
@@ -122,7 +123,7 @@ export default function WeeklyCoachNotesPanel() {
           )
         );
       } else {
-        // Create new note
+        // Create new note via protected gateway
         const newNote: WeeklyCoachesNotes = {
           _id: crypto.randomUUID(),
           clientId,
@@ -133,7 +134,7 @@ export default function WeeklyCoachNotesPanel() {
           isPublished: true,
         };
 
-        await BaseCrudService.create('weeklycoachesnotes', newNote);
+        await ProtectedDataService.create('weeklycoachesnotes', newNote);
         setNotes(prevNotes => [...prevNotes, newNote]);
       }
 
