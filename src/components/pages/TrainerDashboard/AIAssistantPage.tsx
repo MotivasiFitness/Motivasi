@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMember } from '@/integrations';
 import { useNavigate } from 'react-router-dom';
 import { Loader, AlertCircle, CheckCircle, Sparkles, ArrowRight, Wand2 } from 'lucide-react';
@@ -10,6 +10,8 @@ import {
   isSafeProgram,
 } from '@/lib/ai-program-generator-mock';
 import { generateProgramDescription } from '@/lib/ai-description-generator';
+import { BaseCrudService } from '@/integrations';
+import { TrainerClientAssignments, ClientProfiles } from '@/entities';
 
 type Step = 'input' | 'generating' | 'review' | 'success';
 
@@ -43,6 +45,9 @@ export default function AIAssistantPage() {
   const [error, setError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [isGeneratingGoal, setIsGeneratingGoal] = useState(false);
+  const [selectedClientId, setSelectedClientId] = useState<string>('');
+  const [assignedClients, setAssignedClients] = useState<ClientProfiles[]>([]);
+  const [loadingClients, setLoadingClients] = useState(false);
 
   const [formData, setFormData] = useState<ProgramGeneratorInput>({
     programTitle: '',
@@ -56,6 +61,38 @@ export default function AIAssistantPage() {
     trainingStyle: 'Strength Building',
     additionalNotes: '',
   });
+
+  // Load assigned clients
+  useEffect(() => {
+    const fetchAssignedClients = async () => {
+      if (!member?._id) return;
+      
+      try {
+        setLoadingClients(true);
+        // Get trainer-client assignments for this trainer
+        const assignmentsResult = await BaseCrudService.getAll<TrainerClientAssignments>('trainerclientassignments');
+        const trainerAssignments = assignmentsResult.items.filter(a => a.trainerId === member._id);
+        const clientIds = trainerAssignments.map(a => a.clientId);
+
+        if (clientIds.length === 0) {
+          setAssignedClients([]);
+          return;
+        }
+
+        // Get client profiles for the assigned clients
+        const clientsResult = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
+        const trainerClients = clientsResult.items.filter(c => clientIds.includes(c._id));
+        
+        setAssignedClients(trainerClients);
+      } catch (error) {
+        console.error('Error loading assigned clients:', error);
+      } finally {
+        setLoadingClients(false);
+      }
+    };
+
+    fetchAssignedClients();
+  }, [member?._id]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -150,7 +187,8 @@ export default function AIAssistantPage() {
         throw new Error('Program has no workout days');
       }
 
-      const programId = await saveProgramDraft(generatedProgram, member._id);
+      // Pass clientId if selected, otherwise save as template/draft
+      const programId = await saveProgramDraft(generatedProgram, member._id, selectedClientId || undefined);
       setStep('success');
 
       // Redirect after 2 seconds to programs created list
@@ -442,6 +480,34 @@ export default function AIAssistantPage() {
                 rows={3}
                 className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph resize-none"
               />
+            </div>
+
+            {/* Assign to Client (Optional) */}
+            <div>
+              <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
+                Assign to Client (Optional)
+              </label>
+              <p className="font-paragraph text-xs text-warm-grey mb-3">
+                Select a client to immediately assign this program to them. If you leave this blank, the program will be saved as a draft template.
+              </p>
+              <select
+                value={selectedClientId}
+                onChange={(e) => setSelectedClientId(e.target.value)}
+                disabled={loadingClients}
+                className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph disabled:opacity-50"
+              >
+                <option value="">-- Save as Draft Template --</option>
+                {assignedClients.map(client => (
+                  <option key={client._id} value={client._id}>
+                    {client.firstName} {client.lastName}
+                  </option>
+                ))}
+              </select>
+              {assignedClients.length === 0 && !loadingClients && (
+                <p className="mt-2 text-xs text-warm-grey font-paragraph">
+                  You don't have any assigned clients yet. You can assign this program to a client later from the Programs Created page.
+                </p>
+              )}
             </div>
 
             {/* Submit Button */}
