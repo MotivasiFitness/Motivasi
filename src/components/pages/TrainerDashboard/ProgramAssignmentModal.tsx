@@ -45,24 +45,35 @@ export default function ProgramAssignmentModal({
       setIsLoading(true);
       setError(null);
 
-      // Get trainer-client assignments for this trainer using protected service
-      const assignmentsResult = await ProtectedDataService.getForTrainer<TrainerClientAssignments>('trainerclientassignments', trainerId);
+      // Get all trainer-client assignments (trainers can access their own assignments via getAll with role-based filtering)
+      const assignmentsResult = await ProtectedDataService.getAll<TrainerClientAssignments>('trainerclientassignments');
       const clientIds = assignmentsResult.items.map(a => a.clientId);
 
+      console.log('📋 [ProgramAssignmentModal] Loaded assignments:', {
+        totalAssignments: assignmentsResult.items.length,
+        clientIds,
+      });
+
       if (clientIds.length === 0) {
+        console.warn('⚠️ [ProgramAssignmentModal] No clients assigned to trainer');
         setClients([]);
         return;
       }
 
-      // Get client profiles for the assigned clients
+      // Get all client profiles (trainers can access their assigned clients' profiles via getAll with role-based filtering)
       const clientsResult = await ProtectedDataService.getAll<ClientProfiles>('clientprofiles');
       
       // Filter to only show clients assigned to this trainer
       const trainerClients = clientsResult.items.filter(c => clientIds.includes(c._id));
       
+      console.log('✅ [ProgramAssignmentModal] Loaded clients:', {
+        totalClients: trainerClients.length,
+        clients: trainerClients.map(c => ({ id: c._id, name: `${c.firstName} ${c.lastName}` })),
+      });
+      
       setClients(trainerClients);
     } catch (err) {
-      console.error('Error loading clients:', err);
+      console.error('❌ [ProgramAssignmentModal] Error loading clients:', err);
       setError('Failed to load clients');
     } finally {
       setIsLoading(false);
