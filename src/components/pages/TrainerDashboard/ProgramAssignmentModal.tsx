@@ -60,18 +60,28 @@ export default function ProgramAssignmentModal({
         return;
       }
 
-      // Get all client profiles (trainers can access their assigned clients' profiles via getAll with role-based filtering)
-      const clientsResult = await ProtectedDataService.getAll<ClientProfiles>('clientprofiles');
-      
-      // Filter to only show clients assigned to this trainer
-      const trainerClients = clientsResult.items.filter(c => clientIds.includes(c._id));
+      // Get client profiles for each assigned client
+      // Use BaseCrudService directly since we already have the clientIds from assignments
+      // and we're filtering to only our assigned clients
+      const clientProfiles: ClientProfiles[] = [];
+      for (const clientId of clientIds) {
+        try {
+          const profile = await BaseCrudService.getById<ClientProfiles>('clientprofiles', clientId);
+          if (profile) {
+            clientProfiles.push(profile);
+          }
+        } catch (err) {
+          console.warn(`⚠️ [ProgramAssignmentModal] Failed to load profile for client ${clientId}:`, err);
+          // Continue with other clients
+        }
+      }
       
       console.log('✅ [ProgramAssignmentModal] Loaded clients:', {
-        totalClients: trainerClients.length,
-        clients: trainerClients.map(c => ({ id: c._id, name: `${c.firstName} ${c.lastName}` })),
+        totalClients: clientProfiles.length,
+        clients: clientProfiles.map(c => ({ id: c._id, name: `${c.firstName} ${c.lastName}` })),
       });
       
-      setClients(trainerClients);
+      setClients(clientProfiles);
     } catch (err) {
       console.error('❌ [ProgramAssignmentModal] Error loading clients:', err);
       setError('Failed to load clients');
