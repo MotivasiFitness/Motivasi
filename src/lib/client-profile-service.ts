@@ -8,8 +8,9 @@
  * Cache invalidation ensures real-time updates between Client Portal and Trainer Portal.
  */
 
-import { ClientProfiles } from '@/entities';
+import { ClientProfiles, TrainerClientAssignments } from '@/entities';
 import ProtectedDataService from './protected-data-service';
+import { BaseCrudService } from '@/integrations';
 
 // In-memory cache for client profiles with timestamp tracking
 interface CachedProfile {
@@ -177,6 +178,7 @@ export async function getClientDisplayNames(
 /**
  * Create or update client profile
  * CRITICAL: This invalidates cache to ensure real-time updates across portals
+ * Also auto-assigns new clients to the default trainer
  * @param memberId - Member ID of the client
  * @param data - Profile data to save
  * @returns Created/updated profile
@@ -191,6 +193,7 @@ export async function upsertClientProfile(
     const existingProfile = items.find(p => p.memberId === memberId);
 
     let profile: ClientProfiles;
+    const isNewProfile = !existingProfile;
 
     if (existingProfile) {
       // Update existing profile
@@ -210,6 +213,11 @@ export async function upsertClientProfile(
       await BaseCrudService.create('clientprofiles', profile);
     }
 
+    // Auto-assign new clients to default trainer
+    if (isNewProfile) {
+      await assignClientToDefaultTrainer(memberId);
+    }
+
     // CRITICAL: Invalidate cache immediately to ensure real-time updates
     invalidateClientProfileCache(memberId);
     
@@ -223,6 +231,39 @@ export async function upsertClientProfile(
   } catch (error) {
     console.error(`Error upserting client profile for ${memberId}:`, error);
     throw error;
+  }
+}
+
+/**
+ * Auto-assign a new client to the default trainer
+ * @param clientId - Client member ID to assign
+ */
+async function assignClientToDefaultTrainer(clientId: string): Promise<void> {
+  const DEFAULT_TRAINER_ID = 'd18a21c8-be77-496f-a2fd-ec6479ecba6d';
+  
+  try {
+    // Check if assignment already exists
+    const { items } = await BaseCrudService.getAll<TrainerClientAssignments>('trainerclientassignments');
+    const existingAssignment = items.find(
+      a => a.clientId === clientId && a.trainerId === DEFAULT_TRAINER_ID
+    );
+
+    if (!existingAssignment) {
+      // Create new assignment
+      const assignment: TrainerClientAssignments = {
+        _id: crypto.randomUUID(),
+        trainerId: DEFAULT_TRAINER_ID,
+        clientId,
+        assignmentDate: new Date().toISOString().split('T')[0],
+        status: 'active',
+        notes: 'Auto-assigned on profile creation'
+      };
+      await BaseCrudService.create('trainerclientassignments', assignment);
+      console.log(`Client ${clientId} auto-assigned to trainer ${DEFAULT_TRAINER_ID}`);
+    }
+  } catch (error) {
+    console.error(`Error auto-assigning client ${clientId} to trainer:`, error);
+    // Don't throw - this is a non-critical operation
   }
 }
 
