@@ -398,6 +398,15 @@ async function create(
   data: Record<string, any>
 ) {
   try {
+    console.log('🔍 [protected-data-gateway] Create validation:', {
+      collection,
+      authRole: auth.role,
+      authMemberId: auth.memberId,
+      dataKeys: Object.keys(data),
+      dataTrainerId: data.trainerId,
+      dataClientId: data.clientId,
+    });
+
     // Validate ownership
     if (auth.role === 'client' && data.clientId && data.clientId !== auth.memberId) {
       throw new Error('Unauthorized: Clients can only create data for themselves');
@@ -414,6 +423,8 @@ async function create(
       _createdDate: new Date(),
       _updatedDate: new Date(),
     };
+
+    console.log('✅ [protected-data-gateway] Create authorized, proceeding with insert');
 
     const result = await wixData.insert(collection, itemData);
     return result;
@@ -440,6 +451,16 @@ async function update(
       throw new Error('Item not found');
     }
 
+    console.log('🔍 [protected-data-gateway] Update validation:', {
+      collection,
+      itemId,
+      authRole: auth.role,
+      authMemberId: auth.memberId,
+      existingTrainerId: existing.trainerId,
+      existingClientId: existing.clientId,
+      dataToUpdate: Object.keys(data),
+    });
+
     // Validate access
     if (auth.role === 'client' && existing.clientId !== auth.memberId) {
       throw new Error('Unauthorized: Clients can only update their own data');
@@ -456,6 +477,8 @@ async function update(
       _id: itemId,
       _updatedDate: new Date(),
     };
+
+    console.log('✅ [protected-data-gateway] Update authorized, proceeding with update');
 
     const result = await wixData.update(collection, updateData);
     return result;

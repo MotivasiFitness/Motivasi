@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
+import { ProtectedDataService } from '@/lib/protected-data-service';
 import { FitnessPrograms, ProgramDrafts, TrainerClientAssignments } from '@/entities';
 import { useNavigate } from 'react-router-dom';
 import { AlertCircle, CheckCircle, Sparkles, Loader, X } from 'lucide-react';
@@ -188,6 +189,13 @@ export default function CreateProgramPage() {
       const programId = crypto.randomUUID();
       const now = new Date().toISOString();
 
+      console.log('🚀 [CreateProgramPage] Starting program creation:', {
+        programId,
+        trainerId: member._id,
+        programName: formData.programName,
+        saveAsDraft,
+      });
+
       // Determine program status based on user choice and client assignment
       let finalStatus: string;
       
@@ -205,7 +213,9 @@ export default function CreateProgramPage() {
         }
       }
 
-      // Create program in programs collection
+      console.log('📝 [CreateProgramPage] Creating program with status:', finalStatus);
+
+      // Create program in programs collection using protected service
       const newProgram: FitnessPrograms = {
         _id: programId,
         programName: formData.programName,
@@ -217,7 +227,8 @@ export default function CreateProgramPage() {
         status: finalStatus,
       };
 
-      await BaseCrudService.create('programs', newProgram);
+      await ProtectedDataService.create('programs', newProgram);
+      console.log('✅ [CreateProgramPage] Program created');
 
       // Also create a draft entry for tracking
       const programDraft: ProgramDrafts = {
@@ -236,11 +247,13 @@ export default function CreateProgramPage() {
         updatedAt: now,
       };
 
-      await BaseCrudService.create('programdrafts', programDraft);
+      await ProtectedDataService.create('programdrafts', programDraft);
+      console.log('✅ [CreateProgramPage] Program draft created');
 
       // If program is assigned to a client and published, create placeholder entry in clientprograms
       // This ensures the program shows up in the client portal immediately
       if (finalStatus === PROGRAM_STATUS.ASSIGNED && formData.clientId) {
+        console.log('📝 [CreateProgramPage] Creating placeholder exercise in clientprograms...');
         const placeholderExercise = {
           _id: crypto.randomUUID(),
           programTitle: formData.programName,
@@ -259,8 +272,10 @@ export default function CreateProgramPage() {
         };
 
         await BaseCrudService.create('clientprograms', placeholderExercise);
+        console.log('✅ [CreateProgramPage] Placeholder exercise created');
       }
 
+      console.log('✅ [CreateProgramPage] Program creation completed successfully');
       setSubmitSuccess(true);
       setFormData({
         programName: '',
@@ -276,8 +291,9 @@ export default function CreateProgramPage() {
         navigate('/trainer/programs-created');
       }, 2000);
     } catch (error) {
-      setSubmitError('Failed to create program. Please try again.');
-      console.error('Error creating program:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create program. Please try again.';
+      setSubmitError(errorMessage);
+      console.error('❌ [CreateProgramPage] Error creating program:', error);
     } finally {
       setIsSubmitting(false);
     }

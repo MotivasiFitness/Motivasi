@@ -90,7 +90,15 @@ export default function ProgramAssignmentModal({
       setIsAssigning(true);
       setError(null);
 
-      // Create program assignment using protected service
+      console.log('🚀 [ProgramAssignmentModal] Starting program assignment:', {
+        programId,
+        clientId: selectedClientId,
+        trainerId,
+        programName,
+      });
+
+      // Step 1: Create program assignment
+      console.log('📝 [ProgramAssignmentModal] Creating program assignment...');
       await ProtectedDataService.create('programassignments', {
         _id: crypto.randomUUID(),
         programId,
@@ -99,13 +107,22 @@ export default function ProgramAssignmentModal({
         assignedAt: new Date().toISOString(),
         status: 'active',
       });
+      console.log('✅ [ProgramAssignmentModal] Program assignment created');
 
-      // Update program status to assigned using protected service
-      await ProtectedDataService.update('programs', programId, {
-        status: PROGRAM_STATUS.ASSIGNED,
-      });
+      // Step 2: Update program status to assigned
+      console.log('📝 [ProgramAssignmentModal] Updating program status to ASSIGNED...');
+      try {
+        await ProtectedDataService.update('programs', programId, {
+          status: PROGRAM_STATUS.ASSIGNED,
+        });
+        console.log('✅ [ProgramAssignmentModal] Program status updated');
+      } catch (statusUpdateErr) {
+        console.error('⚠️ [ProgramAssignmentModal] Failed to update program status, continuing anyway:', statusUpdateErr);
+        // Continue - the assignment was created, status update is secondary
+      }
 
-      // Create placeholder entry in clientprograms so program shows up in client portal
+      // Step 3: Create placeholder entry in clientprograms so program shows up in client portal
+      console.log('📝 [ProgramAssignmentModal] Creating placeholder exercise in clientprograms...');
       const placeholderExercise = {
         _id: crypto.randomUUID(),
         programTitle: programName,
@@ -123,14 +140,22 @@ export default function ProgramAssignmentModal({
         exerciseVideoUrl: '',
       };
 
-      await BaseCrudService.create('clientprograms', placeholderExercise);
+      try {
+        await BaseCrudService.create('clientprograms', placeholderExercise);
+        console.log('✅ [ProgramAssignmentModal] Placeholder exercise created');
+      } catch (placeholderErr) {
+        console.error('⚠️ [ProgramAssignmentModal] Failed to create placeholder exercise, continuing anyway:', placeholderErr);
+        // Continue - the assignment was created, placeholder is secondary
+      }
 
+      console.log('✅ [ProgramAssignmentModal] Program assignment completed successfully');
       onOpenChange(false);
       setSelectedClientId('');
       onAssignSuccess?.();
     } catch (err) {
-      console.error('Error assigning program:', err);
-      setError('Failed to assign program');
+      console.error('❌ [ProgramAssignmentModal] Error assigning program:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to assign program';
+      setError(errorMessage);
     } finally {
       setIsAssigning(false);
     }
