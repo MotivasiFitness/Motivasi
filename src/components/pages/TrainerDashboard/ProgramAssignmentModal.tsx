@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BaseCrudService } from '@/integrations';
-import { ProtectedDataService } from '@/lib/protected-data-service';
+import ProtectedDataService from '@/lib/protected-data-service';
 import { ClientProfiles, TrainerClientAssignments, ProgramAssignments, FitnessPrograms } from '@/entities';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -118,7 +118,6 @@ export default function ProgramAssignmentModal({
       });
       try {
         await ProtectedDataService.update('programs', programId, {
-          _id: programId,
           status: PROGRAM_STATUS.ASSIGNED,
         });
         console.log('✅ [ProgramAssignmentModal] Program status updated');
