@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { BaseCrudService } from '@/integrations';
 import { ProtectedDataService } from '@/lib/protected-data-service';
-import { ClientProfiles, TrainerClientAssignments, ProgramAssignments } from '@/entities';
+import { ClientProfiles, TrainerClientAssignments, ProgramAssignments, FitnessPrograms } from '@/entities';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader } from 'lucide-react';
+import { PROGRAM_STATUS, normalizeStatus } from '@/lib/program-status';
 
 interface ProgramAssignmentModalProps {
   open: boolean;
@@ -13,6 +14,7 @@ interface ProgramAssignmentModalProps {
   programId: string;
   programName: string;
   trainerId: string;
+  programStatus?: string;
   onAssignSuccess?: () => void;
 }
 
@@ -22,6 +24,7 @@ export default function ProgramAssignmentModal({
   programId,
   programName,
   trainerId,
+  programStatus,
   onAssignSuccess,
 }: ProgramAssignmentModalProps) {
   const [clients, setClients] = useState<ClientProfiles[]>([]);
@@ -29,6 +32,7 @@ export default function ProgramAssignmentModal({
   const [isLoading, setIsLoading] = useState(false);
   const [isAssigning, setIsAssigning] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const isDraft = normalizeStatus(programStatus) === PROGRAM_STATUS.DRAFT;
 
   useEffect(() => {
     if (open) {
@@ -87,8 +91,28 @@ export default function ProgramAssignmentModal({
 
       // Update program status to assigned using protected service
       await ProtectedDataService.update('programs', programId, {
-        status: 'assigned',
+        status: PROGRAM_STATUS.ASSIGNED,
       });
+
+      // Create placeholder entry in clientprograms so program shows up in client portal
+      const placeholderExercise = {
+        _id: crypto.randomUUID(),
+        programTitle: programName,
+        sessionTitle: 'Program Overview',
+        workoutDay: 'Day 1',
+        weekNumber: 1,
+        exerciseName: 'Program created - exercises to be added',
+        sets: 0,
+        reps: 0,
+        weightOrResistance: '',
+        tempo: '',
+        restTimeSeconds: 0,
+        exerciseNotes: `This program has been assigned to you. Your trainer will add specific exercises soon.`,
+        exerciseOrder: 1,
+        exerciseVideoUrl: '',
+      };
+
+      await BaseCrudService.create('clientprograms', placeholderExercise);
 
       onOpenChange(false);
       setSelectedClientId('');
@@ -107,9 +131,13 @@ export default function ProgramAssignmentModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Assign Program to Client</DialogTitle>
+          <DialogTitle>
+            {isDraft ? 'Publish & Assign Program' : 'Assign Program to Client'}
+          </DialogTitle>
           <DialogDescription>
-            Assign "{programName}" to one of your clients
+            {isDraft 
+              ? `Publish "${programName}" and assign it to one of your clients`
+              : `Assign "${programName}" to one of your clients`}
           </DialogDescription>
         </DialogHeader>
 
@@ -181,7 +209,7 @@ export default function ProgramAssignmentModal({
               disabled={!selectedClientId || isAssigning}
               className="flex-1 bg-soft-bronze hover:bg-soft-bronze/90"
             >
-              {isAssigning ? 'Assigning...' : 'Assign Program'}
+              {isAssigning ? 'Assigning...' : isDraft ? 'Publish & Assign' : 'Assign Program'}
             </Button>
           </div>
         </div>

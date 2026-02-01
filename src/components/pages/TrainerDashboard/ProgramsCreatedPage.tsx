@@ -302,24 +302,57 @@ export default function ProgramsCreatedPage() {
                   )}
 
                   {/* Action Buttons */}
-                  <div className="mt-6 pt-4 border-t border-warm-sand-beige flex gap-2">
-                    <button
-                      onClick={(e) => handleAssignClick(e, program)}
-                      className="flex-1 flex items-center justify-center gap-2 bg-primary text-soft-white px-4 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors text-sm"
-                    >
-                      <Send size={16} />
-                      Assign
-                    </button>
-                    <button
-                      onClick={(e) => handleEditClick(e, program._id)}
-                      className="flex-1 flex items-center justify-center gap-2 bg-soft-bronze text-soft-white px-4 py-2 rounded-lg font-medium hover:bg-soft-bronze/90 transition-colors text-sm"
-                    >
-                      <Edit2 size={16} />
-                      Edit
-                    </button>
+                  <div className="mt-6 pt-4 border-t border-warm-sand-beige flex gap-2 flex-wrap">
+                    {normalizeStatus(program.status) === PROGRAM_STATUS.DRAFT && (
+                      <>
+                        <button
+                          onClick={(e) => handleAssignClick(e, program)}
+                          className="flex-1 min-w-[100px] flex items-center justify-center gap-2 bg-primary text-soft-white px-4 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors text-sm"
+                        >
+                          <Send size={16} />
+                          Publish
+                        </button>
+                        <button
+                          onClick={(e) => handleEditClick(e, program._id)}
+                          className="flex-1 min-w-[100px] flex items-center justify-center gap-2 bg-soft-bronze text-soft-white px-4 py-2 rounded-lg font-medium hover:bg-soft-bronze/90 transition-colors text-sm"
+                        >
+                          <Edit2 size={16} />
+                          Edit
+                        </button>
+                      </>
+                    )}
+                    {(normalizeStatus(program.status) === PROGRAM_STATUS.ASSIGNED || normalizeStatus(program.status) === PROGRAM_STATUS.ACTIVE) && (
+                      <>
+                        <button
+                          onClick={(e) => handleEditClick(e, program._id)}
+                          className="flex-1 min-w-[100px] flex items-center justify-center gap-2 bg-soft-bronze text-soft-white px-4 py-2 rounded-lg font-medium hover:bg-soft-bronze/90 transition-colors text-sm"
+                        >
+                          <Edit2 size={16} />
+                          Edit
+                        </button>
+                      </>
+                    )}
+                    {normalizeStatus(program.status) === PROGRAM_STATUS.TEMPLATE && (
+                      <>
+                        <button
+                          onClick={(e) => handleAssignClick(e, program)}
+                          className="flex-1 min-w-[100px] flex items-center justify-center gap-2 bg-primary text-soft-white px-4 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors text-sm"
+                        >
+                          <Send size={16} />
+                          Assign
+                        </button>
+                        <button
+                          onClick={(e) => handleEditClick(e, program._id)}
+                          className="flex-1 min-w-[100px] flex items-center justify-center gap-2 bg-soft-bronze text-soft-white px-4 py-2 rounded-lg font-medium hover:bg-soft-bronze/90 transition-colors text-sm"
+                        >
+                          <Edit2 size={16} />
+                          Edit
+                        </button>
+                      </>
+                    )}
                     <button
                       onClick={(e) => handleDeleteClick(e, program)}
-                      className="flex-1 flex items-center justify-center gap-2 bg-destructive/10 text-destructive px-4 py-2 rounded-lg font-medium hover:bg-destructive/20 transition-colors text-sm"
+                      className="flex-1 min-w-[100px] flex items-center justify-center gap-2 bg-destructive/10 text-destructive px-4 py-2 rounded-lg font-medium hover:bg-destructive/20 transition-colors text-sm"
                     >
                       <Trash2 size={16} />
                       Delete
@@ -399,6 +432,7 @@ export default function ProgramsCreatedPage() {
             programId={programToAssign._id}
             programName={programToAssign.programName || 'Untitled Program'}
             trainerId={member._id}
+            programStatus={programToAssign.status}
             onAssignSuccess={loadPrograms}
           />
         )}

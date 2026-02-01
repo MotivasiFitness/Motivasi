@@ -34,6 +34,7 @@ export default function CreateProgramPage() {
     focusArea: '',
     status: PROGRAM_STATUS.DRAFT,
   });
+  const [saveAsDraft, setSaveAsDraft] = useState(true);
 
   // Load assigned clients
   useEffect(() => {
@@ -187,10 +188,22 @@ export default function CreateProgramPage() {
       const programId = crypto.randomUUID();
       const now = new Date().toISOString();
 
-      // Determine if this is a template (no client assigned) or assigned program
-      // Use PROGRAM_STATUS constant for consistency
-      const isTemplate = !formData.clientId || formData.clientId === '';
-      const finalStatus = isTemplate ? PROGRAM_STATUS.TEMPLATE : PROGRAM_STATUS.ASSIGNED;
+      // Determine program status based on user choice and client assignment
+      let finalStatus: string;
+      
+      if (saveAsDraft) {
+        // User explicitly chose to save as draft
+        finalStatus = PROGRAM_STATUS.DRAFT;
+      } else {
+        // User chose to publish
+        if (formData.clientId) {
+          // If client is selected, mark as assigned
+          finalStatus = PROGRAM_STATUS.ASSIGNED;
+        } else {
+          // If no client selected, mark as template
+          finalStatus = PROGRAM_STATUS.TEMPLATE;
+        }
+      }
 
       // Create program in programs collection
       const newProgram: FitnessPrograms = {
@@ -218,16 +231,16 @@ export default function CreateProgramPage() {
           duration: formData.duration,
           focusArea: formData.focusArea,
         }),
-        status: finalStatus, // Already lowercase from PROGRAM_STATUS constant
+        status: finalStatus,
         createdAt: now,
         updatedAt: now,
       };
 
       await BaseCrudService.create('programdrafts', programDraft);
 
-      // CRITICAL FIX: If program is assigned to a client, create placeholder entry in clientprograms
+      // If program is assigned to a client and published, create placeholder entry in clientprograms
       // This ensures the program shows up in the client portal immediately
-      if (!isTemplate && formData.clientId) {
+      if (finalStatus === PROGRAM_STATUS.ASSIGNED && formData.clientId) {
         const placeholderExercise = {
           _id: crypto.randomUUID(),
           programTitle: formData.programName,
@@ -257,6 +270,7 @@ export default function CreateProgramPage() {
         focusArea: '',
         status: PROGRAM_STATUS.DRAFT,
       });
+      setSaveAsDraft(true);
 
       setTimeout(() => {
         navigate('/trainer/programs-created');
@@ -473,22 +487,47 @@ export default function CreateProgramPage() {
               </select>
             </div>
 
-            {/* Status */}
-            <div>
-              <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
-                Status
+            {/* Save Options */}
+            <div className="bg-warm-sand-beige/30 rounded-lg p-6 space-y-4">
+              <label className="block font-paragraph text-sm font-medium text-charcoal-black">
+                How would you like to save this program?
               </label>
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 rounded-lg border border-warm-sand-beige focus:border-soft-bronze focus:outline-none transition-colors font-paragraph"
-              >
-                <option value="Active">Active</option>
-                <option value="Draft">Draft</option>
-                <option value="Paused">Paused</option>
-                <option value="Completed">Completed</option>
-              </select>
+              
+              <div className="space-y-3">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="saveOption"
+                    checked={saveAsDraft}
+                    onChange={() => setSaveAsDraft(true)}
+                    className="w-4 h-4"
+                  />
+                  <div>
+                    <p className="font-paragraph font-medium text-charcoal-black">Save as Draft</p>
+                    <p className="font-paragraph text-xs text-warm-grey">
+                      Program won't be visible to clients yet. You can edit and publish later.
+                    </p>
+                  </div>
+                </label>
+
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="saveOption"
+                    checked={!saveAsDraft}
+                    onChange={() => setSaveAsDraft(false)}
+                    className="w-4 h-4"
+                  />
+                  <div>
+                    <p className="font-paragraph font-medium text-charcoal-black">Publish Now</p>
+                    <p className="font-paragraph text-xs text-warm-grey">
+                      {formData.clientId 
+                        ? 'Program will be immediately visible to the selected client.'
+                        : 'Program will be saved as a template for future use.'}
+                    </p>
+                  </div>
+                </label>
+              </div>
             </div>
 
             {/* Submit Button */}
@@ -498,7 +537,7 @@ export default function CreateProgramPage() {
                 disabled={isSubmitting}
                 className="flex-1 bg-charcoal-black text-soft-white py-3 rounded-lg font-medium text-lg hover:bg-soft-bronze transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? 'Creating Program...' : 'Create Program'}
+                {isSubmitting ? 'Creating Program...' : saveAsDraft ? 'Save as Draft' : 'Publish Program'}
               </button>
               <button
                 type="button"
