@@ -416,6 +416,13 @@ async function create(
       throw new Error('Unauthorized: Trainers can only create data for themselves');
     }
 
+    // CRITICAL FIX: For trainers creating programassignments, ensure trainerId is set to auth.memberId
+    // This prevents trainers from creating assignments for other trainers
+    if (auth.role === 'trainer' && collection === 'programassignments') {
+      console.log('✅ [protected-data-gateway] Trainer creating program assignment, setting trainerId to auth.memberId');
+      data.trainerId = auth.memberId;
+    }
+
     // Set audit fields
     const itemData = {
       ...data,
@@ -470,14 +477,31 @@ async function update(
       throw new Error('Unauthorized: Clients can only update their own data');
     }
 
-    if (auth.role === 'trainer' && existing.trainerId !== auth.memberId) {
-      console.error('❌ [protected-data-gateway] Trainer access denied on update:', {
-        existingTrainerId: existing.trainerId,
-        authMemberId: auth.memberId,
-        collection,
-        itemId,
+    if (auth.role === 'trainer') {
+      // CRITICAL FIX: Allow trainers to update programs that have no trainerId (AI-generated)
+      // or programs they own. This enables assignment of AI-generated programs.
+      const hasExistingTrainerId = existing.trainerId && existing.trainerId.trim() !== '';
+      const isOwner = hasExistingTrainerId && existing.trainerId === auth.memberId;
+      const isUnowned = !hasExistingTrainerId;
+      
+      if (!isOwner && !isUnowned) {
+        console.error('❌ [protected-data-gateway] Trainer access denied on update:', {
+          existingTrainerId: existing.trainerId,
+          authMemberId: auth.memberId,
+          collection,
+          itemId,
+          hasExistingTrainerId,
+          isOwner,
+          isUnowned,
+        });
+        throw new Error('Unauthorized: Trainers can only update their own data');
+      }
+      
+      console.log('✅ [protected-data-gateway] Trainer update authorized:', {
+        isOwner,
+        isUnowned,
+        willSetTrainerId: !hasExistingTrainerId,
       });
-      throw new Error('Unauthorized: Trainers can only update their own data');
     }
 
     // Update with audit fields
