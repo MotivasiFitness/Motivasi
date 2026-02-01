@@ -111,14 +111,26 @@ export default function ProgramAssignmentModal({
 
       // Step 2: Update program status to assigned
       console.log('📝 [ProgramAssignmentModal] Updating program status to ASSIGNED...');
+      console.log('📋 [ProgramAssignmentModal] Update details:', {
+        programId,
+        trainerId,
+        newStatus: PROGRAM_STATUS.ASSIGNED,
+      });
       try {
         await ProtectedDataService.update('programs', programId, {
+          _id: programId,
           status: PROGRAM_STATUS.ASSIGNED,
         });
         console.log('✅ [ProgramAssignmentModal] Program status updated');
       } catch (statusUpdateErr) {
-        console.error('⚠️ [ProgramAssignmentModal] Failed to update program status, continuing anyway:', statusUpdateErr);
-        // Continue - the assignment was created, status update is secondary
+        console.error('⚠️ [ProgramAssignmentModal] Failed to update program status:', {
+          error: statusUpdateErr,
+          programId,
+          trainerId,
+        });
+        setError(`Failed to publish program: ${statusUpdateErr instanceof Error ? statusUpdateErr.message : 'Unknown error'}`);
+        setIsAssigning(false);
+        return;
       }
 
       // Step 3: Create placeholder entry in clientprograms so program shows up in client portal

@@ -463,10 +463,20 @@ async function update(
 
     // Validate access
     if (auth.role === 'client' && existing.clientId !== auth.memberId) {
+      console.error('❌ [protected-data-gateway] Client access denied:', {
+        existingClientId: existing.clientId,
+        authMemberId: auth.memberId,
+      });
       throw new Error('Unauthorized: Clients can only update their own data');
     }
 
     if (auth.role === 'trainer' && existing.trainerId !== auth.memberId) {
+      console.error('❌ [protected-data-gateway] Trainer access denied on update:', {
+        existingTrainerId: existing.trainerId,
+        authMemberId: auth.memberId,
+        collection,
+        itemId,
+      });
       throw new Error('Unauthorized: Trainers can only update their own data');
     }
 
