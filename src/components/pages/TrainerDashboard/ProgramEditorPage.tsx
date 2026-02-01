@@ -161,13 +161,18 @@ export default function ProgramEditorPage() {
       return;
     }
 
+    if (!member?._id) {
+      setError('Trainer ID is required to assign program');
+      return;
+    }
+
     setIsSaving(true);
     setError('');
 
     try {
       // Use programId if available, otherwise generate one
       const idToUse = programId || crypto.randomUUID();
-      await assignProgramToClient(idToUse, selectedClientId);
+      await assignProgramToClient(idToUse, selectedClientId, member._id);
       setSuccess('Program assigned to client');
       setShowAssignModal(false);
       setSelectedClientId('');
