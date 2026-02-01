@@ -204,12 +204,22 @@ export async function saveProgramDraft(
     // Use PROGRAM_STATUS constant for single source of truth
     const status = clientId ? PROGRAM_STATUS.ASSIGNED : PROGRAM_STATUS.DRAFT;
 
+    console.log('🔄 [saveProgramDraft] Starting save process:', {
+      programId,
+      programName: program.programName,
+      trainerId,
+      clientId: clientId || 'none',
+      status,
+      workoutDaysCount: program.workoutDays?.length || 0,
+    });
+
     // Validate program JSON serialization
     let programJsonString: string;
     try {
       programJsonString = JSON.stringify(program);
       // Verify it can be parsed back
       JSON.parse(programJsonString);
+      console.log('✅ [saveProgramDraft] Program JSON validated successfully');
     } catch (jsonError) {
       throw new Error('Program data cannot be serialized to JSON');
     }
@@ -226,12 +236,19 @@ export async function saveProgramDraft(
       updatedAt: now,
     };
 
+    console.log('📝 [saveProgramDraft] Saving program draft to programdrafts collection:', {
+      draftId: programDraft._id,
+      programId,
+      trainerId,
+      status,
+    });
+
     try {
       await BaseCrudService.create('programdrafts', programDraft);
-      console.log('✅ Program draft saved successfully:', { programId, trainerId, status, draftId: programDraft._id });
+      console.log('✅ [saveProgramDraft] Program draft saved successfully:', { programId, trainerId, status, draftId: programDraft._id });
     } catch (draftError) {
       const errorMsg = draftError instanceof Error ? draftError.message : 'Unknown error';
-      console.error('❌ Failed to save program draft:', errorMsg);
+      console.error('❌ [saveProgramDraft] Failed to save program draft:', errorMsg, draftError);
       throw new Error(`Failed to save program draft to database: ${errorMsg}`);
     }
 
@@ -248,11 +265,19 @@ export async function saveProgramDraft(
       status: status, // Use PROGRAM_STATUS constant (always lowercase)
     };
 
+    console.log('📝 [saveProgramDraft] Saving program metadata to programs collection:', {
+      programId,
+      programName: program.programName,
+      trainerId,
+      status,
+    });
+
     try {
       await BaseCrudService.create('programs', fitnessProgram);
-      console.log('✅ Program metadata saved successfully:', { programId, trainerId, status });
+      console.log('✅ [saveProgramDraft] Program metadata saved successfully:', { programId, trainerId, status });
     } catch (programError) {
       const errorMsg = programError instanceof Error ? programError.message : 'Unknown error';
+      console.error('❌ [saveProgramDraft] Failed to save program metadata:', errorMsg, programError);
       console.warn(`⚠️ Warning: Failed to save program metadata: ${errorMsg}. Draft was saved successfully.`);
       // Don't throw here - the draft was saved successfully, this is just metadata
     }
@@ -260,7 +285,14 @@ export async function saveProgramDraft(
     // CRITICAL FIX: Create entries in clientprograms collection for the program exercises
     // This ensures the program shows up on the Review Generated Program page and in the client portal
     if (program.workoutDays && program.workoutDays.length > 0) {
+      console.log('📝 [saveProgramDraft] Creating clientprograms entries for exercises:', {
+        programName: program.programName,
+        workoutDaysCount: program.workoutDays.length,
+      });
+
       try {
+        let totalExercisesCreated = 0;
+        
         // Create an entry for each exercise in each workout day
         for (let dayIndex = 0; dayIndex < program.workoutDays.length; dayIndex++) {
           const workoutDay = program.workoutDays[dayIndex];
@@ -297,23 +329,48 @@ export async function saveProgramDraft(
               exerciseCountLabel: `${workoutDay.exercises?.length || 0} exercises`,
             };
             
-            await BaseCrudService.create('clientprograms', clientProgramEntry);
+            try {
+              await BaseCrudService.create('clientprograms', clientProgramEntry);
+              totalExercisesCreated++;
+              console.log(`✅ [saveProgramDraft] Exercise created: ${exercise.name} (${totalExercisesCreated}/${program.workoutDays.reduce((sum, d) => sum + (d.exercises?.length || 0), 0)})`);
+            } catch (exerciseCreateError) {
+              const errorMsg = exerciseCreateError instanceof Error ? exerciseCreateError.message : 'Unknown error';
+              console.error(`❌ [saveProgramDraft] Failed to create exercise "${exercise.name}":`, errorMsg);
+              throw exerciseCreateError;
+            }
           }
         }
+        
+        console.log(`✅ [saveProgramDraft] All ${totalExercisesCreated} exercises created successfully for program: ${program.programName}`);
       } catch (exerciseError) {
         const errorMsg = exerciseError instanceof Error ? exerciseError.message : 'Unknown error';
-        console.warn(`Warning: Failed to create client program exercises: ${errorMsg}. Program draft was saved successfully.`);
+        console.error(`❌ [saveProgramDraft] Failed to create client program exercises: ${errorMsg}`, exerciseError);
+        console.warn(`⚠️ Warning: Failed to create client program exercises: ${errorMsg}. Program draft was saved successfully.`);
         // Don't throw here - the draft was saved successfully, this is just for visibility
       }
+    } else {
+      console.warn('⚠️ [saveProgramDraft] No workout days found in program:', { programName: program.programName });
     }
 
     // Cache in sessionStorage for quick access
     sessionStorage.setItem(`program_draft_${programId}`, JSON.stringify(program));
+    console.log('✅ [saveProgramDraft] Program cached in sessionStorage:', { programId });
+
+    console.log('🎉 [saveProgramDraft] Program save process completed successfully:', {
+      programId,
+      programName: program.programName,
+      trainerId,
+      status,
+    });
 
     return programId;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-    console.error('Error saving program draft:', error);
+    console.error('❌ [saveProgramDraft] CRITICAL ERROR - Program save failed:', error);
+    console.error('❌ [saveProgramDraft] Error details:', {
+      message: errorMessage,
+      stack: error instanceof Error ? error.stack : 'No stack trace',
+    });
     throw new Error(`Failed to save program draft: ${errorMessage}`);
   }
 }

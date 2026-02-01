@@ -39,7 +39,7 @@ export default function ProgramsCreatedPage() {
   useEffect(() => {
     const newProgramId = searchParams.get('newProgramId');
     if (newProgramId) {
-      console.log('🔄 New program created, refreshing list:', newProgramId);
+      console.log('🔄 [ProgramsCreatedPage] New program created, refreshing list:', newProgramId);
       loadPrograms();
       // Clean up URL params
       window.history.replaceState({}, document.title, window.location.pathname);
@@ -52,7 +52,7 @@ export default function ProgramsCreatedPage() {
     try {
       setIsLoading(true);
 
-      console.log('🔄 Loading programs for trainer:', member._id);
+      console.log('🔄 [ProgramsCreatedPage] Loading programs for trainer:', member._id);
 
       // Load programs from both collections
       const [programsResult, draftsResult] = await Promise.all([
@@ -64,17 +64,31 @@ export default function ProgramsCreatedPage() {
       const trainerPrograms = programsResult.items.filter(p => p.trainerId === member._id);
       const trainerDrafts = draftsResult.items.filter(d => d.trainerId === member._id);
 
-      console.log('✅ Programs loaded:', {
+      console.log('✅ [ProgramsCreatedPage] Programs loaded:', {
         totalPrograms: trainerPrograms.length,
         totalDrafts: trainerDrafts.length,
-        programs: trainerPrograms.map(p => ({ id: p._id, name: p.programName, status: p.status })),
-        drafts: trainerDrafts.map(d => ({ id: d._id, programId: d.programId, status: d.status })),
+        programs: trainerPrograms.map(p => ({ 
+          id: p._id, 
+          name: p.programName, 
+          status: p.status,
+          trainerId: p.trainerId,
+        })),
+        drafts: trainerDrafts.map(d => ({ 
+          id: d._id, 
+          programId: d.programId, 
+          status: d.status,
+          trainerId: d.trainerId,
+        })),
       });
+
+      if (trainerPrograms.length === 0) {
+        console.warn('⚠️ [ProgramsCreatedPage] No programs found for trainer:', member._id);
+      }
 
       setPrograms(trainerPrograms);
       setProgramDrafts(trainerDrafts);
     } catch (error) {
-      console.error('❌ Error loading programs:', error);
+      console.error('❌ [ProgramsCreatedPage] Error loading programs:', error);
     } finally {
       setIsLoading(false);
     }
