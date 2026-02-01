@@ -224,6 +224,15 @@ async function validateAccess(
       }
     }
 
+    // Allow trainers to use getForClient for their assigned clients
+    if (operation === 'getForClient' && clientId) {
+      const hasAccess = await verifyTrainerClientAccess(auth.memberId, clientId);
+      if (!hasAccess) {
+        return { authorized: false, reason: 'Trainer does not have access to this client' };
+      }
+      return { authorized: true };
+    }
+
     return { authorized: true };
   }
 
@@ -318,11 +327,26 @@ async function getForClient(
   options?: { limit?: number; skip?: number }
 ) {
   try {
+    console.log('🔍 [protected-data-gateway] getForClient called:', {
+      collection,
+      clientId,
+      authRole: auth.role,
+      authMemberId: auth.memberId,
+    });
+
     // Verify access
     const access = await validateAccess(auth, collection, 'getForClient', clientId);
     if (!access.authorized) {
+      console.error('❌ [protected-data-gateway] getForClient access denied:', {
+        reason: access.reason,
+        collection,
+        clientId,
+        authRole: auth.role,
+      });
       throw new Error(access.reason || 'Unauthorized');
     }
+
+    console.log('✅ [protected-data-gateway] getForClient access granted, querying data');
 
     let query = wixData.query(collection).eq('clientId', clientId);
 
@@ -334,6 +358,13 @@ async function getForClient(
     }
 
     const result = await query.find();
+
+    console.log('✅ [protected-data-gateway] getForClient query completed:', {
+      collection,
+      clientId,
+      itemsFound: result.items.length,
+      totalCount: result.totalCount,
+    });
 
     return {
       items: result.items,

@@ -45,13 +45,17 @@ export default function ProgramAssignmentModal({
       setIsLoading(true);
       setError(null);
 
-      // Get all trainer-client assignments (trainers can access their own assignments via getAll with role-based filtering)
+      console.log('📋 [ProgramAssignmentModal] Starting to load clients for trainer:', trainerId);
+
+      // Get all trainer-client assignments for this trainer
+      // The backend gateway will filter to only assignments where trainerId === auth.memberId
       const assignmentsResult = await ProtectedDataService.getAll<TrainerClientAssignments>('trainerclientassignments');
       const clientIds = assignmentsResult.items.map(a => a.clientId);
 
       console.log('📋 [ProgramAssignmentModal] Loaded assignments:', {
         totalAssignments: assignmentsResult.items.length,
         clientIds,
+        assignments: assignmentsResult.items.map(a => ({ trainerId: a.trainerId, clientId: a.clientId, status: a.status })),
       });
 
       if (clientIds.length === 0) {
@@ -61,14 +65,16 @@ export default function ProgramAssignmentModal({
       }
 
       // Get client profiles for each assigned client
-      // Use BaseCrudService directly since we already have the clientIds from assignments
-      // and we're filtering to only our assigned clients
+      // Use ProtectedDataService.getForClient to ensure we have proper access control
       const clientProfiles: ClientProfiles[] = [];
       for (const clientId of clientIds) {
         try {
-          const profile = await BaseCrudService.getById<ClientProfiles>('clientprofiles', clientId);
-          if (profile) {
-            clientProfiles.push(profile);
+          console.log(`📝 [ProgramAssignmentModal] Loading profile for client: ${clientId}`);
+          // Use getForClient to load the client profile with proper access validation
+          const profileResult = await ProtectedDataService.getForClient<ClientProfiles>('clientprofiles', clientId);
+          if (profileResult.items && profileResult.items.length > 0) {
+            clientProfiles.push(profileResult.items[0]);
+            console.log(`✅ [ProgramAssignmentModal] Loaded profile for client: ${clientId}`);
           }
         } catch (err) {
           console.warn(`⚠️ [ProgramAssignmentModal] Failed to load profile for client ${clientId}:`, err);
@@ -84,7 +90,7 @@ export default function ProgramAssignmentModal({
       setClients(clientProfiles);
     } catch (err) {
       console.error('❌ [ProgramAssignmentModal] Error loading clients:', err);
-      setError('Failed to load clients');
+      setError('Failed to load clients. Make sure you have clients assigned to you.');
     } finally {
       setIsLoading(false);
     }
