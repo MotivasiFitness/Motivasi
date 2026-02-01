@@ -9,6 +9,7 @@
  */
 
 import { ProgramGeneratorInput, GeneratedProgram, WorkoutDay, Exercise } from '@/lib/ai-program-generator';
+import { saveProgramDraft as originalSaveProgramDraft } from '@/lib/ai-program-generator';
 
 /**
  * Mock program generation - creates realistic programs based on input
@@ -523,6 +524,16 @@ function getExerciseDatabase(): Record<string, Array<{
     ],
   };
 }
+
+/**
+ * Export saveProgramDraft from the original module
+ * This ensures programs created with the mock generator are properly saved
+ * 
+ * CRITICAL FIX: The mock generator was not exporting saveProgramDraft,
+ * which meant programs created with the mock generator were not being saved
+ * to the database. This export ensures the full save pipeline is used.
+ */
+export const saveProgramDraft = originalSaveProgramDraft;
 
 // Re-export other functions from the original module
 export * from '@/lib/ai-program-generator';
