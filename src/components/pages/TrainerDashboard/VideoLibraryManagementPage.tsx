@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useMember } from '@/integrations';
 import { BaseCrudService } from '@/integrations';
-import { PrivateVideoLibrary, TrainerClientAssignments } from '@/entities';
+import { PrivateVideoLibrary, TrainerClientAssignments, ClientProfiles } from '@/entities';
 import { 
   Video, 
   Plus, 
@@ -18,9 +18,11 @@ import {
   X,
   AlertCircle,
   CheckCircle,
-  Loader
+  Loader,
+  ChevronDown
 } from 'lucide-react';
 import { getTrainerClients } from '@/lib/role-utils';
+import { getClientDisplayName } from '@/lib/client-name-service';
 
 interface VideoFormData {
   videoTitle: string;
@@ -35,6 +37,7 @@ interface VideoFormData {
 interface ClientInfo {
   clientId: string;
   clientName: string;
+  email?: string;
 }
 
 export default function VideoLibraryManagementPage() {
@@ -60,6 +63,7 @@ export default function VideoLibraryManagementPage() {
   const [submitSuccess, setSubmitSuccess] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [clientProfiles, setClientProfiles] = useState<Map<string, ClientProfiles>>(new Map());
 
   useEffect(() => {
     fetchData();
@@ -71,12 +75,22 @@ export default function VideoLibraryManagementPage() {
     try {
       setLoading(true);
 
+      // Fetch all client profiles for name lookup
+      const { items: profiles } = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
+      const profileMap = new Map(profiles.map(p => [p.memberId || '', p]));
+      setClientProfiles(profileMap);
+
       // Fetch trainer's clients
       const assignments = await getTrainerClients(member._id);
-      const clientInfos: ClientInfo[] = assignments.map(a => ({
-        clientId: a.clientId || '',
-        clientName: a.clientId?.slice(0, 8) || 'Unknown Client', // In production, fetch actual names
-      }));
+      const clientInfos: ClientInfo[] = assignments.map(a => {
+        const profile = profileMap.get(a.clientId || '');
+        const displayName = getClientDisplayName(profile, profile?.memberId);
+        return {
+          clientId: a.clientId || '',
+          clientName: displayName,
+          email: profile?.memberId,
+        };
+      });
       setClients(clientInfos);
 
       // Fetch all videos created by this trainer or public videos
