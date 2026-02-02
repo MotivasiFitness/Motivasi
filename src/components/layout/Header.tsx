@@ -89,12 +89,12 @@ export default function Header() {
               </button>
             )}
             <LanguageSwitcher />
-            <MiniCart cartIconClassName="ml-2" />
+            <MiniCart cartIconClassName="ml-2 [&_svg]:text-soft-white" />
           </nav>
 
           {/* Mobile Menu Button */}
           <div className="flex items-center gap-4 md:hidden">
-            <MiniCart cartIconClassName="" />
+            <MiniCart cartIconClassName="[&_svg]:text-soft-white" />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-soft-white"
