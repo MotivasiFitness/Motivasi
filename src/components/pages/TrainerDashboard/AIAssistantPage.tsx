@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useMember } from '@/integrations';
 import { useNavigate } from 'react-router-dom';
-import { Loader, AlertCircle, CheckCircle, Sparkles, ArrowRight, Wand2, X } from 'lucide-react';
+import { Loader, AlertCircle, CheckCircle, Sparkles, Wand2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import {
   generateProgramWithAI,
@@ -9,7 +9,7 @@ import {
   ProgramGeneratorInput,
   GeneratedProgram,
   isSafeProgram,
-} from '@/lib/ai-program-generator-mock';
+} from '@/lib/ai-program-generator';
 import { generateProgramDescription } from '@/lib/ai-description-generator';
 import { BaseCrudService } from '@/integrations';
 import { TrainerClientAssignments, ClientProfiles } from '@/entities';
@@ -201,17 +201,8 @@ export default function AIAssistantPage() {
         throw new Error('Program has no workout days');
       }
 
-      console.log('🔄 Saving program...', {
-        programName: generatedProgram.programName,
-        trainerId: member._id,
-        clientId: selectedClientId || 'none (template/draft)',
-        workoutDays: generatedProgram.workoutDays.length,
-      });
-
       // Pass clientId if selected, otherwise save as template/draft
       const programId = await saveProgramDraft(generatedProgram, member._id, selectedClientId || undefined);
-      
-      console.log('✅ Program saved successfully:', { programId });
       
       // Show success toast
       toast({
@@ -227,7 +218,6 @@ export default function AIAssistantPage() {
       }, 2000);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to save program';
-      console.error('❌ Save program error:', err);
       setError(errorMessage);
       
       // Show error toast
