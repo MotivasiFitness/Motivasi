@@ -43,13 +43,17 @@ const PROTECTED_COLLECTIONS = [
 
 type ProtectedCollection = typeof PROTECTED_COLLECTIONS[number];
 
+/**
+ * Request structure for protected data gateway
+ * Ensures type-safe request construction
+ */
 interface ProtectedDataRequest {
   operation: 'getAll' | 'getById' | 'getForClient' | 'getForTrainer' | 'create' | 'update' | 'delete';
   collection: ProtectedCollection;
   itemId?: string;
   clientId?: string;
   trainerId?: string;
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
   options?: {
     limit?: number;
     skip?: number;
@@ -58,12 +62,33 @@ interface ProtectedDataRequest {
   };
 }
 
-interface ProtectedDataResponse<T = any> {
+/**
+ * Response structure from protected data gateway
+ * Ensures type-safe handling of API responses
+ */
+interface ProtectedDataResponse<T = unknown> {
   success: boolean;
   statusCode: number;
   data?: T;
   error?: string;
   timestamp: string;
+}
+
+/**
+ * Type guard to validate ProtectedDataResponse structure
+ */
+function isValidProtectedDataResponse<T>(
+  value: unknown
+): value is ProtectedDataResponse<T> {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+  const obj = value as Record<string, unknown>;
+  return (
+    typeof obj.success === 'boolean' &&
+    typeof obj.statusCode === 'number' &&
+    typeof obj.timestamp === 'string'
+  );
 }
 
 interface PaginatedResult<T> {
@@ -159,7 +184,7 @@ export class ProtectedDataService {
    */
   static async create<T>(
     collection: ProtectedCollection,
-    data: Record<string, any>
+    data: Record<string, unknown>
   ): Promise<T> {
     return this.request<T>({
       operation: 'create',
@@ -174,7 +199,7 @@ export class ProtectedDataService {
   static async update<T>(
     collection: ProtectedCollection,
     itemId: string,
-    data: Record<string, any>
+    data: Record<string, unknown>
   ): Promise<T> {
     return this.request<T>({
       operation: 'update',
@@ -200,9 +225,23 @@ export class ProtectedDataService {
 
   /**
    * Internal method to send request to backend gateway
+   * 
+   * Implements robust error handling for:
+   * - Network failures
+   * - JSON parsing errors
+   * - Invalid response structures
+   * - Application-level errors
    */
   private static async request<T>(req: ProtectedDataRequest): Promise<T> {
     try {
+      // Validate request
+      if (!req.operation || typeof req.operation !== 'string') {
+        throw new Error('Invalid request: operation is required');
+      }
+      if (!req.collection || typeof req.collection !== 'string') {
+        throw new Error('Invalid request: collection is required');
+      }
+
       const response = await fetch(this.GATEWAY_URL, {
         method: 'POST',
         headers: {
@@ -211,10 +250,50 @@ export class ProtectedDataService {
         body: JSON.stringify(req),
       });
 
-      const data: ProtectedDataResponse<T> = await response.json();
+      // Parse JSON response safely
+      let data: unknown = null;
+      try {
+        data = await response.json();
+      } catch (parseErr) {
+        const errorMsg =
+          parseErr instanceof Error
+            ? `Invalid JSON response: ${parseErr.message}`
+            : 'Invalid JSON response';
+        throw new Error(
+          `Failed to parse response from ${req.operation} on ${req.collection} (HTTP ${response.status}): ${errorMsg}`
+        );
+      }
 
+      // Validate response structure
+      if (!isValidProtectedDataResponse<T>(data)) {
+        throw new Error(
+          `Unexpected response structure from ${req.operation} on ${req.collection}: missing required fields (success, statusCode, timestamp)`
+        );
+      }
+
+      // Handle HTTP-level errors
+      if (!response.ok) {
+        const message =
+          data.error ||
+          `Request failed with HTTP ${response.status}`;
+        throw new Error(message);
+      }
+
+      // Handle app-level errors
       if (!data.success) {
-        throw new Error(data.error || 'Request failed');
+        throw new Error(data.error || `${req.operation} on ${req.collection} failed`);
+      }
+
+      // Validate data is present for operations that should return data
+      if (
+        ['getAll', 'getById', 'getForClient', 'getForTrainer', 'create', 'update'].includes(
+          req.operation
+        ) &&
+        !data.data
+      ) {
+        throw new Error(
+          `No data returned from ${req.operation} operation on ${req.collection}`
+        );
       }
 
       return data.data as T;
