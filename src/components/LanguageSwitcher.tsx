@@ -22,7 +22,7 @@ export default function LanguageSwitcher() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-warm-sand-beige/30 transition-colors text-charcoal-black"
+        className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-warm-sand-beige/30 transition-colors text-soft-white"
         aria-label={t.header.selectLanguage}
         title={t.header.selectLanguage}
       >
