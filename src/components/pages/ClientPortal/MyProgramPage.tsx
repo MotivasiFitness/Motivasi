@@ -146,30 +146,17 @@ export default function MyProgramPage() {
       }
 
       try {
-        // Fetch client profile - scoped to current member
-        const { items: profiles } = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
-        const profile = profiles.find(p => p.memberId === member._id);
-        setClientProfile(profile || null);
-
-        // Check if this is the first workout view
-        if (typeof window !== 'undefined') {
-          const hasSeenFirstWorkout = localStorage.getItem(`firstWorkoutSeen_${member.loginEmail}`);
-          if (!hasSeenFirstWorkout) {
-            setShowFirstWorkoutReassurance(true);
-          }
-        }
-
-        // Fetch active program cycle - scoped by member._id
-        const cycle = await getActiveCycle(member._id);
-        setActiveCycle(cycle);
-
-        // SECURITY: Fetch workouts using access-controlled method
+        // CRITICAL: Fetch workouts FIRST (highest priority for page render)
         // This ensures server-side filtering by clientId - client cannot access other clients' workouts
         const clientWorkouts = await getClientWorkouts(
           member._id,
           member._id,
           'client'
         );
+        
+        // Fetch active program cycle in parallel with workouts
+        const cycle = await getActiveCycle(member._id);
+        setActiveCycle(cycle);
         
         // Get completed weeks from the active cycle
         const completedWeeks = getCompletedWeeksArray(cycle?.weeksCompleted || 0);
@@ -208,16 +195,28 @@ export default function MyProgramPage() {
           }
           
           setUseNewSystem(true);
-          setLoading(false);
-          return;
+        } else {
+          // Fall back to legacy system - DISABLED FOR PRIVACY
+          // The clientprograms collection doesn't have clientId field to filter by
+          // This creates a privacy vulnerability where all clients can see all programs
+          // Legacy fallback is disabled - only new system (clientassignedworkouts) is supported
+          console.warn('[MyProgramPage] Legacy clientprograms system disabled for privacy');
+          setUseNewSystem(false);
         }
         
-        // Fall back to legacy system - DISABLED FOR PRIVACY
-        // The clientprograms collection doesn't have clientId field to filter by
-        // This creates a privacy vulnerability where all clients can see all programs
-        // Legacy fallback is disabled - only new system (clientassignedworkouts) is supported
-        console.warn('[MyProgramPage] Legacy clientprograms system disabled for privacy');
-        setUseNewSystem(false);
+        // Fetch secondary data in background (non-blocking)
+        // These don't block page render
+        const { items: profiles } = await BaseCrudService.getAll<ClientProfiles>('clientprofiles');
+        const profile = profiles.find(p => p.memberId === member._id);
+        setClientProfile(profile || null);
+
+        // Check if this is the first workout view
+        if (typeof window !== 'undefined') {
+          const hasSeenFirstWorkout = localStorage.getItem(`firstWorkoutSeen_${member.loginEmail}`);
+          if (!hasSeenFirstWorkout) {
+            setShowFirstWorkoutReassurance(true);
+          }
+        }
       } catch (error) {
         console.error('Error fetching programs:', error);
       } finally {
