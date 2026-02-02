@@ -204,28 +204,30 @@ export async function saveProgramDraft(
     // Use PROGRAM_STATUS constant for single source of truth
     const status = clientId ? PROGRAM_STATUS.ASSIGNED : PROGRAM_STATUS.DRAFT;
 
-    console.log('🔄 [saveProgramDraft] Starting save process:', {
-      programId,
-      programName: program.programName,
-      trainerId,
-      clientId: clientId || 'none',
-      status,
-      workoutDaysCount: program.workoutDays?.length || 0,
-    });
-
     // Validate program JSON serialization
     let programJsonString: string;
     try {
       programJsonString = JSON.stringify(program);
       // Verify it can be parsed back
       JSON.parse(programJsonString);
-      console.log('✅ [saveProgramDraft] Program JSON validated successfully');
     } catch (jsonError) {
       throw new Error('Program data cannot be serialized to JSON');
     }
 
     // Save to programdrafts collection with full JSON
-    const programDraft = {
+    // Explicit type definition for type safety
+    interface ProgramDraftPayload {
+      _id: string;
+      programId: string;
+      trainerId: string;
+      clientId?: string;
+      programJson: string;
+      status: string;
+      createdAt: string;
+      updatedAt: string;
+    }
+
+    const programDraft: ProgramDraftPayload = {
       _id: crypto.randomUUID(),
       programId,
       trainerId,
@@ -236,24 +238,16 @@ export async function saveProgramDraft(
       updatedAt: now,
     };
 
-    console.log('📝 [saveProgramDraft] Saving program draft to programdrafts collection:', {
-      draftId: programDraft._id,
-      programId,
-      trainerId,
-      status,
-    });
-
     try {
       await BaseCrudService.create('programdrafts', programDraft);
-      console.log('✅ [saveProgramDraft] Program draft saved successfully:', { programId, trainerId, status, draftId: programDraft._id });
     } catch (draftError) {
       const errorMsg = draftError instanceof Error ? draftError.message : 'Unknown error';
-      console.error('❌ [saveProgramDraft] Failed to save program draft:', errorMsg, draftError);
       throw new Error(`Failed to save program draft to database: ${errorMsg}`);
     }
 
     // Also save basic metadata to programs collection for backward compatibility
     // CRITICAL: Use lowercase status to match filter expectations in ProgramsCreatedPage
+    // Explicit type definition for type safety
     const fitnessProgram: FitnessPrograms = {
       _id: programId,
       programName: program.programName,
@@ -265,20 +259,9 @@ export async function saveProgramDraft(
       status: status, // Use PROGRAM_STATUS constant (always lowercase)
     };
 
-    console.log('📝 [saveProgramDraft] Saving program metadata to programs collection:', {
-      programId,
-      programName: program.programName,
-      trainerId,
-      status,
-    });
-
     try {
       await BaseCrudService.create('programs', fitnessProgram);
-      console.log('✅ [saveProgramDraft] Program metadata saved successfully:', { programId, trainerId, status });
     } catch (programError) {
-      const errorMsg = programError instanceof Error ? programError.message : 'Unknown error';
-      console.error('❌ [saveProgramDraft] Failed to save program metadata:', errorMsg, programError);
-      console.warn(`⚠️ Warning: Failed to save program metadata: ${errorMsg}. Draft was saved successfully.`);
       // Don't throw here - the draft was saved successfully, this is just metadata
     }
 
