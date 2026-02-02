@@ -64,12 +64,10 @@ export default function TrainerProfilePage() {
 
     setIsLoading(true);
     try {
-      console.log('[Profile Load] Loading profile for member:', member._id);
       const { items } = await BaseCrudService.getAll<TrainerProfile>('trainerprofiles');
       const existingProfile = items.find((p) => p.memberId === member._id);
 
       if (existingProfile) {
-        console.log('[Profile Load] Found existing profile:', existingProfile._id);
         setProfile(existingProfile);
         setFormData({
           displayName: existingProfile.displayName || '',
@@ -82,7 +80,6 @@ export default function TrainerProfilePage() {
         });
         setPhotoPreview(existingProfile.profilePhoto || '');
       } else {
-        console.log('[Profile Load] No existing profile found, initializing with member data');
         const memberPhoto = member.profile?.photo?.url || '';
         setProfile(null);
         setFormData((prev) => ({
@@ -94,7 +91,6 @@ export default function TrainerProfilePage() {
         setPhotoPreview(memberPhoto);
       }
     } catch (error) {
-      console.error('[Profile Load] Error loading profile:', error);
       toast({
         title: 'Error',
         description: 'Failed to load profile. Please try again.',
@@ -110,17 +106,13 @@ export default function TrainerProfilePage() {
 
     setIsSaving(true);
     try {
-      console.log('[Profile Save] Starting save with data:', formData);
-
       if (profile?._id) {
-        console.log('[Profile Save] Updating existing profile:', profile._id);
         await BaseCrudService.update<TrainerProfile>('trainerprofiles', {
           _id: profile._id,
           ...formData
         });
         toast({ title: 'Success', description: 'Profile updated successfully' });
       } else {
-        console.log('[Profile Save] Creating new profile for member:', member._id);
         await BaseCrudService.create('trainerprofiles', {
           _id: crypto.randomUUID(),
           memberId: member._id,
@@ -130,9 +122,10 @@ export default function TrainerProfilePage() {
       }
 
       await loadProfile();
-      window.dispatchEvent(new CustomEvent('trainerProfileUpdated'));
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('trainerProfileUpdated'));
+      }
     } catch (error) {
-      console.error('[Profile Save] Error saving profile:', error);
       toast({
         title: 'Error',
         description: 'Failed to save profile. Please try again.',
@@ -190,7 +183,7 @@ export default function TrainerProfilePage() {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onerror = () => reject(new Error('Failed to read image data'));
-      reader.onload = () => resolve(String(reader.result)); // data:image/jpeg;base64,...
+      reader.onload = () => resolve(String(reader.result));
       reader.readAsDataURL(blob);
     });
   };
@@ -199,17 +192,6 @@ export default function TrainerProfilePage() {
   const uploadImageToWix = async (blob: Blob, fileName: string): Promise<string> => {
     const uploadUrl = getBackendEndpoint(BACKEND_FUNCTIONS.UPLOAD_PROFILE_PHOTO);
     const base64DataUrl = await blobToDataUrl(blob);
-
-    console.group('[Upload Debug] Profile Photo Upload (Base64 JSON)');
-    console.log('📤 Upload endpoint:', uploadUrl);
-    console.log('📍 Full URL:', window.location.origin + uploadUrl);
-    console.log('📁 File name:', fileName);
-    console.log('📊 Blob size:', blob.size, 'bytes', `(${(blob.size / 1024).toFixed(2)} KB)`);
-    console.log('🎨 Blob type:', blob.type);
-    console.log('🔧 Environment:', isPreviewEnvironment() ? 'Preview/Dev' : 'Production');
-    console.groupEnd();
-
-    let responseText = '';
 
     const response = await fetch(uploadUrl, {
       method: 'POST',
@@ -225,14 +207,6 @@ export default function TrainerProfilePage() {
     });
 
     const contentType = response.headers.get('content-type') || 'unknown';
-    responseText = await response.clone().text();
-
-    console.group('[Upload Debug] Response');
-    console.log('📡 Status:', response.status, response.statusText);
-    console.log('📋 Content-Type:', contentType);
-    console.log('🔗 Response URL:', response.url);
-    console.log('📄 Body (first 1000 chars):', responseText.substring(0, 1000));
-    console.groupEnd();
 
     if (!contentType.includes('application/json')) {
       if (contentType.includes('text/html')) {
@@ -259,8 +233,6 @@ export default function TrainerProfilePage() {
     async (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
       if (!file) return;
-
-      console.log('[File Select] File selected:', file.name, file.size, file.type);
 
       setUploadError('');
       setUploadStatus('idle');
@@ -305,7 +277,6 @@ export default function TrainerProfilePage() {
           description: 'Photo uploaded successfully. Remember to save your profile.'
         });
       } catch (error: any) {
-        console.error('[File Select] Upload error:', error);
         const msg = error?.message || 'Failed to upload image. Please try again.';
         setUploadError(msg);
         setUploadStatus('error');

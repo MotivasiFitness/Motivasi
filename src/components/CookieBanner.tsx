@@ -19,11 +19,16 @@ export default function CookieBanner() {
   // Check if user has already made a cookie choice
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const savedPreferences = localStorage.getItem('cookiePreferences');
-      if (!savedPreferences) {
+      try {
+        const savedPreferences = localStorage.getItem('cookiePreferences');
+        if (!savedPreferences) {
+          setIsVisible(true);
+        } else {
+          setPreferences(JSON.parse(savedPreferences));
+        }
+      } catch (error) {
+        // localStorage might not be available in some environments
         setIsVisible(true);
-      } else {
-        setPreferences(JSON.parse(savedPreferences));
       }
     }
   }, []);
@@ -35,7 +40,11 @@ export default function CookieBanner() {
       marketing: true,
     };
     if (typeof window !== 'undefined') {
-      localStorage.setItem('cookiePreferences', JSON.stringify(allAccepted));
+      try {
+        localStorage.setItem('cookiePreferences', JSON.stringify(allAccepted));
+      } catch (error) {
+        // localStorage might not be available in some environments
+      }
     }
     setPreferences(allAccepted);
     setIsVisible(false);
@@ -48,7 +57,11 @@ export default function CookieBanner() {
       marketing: false,
     };
     if (typeof window !== 'undefined') {
-      localStorage.setItem('cookiePreferences', JSON.stringify(rejected));
+      try {
+        localStorage.setItem('cookiePreferences', JSON.stringify(rejected));
+      } catch (error) {
+        // localStorage might not be available in some environments
+      }
     }
     setPreferences(rejected);
     setIsVisible(false);
@@ -56,7 +69,11 @@ export default function CookieBanner() {
 
   const handleSavePreferences = () => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem('cookiePreferences', JSON.stringify(preferences));
+      try {
+        localStorage.setItem('cookiePreferences', JSON.stringify(preferences));
+      } catch (error) {
+        // localStorage might not be available in some environments
+      }
     }
     setIsVisible(false);
     setShowPreferences(false);
