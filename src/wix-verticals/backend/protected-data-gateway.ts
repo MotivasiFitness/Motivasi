@@ -34,6 +34,25 @@ import wixData from 'wix-data';
 import { getCurrentMember } from 'wix-members-backend';
 
 // ============================================================================
+// HTTP REQUEST/RESPONSE TYPES
+// ============================================================================
+
+interface HttpRequest {
+  body: {
+    text(): Promise<string>;
+  };
+  headers?: Record<string, string>;
+  method?: string;
+  path?: string;
+}
+
+interface HttpResponse {
+  statusCode: number;
+  headers: Record<string, string>;
+  body: string;
+}
+
+// ============================================================================
 // CONSTANTS & CONFIGURATION
 // ============================================================================
 
@@ -327,17 +346,10 @@ async function getForClient(
   options?: { limit?: number; skip?: number }
 ) {
   try {
-    console.log('🔍 [protected-data-gateway] getForClient called:', {
-      collection,
-      clientId,
-      authRole: auth.role,
-      authMemberId: auth.memberId,
-    });
-
     // Verify access
     const access = await validateAccess(auth, collection, 'getForClient', clientId);
     if (!access.authorized) {
-      console.error('❌ [protected-data-gateway] getForClient access denied:', {
+      console.error('Error in getForClient - access denied:', {
         reason: access.reason,
         collection,
         clientId,
@@ -345,8 +357,6 @@ async function getForClient(
       });
       throw new Error(access.reason || 'Unauthorized');
     }
-
-    console.log('✅ [protected-data-gateway] getForClient access granted, querying data');
 
     let query = wixData.query(collection).eq('clientId', clientId);
 
@@ -358,13 +368,6 @@ async function getForClient(
     }
 
     const result = await query.find();
-
-    console.log('✅ [protected-data-gateway] getForClient query completed:', {
-      collection,
-      clientId,
-      itemsFound: result.items.length,
-      totalCount: result.totalCount,
-    });
 
     return {
       items: result.items,
@@ -429,15 +432,6 @@ async function create(
   data: Record<string, any>
 ) {
   try {
-    console.log('🔍 [protected-data-gateway] Create validation:', {
-      collection,
-      authRole: auth.role,
-      authMemberId: auth.memberId,
-      dataKeys: Object.keys(data),
-      dataTrainerId: data.trainerId,
-      dataClientId: data.clientId,
-    });
-
     // Validate ownership
     if (auth.role === 'client' && data.clientId && data.clientId !== auth.memberId) {
       throw new Error('Unauthorized: Clients can only create data for themselves');
@@ -450,7 +444,6 @@ async function create(
     // CRITICAL FIX: For trainers creating programassignments, ensure trainerId is set to auth.memberId
     // This prevents trainers from creating assignments for other trainers
     if (auth.role === 'trainer' && collection === 'programassignments') {
-      console.log('✅ [protected-data-gateway] Trainer creating program assignment, setting trainerId to auth.memberId');
       data.trainerId = auth.memberId;
     }
 
@@ -461,8 +454,6 @@ async function create(
       _createdDate: new Date(),
       _updatedDate: new Date(),
     };
-
-    console.log('✅ [protected-data-gateway] Create authorized, proceeding with insert');
 
     const result = await wixData.insert(collection, itemData);
     return result;
@@ -489,19 +480,9 @@ async function update(
       throw new Error('Item not found');
     }
 
-    console.log('🔍 [protected-data-gateway] Update validation:', {
-      collection,
-      itemId,
-      authRole: auth.role,
-      authMemberId: auth.memberId,
-      existingTrainerId: existing.trainerId,
-      existingClientId: existing.clientId,
-      dataToUpdate: Object.keys(data),
-    });
-
     // Validate access
     if (auth.role === 'client' && existing.clientId !== auth.memberId) {
-      console.error('❌ [protected-data-gateway] Client access denied:', {
+      console.error('Error in update - client access denied:', {
         existingClientId: existing.clientId,
         authMemberId: auth.memberId,
       });
@@ -516,23 +497,14 @@ async function update(
       const isUnowned = !hasExistingTrainerId;
       
       if (!isOwner && !isUnowned) {
-        console.error('❌ [protected-data-gateway] Trainer access denied on update:', {
+        console.error('Error in update - trainer access denied:', {
           existingTrainerId: existing.trainerId,
           authMemberId: auth.memberId,
           collection,
           itemId,
-          hasExistingTrainerId,
-          isOwner,
-          isUnowned,
         });
         throw new Error('Unauthorized: Trainers can only update their own data');
       }
-      
-      console.log('✅ [protected-data-gateway] Trainer update authorized:', {
-        isOwner,
-        isUnowned,
-        willSetTrainerId: !hasExistingTrainerId,
-      });
     }
 
     // Update with audit fields
@@ -542,8 +514,6 @@ async function update(
       _id: itemId,
       _updatedDate: new Date(),
     };
-
-    console.log('✅ [protected-data-gateway] Update authorized, proceeding with update');
 
     const result = await wixData.update(collection, updateData);
     return result;
@@ -599,7 +569,7 @@ export function options_protected_data_gateway() {
   return ok(JSON.stringify({ success: true }), { headers: JSON_HEADERS });
 }
 
-export async function post_protected_data_gateway(request: any) {
+export async function post_protected_data_gateway(request: HttpRequest): Promise<HttpResponse> {
   try {
     // Parse request
     const raw = request?.body ? await request.body.text() : '';
