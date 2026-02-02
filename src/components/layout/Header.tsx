@@ -15,7 +15,7 @@ export default function Header() {
   const { isTrainer, isClient } = useRole();
 
   return (
-    <header className="bg-soft-white border-b border-warm-sand-beige sticky top-0 z-40">
+    <header className="bg-charcoal-black border-b border-charcoal-black sticky top-0 z-40">
       <div className="max-w-[100rem] mx-auto px-8 lg:px-20">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
@@ -26,32 +26,32 @@ export default function Header() {
               className="h-8 md:h-10 w-auto"
               width={40}
             />
-            <span className="font-heading text-2xl font-bold text-charcoal-black">Motivasi</span>
+            <span className="font-heading text-2xl font-bold text-soft-white">Motivasi</span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             <Link 
               to="/" 
-              className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+              className="font-paragraph text-base text-soft-white hover:text-warm-sand-beige transition-colors"
             >
               {t.nav.home}
             </Link>
             <Link 
               to="/about" 
-              className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+              className="font-paragraph text-base text-soft-white hover:text-warm-sand-beige transition-colors"
             >
               {t.nav.about}
             </Link>
             <Link 
               to="/online-training" 
-              className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+              className="font-paragraph text-base text-soft-white hover:text-warm-sand-beige transition-colors"
             >
               {t.nav.onlineTraining}
             </Link>
             <Link 
               to="/blog" 
-              className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+              className="font-paragraph text-base text-soft-white hover:text-warm-sand-beige transition-colors"
             >
               {t.nav.faceToFaceTraining}
             </Link>
@@ -60,21 +60,21 @@ export default function Header() {
                 {isTrainer ? (
                   <Link 
                     to="/trainer" 
-                    className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+                    className="font-paragraph text-base text-soft-white hover:text-warm-sand-beige transition-colors"
                   >
                     Trainer Hub
                   </Link>
                 ) : (
                   <Link 
                     to="/portal" 
-                    className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+                    className="font-paragraph text-base text-soft-white hover:text-warm-sand-beige transition-colors"
                   >
                     My Portal
                   </Link>
                 )}
                 <button
                   onClick={actions.logout}
-                  className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors flex items-center gap-2"
+                  className="font-paragraph text-base text-soft-white hover:text-warm-sand-beige transition-colors flex items-center gap-2"
                 >
                   <LogOut size={16} />
                   Sign Out
@@ -97,7 +97,7 @@ export default function Header() {
             <MiniCart cartIconClassName="" />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-charcoal-black"
+              className="text-soft-white"
               aria-label="Toggle menu"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -107,32 +107,32 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-warm-sand-beige">
+          <nav className="md:hidden py-4 border-t border-charcoal-black bg-charcoal-black">
             <div className="flex flex-col gap-4">
               <Link 
                 to="/" 
-                className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+                className="font-paragraph text-base text-soft-white hover:text-warm-sand-beige transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t.nav.home}
               </Link>
               <Link 
                 to="/about" 
-                className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+                className="font-paragraph text-base text-soft-white hover:text-warm-sand-beige transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t.nav.about}
               </Link>
               <Link 
                 to="/online-training" 
-                className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+                className="font-paragraph text-base text-soft-white hover:text-warm-sand-beige transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t.nav.onlineTraining}
               </Link>
               <Link 
                 to="/blog" 
-                className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+                className="font-paragraph text-base text-soft-white hover:text-warm-sand-beige transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t.nav.faceToFaceTraining}
@@ -142,7 +142,7 @@ export default function Header() {
                   {isTrainer ? (
                     <Link 
                       to="/trainer" 
-                      className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+                      className="font-paragraph text-base text-soft-white hover:text-warm-sand-beige transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Trainer Hub
@@ -150,7 +150,7 @@ export default function Header() {
                   ) : (
                     <Link 
                       to="/portal" 
-                      className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors"
+                      className="font-paragraph text-base text-soft-white hover:text-warm-sand-beige transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       My Portal
@@ -161,7 +161,7 @@ export default function Header() {
                       actions.logout();
                       setIsMenuOpen(false);
                     }}
-                    className="font-paragraph text-base text-charcoal-black hover:text-soft-bronze transition-colors flex items-center gap-2"
+                    className="font-paragraph text-base text-soft-white hover:text-warm-sand-beige transition-colors flex items-center gap-2"
                   >
                     <LogOut size={16} />
                     Sign Out
