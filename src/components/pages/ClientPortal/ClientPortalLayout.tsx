@@ -11,6 +11,7 @@ import MotivaChat from '@/components/ClientPortal/MotivaChat';
 import { getClientDisplayName } from '@/lib/client-name-service';
 import { ProfileCompletionGuard } from '@/components/ClientPortal/ProfileCompletionGuard';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { prefetchAllSecondaryPages, prefetchHistoryData, prefetchProgressData, prefetchProfileData, prefetchNutritionData, prefetchBookingsData } from '@/lib/portal-prefetch-service';
 
 export default function ClientPortalLayout() {
   const { member, actions } = useMember();
@@ -43,6 +44,42 @@ export default function ClientPortalLayout() {
 
     fetchProfile();
   }, [member?.loginEmail]);
+
+  // Prefetch all secondary page data when user is on dashboard or program page
+  useEffect(() => {
+    if (!member?.loginEmail) return;
+    
+    // Check if we're on a primary page (dashboard or program)
+    const isPrimaryPage = location.pathname === '/portal' || location.pathname === '/portal/program';
+    
+    if (isPrimaryPage) {
+      // Prefetch all secondary pages in the background
+      prefetchAllSecondaryPages(member.loginEmail);
+    }
+  }, [member?.loginEmail, location.pathname]);
+
+  // Prefetch specific page data when user hovers over navigation items
+  const handleNavHover = (path: string) => {
+    if (!member?.loginEmail) return;
+    
+    switch (path) {
+      case '/portal/history':
+        prefetchHistoryData(member.loginEmail);
+        break;
+      case '/portal/progress':
+        prefetchProgressData(member.loginEmail);
+        break;
+      case '/portal/profile':
+        prefetchProfileData(member.loginEmail);
+        break;
+      case '/portal/nutrition':
+        prefetchNutritionData(member.loginEmail);
+        break;
+      case '/portal/bookings':
+        prefetchBookingsData(member.loginEmail);
+        break;
+    }
+  };
 
   // Determine redirect reason
   let redirectReason = '';
@@ -189,6 +226,7 @@ export default function ClientPortalLayout() {
                       )}
                       <Link
                         to={item.path}
+                        onMouseEnter={() => handleNavHover(item.path)}
                         className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                           active
                             ? 'bg-soft-bronze text-soft-white'
@@ -236,6 +274,7 @@ export default function ClientPortalLayout() {
                 <Link
                   key={item.path}
                   to={item.path}
+                  onMouseEnter={() => handleNavHover(item.path)}
                   className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors min-w-0 flex-1 ${
                     active ? 'text-soft-bronze' : 'text-warm-grey'
                   }`}
@@ -280,6 +319,7 @@ export default function ClientPortalLayout() {
                     key={item.path}
                     to={item.path}
                     onClick={() => setIsMoreDrawerOpen(false)}
+                    onMouseEnter={() => handleNavHover(item.path)}
                     className={`flex items-center gap-4 px-4 py-4 rounded-lg transition-colors ${
                       active
                         ? 'bg-soft-bronze text-soft-white'
