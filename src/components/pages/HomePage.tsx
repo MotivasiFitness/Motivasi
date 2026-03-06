@@ -47,13 +47,8 @@ export default function HomePage() {
 
   useEffect(() => {
     const fetchTestimonials = async () => {
-      try {
-        const { items } = await BaseCrudService.getAll<ClientTestimonials>('clienttestimonials');
-        setTestimonials(items.filter(t => t.featuredOnHomepage));
-      } catch (error) {
-        console.error('Error fetching testimonials:', error);
-        setTestimonials([]);
-      }
+      const { items } = await BaseCrudService.getAll<ClientTestimonials>('clienttestimonials');
+      setTestimonials(items.filter(t => t.featuredOnHomepage));
     };
     fetchTestimonials();
   }, []);

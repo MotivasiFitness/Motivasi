@@ -152,7 +152,7 @@ export function hasPermission(
  */
 export async function getUserTeamRole(memberId: string): Promise<TeamRole | null> {
   try {
-    const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles', [], { limit: 100 });
+    const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles');
     const memberRole = items.find(r => r.memberId === memberId);
     
     if (memberRole?.role === 'head-coach') return 'head-coach';
