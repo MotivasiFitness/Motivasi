@@ -23,20 +23,24 @@ export default {
                 paragraph: "sora-light"
             },
             colors: {
-                'charcoal-black': '#1F1F1F',
-                'warm-sand-beige': '#E8DED3',
-                'soft-white': '#FAF9F7',
-                'warm-grey': '#B8B2AA',
-                'muted-rose': '#C48A8A',
-                'soft-bronze': '#B08D57',
+                // Deep Plum & Nude Palette
+                'deep-plum': '#1e0f24',
+                'rich-plum': '#2d1535',
+                'soft-nude-pink': '#dbb8c8',
+                'warm-cream': '#f5eee8',
+                'muted-cream': 'rgba(245,238,232,0.45)',
+                'blush-purple': 'rgba(200,160,180,0.15)',
+                'deep-violet': 'rgba(148,70,130,0.2)',
+                'soft-nude-border': 'rgba(220,185,200,0.25)',
+                // Semantic color mappings
                 destructive: '#D32F2F',
                 'destructive-foreground': '#FFFFFF',
-                background: '#FAF9F7',
-                secondary: '#C48A8A',
-                foreground: '#1F1F1F',
-                'secondary-foreground': '#1F1F1F',
-                'primary-foreground': '#FAF9F7',
-                primary: '#B08D57'
+                background: '#1e0f24',
+                secondary: '#dbb8c8',
+                foreground: '#f5eee8',
+                'secondary-foreground': '#1e0f24',
+                'primary-foreground': '#1e0f24',
+                primary: '#dbb8c8'
             },
         },
     },
