@@ -32,18 +32,35 @@ const ReactRouterNavigationComponent: NavigationComponent = ({
 };
 
 export async function rootRouteLoader({ request }: { request: Request }) {
-  const [currentCartServiceConfig, seoTagsServiceConfig] = await Promise.all([
-    loadCurrentCartServiceConfig(),
-    loadSEOTagsServiceConfig({
-      pageUrl: request.url,
-      itemData: { pageName: 'Home' },
-    }),
-  ]);
+  try {
+    // Add timeout to prevent hanging
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Loader timeout')), 5000)
+    );
 
-  return {
-    currentCartServiceConfig,
-    seoTagsServiceConfig,
-  };
+    const [currentCartServiceConfig, seoTagsServiceConfig] = await Promise.race([
+      Promise.all([
+        loadCurrentCartServiceConfig(),
+        loadSEOTagsServiceConfig({
+          pageUrl: request.url,
+          itemData: { pageName: 'Home' },
+        }),
+      ]),
+      timeoutPromise,
+    ]);
+
+    return {
+      currentCartServiceConfig,
+      seoTagsServiceConfig,
+    };
+  } catch (error) {
+    console.error('Error in rootRouteLoader:', error);
+    // Return default config to allow page to render
+    return {
+      currentCartServiceConfig: {},
+      seoTagsServiceConfig: {},
+    };
+  }
 }
 
 export function WixServicesProvider(props: { children: React.ReactNode }) {
