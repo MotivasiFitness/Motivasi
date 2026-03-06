@@ -53,7 +53,7 @@ export async function backfillClientProfiles(): Promise<BackfillResult> {
     const existingProfileMap = new Map(existingProfiles.map(p => [p.memberId, p]));
 
     // Get member roles for reference
-    const { items: memberRoles } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+    const { items: memberRoles } = await BaseCrudService.getAll<MemberRoles>('memberroles', [], { limit: 100 });
     const memberRoleMap = new Map(memberRoles.map(mr => [mr.memberId, mr]));
 
     // Process each client

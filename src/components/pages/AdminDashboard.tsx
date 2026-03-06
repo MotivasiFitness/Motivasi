@@ -32,7 +32,7 @@ export default function AdminDashboard() {
     const loadUsers = async () => {
       try {
         setIsLoading(true);
-        const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+        const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles', [], { limit: 100 });
         
         const userList: UserWithRole[] = items.map(item => {
           // Parse roles from either 'roles' field (new) or 'role' field (legacy)
@@ -88,7 +88,7 @@ export default function AdminDashboard() {
     setIsSaving(true);
     try {
       // Find the existing role entry
-      const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+      const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles', [], { limit: 100 });
       const existingRole = items.find(mr => mr.memberId === memberId);
 
       if (existingRole) {

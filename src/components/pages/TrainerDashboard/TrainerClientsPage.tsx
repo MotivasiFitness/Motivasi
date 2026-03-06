@@ -85,7 +85,7 @@ export default function TrainerClientsPage() {
       setClients(Array.from(clientMap.values()));
 
       // Fetch all available clients (users with client role)
-      const { items: memberRoles } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+      const { items: memberRoles } = await BaseCrudService.getAll<MemberRoles>('memberroles', [], { limit: 100 });
       const clientRoles = memberRoles.filter(
         (mr) => mr.role === 'client' && mr.status === 'active'
       );

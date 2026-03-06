@@ -474,7 +474,7 @@ export async function sendWeeklyDigestToAllTrainers(): Promise<{
 
   try {
     // Get all trainers from member roles
-    const { items: memberRoles } = await BaseCrudService.getAll<any>('memberroles');
+    const { items: memberRoles } = await BaseCrudService.getAll<any>('memberroles', [], { limit: 100 });
 
     // Filter for trainers
     const trainers = memberRoles.filter(

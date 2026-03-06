@@ -24,7 +24,8 @@ export interface RoleDebugInfo {
 export async function getMemberRole(memberId: string): Promise<MemberRole | null> {
   try {
     console.log(`[getMemberRole] Fetching role for memberId: ${memberId}`);
-    const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+    // Use a small limit to avoid fetching entire collection
+    const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles', [], { limit: 100 });
     
     // Filter by memberId field - this is the critical query
     const memberRole = items.find(
@@ -54,7 +55,8 @@ export async function getMemberRole(memberId: string): Promise<MemberRole | null
 export async function getMemberRoles(memberId: string): Promise<MemberRole[]> {
   try {
     console.log(`[getMemberRoles] Fetching all roles for memberId: ${memberId}`);
-    const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+    // Use a small limit to avoid fetching entire collection
+    const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles', [], { limit: 100 });
     
     const memberRole = items.find(
       (mr) => mr.memberId === memberId && mr.status === 'active'
@@ -125,7 +127,8 @@ export async function getMemberRoleDebugInfo(memberId: string): Promise<RoleDebu
 export async function setMemberRole(memberId: string, role: MemberRole): Promise<void> {
   try {
     // Check if member already has a role
-    const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+    // Use a small limit to avoid fetching entire collection
+    const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles', [], { limit: 100 });
     const existingRole = items.find((mr) => mr.memberId === memberId);
 
     if (existingRole) {
@@ -171,7 +174,8 @@ export async function setMemberRoles(memberId: string, roles: MemberRole[]): Pro
     console.log(`[setMemberRoles] Setting roles for ${memberId}: ${rolesString}`);
 
     // Check if member already has a role
-    const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+    // Use a small limit to avoid fetching entire collection
+    const { items } = await BaseCrudService.getAll<MemberRoles>('memberroles', [], { limit: 100 });
     const existingRole = items.find((mr) => mr.memberId === memberId);
 
     if (existingRole) {

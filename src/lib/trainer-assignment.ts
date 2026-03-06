@@ -5,6 +5,7 @@
  */
 
 import { TrainerClientAssignments, MemberRoles } from '@/entities';
+import { BaseCrudService } from '@/integrations';
 import ProtectedDataService from './protected-data-service';
 
 const DEFAULT_TRAINER_ID = 'd18a21c8-be77-496f-a2fd-ec6479ecba6d';
@@ -112,7 +113,7 @@ export async function backfillExistingUsers(
 
   try {
     // Get all member roles (which contains all users)
-    const { items: memberRoles } = await BaseCrudService.getAll<MemberRoles>('memberroles');
+    const { items: memberRoles } = await BaseCrudService.getAll<MemberRoles>('memberroles', [], { limit: 100 });
 
     const uniqueClientIds = new Set(memberRoles.map((mr) => mr.memberId).filter(Boolean));
 
