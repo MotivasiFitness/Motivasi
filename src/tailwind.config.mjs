@@ -23,24 +23,23 @@ export default {
                 paragraph: "sora-light"
             },
             colors: {
-                // Deep Plum & Nude Palette
-                'deep-plum': '#1e0f24',
-                'rich-plum': '#2d1535',
-                'soft-nude-pink': '#dbb8c8',
-                'warm-cream': '#f5eee8',
-                'muted-cream': 'rgba(245,238,232,0.45)',
-                'blush-purple': 'rgba(200,160,180,0.15)',
-                'deep-violet': 'rgba(148,70,130,0.2)',
-                'soft-nude-border': 'rgba(220,185,200,0.25)',
+                // Standard Professional Palette
+                'charcoal-black': '#1a1a1a',
+                'dark-gray': '#2d2d2d',
+                'medium-gray': '#666666',
+                'light-gray': '#f0f0f0',
+                'white': '#ffffff',
+                'accent-blue': '#0066cc',
+                'accent-teal': '#00a8a8',
                 // Semantic color mappings
                 destructive: '#D32F2F',
                 'destructive-foreground': '#FFFFFF',
-                background: '#1e0f24',
-                secondary: '#dbb8c8',
-                foreground: '#f5eee8',
-                'secondary-foreground': '#1e0f24',
-                'primary-foreground': '#1e0f24',
-                primary: '#dbb8c8'
+                background: '#ffffff',
+                secondary: '#f0f0f0',
+                foreground: '#1a1a1a',
+                'secondary-foreground': '#666666',
+                'primary-foreground': '#ffffff',
+                primary: '#0066cc'
             },
         },
     },
