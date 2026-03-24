@@ -525,6 +525,36 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      {/* --- Early CTA Section (Reduced Friction) --- */}
+      <section className="relative py-24 px-8 lg:px-24 bg-gradient-to-r from-sage-green/95 to-sage-green overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-rose-blush rounded-full blur-3xl" />
+        </div>
+        
+        <div className="relative z-10 max-w-[100rem] mx-auto text-center">
+          <AnimatedElement>
+            <h2 className="font-heading text-4xl md:text-5xl font-bold text-white mb-6">
+              Ready to get started?
+            </h2>
+            <p className="text-lg text-white/90 mb-10 max-w-2xl mx-auto font-light">
+              Join my coaching program and transform your fitness journey. Limited spaces available.
+            </p>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300, damping: 10 }}
+              className="inline-block"
+            >
+              <Link
+                to="/store"
+                className="inline-flex items-center gap-3 bg-white text-sage-green px-12 py-5 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-white/30 transition-all duration-300"
+              >
+                Book Your Package <ArrowRight className="w-5 h-5" />
+              </Link>
+            </motion.div>
+          </AnimatedElement>
+        </div>
+      </section>
       {/* --- Testimonials (Dynamic Masonry Layout) --- */}
       {testimonials.length > 0 && (
         <section className="py-32 bg-gradient-to-b from-rose-blush/10 to-soft-lavender/10 overflow-hidden">
