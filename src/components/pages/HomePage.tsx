@@ -45,6 +45,7 @@ export default function HomePage() {
   const { t } = useLanguage();
   const [testimonials, setTestimonials] = useState<ClientTestimonials[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showStickyButton, setShowStickyButton] = useState(false);
 
   useEffect(() => {
     // Defer testimonial loading to avoid blocking initial render
@@ -62,13 +63,24 @@ export default function HomePage() {
     return () => clearTimeout(timer);
   }, []);
 
-  // --- Scroll Progress for Parallax ---
+  // --- Scroll Progress for Parallax & Sticky Button Visibility ---
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
   });
+
+  // Show sticky button after scrolling past hero section (roughly 80vh)
+  useEffect(() => {
+    const handleScroll = () => {
+      const heroHeight = window.innerHeight * 0.8;
+      setShowStickyButton(window.scrollY > heroHeight);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <div className="bg-warm-cream min-h-screen w-full overflow-clip font-paragraph text-charcoal-black selection:bg-rose-blush selection:text-charcoal-black">
@@ -77,6 +89,22 @@ export default function HomePage() {
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-sage-green via-rose-blush to-soft-lavender origin-left z-50"
         style={{ scaleX }}
       />
+      
+      {/* Sticky CTA Button - Appears after hero section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: showStickyButton ? 1 : 0, y: showStickyButton ? 0 : 20 }}
+        transition={{ duration: 0.3 }}
+        className="fixed bottom-8 right-8 z-40 pointer-events-none"
+        style={{ pointerEvents: showStickyButton ? 'auto' : 'none' }}
+      >
+        <Link
+          to="/store"
+          className="group flex items-center gap-3 bg-gradient-to-r from-sage-green to-sage-green/90 text-white px-8 py-4 rounded-full font-bold text-base shadow-lg hover:shadow-2xl hover:shadow-sage-green/40 transition-all duration-300 hover:scale-105"
+        >
+          Book Your Package <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </Link>
+      </motion.div>
       {/* --- Hero Section --- */}
       <section className="relative min-h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-gradient-to-br from-warm-cream via-warm-cream to-rose-blush/30">
         {/* Subtle gradient overlay for refined effect */}
@@ -486,6 +514,36 @@ export default function HomePage() {
             </div>
 
           </div>
+        </div>
+      </section>
+      {/* --- CTA After Pricing Section (Increased Visibility) --- */}
+      <section className="relative py-20 px-8 lg:px-24 bg-gradient-to-r from-rose-blush/90 to-rose-blush/80 overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-sage-green rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-80 h-80 bg-white rounded-full blur-3xl" />
+        </div>
+        
+        <div className="relative z-10 max-w-[100rem] mx-auto text-center">
+          <AnimatedElement>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-charcoal-black mb-4">
+              Ready to transform your fitness?
+            </h2>
+            <p className="text-lg text-charcoal-black/80 mb-8 max-w-2xl mx-auto font-light">
+              Secure your spot in my coaching program today. Limited spaces available each month.
+            </p>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300, damping: 10 }}
+              className="inline-block"
+            >
+              <Link
+                to="/store"
+                className="inline-flex items-center gap-3 bg-sage-green text-white px-12 py-5 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-sage-green/40 transition-all duration-300"
+              >
+                Book Your Package <ArrowRight className="w-5 h-5" />
+              </Link>
+            </motion.div>
+          </AnimatedElement>
         </div>
       </section>
       {/* --- Early CTA Section (Reduced Friction) --- */}
