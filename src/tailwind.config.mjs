@@ -31,6 +31,11 @@ export default {
                 'white': '#ffffff',
                 'accent-blue': '#0066cc',
                 'accent-teal': '#00a8a8',
+                // Warm palette colors
+                'soft-white': '#f5f3f0',
+                'warm-sand-beige': '#e8ddd5',
+                'soft-bronze': '#c9a876',
+                'warm-grey': '#8b8680',
                 // Semantic color mappings
                 destructive: '#D32F2F',
                 'destructive-foreground': '#FFFFFF',
