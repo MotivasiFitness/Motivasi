@@ -15,7 +15,7 @@ function Header() {
   const { isTrainer, isClient } = useRole();
 
   return (
-    <header className="bg-white border-b border-light-gray sticky top-0 z-40 shadow-sm">
+    <header className="bg-black border-b border-charcoal-black sticky top-0 z-40 shadow-sm">
       <div className="max-w-[100rem] mx-auto px-8 lg:px-20">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
@@ -26,32 +26,32 @@ function Header() {
               className="h-8 md:h-10 w-auto"
               width={40}
             />
-            <span className="font-heading text-2xl font-bold text-charcoal-black">Motivasi</span>
+            <span className="font-heading text-2xl font-bold text-white">Motivasi</span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             <Link 
               to="/" 
-              className="font-paragraph text-base text-charcoal-black hover:text-rose-blush transition-colors"
+              className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors"
             >
               {t.nav.home}
             </Link>
             <Link 
               to="/about" 
-              className="font-paragraph text-base text-charcoal-black hover:text-rose-blush transition-colors"
+              className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors"
             >
               {t.nav.about}
             </Link>
             <Link 
               to="/online-training" 
-              className="font-paragraph text-base text-charcoal-black hover:text-rose-blush transition-colors"
+              className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors"
             >
               {t.nav.onlineTraining}
             </Link>
             <Link 
               to="/blog" 
-              className="font-paragraph text-base text-charcoal-black hover:text-rose-blush transition-colors"
+              className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors"
             >
               {t.nav.faceToFaceTraining}
             </Link>
@@ -60,21 +60,21 @@ function Header() {
                 {isTrainer ? (
                   <Link 
                     to="/trainer" 
-                    className="font-paragraph text-base text-charcoal-black hover:text-rose-blush transition-colors"
+                    className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors"
                   >
                     Trainer Hub
                   </Link>
                 ) : (
                   <Link 
                     to="/portal" 
-                    className="font-paragraph text-base text-charcoal-black hover:text-rose-blush transition-colors"
+                    className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors"
                   >
                     My Portal
                   </Link>
                 )}
                 <button
                   onClick={actions.logout}
-                  className="font-paragraph text-base text-charcoal-black hover:text-rose-blush transition-colors flex items-center gap-2"
+                  className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors flex items-center gap-2"
                 >
                   <LogOut size={16} />
                   Sign Out
@@ -83,21 +83,21 @@ function Header() {
             ) : (
               <button 
                 onClick={actions.login}
-                className="font-paragraph text-base text-rose-blush border-2 border-rose-blush bg-white px-6 py-2 rounded-lg hover:bg-rose-blush hover:text-white transition-all font-semibold"
+                className="font-paragraph text-base text-white border-2 border-white bg-black px-6 py-2 rounded-lg hover:bg-white hover:text-black transition-all font-semibold"
               >
                 Client Portal
               </button>
             )}
             <LanguageSwitcher />
-            <MiniCart cartIconClassName="ml-2 [&_svg]:text-charcoal-black" />
+            <MiniCart cartIconClassName="ml-2 [&_svg]:text-white" />
           </nav>
 
           {/* Mobile Menu Button */}
           <div className="flex items-center gap-4 md:hidden">
-            <MiniCart cartIconClassName="[&_svg]:text-charcoal-black" />
+            <MiniCart cartIconClassName="[&_svg]:text-white" />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-charcoal-black"
+              className="text-white"
               aria-label="Toggle menu"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -107,32 +107,32 @@ function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-light-gray bg-white">
+          <nav className="md:hidden py-4 border-t border-charcoal-black bg-black">
             <div className="flex flex-col gap-4">
               <Link 
                 to="/" 
-                className="font-paragraph text-base text-charcoal-black hover:text-rose-blush transition-colors"
+                className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t.nav.home}
               </Link>
               <Link 
                 to="/about" 
-                className="font-paragraph text-base text-charcoal-black hover:text-rose-blush transition-colors"
+                className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t.nav.about}
               </Link>
               <Link 
                 to="/online-training" 
-                className="font-paragraph text-base text-charcoal-black hover:text-rose-blush transition-colors"
+                className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t.nav.onlineTraining}
               </Link>
               <Link 
                 to="/blog" 
-                className="font-paragraph text-base text-charcoal-black hover:text-rose-blush transition-colors"
+                className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t.nav.faceToFaceTraining}
@@ -142,7 +142,7 @@ function Header() {
                   {isTrainer ? (
                     <Link 
                       to="/trainer" 
-                      className="font-paragraph text-base text-charcoal-black hover:text-rose-blush transition-colors"
+                      className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Trainer Hub
@@ -150,7 +150,7 @@ function Header() {
                   ) : (
                     <Link 
                       to="/portal" 
-                      className="font-paragraph text-base text-charcoal-black hover:text-rose-blush transition-colors"
+                      className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       My Portal
@@ -161,7 +161,7 @@ function Header() {
                       actions.logout();
                       setIsMenuOpen(false);
                     }}
-                    className="font-paragraph text-base text-charcoal-black hover:text-rose-blush transition-colors flex items-center gap-2"
+                    className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors flex items-center gap-2"
                   >
                     <LogOut size={16} />
                     Sign Out
@@ -173,7 +173,7 @@ function Header() {
                     actions.login();
                     setIsMenuOpen(false);
                   }}
-                  className="font-paragraph text-base text-rose-blush border-2 border-rose-blush bg-white px-6 py-2 rounded-lg hover:bg-rose-blush hover:text-white transition-all font-semibold text-center w-full"
+                  className="font-paragraph text-base text-white border-2 border-white bg-black px-6 py-2 rounded-lg hover:bg-white hover:text-black transition-all font-semibold text-center w-full"
                 >
                   Client Portal
                 </button>
