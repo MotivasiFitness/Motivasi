@@ -423,7 +423,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* --- Sticky Signature Offer Section --- */}
-      <section className="relative bg-warm-cream py-32 px-8 lg:px-24">
+      <section className="relative bg-gradient-to-b from-warm-cream via-soft-lavender/8 to-rose-blush/5 py-32 px-8 lg:px-24">
         <div className="max-w-[100rem] mx-auto">
           <div className="flex flex-col lg:flex-row gap-20 lg:gap-32">
             
