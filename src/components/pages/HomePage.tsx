@@ -339,10 +339,10 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="lg:col-span-7 grid gap-12">
-            {/* First card - full width */}
+          <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-12">
+            {/* Feature card 1 */}
             <AnimatedElement className={`group bg-sage-green/5 p-16 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-sage-green`}>
-              <div className="flex flex-col md:flex-row gap-8 items-start">
+              <div className="flex flex-col gap-8 items-start h-full">
                 <div className={`w-24 h-24 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
                   <div className="text-sage-green">
                     <ShieldCheck className="w-8 h-8" />
@@ -359,44 +359,43 @@ export default function HomePage() {
               </div>
             </AnimatedElement>
 
-            {/* Two-column grid for the remaining cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <AnimatedElement className={`group bg-rose-blush/5 p-16 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-rose-blush`}>
-                <div className="flex flex-col gap-8 items-start h-full">
-                  <div className={`w-24 h-24 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
-                    <div className="text-rose-blush">
-                      <Zap className="w-8 h-8" />
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4 group-hover:text-sage-green transition-colors">
-                      {t.home.buildRealStrength}
-                    </h3>
-                    <p className="text-charcoal-black/70 text-lg leading-relaxed font-light">
-                      {t.home.buildRealStrengthDesc}
-                    </p>
+            {/* Feature card 2 */}
+            <AnimatedElement className={`group bg-rose-blush/5 p-16 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-rose-blush`}>
+              <div className="flex flex-col gap-8 items-start h-full">
+                <div className={`w-24 h-24 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className="text-rose-blush">
+                    <Zap className="w-8 h-8" />
                   </div>
                 </div>
-              </AnimatedElement>
+                <div>
+                  <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4 group-hover:text-sage-green transition-colors">
+                    {t.home.buildRealStrength}
+                  </h3>
+                  <p className="text-charcoal-black/70 text-lg leading-relaxed font-light">
+                    {t.home.buildRealStrengthDesc}
+                  </p>
+                </div>
+              </div>
+            </AnimatedElement>
 
-              <AnimatedElement className={`group bg-soft-lavender/5 p-16 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-soft-lavender`}>
-                <div className="flex flex-col gap-8 items-start h-full">
-                  <div className={`w-24 h-24 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
-                    <div className="text-soft-lavender">
-                      <Activity className="w-8 h-8" />
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4 group-hover:text-sage-green transition-colors">
-                      {t.home.sustainableResults}
-                    </h3>
-                    <p className="text-charcoal-black/70 text-lg leading-relaxed font-light">
-                      {t.home.sustainableResultsDesc}
-                    </p>
+            {/* Feature card 3 */}
+            <AnimatedElement className={`group bg-soft-lavender/5 p-16 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-soft-lavender`}>
+              <div className="flex flex-col gap-8 items-start h-full">
+                <div className={`w-24 h-24 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className="text-soft-lavender">
+                    <Activity className="w-8 h-8" />
                   </div>
                 </div>
-              </AnimatedElement>
-            </div>
+                <div>
+                  <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4 group-hover:text-sage-green transition-colors">
+                    {t.home.sustainableResults}
+                  </h3>
+                  <p className="text-charcoal-black/70 text-lg leading-relaxed font-light">
+                    {t.home.sustainableResultsDesc}
+                  </p>
+                </div>
+              </div>
+            </AnimatedElement>
           </div>
         </div>
       </section>
