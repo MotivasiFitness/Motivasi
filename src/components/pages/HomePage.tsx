@@ -340,56 +340,63 @@ export default function HomePage() {
           </div>
 
           <div className="lg:col-span-7 grid gap-12">
-            {[
-              {
-                icon: <ShieldCheck className="w-8 h-8" />,
-                title: t.home.noExtremeDiets,
-                desc: t.home.noExtremeDietsDesc,
-                bgColor: 'bg-sage-green',
-                accentBg: 'bg-sage-green/5',
-                iconBg: 'bg-rose-blush',
-                iconColor: 'text-sage-green',
-                borderColor: 'border-l-sage-green'
-              },
-              {
-                icon: <Zap className="w-8 h-8" />,
-                title: t.home.buildRealStrength,
-                desc: t.home.buildRealStrengthDesc,
-                bgColor: 'bg-rose-blush',
-                accentBg: 'bg-rose-blush/5',
-                iconBg: 'bg-rose-blush',
-                iconColor: 'text-rose-blush',
-                borderColor: 'border-l-rose-blush'
-              },
-              {
-                icon: <Activity className="w-8 h-8" />,
-                title: t.home.sustainableResults,
-                desc: t.home.sustainableResultsDesc,
-                bgColor: 'bg-soft-lavender',
-                accentBg: 'bg-soft-lavender/5',
-                iconBg: 'bg-rose-blush',
-                iconColor: 'text-soft-lavender',
-                borderColor: 'border-l-soft-lavender'
-              }
-            ].map((item, idx) => (
-              <AnimatedElement key={idx} className={`group ${item.accentBg} p-16 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 ${item.borderColor}`}>
-                <div className="flex flex-col md:flex-row gap-8 items-start">
-                  <div className={`w-24 h-24 rounded-full ${item.iconBg} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
-                    <div className={item.iconColor}>
-                      {item.icon}
+            {/* First card - full width */}
+            <AnimatedElement className={`group bg-sage-green/5 p-16 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-sage-green`}>
+              <div className="flex flex-col md:flex-row gap-8 items-start">
+                <div className={`w-24 h-24 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className="text-sage-green">
+                    <ShieldCheck className="w-8 h-8" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4 group-hover:text-sage-green transition-colors">
+                    {t.home.noExtremeDiets}
+                  </h3>
+                  <p className="text-charcoal-black/70 text-lg leading-relaxed font-light">
+                    {t.home.noExtremeDietsDesc}
+                  </p>
+                </div>
+              </div>
+            </AnimatedElement>
+
+            {/* Two-column grid for the remaining cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <AnimatedElement className={`group bg-rose-blush/5 p-16 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-rose-blush`}>
+                <div className="flex flex-col gap-8 items-start h-full">
+                  <div className={`w-24 h-24 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                    <div className="text-rose-blush">
+                      <Zap className="w-8 h-8" />
                     </div>
                   </div>
                   <div>
                     <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4 group-hover:text-sage-green transition-colors">
-                      {item.title}
+                      {t.home.buildRealStrength}
                     </h3>
                     <p className="text-charcoal-black/70 text-lg leading-relaxed font-light">
-                      {item.desc}
+                      {t.home.buildRealStrengthDesc}
                     </p>
                   </div>
                 </div>
               </AnimatedElement>
-            ))}
+
+              <AnimatedElement className={`group bg-soft-lavender/5 p-16 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-soft-lavender`}>
+                <div className="flex flex-col gap-8 items-start h-full">
+                  <div className={`w-24 h-24 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                    <div className="text-soft-lavender">
+                      <Activity className="w-8 h-8" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4 group-hover:text-sage-green transition-colors">
+                      {t.home.sustainableResults}
+                    </h3>
+                    <p className="text-charcoal-black/70 text-lg leading-relaxed font-light">
+                      {t.home.sustainableResultsDesc}
+                    </p>
+                  </div>
+                </div>
+              </AnimatedElement>
+            </div>
           </div>
         </div>
       </section>
