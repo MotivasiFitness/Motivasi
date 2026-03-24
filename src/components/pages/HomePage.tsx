@@ -525,84 +525,133 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      {/* --- Testimonials (Horizontal Scroll) --- */}
+      {/* --- Testimonials (Dynamic Masonry Layout) --- */}
       {testimonials.length > 0 && (
         <section className="py-32 bg-gradient-to-b from-rose-blush/10 to-soft-lavender/10 overflow-hidden">
-          <div className="px-8 lg:px-24 mb-16 flex flex-col md:flex-row justify-between items-end gap-8 max-w-[100rem] mx-auto">
-            <div className="max-w-2xl">
-              <AnimatedElement>
-                <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-6">
-                  {t.home.realWomen}
-                </h2>
-                <p className="text-xl text-charcoal-black/70 font-light">
-                  {t.home.realWomenDesc}
-                </p>
-              </AnimatedElement>
-            </div>
-            <div className="hidden md:flex gap-4">
-              {/* Visual decoration for scroll hint */}
-              <div className="flex items-center gap-2 text-charcoal-black/50 text-sm uppercase tracking-widest">
-                {t.home.scrollToExplore} <ArrowRight size={16} />
-              </div>
-            </div>
+          <div className="px-8 lg:px-24 mb-20 max-w-[100rem] mx-auto">
+            <AnimatedElement>
+              <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-6">
+                {t.home.realWomen}
+              </h2>
+              <p className="text-xl text-charcoal-black/70 font-light max-w-2xl">
+                {t.home.realWomenDesc}
+              </p>
+            </AnimatedElement>
           </div>
 
-          {/* Scroll Container */}
-          <div className="flex overflow-x-auto snap-x snap-mandatory pb-12 px-8 lg:px-24 gap-8 no-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            {testimonials.map((testimonial, index) => (
-              <div 
-                key={testimonial._id} 
-                className="snap-center flex-shrink-0 w-[85vw] md:w-[600px] bg-rose-blush rounded-[16px] p-10 md:p-12 shadow-md relative group hover:shadow-xl transition-all duration-500 border border-rose-blush/80 border-l-[3px] border-l-rose-blush"
-              >
-                <div className="absolute top-12 right-12 text-sage-green opacity-15">
-                  <Star size={48} fill="currentColor" />
-                </div>
+          {/* Dynamic Masonry Grid */}
+          <div className="px-8 lg:px-24 max-w-[100rem] mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-max">
+              {testimonials.map((testimonial, index) => {
+                // Vary card sizes and positions for rhythm
+                const isLarge = index === 0; // First card spans more
+                const isStaggered = index === 1; // Second card offset
+                const gridColSpan = isLarge ? 'lg:col-span-1' : '';
+                const gridRowSpan = isLarge ? 'lg:row-span-1' : '';
                 
-                <div className="flex flex-col h-full justify-between">
-                  <div>
-                    <div className="flex gap-1 mb-8">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={16} className="text-sage-green" fill="currentColor" />
-                      ))}
-                    </div>
-                    <p className="font-heading text-2xl md:text-3xl text-charcoal-black leading-snug mb-8">
-                      "{testimonial.testimonialText}"
-                    </p>
-                  </div>
+                return (
+                  <motion.div
+                    key={testimonial._id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.15 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    className={`group relative ${gridColSpan} ${gridRowSpan}`}
+                  >
+                    {/* Varied background colors for visual interest */}
+                    <div className={`h-full rounded-2xl p-8 md:p-10 shadow-md hover:shadow-2xl transition-all duration-500 border backdrop-blur-sm ${
+                      index === 0 
+                        ? 'bg-rose-blush/90 border-rose-blush/60 hover:border-rose-blush' 
+                        : index === 1 
+                        ? 'bg-soft-lavender/80 border-soft-lavender/60 hover:border-soft-lavender'
+                        : 'bg-sage-green/10 border-sage-green/40 hover:border-sage-green/60'
+                    }`}>
+                      {/* Decorative star background */}
+                      <div className={`absolute top-6 right-6 opacity-10 transition-opacity group-hover:opacity-20 ${
+                        index === 0 ? 'text-sage-green' : index === 1 ? 'text-rose-blush' : 'text-sage-green'
+                      }`}>
+                        <Star size={isLarge ? 56 : 40} fill="currentColor" />
+                      </div>
+                      
+                      <div className="flex flex-col h-full justify-between relative z-10">
+                        {/* Star Rating */}
+                        <div className="flex gap-1 mb-6">
+                          {[...Array(5)].map((_, i) => (
+                            <Star 
+                              key={i} 
+                              size={14} 
+                              className={index === 0 ? 'text-white' : index === 1 ? 'text-rose-blush' : 'text-sage-green'} 
+                              fill="currentColor" 
+                            />
+                          ))}
+                        </div>
 
-                  <div className="flex items-center gap-6 pt-8 border-t border-rose-blush/40">
-                    {testimonial.transformationImage ? (
-                      <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-md flex-shrink-0">
-                        <Image
-                          src={testimonial.transformationImage}
-                          alt={testimonial.clientName || "Client"}
-                          className="w-full h-full object-cover"
-                          width={40}
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white to-rose-blush/30 flex items-center justify-center text-charcoal-black font-bold text-sm flex-shrink-0 border-2 border-white shadow-md">
-                        {testimonial.clientName?.charAt(0)}
-                      </div>
-                    )}
-                    <div>
-                      <h4 className="font-bold text-lg text-charcoal-black">{testimonial.clientName}</h4>
-                      <div className="flex flex-col sm:flex-row sm:gap-3 text-sm text-charcoal-black/70">
-                        {testimonial.clientAgeRange && <span>{testimonial.clientAgeRange}</span>}
-                        {testimonial.keyAchievement && (
-                          <>
-                            <span className="hidden sm:inline">•</span>
-                            <span className="text-charcoal-black/80 font-medium">{testimonial.keyAchievement}</span>
-                          </>
-                        )}
+                        {/* Testimonial Text */}
+                        <p className={`leading-relaxed mb-8 font-light ${
+                          index === 0 
+                            ? 'font-heading text-xl md:text-2xl text-white' 
+                            : 'text-lg text-charcoal-black'
+                        }`}>
+                          "{testimonial.testimonialText}"
+                        </p>
+
+                        {/* Client Info */}
+                        <div className={`flex items-center gap-4 pt-6 border-t ${
+                          index === 0 
+                            ? 'border-white/30' 
+                            : index === 1 
+                            ? 'border-rose-blush/30'
+                            : 'border-sage-green/20'
+                        }`}>
+                          {testimonial.transformationImage ? (
+                            <div className="w-12 h-12 rounded-full overflow-hidden border-2 flex-shrink-0" style={{
+                              borderColor: index === 0 ? 'rgba(255,255,255,0.5)' : index === 1 ? 'rgba(251,232,240,0.5)' : 'rgba(232,244,241,0.5)'
+                            }}>
+                              <Image
+                                src={testimonial.transformationImage}
+                                alt={testimonial.clientName || "Client"}
+                                className="w-full h-full object-cover"
+                                width={48}
+                              />
+                            </div>
+                          ) : (
+                            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 border-2 ${
+                              index === 0 
+                                ? 'bg-white/20 text-white border-white/40' 
+                                : index === 1 
+                                ? 'bg-rose-blush/30 text-charcoal-black border-rose-blush/40'
+                                : 'bg-sage-green/20 text-charcoal-black border-sage-green/40'
+                            }`}>
+                              {testimonial.clientName?.charAt(0)}
+                            </div>
+                          )}
+                          <div className="min-w-0">
+                            <h4 className={`font-bold text-sm md:text-base ${
+                              index === 0 ? 'text-white' : 'text-charcoal-black'
+                            }`}>
+                              {testimonial.clientName}
+                            </h4>
+                            <div className={`flex flex-col sm:flex-row sm:gap-2 text-xs md:text-sm ${
+                              index === 0 ? 'text-white/70' : 'text-charcoal-black/60'
+                            }`}>
+                              {testimonial.clientAgeRange && <span>{testimonial.clientAgeRange}</span>}
+                              {testimonial.keyAchievement && (
+                                <>
+                                  <span className="hidden sm:inline">•</span>
+                                  <span className={`font-medium ${index === 0 ? 'text-white' : 'text-charcoal-black/80'}`}>
+                                    {testimonial.keyAchievement}
+                                  </span>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-            {/* Spacer for end of scroll */}
-            <div className="w-8 flex-shrink-0" />
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </section>
       )}
