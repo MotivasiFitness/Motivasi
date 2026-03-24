@@ -122,7 +122,7 @@ export default function HomePage() {
             <AnimatedElement className="flex flex-wrap gap-6 delay-500">
               <Link
                 to="/store"
-                className="group relative overflow-hidden bg-sage-green text-white px-12 py-6 rounded-full font-medium text-lg transition-all duration-300 hover:shadow-lg hover:shadow-sage-green/20"
+                className="group relative overflow-hidden bg-sage-green text-white px-12 py-6 rounded-full font-medium text-lg transition-all duration-300 hover:shadow-lg hover:shadow-sage-green/20 hover:bg-sage-green/90"
               >
                 <span className="relative z-10 flex items-center gap-2">
                   Let's get started <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -130,7 +130,7 @@ export default function HomePage() {
               </Link>
               <Link
                 to="/about"
-                className="group flex items-center gap-2 px-12 py-6 rounded-full border-2 border-charcoal-black/20 text-charcoal-black font-medium text-lg hover:bg-rose-blush/20 hover:border-rose-blush/40 transition-all duration-300"
+                className="group flex items-center gap-2 px-12 py-6 rounded-full border-2 border-rose-blush/40 text-charcoal-black font-medium text-lg hover:bg-rose-blush/30 hover:border-rose-blush/60 transition-all duration-300 bg-rose-blush/10"
               >
                 {t.home.myPhilosophy}
               </Link>
@@ -204,22 +204,25 @@ export default function HomePage() {
                 icon: <ShieldCheck className="w-8 h-8 text-white" />,
                 title: t.home.noExtremeDiets,
                 desc: t.home.noExtremeDietsDesc,
-                bgColor: 'bg-sage-green'
+                bgColor: 'bg-sage-green',
+                accentBg: 'bg-sage-green/5'
               },
               {
                 icon: <Zap className="w-8 h-8 text-white" />,
                 title: t.home.buildRealStrength,
                 desc: t.home.buildRealStrengthDesc,
-                bgColor: 'bg-rose-blush'
+                bgColor: 'bg-rose-blush',
+                accentBg: 'bg-rose-blush/5'
               },
               {
                 icon: <Activity className="w-8 h-8 text-white" />,
                 title: t.home.sustainableResults,
                 desc: t.home.sustainableResultsDesc,
-                bgColor: 'bg-soft-lavender'
+                bgColor: 'bg-soft-lavender',
+                accentBg: 'bg-soft-lavender/5'
               }
             ].map((item, idx) => (
-              <AnimatedElement key={idx} className="group bg-white p-12 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-500 border border-warm-cream/50">
+              <AnimatedElement key={idx} className={`group ${item.accentBg} p-12 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream`}>
                 <div className="flex flex-col md:flex-row gap-8 items-start">
                   <div className={`w-16 h-16 rounded-2xl ${item.bgColor} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
                     {item.icon}

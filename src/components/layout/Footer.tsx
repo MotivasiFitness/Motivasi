@@ -30,14 +30,14 @@ function Footer() {
                 href="https://www.instagram.com/risewithmotivasi?igsh=bml4NmhnNw8yenht" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-soft-bronze flex items-center justify-center hover:bg-opacity-80 transition-colors"
+                className="w-10 h-10 rounded-full bg-rose-blush flex items-center justify-center hover:bg-rose-blush/80 transition-colors text-charcoal-black"
                 aria-label="Instagram"
               >
                 <Instagram size={20} />
               </a>
               <a 
                 href="mailto:hello@motivasi.co.uk"
-                className="w-10 h-10 rounded-full bg-soft-bronze flex items-center justify-center hover:bg-opacity-80 transition-colors"
+                className="w-10 h-10 rounded-full bg-soft-lavender flex items-center justify-center hover:bg-soft-lavender/80 transition-colors text-charcoal-black"
                 aria-label="Email"
               >
                 <Mail size={20} />
@@ -52,19 +52,19 @@ function Footer() {
           <div>
             <h4 className="font-heading text-xl font-bold mb-4">Quick Links</h4>
             <nav className="flex flex-col gap-3">
-              <Link to="/" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
+              <Link to="/" className="font-paragraph text-base text-warm-grey hover:text-rose-blush transition-colors">
                 {t.nav.home}
               </Link>
-              <Link to="/about" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
+              <Link to="/about" className="font-paragraph text-base text-warm-grey hover:text-rose-blush transition-colors">
                 {t.nav.about}
               </Link>
-              <Link to="/online-training" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
+              <Link to="/online-training" className="font-paragraph text-base text-warm-grey hover:text-rose-blush transition-colors">
                 {t.nav.onlineTraining}
               </Link>
-              <Link to="/blog" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
+              <Link to="/blog" className="font-paragraph text-base text-warm-grey hover:text-rose-blush transition-colors">
                 {t.nav.faceToFaceTraining}
               </Link>
-              <Link to="/parq" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
+              <Link to="/parq" className="font-paragraph text-base text-warm-grey hover:text-rose-blush transition-colors">
                 {t.nav.parqForm}
               </Link>
             </nav>
@@ -74,16 +74,16 @@ function Footer() {
           <div>
             <h4 className="font-heading text-xl font-bold mb-4">Legal & Compliance</h4>
             <nav className="flex flex-col gap-3">
-              <Link to="/privacy" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
+              <Link to="/privacy" className="font-paragraph text-base text-warm-grey hover:text-rose-blush transition-colors">
                 Privacy & Cookie Policy
               </Link>
-              <Link to="/terms" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
+              <Link to="/terms" className="font-paragraph text-base text-warm-grey hover:text-rose-blush transition-colors">
                 Terms & Conditions
               </Link>
-              <Link to="/disclaimer" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
+              <Link to="/disclaimer" className="font-paragraph text-base text-warm-grey hover:text-rose-blush transition-colors">
                 Disclaimer
               </Link>
-              <Link to="/accessibility" className="font-paragraph text-base text-warm-grey hover:text-soft-bronze transition-colors">
+              <Link to="/accessibility" className="font-paragraph text-base text-warm-grey hover:text-rose-blush transition-colors">
                 Accessibility Statement
               </Link>
               <p className="font-paragraph text-xs text-warm-grey/70 mt-3 pt-3 border-t border-warm-grey/30">
@@ -96,12 +96,12 @@ function Footer() {
         <div className="border-t border-warm-grey mt-12 pt-8">
           <div className="text-center mb-6">
             <p className="font-paragraph text-sm text-warm-grey leading-relaxed">
-              © Motivasi {new Date().getFullYear()}. All rights reserved. Based in the United Kingdom. Personal data is processed in accordance with our <Link to="/privacy" className="text-soft-bronze hover:underline">Privacy & Cookie Policy</Link> and applicable data protection laws.
+              © Motivasi {new Date().getFullYear()}. All rights reserved. Based in the United Kingdom. Personal data is processed in accordance with our <Link to="/privacy" className="text-rose-blush hover:underline">Privacy & Cookie Policy</Link> and applicable data protection laws.
             </p>
           </div>
           <div className="text-center">
             <p className="font-paragraph text-xs text-warm-grey/70">
-              <Link to="/privacy" className="text-soft-bronze hover:underline">Privacy & Cookie Policy</Link> | <Link to="/disclaimer" className="text-soft-bronze hover:underline">Disclaimer</Link> | <Link to="/accessibility" className="text-soft-bronze hover:underline">Accessibility</Link> | <button className="text-soft-bronze hover:underline">Cookie Settings</button>
+              <Link to="/privacy" className="text-rose-blush hover:underline">Privacy & Cookie Policy</Link> | <Link to="/disclaimer" className="text-rose-blush hover:underline">Disclaimer</Link> | <Link to="/accessibility" className="text-rose-blush hover:underline">Accessibility</Link> | <button className="text-rose-blush hover:underline">Cookie Settings</button>
             </p>
           </div>
         </div>
