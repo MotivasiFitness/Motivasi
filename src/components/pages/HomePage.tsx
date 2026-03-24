@@ -168,20 +168,28 @@ export default function HomePage() {
             </AnimatedElement>
 
             <AnimatedElement className="flex flex-wrap gap-6 delay-500">
-              <Link
-                to="/store"
-                className="group relative overflow-hidden bg-sage-green text-white px-12 py-6 rounded-full font-medium text-lg transition-all duration-300 hover:shadow-lg hover:shadow-sage-green/20 hover:bg-sage-green/90"
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300, damping: 10 }}
               >
-                <span className="relative z-10 flex items-center gap-2">
+                <Link
+                  to="/store"
+                  className="group relative overflow-hidden bg-sage-green text-white px-12 py-6 rounded-full font-medium text-lg transition-all duration-300 hover:shadow-lg hover:shadow-sage-green/30 inline-flex items-center gap-2"
+                >
                   Let's get started <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </span>
-              </Link>
-              <Link
-                to="/about"
-                className="group flex items-center gap-2 px-12 py-6 rounded-full border-2 border-rose-blush/40 text-charcoal-black font-medium text-lg hover:bg-rose-blush/30 hover:border-rose-blush/60 transition-all duration-300 bg-rose-blush/10"
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300, damping: 10 }}
               >
-                {t.home.myPhilosophy}
-              </Link>
+                <Link
+                  to="/about"
+                  className="group flex items-center gap-2 px-12 py-6 rounded-full border-2 border-rose-blush text-charcoal-black font-medium text-lg hover:bg-rose-blush/5 hover:border-rose-blush transition-all duration-300 bg-white"
+                >
+                  {t.home.myPhilosophy}
+                </Link>
+              </motion.div>
             </AnimatedElement>
 
             {/* Decorative Floral Divider */}
@@ -538,18 +546,30 @@ export default function HomePage() {
               {t.home.readyToFeelDesc}
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <Link
-                to="/store"
-                className="w-full sm:w-auto bg-gradient-to-r from-sage-green to-rose-blush text-white px-14 py-6 rounded-full font-medium text-xl hover:shadow-lg hover:shadow-sage-green/30 transition-all duration-300"
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                className="w-full sm:w-auto"
               >
-                Begin your journey (£150/mo)
-              </Link>
-              <Link
-                to="/about"
-                className="w-full sm:w-auto px-14 py-6 rounded-full border-2 border-white/30 text-white font-medium text-xl hover:bg-white/10 hover:border-white/50 transition-all duration-300"
+                <Link
+                  to="/store"
+                  className="block w-full bg-gradient-to-r from-sage-green to-rose-blush text-white px-14 py-6 rounded-full font-medium text-xl hover:shadow-lg hover:shadow-sage-green/30 transition-all duration-300 text-center"
+                >
+                  Begin your journey (£150/mo)
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                className="w-full sm:w-auto"
               >
-                {t.home.learnMoreAboutMe}
-              </Link>
+                <Link
+                  to="/about"
+                  className="block w-full px-14 py-6 rounded-full border-2 border-white/30 text-white font-medium text-xl hover:bg-white/10 hover:border-white/50 transition-all duration-300 text-center"
+                >
+                  {t.home.learnMoreAboutMe}
+                </Link>
+              </motion.div>
             </div>
           </AnimatedElement>
         </div>
