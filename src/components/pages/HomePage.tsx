@@ -358,8 +358,9 @@ export default function HomePage() {
                 desc: t.home.noExtremeDietsDesc,
                 bgColor: 'bg-sage-green',
                 accentBg: 'bg-sage-green/5',
-                iconBg: 'bg-sage-green/20',
-                iconColor: 'text-sage-green'
+                iconBg: 'bg-rose-blush',
+                iconColor: 'text-sage-green',
+                borderColor: 'border-l-sage-green'
               },
               {
                 icon: <Zap className="w-8 h-8" />,
@@ -367,8 +368,9 @@ export default function HomePage() {
                 desc: t.home.buildRealStrengthDesc,
                 bgColor: 'bg-rose-blush',
                 accentBg: 'bg-rose-blush/5',
-                iconBg: 'bg-rose-blush/20',
-                iconColor: 'text-rose-blush'
+                iconBg: 'bg-rose-blush',
+                iconColor: 'text-rose-blush',
+                borderColor: 'border-l-rose-blush'
               },
               {
                 icon: <Activity className="w-8 h-8" />,
@@ -376,11 +378,12 @@ export default function HomePage() {
                 desc: t.home.sustainableResultsDesc,
                 bgColor: 'bg-soft-lavender',
                 accentBg: 'bg-soft-lavender/5',
-                iconBg: 'bg-soft-lavender/20',
-                iconColor: 'text-soft-lavender'
+                iconBg: 'bg-rose-blush',
+                iconColor: 'text-soft-lavender',
+                borderColor: 'border-l-soft-lavender'
               }
             ].map((item, idx) => (
-              <AnimatedElement key={idx} className={`group ${item.accentBg} p-12 rounded-3xl shadow-md hover:shadow-xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-4 ${item.borderColor}`}>
+              <AnimatedElement key={idx} className={`group ${item.accentBg} p-16 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 ${item.borderColor}`}>
                 <div className="flex flex-col md:flex-row gap-8 items-start">
                   <div className={`w-24 h-24 rounded-full ${item.iconBg} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
                     <div className={item.iconColor}>
