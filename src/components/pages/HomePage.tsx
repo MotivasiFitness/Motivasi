@@ -594,12 +594,6 @@ export default function HomePage() {
           <div className="px-8 lg:px-24 max-w-[100rem] mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-max">
               {testimonials.map((testimonial, index) => {
-                // Vary card sizes and positions for rhythm
-                const isLarge = index === 0; // First card spans more
-                const isStaggered = index === 1; // Second card offset
-                const gridColSpan = isLarge ? 'lg:col-span-1' : '';
-                const gridRowSpan = isLarge ? 'lg:row-span-1' : '';
-                
                 return (
                   <motion.div
                     key={testimonial._id}
@@ -607,21 +601,21 @@ export default function HomePage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.15 }}
                     viewport={{ once: true, margin: "-100px" }}
-                    className={`group relative ${gridColSpan} ${gridRowSpan}`}
+                    className={`group relative`}
                   >
                     {/* Varied background colors for visual interest */}
                     <div className={`h-full rounded-2xl p-8 md:p-10 shadow-md hover:shadow-2xl transition-all duration-500 border backdrop-blur-sm ${
-                      index === 0 
-                        ? 'bg-rose-blush/90 border-rose-blush/60 hover:border-rose-blush' 
-                        : index === 1 
+                      index === 1 
                         ? 'bg-soft-lavender/80 border-soft-lavender/60 hover:border-soft-lavender'
-                        : 'bg-sage-green/10 border-sage-green/40 hover:border-sage-green/60'
+                        : index === 2
+                        ? 'bg-sage-green/10 border-sage-green/40 hover:border-sage-green/60'
+                        : 'bg-rose-blush/10 border-rose-blush/40 hover:border-rose-blush/60'
                     }`}>
                       {/* Decorative star background */}
                       <div className={`absolute top-6 right-6 opacity-10 transition-opacity group-hover:opacity-20 ${
-                        index === 0 ? 'text-sage-green' : index === 1 ? 'text-rose-blush' : 'text-sage-green'
+                        index === 1 ? 'text-rose-blush' : index === 2 ? 'text-sage-green' : 'text-rose-blush'
                       }`}>
-                        <Star size={isLarge ? 56 : 40} fill="currentColor" />
+                        <Star size={40} fill="currentColor" />
                       </div>
                       
                       <div className="flex flex-col h-full justify-between relative z-10">
@@ -631,32 +625,28 @@ export default function HomePage() {
                             <Star 
                               key={i} 
                               size={14} 
-                              className={index === 0 ? 'text-white' : index === 1 ? 'text-rose-blush' : 'text-sage-green'} 
+                              className={index === 1 ? 'text-rose-blush' : index === 2 ? 'text-sage-green' : 'text-rose-blush'} 
                               fill="currentColor" 
                             />
                           ))}
                         </div>
 
                         {/* Testimonial Text */}
-                        <p className={`leading-relaxed mb-8 font-light ${
-                          index === 0 
-                            ? 'font-heading text-xl md:text-2xl text-white' 
-                            : 'text-lg text-charcoal-black'
-                        }`}>
+                        <p className={`leading-relaxed mb-8 font-light text-lg text-charcoal-black`}>
                           "{testimonial.testimonialText}"
                         </p>
 
                         {/* Client Info */}
                         <div className={`flex items-center gap-4 pt-6 border-t ${
-                          index === 0 
-                            ? 'border-white/30' 
-                            : index === 1 
+                          index === 1 
                             ? 'border-rose-blush/30'
-                            : 'border-sage-green/20'
+                            : index === 2
+                            ? 'border-sage-green/20'
+                            : 'border-rose-blush/30'
                         }`}>
                           {testimonial.transformationImage ? (
                             <div className="w-12 h-12 rounded-full overflow-hidden border-2 flex-shrink-0" style={{
-                              borderColor: index === 0 ? 'rgba(255,255,255,0.5)' : index === 1 ? 'rgba(251,232,240,0.5)' : 'rgba(232,244,241,0.5)'
+                              borderColor: index === 1 ? 'rgba(251,232,240,0.5)' : index === 2 ? 'rgba(232,244,241,0.5)' : 'rgba(251,232,240,0.5)'
                             }}>
                               <Image
                                 src={testimonial.transformationImage}
@@ -667,29 +657,25 @@ export default function HomePage() {
                             </div>
                           ) : (
                             <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 border-2 ${
-                              index === 0 
-                                ? 'bg-white/20 text-white border-white/40' 
-                                : index === 1 
+                              index === 1 
                                 ? 'bg-rose-blush/30 text-charcoal-black border-rose-blush/40'
-                                : 'bg-sage-green/20 text-charcoal-black border-sage-green/40'
+                                : index === 2
+                                ? 'bg-sage-green/20 text-charcoal-black border-sage-green/40'
+                                : 'bg-rose-blush/30 text-charcoal-black border-rose-blush/40'
                             }`}>
                               {testimonial.clientName?.charAt(0)}
                             </div>
                           )}
                           <div className="min-w-0">
-                            <h4 className={`font-bold text-sm md:text-base ${
-                              index === 0 ? 'text-white' : 'text-charcoal-black'
-                            }`}>
+                            <h4 className={`font-bold text-sm md:text-base text-charcoal-black`}>
                               {testimonial.clientName}
                             </h4>
-                            <div className={`flex flex-col sm:flex-row sm:gap-2 text-xs md:text-sm ${
-                              index === 0 ? 'text-white/70' : 'text-charcoal-black/60'
-                            }`}>
+                            <div className={`flex flex-col sm:flex-row sm:gap-2 text-xs md:text-sm text-charcoal-black/60`}>
                               {testimonial.clientAgeRange && <span>{testimonial.clientAgeRange}</span>}
                               {testimonial.keyAchievement && (
                                 <>
                                   <span className="hidden sm:inline">•</span>
-                                  <span className={`font-medium ${index === 0 ? 'text-white' : 'text-charcoal-black/80'}`}>
+                                  <span className={`font-medium text-charcoal-black/80`}>
                                     {testimonial.keyAchievement}
                                   </span>
                                 </>
