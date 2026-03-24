@@ -382,7 +382,7 @@ export default function HomePage() {
           <div className="flex flex-col lg:flex-row gap-20 lg:gap-32">
             
             {/* Left: Scrollable Details */}
-            <div className="w-full lg:w-1/2 space-y-24">
+            <div className="w-full lg:w-1/2 space-y-24 flex flex-col">
               <div>
                 <AnimatedElement>
                   <span className="text-sage-green font-medium tracking-widest uppercase mb-4 block text-sm">The Signature Package</span>
@@ -433,7 +433,15 @@ export default function HomePage() {
             {/* Right: Sticky Pricing Card */}
             <div className="w-full lg:w-1/2 relative">
               <div className="sticky top-32">
-                <div className="bg-gradient-to-br from-dark-gray to-dark-gray/95 text-white p-12 md:p-16 rounded-2xl shadow-2xl relative overflow-hidden border-t-4 border-t-rose-blush">
+                {/* Pricing Section Background Wrapper */}
+                <div className="bg-gradient-to-br from-soft-lavender to-rose-blush/20 p-12 md:p-16 rounded-3xl shadow-lg">
+                  {/* Section Title */}
+                  <h2 className="font-heading text-4xl md:text-5xl font-bold text-charcoal-black mb-12 text-center">
+                    Invest in Yourself
+                  </h2>
+                  
+                  {/* Pricing Card */}
+                  <div className="bg-gradient-to-br from-dark-gray to-dark-gray/95 text-white p-12 md:p-16 rounded-2xl shadow-2xl relative overflow-hidden border-t-4 border-t-rose-blush">
                   {/* Decorative background elements */}
                   <div className="absolute top-0 right-0 w-64 h-64 bg-sage-green/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
                   <div className="absolute bottom-0 left-0 w-48 h-48 bg-rose-blush/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
@@ -472,6 +480,7 @@ export default function HomePage() {
                     </Link>
                     <p className="text-center text-sm text-white/60 mt-6 font-light">{t.home.limitedSpaces}</p>
                   </div>
+                </div>
                 </div>
               </div>
             </div>
