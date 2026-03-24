@@ -119,7 +119,7 @@ export default function HomePage() {
         </motion.div>
 
         {/* Left Content */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-24 py-32 lg:py-48 z-10">
+        <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-24 py-40 lg:py-64 z-10">
           <div className="max-w-2xl">
             <AnimatedElement className="mb-8">
               <span className="inline-block py-2 px-4 border border-sage-green/40 rounded-full text-sage-green text-sm tracking-widest uppercase font-medium bg-sage-green/5">
