@@ -83,7 +83,7 @@ function Header() {
             ) : (
               <button 
                 onClick={actions.login}
-                className="font-paragraph text-base bg-gradient-to-r from-rose-blush to-soft-lavender text-charcoal-black px-6 py-3 rounded-lg hover:shadow-md hover:from-rose-blush/90 hover:to-soft-lavender/90 transition-all font-semibold"
+                className="font-paragraph text-base text-rose-blush border-2 border-rose-blush bg-white px-6 py-2 rounded-lg hover:bg-rose-blush hover:text-white transition-all font-semibold"
               >
                 Client Portal
               </button>
@@ -173,7 +173,7 @@ function Header() {
                     actions.login();
                     setIsMenuOpen(false);
                   }}
-                  className="font-paragraph text-base bg-gradient-to-r from-rose-blush to-soft-lavender text-charcoal-black px-6 py-3 rounded-lg hover:shadow-md transition-all font-semibold text-center w-full"
+                  className="font-paragraph text-base text-rose-blush border-2 border-rose-blush bg-white px-6 py-2 rounded-lg hover:bg-rose-blush hover:text-white transition-all font-semibold text-center w-full"
                 >
                   Client Portal
                 </button>
