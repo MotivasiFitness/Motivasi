@@ -301,41 +301,41 @@ export default function HomePage() {
       </div>
       {/* --- The Philosophy (Text Heavy / Editorial) --- */}
       <section className="py-32 px-8 lg:px-24 bg-white">
-        <div className="max-w-[100rem] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-20 items-start">
-          <div className="lg:col-span-5 relative">
-            <div className="sticky top-32">
-              <AnimatedElement>
-                <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-8 leading-tight">
-                  {t.home.transformationTitle} <br/>
-                  <span className="bg-gradient-to-r from-sage-green to-rose-blush bg-clip-text text-transparent italic">{t.home.transformationSubtitle}</span>
-                </h2>
-              </AnimatedElement>
-              <AnimatedElement className="delay-200">
-                <div className="w-24 h-1.5 bg-gradient-to-r from-sage-green to-rose-blush mb-8 rounded-full" />
-                <p className="text-lg text-charcoal-black mb-8 leading-relaxed font-light">
-                  You've tried the crash diets. You've done the endless cardio. It's time for a sustainable approach that honours your body and your busy life.
-                </p>
-                <Link to="/about" className="text-charcoal-black font-medium border-b-2 border-sage-green pb-2 hover:text-sage-green transition-colors inline-flex items-center gap-2">
-                  {t.home.readFullBio} <ArrowRight size={16} />
-                </Link>
-              </AnimatedElement>
-            </div>
+        <div className="max-w-[100rem] mx-auto">
+          {/* Title and Subtitle Section */}
+          <div className="mb-20">
+            <AnimatedElement>
+              <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-8 leading-tight">
+                {t.home.transformationTitle} <br/>
+                <span className="bg-gradient-to-r from-sage-green to-rose-blush bg-clip-text text-transparent italic">{t.home.transformationSubtitle}</span>
+              </h2>
+            </AnimatedElement>
+            <AnimatedElement className="delay-200">
+              <div className="w-24 h-1.5 bg-gradient-to-r from-sage-green to-rose-blush mb-8 rounded-full" />
+              <p className="text-lg text-charcoal-black mb-8 leading-relaxed font-light max-w-2xl">
+                You've tried the crash diets. You've done the endless cardio. It's time for a sustainable approach that honours your body and your busy life.
+              </p>
+              <Link to="/about" className="text-charcoal-black font-medium border-b-2 border-sage-green pb-2 hover:text-sage-green transition-colors inline-flex items-center gap-2">
+                {t.home.readFullBio} <ArrowRight size={16} />
+              </Link>
+            </AnimatedElement>
           </div>
 
-          <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-12">
+          {/* Three Feature Cards in a Single Row */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Feature card 1 */}
-            <AnimatedElement className={`group bg-sage-green/5 p-16 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-sage-green`}>
+            <AnimatedElement className={`group bg-sage-green/5 p-12 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-sage-green`}>
               <div className="flex flex-col gap-8 items-start h-full">
-                <div className={`w-24 h-24 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-sage-green/40 shadow-md`}>
+                <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-sage-green/40 shadow-md`}>
                   <div className="text-sage-green">
-                    <ShieldCheck className="w-8 h-8" />
+                    <ShieldCheck className="w-6 h-6" />
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4 group-hover:text-sage-green transition-colors">
+                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-3 group-hover:text-sage-green transition-colors">
                     {t.home.noExtremeDiets}
                   </h3>
-                  <p className="text-charcoal-black/70 text-lg leading-relaxed font-light">
+                  <p className="text-charcoal-black/70 text-base leading-relaxed font-light">
                     {t.home.noExtremeDietsDesc}
                   </p>
                 </div>
@@ -343,18 +343,18 @@ export default function HomePage() {
             </AnimatedElement>
 
             {/* Feature card 2 */}
-            <AnimatedElement className={`group bg-rose-blush/5 p-16 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-rose-blush`}>
+            <AnimatedElement className={`group bg-rose-blush/5 p-12 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-rose-blush`}>
               <div className="flex flex-col gap-8 items-start h-full">
-                <div className={`w-24 h-24 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-rose-blush/40 shadow-md`}>
+                <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-rose-blush/40 shadow-md`}>
                   <div className="text-rose-blush">
-                    <Zap className="w-8 h-8" />
+                    <Zap className="w-6 h-6" />
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4 group-hover:text-sage-green transition-colors">
+                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-3 group-hover:text-sage-green transition-colors">
                     {t.home.buildRealStrength}
                   </h3>
-                  <p className="text-charcoal-black/70 text-lg leading-relaxed font-light">
+                  <p className="text-charcoal-black/70 text-base leading-relaxed font-light">
                     {t.home.buildRealStrengthDesc}
                   </p>
                 </div>
@@ -362,18 +362,18 @@ export default function HomePage() {
             </AnimatedElement>
 
             {/* Feature card 3 */}
-            <AnimatedElement className={`group bg-soft-lavender/5 p-16 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-soft-lavender`}>
+            <AnimatedElement className={`group bg-soft-lavender/5 p-12 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-soft-lavender`}>
               <div className="flex flex-col gap-8 items-start h-full">
-                <div className={`w-24 h-24 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-soft-lavender/40 shadow-md`}>
+                <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-soft-lavender/40 shadow-md`}>
                   <div className="text-soft-lavender">
-                    <Activity className="w-8 h-8" />
+                    <Activity className="w-6 h-6" />
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4 group-hover:text-sage-green transition-colors">
+                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-3 group-hover:text-sage-green transition-colors">
                     {t.home.sustainableResults}
                   </h3>
-                  <p className="text-charcoal-black/70 text-lg leading-relaxed font-light">
+                  <p className="text-charcoal-black/70 text-base leading-relaxed font-light">
                     {t.home.sustainableResultsDesc}
                   </p>
                 </div>
