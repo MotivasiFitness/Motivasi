@@ -225,36 +225,32 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
-      {/* --- Section Dividers with Dynamic Wavy Shapes --- */}
-      <div className="relative py-24 bg-gradient-to-r from-rose-blush/40 via-soft-lavender/40 to-rose-blush/40 overflow-hidden">
-        {/* Wavy Top Divider */}
-        <motion.svg
-          className="absolute top-0 left-0 w-full h-16 text-rose-blush/60"
-          viewBox="0 0 1200 100"
-          preserveAspectRatio="none"
-          initial={{ y: 0 }}
-          animate={{ y: [0, -8, 0] }}
-          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-        >
-          <path
-            d="M0,30 Q300,10 600,30 T1200,30 L1200,0 L0,0 Z"
-            fill="currentColor"
-            opacity="0.3"
-          />
-          <path
-            d="M0,50 Q300,30 600,50 T1200,50 L1200,100 L0,100 Z"
-            fill="currentColor"
-            opacity="0.15"
-          />
-        </motion.svg>
+      {/* --- Keywords Section with Softer Design --- */}
+      <div className="relative py-40 px-8 lg:px-24 bg-gradient-to-b from-warm-cream via-soft-lavender/8 to-warm-cream overflow-hidden">
+        {/* Subtle decorative elements */}
+        <div className="absolute top-20 left-12 w-32 h-32 bg-sage-green/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-12 w-40 h-40 bg-rose-blush/5 rounded-full blur-3xl" />
 
         {/* Main Content */}
-        <div className="relative z-10 pt-8">
+        <div className="relative z-10 max-w-[100rem] mx-auto">
+          {/* Decorative top divider */}
           <motion.div 
-            className="flex gap-16 items-center justify-center flex-wrap px-8"
+            className="flex items-center justify-center gap-4 mb-16"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
+          >
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-sage-green/20 to-transparent" />
+            <div className="text-charcoal-black/40 text-sm uppercase tracking-widest font-medium">Keywords</div>
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-rose-blush/20 to-transparent" />
+          </motion.div>
+
+          {/* Keywords Grid */}
+          <motion.div 
+            className="flex gap-8 md:gap-12 items-center justify-center flex-wrap"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
           >
             {[
               { label: t.home.marqueeStrength, starColor: 'text-amber-400', sparkleColor: 'text-rose-blush' },
@@ -264,34 +260,28 @@ export default function HomePage() {
             ].map((item, idx) => (
               <motion.div
                 key={idx}
-                className="flex items-center gap-6"
+                className="flex items-center gap-4"
                 whileHover={{ scale: 1.08 }}
                 transition={{ type: "spring", stiffness: 300, damping: 10 }}
               >
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
-                  className="relative"
-                >
-                  <span className="text-4xl md:text-5xl font-heading text-charcoal-black/85 drop-shadow-sm">
-                    {item.label}
-                  </span>
-                </motion.div>
+                <span className="text-3xl md:text-4xl font-heading text-charcoal-black/80">
+                  {item.label}
+                </span>
                 
                 {/* Star with sparkle accent */}
                 <motion.div
-                  className="relative w-8 h-8 flex items-center justify-center"
+                  className="relative w-6 h-6 flex items-center justify-center flex-shrink-0"
                   animate={{ scale: [1, 1.2, 1] }}
                   transition={{ repeat: Infinity, duration: 2.5, delay: idx * 0.3 }}
                 >
                   {/* Gold star */}
-                  <motion.span className={`text-3xl ${item.starColor} drop-shadow-md`}>
+                  <motion.span className={`text-2xl ${item.starColor}`}>
                     ✦
                   </motion.span>
                   
                   {/* Rose sparkle accent */}
                   <motion.span
-                    className={`absolute text-xl ${item.sparkleColor} opacity-70`}
+                    className={`absolute text-lg ${item.sparkleColor} opacity-70`}
                     animate={{ 
                       scale: [0, 1, 0],
                       opacity: [0, 0.8, 0]
@@ -301,31 +291,30 @@ export default function HomePage() {
                     ✨
                   </motion.span>
                 </motion.div>
+
+                {/* Decorative separator between items */}
+                {idx < 3 && (
+                  <div className="hidden md:block w-px h-8 bg-gradient-to-b from-transparent via-charcoal-black/10 to-transparent mx-2" />
+                )}
               </motion.div>
             ))}
           </motion.div>
-        </div>
 
-        {/* Wavy Bottom Divider */}
-        <motion.svg
-          className="absolute bottom-0 left-0 w-full h-16 text-soft-lavender/60"
-          viewBox="0 0 1200 100"
-          preserveAspectRatio="none"
-          initial={{ y: 0 }}
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-        >
-          <path
-            d="M0,70 Q300,90 600,70 T1200,70 L1200,100 L0,100 Z"
-            fill="currentColor"
-            opacity="0.3"
-          />
-          <path
-            d="M0,50 Q300,70 600,50 T1200,50 L1200,0 L0,0 Z"
-            fill="currentColor"
-            opacity="0.15"
-          />
-        </motion.svg>
+          {/* Decorative bottom divider */}
+          <motion.div 
+            className="flex items-center justify-center gap-4 mt-16"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-rose-blush/20 to-transparent" />
+            <svg className="w-5 h-5 text-sage-green/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M12 2C12 2 8 6 8 10C8 13.3 10 16 12 16C14 16 16 13.3 16 10C16 6 12 2 12 2Z" />
+              <path d="M12 16C12 16 10 18 10 20C10 21.1 11 22 12 22C13 22 14 21.1 14 20C14 18 12 16 12 16Z" />
+            </svg>
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-sage-green/20 to-transparent" />
+          </motion.div>
+        </div>
       </div>
       {/* --- The Philosophy (Text Heavy / Editorial) --- */}
       <section className="py-32 px-8 lg:px-24 bg-gradient-to-b from-warm-cream via-rose-blush/5 to-soft-lavender/5">
