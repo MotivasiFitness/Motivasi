@@ -83,10 +83,10 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="bg-warm-cream min-h-screen w-full overflow-clip font-paragraph text-charcoal-black selection:bg-rose-blush selection:text-charcoal-black">
+    <div className="bg-white min-h-screen w-full overflow-clip font-paragraph text-charcoal-black selection:bg-warm-cream selection:text-charcoal-black">
       {/* Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-sage-green via-rose-blush to-soft-lavender origin-left z-50"
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-warm-bronze via-warm-bronze to-warm-bronze origin-left z-50"
         style={{ scaleX }}
       />
       
@@ -100,15 +100,15 @@ export default function HomePage() {
       >
         <Link
           to="/store"
-          className="group flex items-center gap-3 bg-gradient-to-r from-sage-green to-sage-green/90 text-white px-8 py-4 rounded-full font-bold text-base shadow-lg hover:shadow-2xl hover:shadow-sage-green/40 transition-all duration-300 hover:scale-105"
+          className="group flex items-center gap-3 bg-warm-bronze text-white px-8 py-4 rounded-full font-bold text-base shadow-lg hover:shadow-2xl hover:shadow-warm-bronze/40 transition-all duration-300 hover:scale-105"
         >
           Book Your Package <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Link>
       </motion.div>
       {/* --- Hero Section --- */}
-      <section className="relative min-h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-gradient-to-br from-warm-cream via-warm-cream to-rose-blush/30">
+      <section className="relative min-h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-gradient-to-br from-white via-white to-warm-cream/20">
         {/* Subtle gradient overlay for refined effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-rose-blush/5 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-warm-bronze/3 to-transparent pointer-events-none" />
         
         {/* Decorative Botanical Line Illustration - Top Right Corner */}
         <motion.div
@@ -254,7 +254,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* --- Keywords Section with Softer Design --- */}
-      <div className="relative py-32 px-8 lg:px-24 bg-rose-blush/8 overflow-hidden">
+      <div className="relative py-32 px-8 lg:px-24 bg-warm-cream overflow-hidden">
         {/* Subtle decorative elements */}
         <div className="absolute top-20 left-12 w-32 h-32 bg-sage-green/3 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-12 w-40 h-40 bg-soft-lavender/3 rounded-full blur-3xl" />
@@ -300,7 +300,7 @@ export default function HomePage() {
         </div>
       </div>
       {/* --- The Philosophy (Text Heavy / Editorial) --- */}
-      <section className="py-32 px-8 lg:px-24 bg-gradient-to-b from-warm-cream via-rose-blush/5 to-soft-lavender/5">
+      <section className="py-32 px-8 lg:px-24 bg-white">
         <div className="max-w-[100rem] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-20 items-start">
           <div className="lg:col-span-5 relative">
             <div className="sticky top-32">
@@ -405,7 +405,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* --- Sticky Signature Offer Section --- */}
-      <section className="relative bg-gradient-to-b from-warm-cream via-soft-lavender/8 to-rose-blush/5 py-32 px-8 lg:px-24">
+      <section className="relative bg-gradient-to-b from-warm-cream via-warm-cream/5 to-white py-32 px-8 lg:px-24">
         <div className="max-w-[100rem] mx-auto">
           <div className="flex flex-col lg:flex-row gap-20 lg:gap-32">
             
@@ -578,7 +578,7 @@ export default function HomePage() {
       </section>
       {/* --- Testimonials (Dynamic Masonry Layout) --- */}
       {testimonials.length > 0 && (
-        <section className="py-32 bg-gradient-to-b from-rose-blush/10 to-soft-lavender/10 overflow-hidden">
+        <section className="py-32 bg-warm-cream overflow-hidden">
           <div className="px-8 lg:px-24 mb-20 max-w-[100rem] mx-auto">
             <AnimatedElement>
               <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-6">

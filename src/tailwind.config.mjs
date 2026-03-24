@@ -23,18 +23,20 @@ export default {
                 paragraph: "sora-light"
             },
             colors: {
-                // New warm, inviting palette
-                'rose-blush': '#FBE8F0',
-                'soft-lavender': '#F4E4F1',
-                'sage-green': '#E8F4F1',
-                'warm-cream': '#FFF8E8',
+                // Updated color scheme - white main background with warm cream accents
+                'white': '#ffffff',
+                'off-white': '#fafaf9',
+                'warm-cream': '#f5ede3',
+                'warm-bronze': '#c9956f',
                 // Neutral palette
                 'charcoal-black': '#1a1a1a',
                 'dark-gray': '#2d2d2d',
                 'medium-gray': '#666666',
                 'light-gray': '#f0f0f0',
-                'white': '#ffffff',
                 // Legacy colors (kept for backward compatibility)
+                'rose-blush': '#FBE8F0',
+                'soft-lavender': '#F4E4F1',
+                'sage-green': '#E8F4F1',
                 'accent-blue': '#0066cc',
                 'accent-teal': '#00a8a8',
                 'soft-white': '#FFF8E8',
@@ -44,12 +46,12 @@ export default {
                 // Semantic color mappings
                 destructive: '#D32F2F',
                 'destructive-foreground': '#FFFFFF',
-                background: '#FFF8E8',
-                secondary: '#F4E4F1',
+                background: '#ffffff',
+                secondary: '#f5ede3',
                 foreground: '#1a1a1a',
                 'secondary-foreground': '#666666',
                 'primary-foreground': '#ffffff',
-                primary: '#FBE8F0'
+                primary: '#c9956f'
             },
         },
     },
