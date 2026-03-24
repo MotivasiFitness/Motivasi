@@ -78,30 +78,43 @@ export default function HomePage() {
         style={{ scaleX }}
       />
       {/* --- Hero Section --- */}
-      <section className="relative min-h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-gradient-to-br from-warm-cream via-rose-blush/5 to-soft-lavender/10">
-        {/* Decorative Botanical Elements - Top Left */}
+      <section className="relative min-h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-gradient-to-br from-warm-cream via-warm-cream to-rose-blush/30">
+        {/* Subtle gradient overlay for refined effect */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-rose-blush/5 to-transparent pointer-events-none" />
+        
+        {/* Decorative Botanical Line Illustration - Top Right Corner */}
         <motion.div
-          className="absolute top-12 left-8 lg:left-16 w-32 h-32 opacity-15 pointer-events-none"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.15, scale: 1 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="absolute top-0 right-0 w-96 h-96 opacity-8 pointer-events-none"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 0.08, scale: 1 }}
+          transition={{ duration: 1.4, ease: "easeOut" }}
         >
-          <svg viewBox="0 0 100 100" className="w-full h-full text-sage-green">
-            <path d="M50 10 Q60 30 50 50 Q40 30 50 10 M50 50 Q70 60 50 70 Q30 60 50 50 M50 50 Q60 40 70 50 Q60 60 50 50 M50 50 Q40 40 30 50 Q40 60 50 50" stroke="currentColor" strokeWidth="1.5" fill="none" />
-            <circle cx="50" cy="50" r="3" fill="currentColor" />
+          <svg viewBox="0 0 200 200" className="w-full h-full text-sage-green" preserveAspectRatio="none">
+            {/* Botanical vine with leaves */}
+            <path d="M200 0 Q180 20 170 40 Q160 60 165 80 Q170 100 160 120 Q150 140 155 160 Q160 180 150 200" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+            {/* Leaf details */}
+            <path d="M170 40 Q175 35 180 40 Q175 45 170 40" stroke="currentColor" strokeWidth="0.8" fill="none" />
+            <path d="M165 80 Q172 75 178 82 Q171 87 165 80" stroke="currentColor" strokeWidth="0.8" fill="none" />
+            <path d="M160 120 Q168 115 175 123 Q167 128 160 120" stroke="currentColor" strokeWidth="0.8" fill="none" />
+            <path d="M155 160 Q163 155 170 163 Q162 168 155 160" stroke="currentColor" strokeWidth="0.8" fill="none" />
           </svg>
         </motion.div>
 
-        {/* Decorative Botanical Elements - Bottom Right */}
+        {/* Decorative Botanical Elements - Bottom Left */}
         <motion.div
-          className="absolute bottom-20 right-8 lg:right-16 w-40 h-40 opacity-10 pointer-events-none"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.1, scale: 1 }}
+          className="absolute bottom-0 left-0 w-80 h-80 opacity-6 pointer-events-none"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 0.06, scale: 1 }}
           transition={{ duration: 1.4, delay: 0.2, ease: "easeOut" }}
         >
-          <svg viewBox="0 0 100 100" className="w-full h-full text-rose-blush">
-            <path d="M50 20 L60 40 L80 40 L65 55 L75 75 L50 60 L25 75 L35 55 L20 40 L40 40 Z" stroke="currentColor" strokeWidth="1" fill="none" />
-            <circle cx="50" cy="50" r="2" fill="currentColor" />
+          <svg viewBox="0 0 200 200" className="w-full h-full text-rose-blush" preserveAspectRatio="none">
+            {/* Botanical vine with leaves - mirrored */}
+            <path d="M0 200 Q20 180 30 160 Q40 140 35 120 Q30 100 40 80 Q50 60 45 40 Q40 20 50 0" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+            {/* Leaf details */}
+            <path d="M30 160 Q25 165 20 160 Q25 155 30 160" stroke="currentColor" strokeWidth="0.8" fill="none" />
+            <path d="M35 120 Q28 125 22 118 Q29 113 35 120" stroke="currentColor" strokeWidth="0.8" fill="none" />
+            <path d="M40 80 Q32 85 25 77 Q33 72 40 80" stroke="currentColor" strokeWidth="0.8" fill="none" />
+            <path d="M45 40 Q37 45 30 37 Q38 32 45 40" stroke="currentColor" strokeWidth="0.8" fill="none" />
           </svg>
         </motion.div>
 
