@@ -451,9 +451,9 @@ export default function HomePage() {
             {testimonials.map((testimonial, index) => (
               <div 
                 key={testimonial._id} 
-                className="snap-center flex-shrink-0 w-[85vw] md:w-[600px] bg-white rounded-2xl p-10 md:p-12 shadow-sm relative group hover:shadow-lg transition-all duration-500 border border-warm-cream/50"
+                className="snap-center flex-shrink-0 w-[85vw] md:w-[600px] bg-rose-blush rounded-2xl p-10 md:p-12 shadow-sm relative group hover:shadow-lg transition-all duration-500 border border-rose-blush/60 border-l-4 border-l-rose-blush"
               >
-                <div className="absolute top-12 right-12 text-sage-green opacity-20">
+                <div className="absolute top-12 right-12 text-sage-green opacity-15">
                   <Star size={48} fill="currentColor" />
                 </div>
                 
@@ -469,9 +469,9 @@ export default function HomePage() {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-6 pt-8 border-t border-warm-cream/50">
+                  <div className="flex items-center gap-6 pt-8 border-t border-rose-blush/40">
                     {testimonial.transformationImage ? (
-                      <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-sage-green/20 shadow-md">
+                      <div className="w-16 h-16 rounded-full overflow-hidden border-3 border-white shadow-md flex-shrink-0">
                         <Image
                           src={testimonial.transformationImage}
                           alt={testimonial.clientName || "Client"}
@@ -480,18 +480,18 @@ export default function HomePage() {
                         />
                       </div>
                     ) : (
-                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-sage-green/20 to-rose-blush/20 flex items-center justify-center text-charcoal-black font-bold text-xl">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-white to-rose-blush/30 flex items-center justify-center text-charcoal-black font-bold text-xl flex-shrink-0 border-3 border-white shadow-md">
                         {testimonial.clientName?.charAt(0)}
                       </div>
                     )}
                     <div>
                       <h4 className="font-bold text-lg text-charcoal-black">{testimonial.clientName}</h4>
-                      <div className="flex flex-col sm:flex-row sm:gap-3 text-sm text-charcoal-black/60">
+                      <div className="flex flex-col sm:flex-row sm:gap-3 text-sm text-charcoal-black/70">
                         {testimonial.clientAgeRange && <span>{testimonial.clientAgeRange}</span>}
                         {testimonial.keyAchievement && (
                           <>
                             <span className="hidden sm:inline">•</span>
-                            <span className="text-sage-green font-medium">{testimonial.keyAchievement}</span>
+                            <span className="text-charcoal-black/80 font-medium">{testimonial.keyAchievement}</span>
                           </>
                         )}
                       </div>
