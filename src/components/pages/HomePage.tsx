@@ -165,7 +165,7 @@ export default function HomePage() {
                 transition={{ duration: 1.5, ease: "easeOut" }}
               />
               
-              <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl font-bold text-charcoal-black leading-[1.1] mb-16 tracking-tight">
+              <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl font-black text-white leading-[1.1] mb-16 tracking-tight">
                 <span className="block overflow-hidden">
                   <motion.span 
                     initial={{ y: "100%" }} 
@@ -176,12 +176,12 @@ export default function HomePage() {
                     {t.home.heroTitle}
                   </motion.span>
                 </span>
-                <span className="block overflow-hidden bg-gradient-to-r from-sage-green to-rose-blush bg-clip-text text-transparent">
+                <span className="block overflow-hidden">
                   <motion.span 
                     initial={{ y: "100%" }} 
                     animate={{ y: 0 }} 
                     transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                    className="block my-3.5 mx-0"
+                    className="block my-3.5 mx-0 text-white"
                   >
                     {t.home.heroSubtitle}
                   </motion.span>
@@ -395,10 +395,10 @@ export default function HomePage() {
         </div>
         <div className="relative z-10 text-center max-w-4xl px-8">
           <AnimatedElement>
-            <h2 className="font-heading text-5xl md:text-7xl text-soft-white font-bold mb-8 leading-tight">
+            <h2 className="font-heading text-5xl md:text-7xl text-white font-black mb-8 leading-tight">
               {t.home.quote}
             </h2>
-            <p className="font-paragraph text-xl md:text-2xl text-warm-grey">
+            <p className="font-paragraph text-xl md:text-2xl text-white font-medium">
               {t.home.quoteAuthor}
             </p>
           </AnimatedElement>
