@@ -119,7 +119,7 @@ export default function HomePage() {
         </motion.div>
 
         {/* Left Content */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-24 py-24 lg:py-0 z-10">
+        <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-24 py-32 lg:py-48 z-10">
           <div className="max-w-2xl">
             <AnimatedElement className="mb-8">
               <span className="inline-block py-2 px-4 border border-sage-green/40 rounded-full text-sage-green text-sm tracking-widest uppercase font-medium bg-sage-green/5">
@@ -137,7 +137,7 @@ export default function HomePage() {
                 transition={{ duration: 1.5, ease: "easeOut" }}
               />
               
-              <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl font-bold text-charcoal-black leading-[1.1] mb-12 tracking-tight">
+              <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl font-bold text-charcoal-black leading-[1.1] mb-16 tracking-tight">
                 <span className="block overflow-hidden">
                   <motion.span 
                     initial={{ y: "100%" }} 
@@ -161,7 +161,7 @@ export default function HomePage() {
               </h1>
             </div>
 
-            <AnimatedElement className="mb-12 delay-300">
+            <AnimatedElement className="mb-16 delay-300">
               <p className="text-xl md:text-2xl text-charcoal-black/70 leading-relaxed max-w-lg font-light tracking-wide">
                 {t.home.readyToFeelDesc}
               </p>
