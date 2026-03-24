@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Menu, X, LogOut } from 'lucide-react';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { Image } from '@/components/ui/image';
 import { MiniCart } from '@/wix-verticals/react-pages/react-router/routes/root';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -8,7 +8,7 @@ import { useMember } from '@/integrations';
 import { useRole } from '@/hooks/useRole';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
-export default function Header() {
+function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { t } = useLanguage();
   const { member, isAuthenticated, actions } = useMember();
@@ -185,3 +185,5 @@ export default function Header() {
     </header>
   );
 }
+
+export default memo(Header);

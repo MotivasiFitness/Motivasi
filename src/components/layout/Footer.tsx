@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom';
 import { Instagram, Mail } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { memo } from 'react';
 
-export default function Footer() {
+function Footer() {
   const { t } = useLanguage();
 
   return (
@@ -108,3 +109,5 @@ export default function Footer() {
     </footer>
   );
 }
+
+export default memo(Footer);

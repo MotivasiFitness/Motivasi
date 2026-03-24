@@ -16,9 +16,11 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CookieBanner from '@/components/CookieBanner';
 
-// Lazy load pages
+// Eager load critical pages for faster initial load
+import HomePage from '@/components/pages/HomePage';
+
+// Lazy load non-critical pages
 const RoleSetup = lazy(() => import('@/components/RoleSetup'));
-const HomePage = lazy(() => import('@/components/pages/HomePage'));
 const AboutPage = lazy(() => import('@/components/pages/AboutPage'));
 const BlogPage = lazy(() => import('@/components/pages/BlogPage'));
 const BlogPostPage = lazy(() => import('@/components/pages/BlogPostPage'));
@@ -100,11 +102,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: (
-          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
-            <HomePage />
-          </Suspense>
-        ),
+        element: <HomePage />,
         routeMetadata: {
           pageIdentifier: 'home',
         },

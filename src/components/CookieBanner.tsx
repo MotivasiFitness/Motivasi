@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { X, ChevronDown, ChevronUp } from 'lucide-react';
 
 type CookiePreferences = {
@@ -7,7 +7,7 @@ type CookiePreferences = {
   marketing: boolean;
 };
 
-export default function CookieBanner() {
+function CookieBanner() {
   const [isVisible, setIsVisible] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
   const [preferences, setPreferences] = useState<CookiePreferences>({
@@ -16,21 +16,31 @@ export default function CookieBanner() {
     marketing: false,
   });
 
-  // Check if user has already made a cookie choice
+  // Check if user has already made a cookie choice - deferred to avoid blocking render
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const savedPreferences = localStorage.getItem('cookiePreferences');
-        if (!savedPreferences) {
+    const checkCookies = () => {
+      if (typeof window !== 'undefined') {
+        try {
+          const savedPreferences = localStorage.getItem('cookiePreferences');
+          if (!savedPreferences) {
+            setIsVisible(true);
+          } else {
+            setPreferences(JSON.parse(savedPreferences));
+          }
+        } catch (error) {
+          // localStorage might not be available in some environments
           setIsVisible(true);
-        } else {
-          setPreferences(JSON.parse(savedPreferences));
         }
-      } catch (error) {
-        // localStorage might not be available in some environments
-        setIsVisible(true);
       }
-    }
+    };
+    
+    // Defer cookie check to avoid blocking initial render
+    const timer = requestIdleCallback ? requestIdleCallback(checkCookies) : setTimeout(checkCookies, 100);
+    return () => {
+      if (typeof timer === 'number') {
+        clearTimeout(timer);
+      }
+    };
   }, []);
 
   const handleAcceptAll = () => {
@@ -256,3 +266,5 @@ export default function CookieBanner() {
     </div>
   );
 }
+
+export default memo(CookieBanner);

@@ -44,13 +44,22 @@ export default function HomePage() {
   // --- Data Fidelity Protocol: Identify, Canonize, Preserve ---
   const { t } = useLanguage();
   const [testimonials, setTestimonials] = useState<ClientTestimonials[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTestimonials = async () => {
-      const { items } = await BaseCrudService.getAll<ClientTestimonials>('clienttestimonials');
-      setTestimonials(items.filter(t => t.featuredOnHomepage));
-    };
-    fetchTestimonials();
+    // Defer testimonial loading to avoid blocking initial render
+    const timer = setTimeout(async () => {
+      try {
+        const { items } = await BaseCrudService.getAll<ClientTestimonials>('clienttestimonials', [], { limit: 3 });
+        setTestimonials(items.filter(t => t.featuredOnHomepage));
+      } catch (error) {
+        console.error('Failed to load testimonials:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 100);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   // --- Scroll Progress for Parallax ---
