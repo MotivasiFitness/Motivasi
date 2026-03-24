@@ -307,7 +307,7 @@ export default function HomePage() {
             <AnimatedElement>
               <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-8 leading-tight">
                 {t.home.transformationTitle} <br/>
-                <span className="bg-gradient-to-r from-sage-green/80 to-rose-blush/80 bg-clip-text text-transparent italic font-black">{t.home.transformationSubtitle}</span>
+                <span className="bg-gradient-to-r from-[#a8b8a8] to-[#d4a8a8] bg-clip-text text-transparent italic font-black">{t.home.transformationSubtitle}</span>
               </h2>
             </AnimatedElement>
             <AnimatedElement className="delay-200">
