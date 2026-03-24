@@ -556,7 +556,7 @@ export default function HomePage() {
             {testimonials.map((testimonial, index) => (
               <div 
                 key={testimonial._id} 
-                className="snap-center flex-shrink-0 w-[85vw] md:w-[600px] bg-rose-blush rounded-2xl p-10 md:p-12 shadow-sm relative group hover:shadow-lg transition-all duration-500 border border-rose-blush/60 border-l-4 border-l-rose-blush"
+                className="snap-center flex-shrink-0 w-[85vw] md:w-[600px] bg-rose-blush rounded-[16px] p-10 md:p-12 shadow-md relative group hover:shadow-xl transition-all duration-500 border border-rose-blush/80 border-l-[3px] border-l-rose-blush"
               >
                 <div className="absolute top-12 right-12 text-sage-green opacity-15">
                   <Star size={48} fill="currentColor" />
@@ -576,16 +576,16 @@ export default function HomePage() {
 
                   <div className="flex items-center gap-6 pt-8 border-t border-rose-blush/40">
                     {testimonial.transformationImage ? (
-                      <div className="w-16 h-16 rounded-full overflow-hidden border-3 border-white shadow-md flex-shrink-0">
+                      <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-md flex-shrink-0">
                         <Image
                           src={testimonial.transformationImage}
                           alt={testimonial.clientName || "Client"}
                           className="w-full h-full object-cover"
-                          width={100}
+                          width={40}
                         />
                       </div>
                     ) : (
-                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-white to-rose-blush/30 flex items-center justify-center text-charcoal-black font-bold text-xl flex-shrink-0 border-3 border-white shadow-md">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white to-rose-blush/30 flex items-center justify-center text-charcoal-black font-bold text-sm flex-shrink-0 border-2 border-white shadow-md">
                         {testimonial.clientName?.charAt(0)}
                       </div>
                     )}
