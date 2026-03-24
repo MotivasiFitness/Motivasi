@@ -165,7 +165,7 @@ export default function HomePage() {
                 transition={{ duration: 1.5, ease: "easeOut" }}
               />
               
-              <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl font-black text-white leading-[1.1] mb-16 tracking-tight">
+              <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl font-black text-charcoal-black leading-[1.1] mb-16 tracking-tight">
                 <span className="block overflow-hidden">
                   <motion.span 
                     initial={{ y: "100%" }} 
@@ -181,7 +181,7 @@ export default function HomePage() {
                     initial={{ y: "100%" }} 
                     animate={{ y: 0 }} 
                     transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                    className="block my-3.5 mx-0 text-white"
+                    className="block my-3.5 mx-0 text-charcoal-black"
                   >
                     {t.home.heroSubtitle}
                   </motion.span>
@@ -722,7 +722,7 @@ export default function HomePage() {
                   to="/store"
                   className="block w-full bg-gradient-to-r from-sage-green to-rose-blush text-white px-14 py-6 rounded-full font-medium text-xl hover:shadow-lg hover:shadow-sage-green/30 transition-all duration-300 text-center"
                 >
-                  Begin your journey (£150/mo)
+                  Begin your journey (£499/12 weeks)
                 </Link>
               </motion.div>
               <motion.div
