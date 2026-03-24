@@ -483,7 +483,7 @@ export default function HomePage() {
             {/* Right: Sticky Pricing Card */}
             <div className="w-full lg:w-1/2 relative">
               <div className="sticky top-32">
-                <div className="bg-gradient-to-br from-charcoal-black to-charcoal-black/95 text-white p-12 md:p-16 rounded-3xl shadow-xl relative overflow-hidden">
+                <div className="bg-gradient-to-br from-dark-gray to-dark-gray/95 text-white p-12 md:p-16 rounded-2xl shadow-2xl relative overflow-hidden border-t-4 border-t-rose-blush">
                   {/* Decorative background elements */}
                   <div className="absolute top-0 right-0 w-64 h-64 bg-sage-green/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
                   <div className="absolute bottom-0 left-0 w-48 h-48 bg-rose-blush/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
@@ -493,7 +493,7 @@ export default function HomePage() {
                     <p className="text-white/70 mb-12 font-light">{t.home.cancelAnytime}</p>
                     
                     <div className="flex items-baseline gap-3 mb-12">
-                      <span className="font-heading text-7xl font-bold bg-gradient-to-r from-sage-green to-rose-blush bg-clip-text text-transparent">£150</span>
+                      <span className="font-heading text-7xl font-bold text-rose-blush">£150</span>
                       <span className="text-xl text-white/70 font-light">/ month</span>
                     </div>
 
@@ -516,7 +516,7 @@ export default function HomePage() {
 
                     <Link
                       to="/store"
-                      className="block w-full bg-gradient-to-r from-sage-green to-rose-blush text-white text-center py-6 rounded-full font-medium text-lg hover:shadow-lg hover:shadow-sage-green/30 transition-all duration-300"
+                      className="block w-full bg-sage-green text-white text-center py-6 rounded-full font-medium text-lg hover:shadow-lg hover:shadow-sage-green/40 transition-all duration-300"
                     >
                       {t.home.secureYourSpot}
                     </Link>
