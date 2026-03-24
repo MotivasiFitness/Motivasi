@@ -620,13 +620,14 @@ export default function HomePage() {
                       
                       <div className="flex flex-col h-full justify-between relative z-10">
                         {/* Star Rating */}
-                        <div className="flex gap-1 mb-6">
+                        <div className="flex gap-2 mb-6">
                           {[...Array(5)].map((_, i) => (
                             <Star 
                               key={i} 
-                              size={14} 
-                              className={index === 1 ? 'text-rose-blush' : index === 2 ? 'text-sage-green' : 'text-rose-blush'} 
+                              size={24} 
+                              className={`font-bold ${index === 1 ? 'text-rose-blush' : index === 2 ? 'text-sage-green' : 'text-rose-blush'}`}
                               fill="currentColor" 
+                              strokeWidth={1.5}
                             />
                           ))}
                         </div>
