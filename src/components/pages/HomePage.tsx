@@ -251,31 +251,39 @@ export default function HomePage() {
           <div className="lg:col-span-7 grid gap-12">
             {[
               {
-                icon: <ShieldCheck className="w-8 h-8 text-white" />,
+                icon: <ShieldCheck className="w-8 h-8" />,
                 title: t.home.noExtremeDiets,
                 desc: t.home.noExtremeDietsDesc,
                 bgColor: 'bg-sage-green',
-                accentBg: 'bg-sage-green/5'
+                accentBg: 'bg-sage-green/5',
+                iconBg: 'bg-sage-green/20',
+                iconColor: 'text-sage-green'
               },
               {
-                icon: <Zap className="w-8 h-8 text-white" />,
+                icon: <Zap className="w-8 h-8" />,
                 title: t.home.buildRealStrength,
                 desc: t.home.buildRealStrengthDesc,
                 bgColor: 'bg-rose-blush',
-                accentBg: 'bg-rose-blush/5'
+                accentBg: 'bg-rose-blush/5',
+                iconBg: 'bg-rose-blush/20',
+                iconColor: 'text-rose-blush'
               },
               {
-                icon: <Activity className="w-8 h-8 text-white" />,
+                icon: <Activity className="w-8 h-8" />,
                 title: t.home.sustainableResults,
                 desc: t.home.sustainableResultsDesc,
                 bgColor: 'bg-soft-lavender',
-                accentBg: 'bg-soft-lavender/5'
+                accentBg: 'bg-soft-lavender/5',
+                iconBg: 'bg-soft-lavender/20',
+                iconColor: 'text-soft-lavender'
               }
             ].map((item, idx) => (
               <AnimatedElement key={idx} className={`group ${item.accentBg} p-12 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream`}>
                 <div className="flex flex-col md:flex-row gap-8 items-start">
-                  <div className={`w-16 h-16 rounded-2xl ${item.bgColor} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
-                    {item.icon}
+                  <div className={`w-20 h-20 rounded-full ${item.iconBg} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                    <div className={item.iconColor}>
+                      {item.icon}
+                    </div>
                   </div>
                   <div>
                     <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4 group-hover:text-sage-green transition-colors">
