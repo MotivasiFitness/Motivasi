@@ -225,26 +225,107 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
-      {/* --- Marquee Section --- */}
-      <div className="py-12 bg-gradient-to-r from-sage-green/10 via-rose-blush/10 to-soft-lavender/10 overflow-hidden whitespace-nowrap border-y border-sage-green/20">
-        <motion.div 
-          className="flex gap-16 items-center"
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ repeat: Infinity, ease: "linear", duration: 20 }}
+      {/* --- Section Dividers with Dynamic Wavy Shapes --- */}
+      <div className="relative py-24 bg-gradient-to-r from-rose-blush/40 via-soft-lavender/40 to-rose-blush/40 overflow-hidden">
+        {/* Wavy Top Divider */}
+        <motion.svg
+          className="absolute top-0 left-0 w-full h-16 text-rose-blush/60"
+          viewBox="0 0 1200 100"
+          preserveAspectRatio="none"
+          initial={{ y: 0 }}
+          animate={{ y: [0, -8, 0] }}
+          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
         >
-          {[...Array(4)].map((_, i) => (
-            <React.Fragment key={i}>
-              <span className="text-4xl md:text-5xl font-heading text-charcoal-black/80">{t.home.marqueeStrength}</span>
-              <span className="text-2xl text-sage-green/40">✦</span>
-              <span className="text-4xl md:text-5xl font-heading text-charcoal-black/80">{t.home.marqueeConfidence}</span>
-              <span className="text-2xl text-rose-blush/40">✦</span>
-              <span className="text-4xl md:text-5xl font-heading text-charcoal-black/80">{t.home.marqueeBalance}</span>
-              <span className="text-2xl text-sage-green/40">✦</span>
-              <span className="text-4xl md:text-5xl font-heading text-charcoal-black/80">{t.home.marqueeNutrition}</span>
-              <span className="text-2xl text-rose-blush/40">✦</span>
-            </React.Fragment>
-          ))}
-        </motion.div>
+          <path
+            d="M0,30 Q300,10 600,30 T1200,30 L1200,0 L0,0 Z"
+            fill="currentColor"
+            opacity="0.3"
+          />
+          <path
+            d="M0,50 Q300,30 600,50 T1200,50 L1200,100 L0,100 Z"
+            fill="currentColor"
+            opacity="0.15"
+          />
+        </motion.svg>
+
+        {/* Main Content */}
+        <div className="relative z-10 pt-8">
+          <motion.div 
+            className="flex gap-16 items-center justify-center flex-wrap px-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            {[
+              { label: t.home.marqueeStrength, starColor: 'text-amber-400', sparkleColor: 'text-rose-blush' },
+              { label: t.home.marqueeConfidence, starColor: 'text-amber-400', sparkleColor: 'text-rose-blush' },
+              { label: t.home.marqueeBalance, starColor: 'text-amber-400', sparkleColor: 'text-rose-blush' },
+              { label: t.home.marqueeNutrition, starColor: 'text-amber-400', sparkleColor: 'text-rose-blush' }
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                className="flex items-center gap-6"
+                whileHover={{ scale: 1.08 }}
+                transition={{ type: "spring", stiffness: 300, damping: 10 }}
+              >
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+                  className="relative"
+                >
+                  <span className="text-4xl md:text-5xl font-heading text-charcoal-black/85 drop-shadow-sm">
+                    {item.label}
+                  </span>
+                </motion.div>
+                
+                {/* Star with sparkle accent */}
+                <motion.div
+                  className="relative w-8 h-8 flex items-center justify-center"
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ repeat: Infinity, duration: 2.5, delay: idx * 0.3 }}
+                >
+                  {/* Gold star */}
+                  <motion.span className={`text-3xl ${item.starColor} drop-shadow-md`}>
+                    ✦
+                  </motion.span>
+                  
+                  {/* Rose sparkle accent */}
+                  <motion.span
+                    className={`absolute text-xl ${item.sparkleColor} opacity-70`}
+                    animate={{ 
+                      scale: [0, 1, 0],
+                      opacity: [0, 0.8, 0]
+                    }}
+                    transition={{ repeat: Infinity, duration: 1.8, delay: idx * 0.2 }}
+                  >
+                    ✨
+                  </motion.span>
+                </motion.div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* Wavy Bottom Divider */}
+        <motion.svg
+          className="absolute bottom-0 left-0 w-full h-16 text-soft-lavender/60"
+          viewBox="0 0 1200 100"
+          preserveAspectRatio="none"
+          initial={{ y: 0 }}
+          animate={{ y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+        >
+          <path
+            d="M0,70 Q300,90 600,70 T1200,70 L1200,100 L0,100 Z"
+            fill="currentColor"
+            opacity="0.3"
+          />
+          <path
+            d="M0,50 Q300,70 600,50 T1200,50 L1200,0 L0,0 Z"
+            fill="currentColor"
+            opacity="0.15"
+          />
+        </motion.svg>
       </div>
       {/* --- The Philosophy (Text Heavy / Editorial) --- */}
       <section className="py-32 px-8 lg:px-24 bg-gradient-to-b from-warm-cream via-rose-blush/5 to-soft-lavender/5">
