@@ -202,7 +202,7 @@ export default function HomePage() {
               >
                 <Link
                   to="/store"
-                  className="group relative overflow-hidden bg-sage-green text-white px-12 py-6 rounded-full font-medium text-lg transition-all duration-300 hover:shadow-lg hover:shadow-sage-green/30 inline-flex items-center gap-2"
+                  className="group relative overflow-hidden bg-sage-green text-charcoal-black px-12 py-6 rounded-full font-medium text-lg transition-all duration-300 hover:shadow-lg hover:shadow-sage-green/30 inline-flex items-center gap-2"
                 >
                   Let's get started <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
