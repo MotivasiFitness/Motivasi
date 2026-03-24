@@ -326,7 +326,7 @@ export default function HomePage() {
             {/* Feature card 1 */}
             <AnimatedElement className={`group bg-sage-green/5 p-16 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-sage-green`}>
               <div className="flex flex-col gap-8 items-start h-full">
-                <div className={`w-24 h-24 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`w-24 h-24 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-sage-green/40 shadow-md`}>
                   <div className="text-sage-green">
                     <ShieldCheck className="w-8 h-8" />
                   </div>
@@ -345,7 +345,7 @@ export default function HomePage() {
             {/* Feature card 2 */}
             <AnimatedElement className={`group bg-rose-blush/5 p-16 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-rose-blush`}>
               <div className="flex flex-col gap-8 items-start h-full">
-                <div className={`w-24 h-24 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`w-24 h-24 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-rose-blush/40 shadow-md`}>
                   <div className="text-rose-blush">
                     <Zap className="w-8 h-8" />
                   </div>
@@ -364,7 +364,7 @@ export default function HomePage() {
             {/* Feature card 3 */}
             <AnimatedElement className={`group bg-soft-lavender/5 p-16 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-soft-lavender`}>
               <div className="flex flex-col gap-8 items-start h-full">
-                <div className={`w-24 h-24 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`w-24 h-24 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-soft-lavender/40 shadow-md`}>
                   <div className="text-soft-lavender">
                     <Activity className="w-8 h-8" />
                   </div>
