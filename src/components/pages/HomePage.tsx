@@ -278,9 +278,9 @@ export default function HomePage() {
                 iconColor: 'text-soft-lavender'
               }
             ].map((item, idx) => (
-              <AnimatedElement key={idx} className={`group ${item.accentBg} p-12 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream`}>
+              <AnimatedElement key={idx} className={`group ${item.accentBg} p-12 rounded-3xl shadow-md hover:shadow-xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-4 ${item.borderColor}`}>
                 <div className="flex flex-col md:flex-row gap-8 items-start">
-                  <div className={`w-20 h-20 rounded-full ${item.iconBg} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className={`w-24 h-24 rounded-full ${item.iconBg} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
                     <div className={item.iconColor}>
                       {item.icon}
                     </div>
