@@ -280,7 +280,7 @@ export default function HomePage() {
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 300, damping: 10 }}
               >
-                <span className="text-2xl md:text-3xl lg:text-4xl font-heading text-charcoal-black/85 px-4 md:px-6">
+                <span className="text-2xl md:text-3xl lg:text-4xl font-heading text-charcoal-black px-4 md:px-6">
                   {item.label}
                 </span>
                 
@@ -312,7 +312,7 @@ export default function HomePage() {
               </AnimatedElement>
               <AnimatedElement className="delay-200">
                 <div className="w-24 h-1.5 bg-gradient-to-r from-sage-green to-rose-blush mb-8 rounded-full" />
-                <p className="text-lg text-charcoal-black/70 mb-8 leading-relaxed font-light">
+                <p className="text-lg text-charcoal-black mb-8 leading-relaxed font-light">
                   You've tried the crash diets. You've done the endless cardio. It's time for a sustainable approach that honours your body and your busy life.
                 </p>
                 <Link to="/about" className="text-charcoal-black font-medium border-b-2 border-sage-green pb-2 hover:text-sage-green transition-colors inline-flex items-center gap-2">
