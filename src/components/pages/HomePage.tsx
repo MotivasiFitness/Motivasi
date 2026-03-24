@@ -165,7 +165,7 @@ export default function HomePage() {
                 transition={{ duration: 1.5, ease: "easeOut" }}
               />
               
-              <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl font-black text-charcoal-black leading-[1.1] mb-16 tracking-tight">
+              <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl font-black text-charcoal-black leading-[1.1] mb-16 tracking-tight" style={{ filter: 'saturate(0.2)' }}>
                 <span className="block overflow-hidden">
                   <motion.span 
                     initial={{ y: "100%" }} 
