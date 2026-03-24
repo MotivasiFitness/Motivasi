@@ -71,19 +71,19 @@ export default function HomePage() {
   });
 
   return (
-    <div className="bg-soft-white min-h-screen w-full overflow-clip font-paragraph text-charcoal-black selection:bg-soft-bronze selection:text-soft-white">
+    <div className="bg-warm-cream min-h-screen w-full overflow-clip font-paragraph text-charcoal-black selection:bg-rose-blush selection:text-charcoal-black">
       {/* Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-soft-bronze origin-left z-50"
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-sage-green via-rose-blush to-soft-lavender origin-left z-50"
         style={{ scaleX }}
       />
       {/* --- Hero Section --- */}
-      <section className="relative min-h-screen w-full flex flex-col lg:flex-row overflow-hidden">
+      <section className="relative min-h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-gradient-to-br from-warm-cream via-rose-blush/5 to-soft-lavender/10">
         {/* Left Content */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-20 py-20 lg:py-0 z-10 bg-soft-white">
+        <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-24 py-24 lg:py-0 z-10">
           <div className="max-w-2xl">
-            <AnimatedElement className="mb-6">
-              <span className="inline-block py-1 px-3 border border-soft-bronze rounded-full text-soft-bronze text-sm tracking-widest uppercase font-medium">
+            <AnimatedElement className="mb-8">
+              <span className="inline-block py-2 px-4 border border-sage-green/40 rounded-full text-sage-green text-sm tracking-widest uppercase font-medium bg-sage-green/5">
                 {t.home.tagline}
               </span>
             </AnimatedElement>
@@ -100,7 +100,7 @@ export default function HomePage() {
                     {t.home.heroTitle}
                   </motion.span>
                 </span>
-                <span className="block overflow-hidden text-soft-bronze">
+                <span className="block overflow-hidden bg-gradient-to-r from-sage-green to-rose-blush bg-clip-text text-transparent">
                   <motion.span 
                     initial={{ y: "100%" }} 
                     animate={{ y: 0 }} 
@@ -113,25 +113,24 @@ export default function HomePage() {
               </h1>
             </div>
 
-            <AnimatedElement className="mb-10 delay-300">
-              <p className="text-xl md:text-2xl text-warm-grey leading-relaxed max-w-lg">
+            <AnimatedElement className="mb-12 delay-300">
+              <p className="text-xl md:text-2xl text-charcoal-black/70 leading-relaxed max-w-lg font-light tracking-wide">
                 {t.home.readyToFeelDesc}
               </p>
             </AnimatedElement>
 
-            <AnimatedElement className="flex flex-wrap gap-4 delay-500">
+            <AnimatedElement className="flex flex-wrap gap-6 delay-500">
               <Link
                 to="/store"
-                className="group relative overflow-hidden bg-charcoal-black text-soft-white px-10 py-5 rounded-full font-medium text-lg transition-all hover:shadow-xl hover:shadow-soft-bronze/20"
+                className="group relative overflow-hidden bg-sage-green text-white px-12 py-6 rounded-full font-medium text-lg transition-all duration-300 hover:shadow-lg hover:shadow-sage-green/20"
               >
                 <span className="relative z-10 flex items-center gap-2">
-                  {t.home.startJourney} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  Let's get started <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
-                <div className="absolute inset-0 bg-soft-bronze transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 ease-out" />
               </Link>
               <Link
                 to="/about"
-                className="group flex items-center gap-2 px-10 py-5 rounded-full border border-charcoal-black/20 text-charcoal-black font-medium text-lg hover:bg-warm-sand-beige/30 transition-colors"
+                className="group flex items-center gap-2 px-12 py-6 rounded-full border-2 border-charcoal-black/20 text-charcoal-black font-medium text-lg hover:bg-rose-blush/20 hover:border-rose-blush/40 transition-all duration-300"
               >
                 {t.home.myPhilosophy}
               </Link>
@@ -140,15 +139,15 @@ export default function HomePage() {
         </div>
 
         {/* Right Image - Parallax */}
-        <div className="w-full lg:w-1/2 h-[60vh] lg:h-auto relative overflow-hidden flex items-center justify-center">
+        <div className="w-full lg:w-1/2 h-[60vh] lg:h-auto relative overflow-hidden flex items-center justify-center p-8 lg:p-12">
           <motion.div 
-            className="w-[95%] h-[95%] relative"
+            className="w-full h-full relative"
             style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]) }}
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_ef269d4e34974b55aceddc01c79a92ad~mv2.png"
               alt="Professional fitness coach portrait"
-              className="w-full h-full object-cover rounded-3xl shadow-[12px_12px_4px_0px_#d9d9d9] mix-blend-normal"
+              className="w-full h-full object-cover rounded-[2rem] lg:rounded-[3rem]"
               width={1200}
               focalPointX={48.19272855630074}
               focalPointY={38.573949876456055} />
@@ -156,7 +155,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* --- Marquee Section --- */}
-      <div className="py-8 bg-charcoal-black overflow-hidden whitespace-nowrap border-y border-soft-bronze/20">
+      <div className="py-12 bg-gradient-to-r from-sage-green/10 via-rose-blush/10 to-soft-lavender/10 overflow-hidden whitespace-nowrap border-y border-sage-green/20">
         <motion.div 
           className="flex gap-16 items-center"
           animate={{ x: ["0%", "-50%"] }}
@@ -164,35 +163,35 @@ export default function HomePage() {
         >
           {[...Array(4)].map((_, i) => (
             <React.Fragment key={i}>
-              <span className="text-4xl md:text-5xl font-heading text-soft-white/90">{t.home.marqueeStrength}</span>
-              <span className="text-2xl text-soft-bronze">✦</span>
-              <span className="text-4xl md:text-5xl font-heading text-soft-white/90">{t.home.marqueeConfidence}</span>
-              <span className="text-2xl text-soft-bronze">✦</span>
-              <span className="text-4xl md:text-5xl font-heading text-soft-white/90">{t.home.marqueeBalance}</span>
-              <span className="text-2xl text-soft-bronze">✦</span>
-              <span className="text-4xl md:text-5xl font-heading text-soft-white/90">{t.home.marqueeNutrition}</span>
-              <span className="text-2xl text-soft-bronze">✦</span>
+              <span className="text-4xl md:text-5xl font-heading text-charcoal-black/80">{t.home.marqueeStrength}</span>
+              <span className="text-2xl text-sage-green/40">✦</span>
+              <span className="text-4xl md:text-5xl font-heading text-charcoal-black/80">{t.home.marqueeConfidence}</span>
+              <span className="text-2xl text-rose-blush/40">✦</span>
+              <span className="text-4xl md:text-5xl font-heading text-charcoal-black/80">{t.home.marqueeBalance}</span>
+              <span className="text-2xl text-sage-green/40">✦</span>
+              <span className="text-4xl md:text-5xl font-heading text-charcoal-black/80">{t.home.marqueeNutrition}</span>
+              <span className="text-2xl text-rose-blush/40">✦</span>
             </React.Fragment>
           ))}
         </motion.div>
       </div>
       {/* --- The Philosophy (Text Heavy / Editorial) --- */}
-      <section className="py-32 px-8 lg:px-20 bg-warm-sand-beige/30">
-        <div className="max-w-[100rem] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+      <section className="py-32 px-8 lg:px-24 bg-gradient-to-b from-warm-cream via-rose-blush/5 to-soft-lavender/5">
+        <div className="max-w-[100rem] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-20 items-start">
           <div className="lg:col-span-5 relative">
             <div className="sticky top-32">
               <AnimatedElement>
                 <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-8 leading-tight">
                   {t.home.transformationTitle} <br/>
-                  <span className="text-soft-bronze italic">{t.home.transformationSubtitle}</span>
+                  <span className="bg-gradient-to-r from-sage-green to-rose-blush bg-clip-text text-transparent italic">{t.home.transformationSubtitle}</span>
                 </h2>
               </AnimatedElement>
               <AnimatedElement className="delay-200">
-                <div className="w-24 h-1 bg-soft-bronze mb-8" />
-                <p className="text-lg text-warm-grey mb-6">
+                <div className="w-24 h-1.5 bg-gradient-to-r from-sage-green to-rose-blush mb-8 rounded-full" />
+                <p className="text-lg text-charcoal-black/70 mb-8 leading-relaxed font-light">
                   You've tried the crash diets. You've done the endless cardio. It's time for a sustainable approach that honours your body and your busy life.
                 </p>
-                <Link to="/about" className="text-charcoal-black font-medium border-b border-soft-bronze pb-1 hover:text-soft-bronze transition-colors inline-flex items-center gap-2">
+                <Link to="/about" className="text-charcoal-black font-medium border-b-2 border-sage-green pb-2 hover:text-sage-green transition-colors inline-flex items-center gap-2">
                   {t.home.readFullBio} <ArrowRight size={16} />
                 </Link>
               </AnimatedElement>
@@ -202,31 +201,34 @@ export default function HomePage() {
           <div className="lg:col-span-7 grid gap-12">
             {[
               {
-                icon: <ShieldCheck className="w-8 h-8 text-soft-white" />,
+                icon: <ShieldCheck className="w-8 h-8 text-white" />,
                 title: t.home.noExtremeDiets,
-                desc: t.home.noExtremeDietsDesc
+                desc: t.home.noExtremeDietsDesc,
+                bgColor: 'bg-sage-green'
               },
               {
-                icon: <Zap className="w-8 h-8 text-soft-white" />,
+                icon: <Zap className="w-8 h-8 text-white" />,
                 title: t.home.buildRealStrength,
-                desc: t.home.buildRealStrengthDesc
+                desc: t.home.buildRealStrengthDesc,
+                bgColor: 'bg-rose-blush'
               },
               {
-                icon: <Activity className="w-8 h-8 text-soft-white" />,
+                icon: <Activity className="w-8 h-8 text-white" />,
                 title: t.home.sustainableResults,
-                desc: t.home.sustainableResultsDesc
+                desc: t.home.sustainableResultsDesc,
+                bgColor: 'bg-soft-lavender'
               }
             ].map((item, idx) => (
-              <AnimatedElement key={idx} className="group bg-soft-white p-10 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-500 border border-warm-sand-beige/50">
-                <div className="flex flex-col md:flex-row gap-6 items-start">
-                  <div className="w-16 h-16 rounded-2xl bg-charcoal-black flex items-center justify-center flex-shrink-0 group-hover:bg-soft-bronze transition-colors duration-500">
+              <AnimatedElement key={idx} className="group bg-white p-12 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-500 border border-warm-cream/50">
+                <div className="flex flex-col md:flex-row gap-8 items-start">
+                  <div className={`w-16 h-16 rounded-2xl ${item.bgColor} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
                     {item.icon}
                   </div>
                   <div>
-                    <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-3 group-hover:text-soft-bronze transition-colors">
+                    <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4 group-hover:text-sage-green transition-colors">
                       {item.title}
                     </h3>
-                    <p className="text-warm-grey text-lg leading-relaxed">
+                    <p className="text-charcoal-black/70 text-lg leading-relaxed font-light">
                       {item.desc}
                     </p>
                   </div>
@@ -259,19 +261,19 @@ export default function HomePage() {
         </div>
       </section>
       {/* --- Sticky Signature Offer Section --- */}
-      <section className="relative bg-soft-white py-32 px-8 lg:px-20">
+      <section className="relative bg-warm-cream py-32 px-8 lg:px-24">
         <div className="max-w-[100rem] mx-auto">
-          <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+          <div className="flex flex-col lg:flex-row gap-20 lg:gap-32">
             
             {/* Left: Scrollable Details */}
             <div className="w-full lg:w-1/2 space-y-24">
               <div>
                 <AnimatedElement>
-                  <span className="text-soft-bronze font-medium tracking-widest uppercase mb-4 block">The Signature Package</span>
+                  <span className="text-sage-green font-medium tracking-widest uppercase mb-4 block text-sm">The Signature Package</span>
                   <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-8">
                     {t.home.everythingYouNeed}
                   </h2>
-                  <p className="text-xl text-warm-grey leading-relaxed">
+                  <p className="text-xl text-charcoal-black/70 leading-relaxed font-light">
                     {t.home.everythingYouNeedDesc}
                   </p>
                 </AnimatedElement>
@@ -306,7 +308,7 @@ export default function HomePage() {
                       <div className="absolute inset-0 bg-charcoal-black/10 group-hover:bg-transparent transition-colors" />
                     </div>
                     <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4">{feature.title}</h3>
-                    <p className="text-lg text-warm-grey leading-relaxed">{feature.desc}</p>
+                    <p className="text-lg text-charcoal-black/70 leading-relaxed font-light">{feature.desc}</p>
                   </AnimatedElement>
                 ))}
               </div>
@@ -315,20 +317,21 @@ export default function HomePage() {
             {/* Right: Sticky Pricing Card */}
             <div className="w-full lg:w-1/2 relative">
               <div className="sticky top-32">
-                <div className="bg-charcoal-black text-soft-white p-10 md:p-14 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
-                  {/* Decorative background element */}
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-soft-bronze/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+                <div className="bg-gradient-to-br from-charcoal-black to-charcoal-black/95 text-white p-12 md:p-16 rounded-3xl shadow-xl relative overflow-hidden">
+                  {/* Decorative background elements */}
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-sage-green/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+                  <div className="absolute bottom-0 left-0 w-48 h-48 bg-rose-blush/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
                   
                   <div className="relative z-10">
-                    <h3 className="font-heading text-4xl font-bold mb-2">{t.home.monthlyCoaching}</h3>
-                    <p className="text-warm-grey mb-10">{t.home.cancelAnytime}</p>
+                    <h3 className="font-heading text-4xl font-bold mb-3">{t.home.monthlyCoaching}</h3>
+                    <p className="text-white/70 mb-12 font-light">{t.home.cancelAnytime}</p>
                     
-                    <div className="flex items-baseline gap-2 mb-10">
-                      <span className="font-heading text-7xl font-bold text-soft-bronze">£150</span>
-                      <span className="text-xl text-warm-grey">/ month</span>
+                    <div className="flex items-baseline gap-3 mb-12">
+                      <span className="font-heading text-7xl font-bold bg-gradient-to-r from-sage-green to-rose-blush bg-clip-text text-transparent">£150</span>
+                      <span className="text-xl text-white/70 font-light">/ month</span>
                     </div>
 
-                    <div className="space-y-4 mb-12">
+                    <div className="space-y-5 mb-12">
                       {[
                         t.home.customTrainingApp,
                         t.home.formAnalysis,
@@ -337,21 +340,21 @@ export default function HomePage() {
                         t.home.monthlyStrategyCalls
                       ].map((item, i) => (
                         <div key={i} className="flex items-center gap-4">
-                          <div className="w-6 h-6 rounded-full bg-soft-bronze/20 flex items-center justify-center flex-shrink-0">
-                            <CheckCircle size={14} className="text-soft-bronze" />
+                          <div className="w-6 h-6 rounded-full bg-sage-green/30 flex items-center justify-center flex-shrink-0">
+                            <CheckCircle size={14} className="text-sage-green" />
                           </div>
-                          <span className="text-lg text-soft-white/90">{item}</span>
+                          <span className="text-lg text-white/90 font-light">{item}</span>
                         </div>
                       ))}
                     </div>
 
                     <Link
                       to="/store"
-                      className="block w-full bg-soft-bronze text-soft-white text-center py-5 rounded-xl font-medium text-lg hover:bg-soft-white hover:text-charcoal-black transition-all duration-300"
+                      className="block w-full bg-gradient-to-r from-sage-green to-rose-blush text-white text-center py-6 rounded-full font-medium text-lg hover:shadow-lg hover:shadow-sage-green/30 transition-all duration-300"
                     >
                       {t.home.secureYourSpot}
                     </Link>
-                    <p className="text-center text-sm text-warm-grey mt-4">{t.home.limitedSpaces}</p>
+                    <p className="text-center text-sm text-white/60 mt-6 font-light">{t.home.limitedSpaces}</p>
                   </div>
                 </div>
               </div>
@@ -362,14 +365,14 @@ export default function HomePage() {
       </section>
       {/* --- Testimonials (Horizontal Scroll) --- */}
       {testimonials.length > 0 && (
-        <section className="py-32 bg-warm-sand-beige overflow-hidden">
-          <div className="px-8 lg:px-20 mb-16 flex flex-col md:flex-row justify-between items-end gap-8 max-w-[100rem] mx-auto">
+        <section className="py-32 bg-gradient-to-b from-rose-blush/10 to-soft-lavender/10 overflow-hidden">
+          <div className="px-8 lg:px-24 mb-16 flex flex-col md:flex-row justify-between items-end gap-8 max-w-[100rem] mx-auto">
             <div className="max-w-2xl">
               <AnimatedElement>
                 <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-6">
                   {t.home.realWomen}
                 </h2>
-                <p className="text-xl text-charcoal-black/70">
+                <p className="text-xl text-charcoal-black/70 font-light">
                   {t.home.realWomenDesc}
                 </p>
               </AnimatedElement>
@@ -383,13 +386,13 @@ export default function HomePage() {
           </div>
 
           {/* Scroll Container */}
-          <div className="flex overflow-x-auto snap-x snap-mandatory pb-12 px-8 lg:px-20 gap-8 no-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <div className="flex overflow-x-auto snap-x snap-mandatory pb-12 px-8 lg:px-24 gap-8 no-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             {testimonials.map((testimonial, index) => (
               <div 
                 key={testimonial._id} 
-                className="snap-center flex-shrink-0 w-[85vw] md:w-[600px] bg-soft-white rounded-3xl p-8 md:p-12 shadow-sm relative group hover:shadow-xl transition-all duration-500"
+                className="snap-center flex-shrink-0 w-[85vw] md:w-[600px] bg-white rounded-2xl p-10 md:p-12 shadow-sm relative group hover:shadow-lg transition-all duration-500 border border-warm-cream/50"
               >
-                <div className="absolute top-12 right-12 text-soft-bronze opacity-20">
+                <div className="absolute top-12 right-12 text-sage-green opacity-20">
                   <Star size={48} fill="currentColor" />
                 </div>
                 
@@ -397,7 +400,7 @@ export default function HomePage() {
                   <div>
                     <div className="flex gap-1 mb-8">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={16} className="text-soft-bronze" fill="currentColor" />
+                        <Star key={i} size={16} className="text-sage-green" fill="currentColor" />
                       ))}
                     </div>
                     <p className="font-heading text-2xl md:text-3xl text-charcoal-black leading-snug mb-8">
@@ -405,9 +408,9 @@ export default function HomePage() {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-6 pt-8 border-t border-warm-sand-beige">
+                  <div className="flex items-center gap-6 pt-8 border-t border-warm-cream/50">
                     {testimonial.transformationImage ? (
-                      <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-soft-white shadow-md">
+                      <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-sage-green/20 shadow-md">
                         <Image
                           src={testimonial.transformationImage}
                           alt={testimonial.clientName || "Client"}
@@ -416,18 +419,18 @@ export default function HomePage() {
                         />
                       </div>
                     ) : (
-                      <div className="w-16 h-16 rounded-full bg-warm-sand-beige flex items-center justify-center text-charcoal-black font-bold text-xl">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-sage-green/20 to-rose-blush/20 flex items-center justify-center text-charcoal-black font-bold text-xl">
                         {testimonial.clientName?.charAt(0)}
                       </div>
                     )}
                     <div>
                       <h4 className="font-bold text-lg text-charcoal-black">{testimonial.clientName}</h4>
-                      <div className="flex flex-col sm:flex-row sm:gap-3 text-sm text-warm-grey">
+                      <div className="flex flex-col sm:flex-row sm:gap-3 text-sm text-charcoal-black/60">
                         {testimonial.clientAgeRange && <span>{testimonial.clientAgeRange}</span>}
                         {testimonial.keyAchievement && (
                           <>
                             <span className="hidden sm:inline">•</span>
-                            <span className="text-soft-bronze font-medium">{testimonial.keyAchievement}</span>
+                            <span className="text-sage-green font-medium">{testimonial.keyAchievement}</span>
                           </>
                         )}
                       </div>
@@ -442,34 +445,34 @@ export default function HomePage() {
         </section>
       )}
       {/* --- Final CTA --- */}
-      <section className="relative py-32 px-8 lg:px-20 bg-charcoal-black overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
+      <section className="relative py-32 px-8 lg:px-24 bg-gradient-to-br from-charcoal-black via-charcoal-black to-charcoal-black/95 overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
            <Image
               src="https://static.wixstatic.com/media/93e866_2d4f518df7c941ac89afe5c8f996af14~mv2.png?originWidth=1600&originHeight=768"
               alt="Texture"
-              className="w-full h-full object-cover grayscale"
+              className="w-full h-full object-cover"
               width={1600}
             />
         </div>
         
         <div className="relative z-10 max-w-5xl mx-auto text-center">
           <AnimatedElement>
-            <h2 className="font-heading text-6xl md:text-8xl font-bold text-soft-white mb-10 tracking-tight">
-              {t.home.readyToFeel} <span className="text-soft-bronze">stronger?</span>
+            <h2 className="font-heading text-6xl md:text-8xl font-bold text-white mb-10 tracking-tight">
+              {t.home.readyToFeel} <span className="bg-gradient-to-r from-sage-green to-rose-blush bg-clip-text text-transparent">stronger?</span>
             </h2>
-            <p className="text-xl md:text-2xl text-warm-grey mb-12 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
               {t.home.readyToFeelDesc}
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Link
                 to="/store"
-                className="w-full sm:w-auto bg-soft-bronze text-soft-white px-12 py-6 rounded-full font-medium text-xl hover:bg-soft-white hover:text-charcoal-black transition-all duration-300 shadow-lg shadow-soft-bronze/20"
+                className="w-full sm:w-auto bg-gradient-to-r from-sage-green to-rose-blush text-white px-14 py-6 rounded-full font-medium text-xl hover:shadow-lg hover:shadow-sage-green/30 transition-all duration-300"
               >
-                Book Your Package (£150/mo)
+                Begin your journey (£150/mo)
               </Link>
               <Link
                 to="/about"
-                className="w-full sm:w-auto px-12 py-6 rounded-full border border-warm-grey/30 text-soft-white font-medium text-xl hover:bg-white/5 transition-colors"
+                className="w-full sm:w-auto px-14 py-6 rounded-full border-2 border-white/30 text-white font-medium text-xl hover:bg-white/10 hover:border-white/50 transition-all duration-300"
               >
                 {t.home.learnMoreAboutMe}
               </Link>
