@@ -106,7 +106,7 @@ export default function HomePage() {
         </Link>
       </motion.div>
       {/* --- Hero Section --- */}
-      <section className="relative min-h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-gradient-to-br from-white via-white to-warm-cream/20">
+      <section className="relative min-h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-gradient-to-br from-sage-green via-sage-green/80 to-rose-blush">
         {/* Subtle gradient overlay for refined effect */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-warm-bronze/3 to-transparent pointer-events-none" />
         
