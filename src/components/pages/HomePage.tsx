@@ -707,7 +707,7 @@ export default function HomePage() {
         <div className="relative z-10 max-w-5xl mx-auto text-center">
           <AnimatedElement>
             <h2 className="font-heading text-6xl md:text-8xl font-bold text-white mb-10 tracking-tight">
-              {t.home.readyToFeel} <span className="bg-gradient-to-r from-sage-green to-rose-blush bg-clip-text text-transparent">stronger?</span>
+              {t.home.readyToFeel} <span className="bg-gradient-to-r from-[#a8b8a8] to-[#d4a8a8] bg-clip-text text-transparent">stronger?</span>
             </h2>
             <p className="text-xl md:text-2xl text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
               {t.home.readyToFeelDesc}
