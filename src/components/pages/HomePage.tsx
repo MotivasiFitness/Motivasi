@@ -79,6 +79,32 @@ export default function HomePage() {
       />
       {/* --- Hero Section --- */}
       <section className="relative min-h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-gradient-to-br from-warm-cream via-rose-blush/5 to-soft-lavender/10">
+        {/* Decorative Botanical Elements - Top Left */}
+        <motion.div
+          className="absolute top-12 left-8 lg:left-16 w-32 h-32 opacity-15 pointer-events-none"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 0.15, scale: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+        >
+          <svg viewBox="0 0 100 100" className="w-full h-full text-sage-green">
+            <path d="M50 10 Q60 30 50 50 Q40 30 50 10 M50 50 Q70 60 50 70 Q30 60 50 50 M50 50 Q60 40 70 50 Q60 60 50 50 M50 50 Q40 40 30 50 Q40 60 50 50" stroke="currentColor" strokeWidth="1.5" fill="none" />
+            <circle cx="50" cy="50" r="3" fill="currentColor" />
+          </svg>
+        </motion.div>
+
+        {/* Decorative Botanical Elements - Bottom Right */}
+        <motion.div
+          className="absolute bottom-20 right-8 lg:right-16 w-40 h-40 opacity-10 pointer-events-none"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 0.1, scale: 1 }}
+          transition={{ duration: 1.4, delay: 0.2, ease: "easeOut" }}
+        >
+          <svg viewBox="0 0 100 100" className="w-full h-full text-rose-blush">
+            <path d="M50 20 L60 40 L80 40 L65 55 L75 75 L50 60 L25 75 L35 55 L20 40 L40 40 Z" stroke="currentColor" strokeWidth="1" fill="none" />
+            <circle cx="50" cy="50" r="2" fill="currentColor" />
+          </svg>
+        </motion.div>
+
         {/* Left Content */}
         <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-24 py-24 lg:py-0 z-10">
           <div className="max-w-2xl">
@@ -88,7 +114,16 @@ export default function HomePage() {
               </span>
             </AnimatedElement>
             
+            {/* Gradient Overlay Background for Text */}
             <div className="relative z-20">
+              {/* Subtle gradient backdrop behind heading */}
+              <motion.div
+                className="absolute -inset-8 bg-gradient-to-br from-rose-blush/20 via-soft-lavender/15 to-transparent rounded-3xl blur-2xl -z-10"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.5, ease: "easeOut" }}
+              />
+              
               <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl font-bold text-charcoal-black leading-[1.1] mb-12 tracking-tight">
                 <span className="block overflow-hidden">
                   <motion.span 
@@ -135,6 +170,21 @@ export default function HomePage() {
                 {t.home.myPhilosophy}
               </Link>
             </AnimatedElement>
+
+            {/* Decorative Floral Divider */}
+            <motion.div
+              className="mt-16 flex items-center gap-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1.2, delay: 0.6 }}
+            >
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-sage-green/30 to-transparent" />
+              <svg className="w-6 h-6 text-sage-green/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M12 2C12 2 8 6 8 10C8 13.3 10 16 12 16C14 16 16 13.3 16 10C16 6 12 2 12 2Z" />
+                <path d="M12 16C12 16 10 18 10 20C10 21.1 11 22 12 22C13 22 14 21.1 14 20C14 18 12 16 12 16Z" />
+              </svg>
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-rose-blush/30 to-transparent" />
+            </motion.div>
           </div>
         </div>
 
