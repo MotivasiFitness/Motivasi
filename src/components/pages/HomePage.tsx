@@ -479,8 +479,8 @@ export default function HomePage() {
                     <p className="text-white/70 mb-12 font-light">{t.home.cancelAnytime}</p>
                     
                     <div className="flex items-baseline gap-3 mb-12">
-                      <span className="font-heading text-7xl font-bold text-rose-blush">£150</span>
-                      <span className="text-xl text-white/70 font-light">/ month</span>
+                      <span className="font-heading text-7xl font-bold text-rose-blush">£499</span>
+                      <span className="text-xl text-white/70 font-light">/ 12 weeks</span>
                     </div>
 
                     <div className="space-y-5 mb-12">
