@@ -23,28 +23,33 @@ export default {
                 paragraph: "sora-light"
             },
             colors: {
-                // Standard Professional Palette
+                // New warm, inviting palette
+                'rose-blush': '#FBE8F0',
+                'soft-lavender': '#F4E4F1',
+                'sage-green': '#E8F4F1',
+                'warm-cream': '#FFF8E8',
+                // Neutral palette
                 'charcoal-black': '#1a1a1a',
                 'dark-gray': '#2d2d2d',
                 'medium-gray': '#666666',
                 'light-gray': '#f0f0f0',
                 'white': '#ffffff',
+                // Legacy colors (kept for backward compatibility)
                 'accent-blue': '#0066cc',
                 'accent-teal': '#00a8a8',
-                // Warm palette colors
-                'soft-white': '#f5f3f0',
+                'soft-white': '#FFF8E8',
                 'warm-sand-beige': '#e8ddd5',
                 'soft-bronze': '#c9a876',
                 'warm-grey': '#8b8680',
                 // Semantic color mappings
                 destructive: '#D32F2F',
                 'destructive-foreground': '#FFFFFF',
-                background: '#ffffff',
-                secondary: '#f0f0f0',
+                background: '#FFF8E8',
+                secondary: '#F4E4F1',
                 foreground: '#1a1a1a',
                 'secondary-foreground': '#666666',
                 'primary-foreground': '#ffffff',
-                primary: '#0066cc'
+                primary: '#FBE8F0'
             },
         },
     },
