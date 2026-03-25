@@ -454,7 +454,7 @@ export default function OnlineTrainingPage() {
                 to="/online-training"
                 className="flex-1 bg-charcoal-black text-soft-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-soft-bronze transition-colors text-center"
               >
-                View Online Coaching Options
+                Book Your Free 10‑Minute Call
               </Link>
               <Link
                 to="/blog"
