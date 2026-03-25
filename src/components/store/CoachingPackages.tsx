@@ -25,11 +25,11 @@ const packages: Package[] = [
     id: 'online',
     title: 'Online Coaching',
     description: 'Personalised online coaching with weekly check-ins and nutrition guidance.',
-    duration: 'per month',
+    duration: '/ 12 weeks',
     prices: {
-      GBP: 150,
-      USD: 200,
-      EUR: 170,
+      GBP: 499,
+      USD: 665,
+      EUR: 570,
     },
     features: [
       'Custom Training Platform Access',
