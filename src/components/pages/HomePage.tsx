@@ -516,36 +516,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      {/* --- CTA After Pricing Section (Increased Visibility) --- */}
-      <section className="relative py-20 px-8 lg:px-24 bg-gradient-to-r from-rose-blush/90 to-rose-blush/80 overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-sage-green rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-0 w-80 h-80 bg-white rounded-full blur-3xl" />
-        </div>
-        
-        <div className="relative z-10 max-w-[100rem] mx-auto text-center">
-          <AnimatedElement>
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-charcoal-black mb-4">
-              Ready to transform your fitness?
-            </h2>
-            <p className="text-lg text-charcoal-black/95 mb-8 max-w-2xl mx-auto font-light">
-              Secure your spot in my coaching program today. Limited spaces available each month.
-            </p>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300, damping: 10 }}
-              className="inline-block"
-            >
-              <Link
-                to="/store"
-                className="inline-flex items-center gap-3 bg-sage-green text-white px-12 py-5 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-sage-green/40 transition-all duration-300"
-              >
-                Book Your Package <ArrowRight className="w-5 h-5" />
-              </Link>
-            </motion.div>
-          </AnimatedElement>
-        </div>
-      </section>
       {/* --- Early CTA Section (Reduced Friction) --- */}
       <section className="relative py-24 px-8 lg:px-24 bg-gradient-to-r from-sage-green/95 to-sage-green overflow-hidden">
         <div className="absolute inset-0 opacity-5">
