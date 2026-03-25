@@ -139,7 +139,7 @@ export default function AboutPage() {
         </div>
       </section>
       {/* Qualifications Section */}
-      <section className="py-24 px-8 lg:px-20 bg-warm-sand-beige/40">
+      <section className="py-24 px-8 lg:px-20 bg-white">
         <div className="max-w-[100rem] mx-auto">
           <div className="text-center mb-16">
             <div className="w-16 h-16 bg-soft-bronze rounded-full flex items-center justify-center mx-auto mb-6">
