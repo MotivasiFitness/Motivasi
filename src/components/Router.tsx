@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { MemberProvider } from '@/integrations';
 import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
 import { ScrollToTop } from '@/lib/scroll-to-top';
@@ -11,6 +11,7 @@ import { defaultStoreCollectionRouteRedirectLoader } from '@/wix-verticals/react
 import { Cart } from '@/wix-verticals/react-pages/react-router/routes/cart';
 import { MemberProtectedRoute } from '@/components/ui/member-protected-route';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { initializeSafariOptimizations } from '@/lib/safari-optimization';
 
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -85,6 +86,11 @@ function SiteLayout() {
 
 // Root Layout with WixServicesProvider
 function RootLayout() {
+  useEffect(() => {
+    // Initialize Safari optimizations on app mount
+    initializeSafariOptimizations();
+  }, []);
+
   return (
     <WixServicesProvider>
       <ScrollToTop />

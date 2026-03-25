@@ -4,17 +4,30 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== SAFARI-SPECIFIC OPTIMIZATIONS ===== */
+
 /* Mobile-First Optimization */
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Safari: Prevent text size adjustment on orientation change */
+  -webkit-text-size-adjust: 100%;
+  /* Safari: Enable hardware acceleration */
+  -webkit-transform: translateZ(0);
+  /* Safari: Improve font rendering */
+  -webkit-font-feature-settings: "kern" 1;
+  font-feature-settings: "kern" 1;
 }
 
 body {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   overscroll-behavior-y: contain;
+  /* Safari: Fix for sticky positioning issues */
+  -webkit-backface-visibility: hidden;
+  /* Safari: Improve scrolling performance */
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Prevent layout shift on iOS */
@@ -22,6 +35,65 @@ input,
 textarea,
 select {
   font-size: 16px;
+  /* Safari: Fix for input zoom on focus */
+  -webkit-appearance: none;
+  appearance: none;
+  /* Safari: Improve input rendering */
+  -webkit-border-radius: 0;
+}
+
+/* Safari: Fix for button styling */
+button,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-border-radius: 0;
+  cursor: pointer;
+}
+
+/* Safari: Improve link styling */
+a {
+  -webkit-touch-callout: default;
+  /* Safari: Prevent color change on visited links in some cases */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Safari: Fix for select elements */
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+/* Safari: Fix for checkbox and radio styling */
+input[type="checkbox"],
+input[type="radio"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid currentColor;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+input[type="radio"] {
+  border-radius: 50%;
+}
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  background-color: currentColor;
 }
 
 /* Safe area support for notched devices */
@@ -29,6 +101,81 @@ select {
   body {
     padding-left: max(0px, env(safe-area-inset-left));
     padding-right: max(0px, env(safe-area-inset-right));
+  }
+  
+  /* Safari: Safe area for header */
+  .safe-area-top {
+    padding-top: max(0px, env(safe-area-inset-top));
+  }
+  
+  /* Safari: Safe area for bottom navigation */
+  .safe-area-bottom {
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+}
+
+/* Safari: Fix for position: fixed elements with safe area */
+@supports (padding: max(0px)) {
+  .fixed-with-safe-area {
+    left: max(0px, env(safe-area-inset-left));
+    right: max(0px, env(safe-area-inset-right));
+  }
+}
+
+/* Safari: Improve animation performance */
+* {
+  /* Enable GPU acceleration for animations */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Safari: Fix for backdrop-filter (blur effects) */
+@supports (backdrop-filter: blur(10px)) {
+  .backdrop-blur {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* Safari: Fix for sticky positioning */
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+}
+
+/* Safari: Improve scrolling on iOS */
+.overflow-y-auto,
+.overflow-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Safari: Fix for transform-origin with perspective */
+@supports (perspective: 1000px) {
+  .perspective {
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+  }
+}
+
+/* Safari: Improve text rendering in dark mode */
+@media (prefers-color-scheme: dark) {
+  html {
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+}
+
+/* Safari: Fix for aspect-ratio (fallback for older versions) */
+@supports not (aspect-ratio: 1) {
+  .aspect-video::before {
+    content: '';
+    float: left;
+    padding-bottom: 56.25%;
+  }
+  
+  .aspect-square::before {
+    content: '';
+    float: left;
+    padding-bottom: 100%;
   }
 }
 
