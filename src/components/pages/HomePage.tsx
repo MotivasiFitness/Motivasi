@@ -404,86 +404,162 @@ export default function HomePage() {
           </AnimatedElement>
         </div>
       </section>
-      {/* --- Sticky Signature Offer Section --- */}
+
+      {/* --- Everything You Need to Succeed Section --- */}
       <section className="relative bg-gradient-to-b from-warm-cream via-warm-cream/5 to-white py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24">
         <div className="max-w-[100rem] mx-auto">
-          <div className="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-20 xl:gap-32">
-            
-            {/* Left: Scrollable Details */}
-            <div className="w-full lg:w-1/2 space-y-12 md:space-y-16 lg:space-y-24 flex flex-col">
-              <div>
-                <AnimatedElement>
-                  <span className="text-sage-green font-medium tracking-widest uppercase mb-3 md:mb-4 block text-xs md:text-sm">The Signature Package</span>
-                  <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-charcoal-black mb-4 md:mb-6 lg:mb-8 leading-tight">
-                    {t.home.everythingYouNeed}
-                  </h2>
-                  <p className="text-base md:text-lg lg:text-xl text-charcoal-black/70 leading-relaxed font-light">
-                    {t.home.everythingYouNeedDesc}
-                  </p>
-                </AnimatedElement>
-              </div>
-
-              <div className="space-y-8 md:space-y-12 lg:space-y-16">
-                {[
-                  {
-                    title: t.home.fourPersonalised,
-                    desc: t.home.fourPersonalisedDesc,
-                    image: "https://static.wixstatic.com/media/93e866_7d48abe991484564b3dbdd6baf6b5d8a~mv2.png?originWidth=768&originHeight=448"
-                  },
-                  {
-                    title: t.home.weeklyCheckIns,
-                    desc: t.home.weeklyCheckInsDesc,
-                    image: "https://static.wixstatic.com/media/93e866_cabe766402e14ec98f048ee9b1a0a4eb~mv2.png?originWidth=768&originHeight=448"
-                  },
-                  {
-                    title: t.home.nutritionGuidance,
-                    desc: t.home.nutritionGuidanceDesc,
-                    image: "https://static.wixstatic.com/media/93e866_29519bae313f4a8aa77d31574d6fa866~mv2.png?originWidth=768&originHeight=448"
-                  }
-                ].map((feature, i) => (
-                  <AnimatedElement key={i} className="group">
-                    <div className="aspect-[16/9] rounded-lg md:rounded-xl lg:rounded-2xl overflow-hidden mb-3 md:mb-4 lg:mb-6 relative">
-                      <Image 
-                        src={feature.image} 
-                        alt={feature.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        width={800}
-                      />
-                      <div className="absolute inset-0 bg-charcoal-black/10 group-hover:bg-transparent transition-colors" />
-                    </div>
-                    <h3 className="font-heading text-xl md:text-2xl lg:text-3xl font-bold text-charcoal-black mb-2 md:mb-3 lg:mb-4">{feature.title}</h3>
-                    <p className="text-sm md:text-base lg:text-lg text-charcoal-black/70 leading-relaxed font-light">{feature.desc}</p>
-                  </AnimatedElement>
-                ))}
-              </div>
+          <div className="w-full space-y-12 md:space-y-16 lg:space-y-24 flex flex-col">
+            <div>
+              <AnimatedElement>
+                <span className="text-sage-green font-medium tracking-widest uppercase mb-3 md:mb-4 block text-xs md:text-sm">The Signature Package</span>
+                <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-charcoal-black mb-4 md:mb-6 lg:mb-8 leading-tight">
+                  {t.home.everythingYouNeed}
+                </h2>
+                <p className="text-base md:text-lg lg:text-xl text-charcoal-black/70 leading-relaxed font-light">
+                  {t.home.everythingYouNeedDesc}
+                </p>
+              </AnimatedElement>
             </div>
 
-            {/* Right: Sticky Pricing Card */}
-            <div className="w-full lg:w-1/2 relative">
-              <div className="sticky top-32">
+            <div className="space-y-8 md:space-y-12 lg:space-y-16">
+              {[
+                {
+                  title: t.home.fourPersonalised,
+                  desc: t.home.fourPersonalisedDesc,
+                  image: "https://static.wixstatic.com/media/93e866_7d48abe991484564b3dbdd6baf6b5d8a~mv2.png?originWidth=768&originHeight=448"
+                },
+                {
+                  title: t.home.weeklyCheckIns,
+                  desc: t.home.weeklyCheckInsDesc,
+                  image: "https://static.wixstatic.com/media/93e866_cabe766402e14ec98f048ee9b1a0a4eb~mv2.png?originWidth=768&originHeight=448"
+                },
+                {
+                  title: t.home.nutritionGuidance,
+                  desc: t.home.nutritionGuidanceDesc,
+                  image: "https://static.wixstatic.com/media/93e866_29519bae313f4a8aa77d31574d6fa866~mv2.png?originWidth=768&originHeight=448"
+                }
+              ].map((feature, i) => (
+                <AnimatedElement key={i} className="group">
+                  <div className="aspect-[16/9] rounded-lg md:rounded-xl lg:rounded-2xl overflow-hidden mb-3 md:mb-4 lg:mb-6 relative">
+                    <Image 
+                      src={feature.image} 
+                      alt={feature.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      width={800}
+                    />
+                    <div className="absolute inset-0 bg-charcoal-black/10 group-hover:bg-transparent transition-colors" />
+                  </div>
+                  <h3 className="font-heading text-xl md:text-2xl lg:text-3xl font-bold text-charcoal-black mb-2 md:mb-3 lg:mb-4">{feature.title}</h3>
+                  <p className="text-sm md:text-base lg:text-lg text-charcoal-black/70 leading-relaxed font-light">{feature.desc}</p>
+                </AnimatedElement>
+              ))}</div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- Invest in Yourself Hero Section --- */}
+      <section className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-soft-lavender via-soft-lavender/80 to-rose-blush/30 py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24">
+        {/* Subtle gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-warm-bronze/3 to-transparent pointer-events-none" />
+        
+        {/* Decorative Botanical Elements - Top Right */}
+        <motion.div
+          className="absolute top-0 right-0 w-96 h-96 opacity-8 pointer-events-none"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 0.08, scale: 1 }}
+          transition={{ duration: 1.4, ease: "easeOut" }}
+        >
+          <svg viewBox="0 0 200 200" className="w-full h-full text-rose-blush" preserveAspectRatio="none">
+            <path d="M200 0 Q180 20 170 40 Q160 60 165 80 Q170 100 160 120 Q150 140 155 160 Q160 180 150 200" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+            <path d="M170 40 Q175 35 180 40 Q175 45 170 40" stroke="currentColor" strokeWidth="0.8" fill="none" />
+            <path d="M165 80 Q172 75 178 82 Q171 87 165 80" stroke="currentColor" strokeWidth="0.8" fill="none" />
+            <path d="M160 120 Q168 115 175 123 Q167 128 160 120" stroke="currentColor" strokeWidth="0.8" fill="none" />
+            <path d="M155 160 Q163 155 170 163 Q162 168 155 160" stroke="currentColor" strokeWidth="0.8" fill="none" />
+          </svg>
+        </motion.div>
+
+        {/* Decorative Botanical Elements - Bottom Left */}
+        <motion.div
+          className="absolute bottom-0 left-0 w-80 h-80 opacity-6 pointer-events-none"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 0.06, scale: 1 }}
+          transition={{ duration: 1.4, delay: 0.2, ease: "easeOut" }}
+        >
+          <svg viewBox="0 0 200 200" className="w-full h-full text-sage-green" preserveAspectRatio="none">
+            <path d="M0 200 Q20 180 30 160 Q40 140 35 120 Q30 100 40 80 Q50 60 45 40 Q40 20 50 0" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+            <path d="M30 160 Q25 165 20 160 Q25 155 30 160" stroke="currentColor" strokeWidth="0.8" fill="none" />
+            <path d="M35 120 Q28 125 22 118 Q29 113 35 120" stroke="currentColor" strokeWidth="0.8" fill="none" />
+            <path d="M40 80 Q32 85 25 77 Q33 72 40 80" stroke="currentColor" strokeWidth="0.8" fill="none" />
+            <path d="M45 40 Q37 45 30 37 Q38 32 45 40" stroke="currentColor" strokeWidth="0.8" fill="none" />
+          </svg>
+        </motion.div>
+
+        {/* Content Container */}
+        <div className="relative z-10 max-w-[100rem] mx-auto w-full">
+          <div className="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-20 items-center">
+            
+            {/* Left: Text Content */}
+            <div className="w-full lg:w-1/2 flex flex-col justify-center">
+              <AnimatedElement className="mb-8">
+                <span className="inline-block py-2 px-4 border border-rose-blush/40 rounded-full text-charcoal-black text-sm tracking-widest uppercase font-medium bg-rose-blush/5">
+                  Premium Investment
+                </span>
+              </AnimatedElement>
+
+              <div className="relative z-20 mb-12">
+                <motion.div
+                  className="absolute -inset-8 bg-gradient-to-br from-rose-blush/20 via-soft-lavender/15 to-transparent rounded-3xl blur-2xl -z-10"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                />
+                
+                <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-black text-charcoal-black leading-[1.1] mb-8 tracking-tight">
+                  Invest in Yourself
+                </h2>
+              </div>
+
+              <AnimatedElement className="mb-12 delay-300">
+                <p className="text-lg md:text-xl lg:text-2xl text-charcoal-black/70 leading-relaxed max-w-lg font-light tracking-wide">
+                  Transform your fitness journey with personalized coaching designed for your life. Limited spaces available.
+                </p>
+              </AnimatedElement>
+
+              {/* Decorative Floral Divider */}
+              <motion.div
+                className="mb-12 flex items-center gap-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.2, delay: 0.6 }}
+              >
+                <div className="flex-1 h-px bg-gradient-to-r from-transparent via-rose-blush/30 to-transparent" />
+                <svg className="w-6 h-6 text-rose-blush/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M12 2C12 2 8 6 8 10C8 13.3 10 16 12 16C14 16 16 13.3 16 10C16 6 12 2 12 2Z" />
+                  <path d="M12 16C12 16 10 18 10 20C10 21.1 11 22 12 22C13 22 14 21.1 14 20C14 18 12 16 12 16Z" />
+                </svg>
+                <div className="flex-1 h-px bg-gradient-to-r from-transparent via-sage-green/30 to-transparent" />
+              </motion.div>
+            </div>
+
+            {/* Right: Pricing Card */}
+            <div className="w-full lg:w-1/2 flex items-center justify-center">
+              <div className="w-full max-w-md">
                 {/* Pricing Section Background Wrapper */}
-                <div className="bg-gradient-to-br from-soft-lavender to-rose-blush/20 p-12 md:p-16 rounded-3xl shadow-lg">
-                  {/* Section Title */}
-                  <h2 className="font-heading text-4xl md:text-5xl font-bold text-charcoal-black mb-12 text-center">
-                    Invest in Yourself
-                  </h2>
-                  
-                  {/* Pricing Card */}
-                  <div className="bg-gradient-to-br from-dark-gray to-dark-gray/95 text-white p-12 md:p-16 rounded-2xl shadow-2xl relative overflow-hidden border-t-4 border-t-rose-blush">
+                <div className="bg-gradient-to-br from-dark-gray to-dark-gray/95 p-10 md:p-14 rounded-3xl shadow-2xl relative overflow-hidden border-t-4 border-t-rose-blush">
                   {/* Decorative background elements */}
                   <div className="absolute top-0 right-0 w-64 h-64 bg-sage-green/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
                   <div className="absolute bottom-0 left-0 w-48 h-48 bg-rose-blush/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
                   
                   <div className="relative z-10">
-                    <h3 className="font-heading text-4xl font-bold mb-3">{t.home.monthlyCoaching}</h3>
-                    <p className="text-white/70 mb-12 font-light">{t.home.cancelAnytime}</p>
+                    <h3 className="font-heading text-3xl md:text-4xl font-bold mb-3 text-white">{t.home.monthlyCoaching}</h3>
+                    <p className="text-white/70 mb-10 font-light text-sm md:text-base">{t.home.cancelAnytime}</p>
                     
-                    <div className="flex items-baseline gap-3 mb-12">
-                      <span className="font-heading text-7xl font-bold text-rose-blush">£499</span>
-                      <span className="text-xl text-white/70 font-light">/ 12 weeks</span>
+                    <div className="flex items-baseline gap-3 mb-10">
+                      <span className="font-heading text-6xl md:text-7xl font-bold text-rose-blush">£499</span>
+                      <span className="text-lg md:text-xl text-white/70 font-light">/ 12 weeks</span>
                     </div>
 
-                    <div className="space-y-5 mb-12">
+                    <div className="space-y-4 mb-10">
                       {[
                         t.home.customTrainingApp,
                         t.home.formAnalysis,
@@ -491,31 +567,35 @@ export default function HomePage() {
                         t.home.prioritySupport,
                         t.home.monthlyStrategyCalls
                       ].map((item, i) => (
-                        <div key={i} className="flex items-center gap-4">
-                          <div className="w-6 h-6 rounded-full bg-sage-green/30 flex items-center justify-center flex-shrink-0">
-                            <CheckCircle size={14} className="text-sage-green" />
+                        <div key={i} className="flex items-center gap-3">
+                          <div className="w-5 h-5 rounded-full bg-sage-green/30 flex items-center justify-center flex-shrink-0">
+                            <CheckCircle size={12} className="text-sage-green" />
                           </div>
-                          <span className="text-lg text-white/90 font-light">{item}</span>
+                          <span className="text-base md:text-lg text-white/90 font-light">{item}</span>
                         </div>
-                      ))}
-                    </div>
+                      ))}</div>
 
-                    <Link
-                      to="/store"
-                      className="block w-full bg-sage-green text-black text-center py-6 rounded-full font-medium text-lg hover:shadow-lg hover:shadow-sage-green/40 transition-all duration-300"
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                      className="mb-6"
                     >
-                      {t.home.secureYourSpot}
-                    </Link>
-                    <p className="text-center text-sm text-white/60 mt-6 font-light">{t.home.limitedSpaces}</p>
+                      <Link
+                        to="/store"
+                        className="block w-full bg-sage-green text-black text-center py-5 md:py-6 rounded-full font-medium text-lg hover:shadow-lg hover:shadow-sage-green/40 transition-all duration-300"
+                      >
+                        {t.home.secureYourSpot}
+                      </Link>
+                    </motion.div>
+                    <p className="text-center text-xs md:text-sm text-white/60 font-light">{t.home.limitedSpaces}</p>
                   </div>
-                </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
+
       {/* --- Early CTA Section (Reduced Friction) --- */}
       <section className="relative py-24 px-8 lg:px-24 bg-gradient-to-r from-sage-green/95 to-sage-green overflow-hidden">
         <div className="absolute inset-0 opacity-5">
