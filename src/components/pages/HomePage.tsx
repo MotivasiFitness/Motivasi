@@ -625,7 +625,7 @@ export default function HomePage() {
                             <Star 
                               key={i} 
                               size={24} 
-                              className={`font-bold ${index === 1 ? 'text-rose-blush' : index === 2 ? 'text-sage-green' : 'text-rose-blush'}`}
+                              className="font-bold text-charcoal-black"
                               fill="currentColor" 
                               strokeWidth={1.5}
                             />
