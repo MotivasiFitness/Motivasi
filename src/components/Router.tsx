@@ -29,6 +29,7 @@ const CheckoutPage = lazy(() => import('@/components/pages/CheckoutPage'));
 const PaymentSuccessPage = lazy(() => import('@/components/pages/PaymentSuccessPage'));
 const OnlineTrainingPage = lazy(() => import('@/components/pages/OnlineTrainingPage'));
 const PrivacyPage = lazy(() => import('@/components/pages/PrivacyPage'));
+const DataPrivacyPage = lazy(() => import('@/components/pages/DataPrivacyPage'));
 const TermsPage = lazy(() => import('@/components/pages/TermsPage'));
 const DisclaimerPage = lazy(() => import('@/components/pages/DisclaimerPage'));
 const AccessibilityPage = lazy(() => import('@/components/pages/AccessibilityPage'));
@@ -324,6 +325,14 @@ const router = createBrowserRouter([
             element: (
               <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
                 <ProfilePage />
+              </Suspense>
+            ),
+          },
+          {
+            path: "privacy",
+            element: (
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+                <DataPrivacyPage />
               </Suspense>
             ),
           },
