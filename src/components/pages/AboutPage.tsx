@@ -248,7 +248,7 @@ export default function AboutPage() {
       </section>
 
       {/* Get In Touch Section */}
-      <section id="get-in-touch" className="py-32 px-8 lg:px-20 bg-warm-sand-beige">
+      <section id="get-in-touch" className="py-32 px-8 lg:px-20 bg-white">
         <div className="max-w-[100rem] mx-auto">
           <div className="grid md:grid-cols-2 gap-16 items-start">
             {/* Left: Contact Info */}
