@@ -76,7 +76,7 @@ function Header() {
                   onClick={actions.logout}
                   className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors flex items-center gap-2"
                 >
-                  <LogOut size={16} />
+                  <LogOut size={16} className="text-white" />
                   Sign Out
                 </button>
               </>
@@ -100,7 +100,7 @@ function Header() {
               className="text-white"
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMenuOpen ? <X size={24} className="text-white" /> : <Menu size={24} className="text-white" />}
             </button>
           </div>
         </div>
@@ -163,7 +163,7 @@ function Header() {
                     }}
                     className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors flex items-center gap-2"
                   >
-                    <LogOut size={16} />
+                    <LogOut size={16} className="text-white" />
                     Sign Out
                   </button>
                 </>
