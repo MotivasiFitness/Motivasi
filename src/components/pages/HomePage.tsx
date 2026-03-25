@@ -99,10 +99,10 @@ export default function HomePage() {
         style={{ pointerEvents: showStickyButton ? 'auto' : 'none' }}
       >
         <Link
-          to="/store"
+          to="/online-training"
           className="group flex items-center gap-3 bg-warm-bronze text-charcoal-black px-8 py-4 rounded-full font-bold text-base shadow-lg hover:shadow-2xl hover:shadow-warm-bronze/40 transition-all duration-300 hover:scale-105"
         >
-          Book Your Package <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          Book Your Free 10‑Minute Call <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Link>
       </motion.div>
       {/* --- Hero Section --- */}
