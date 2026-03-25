@@ -573,14 +573,8 @@ export default function HomePage() {
                     viewport={{ once: true, margin: "-100px" }}
                     className={`group relative`}
                   >
-                    {/* Varied background colors for visual interest */}
-                    <div className={`h-full rounded-2xl p-8 md:p-10 shadow-md hover:shadow-2xl transition-all duration-500 border backdrop-blur-sm ${
-                      index === 1 
-                        ? 'bg-soft-lavender/80 border-soft-lavender/60 hover:border-soft-lavender'
-                        : index === 2
-                        ? 'bg-sage-green/10 border-sage-green/40 hover:border-sage-green/60'
-                        : 'bg-rose-blush/10 border-rose-blush/40 hover:border-rose-blush/60'
-                    }`}>
+                    {/* White background for all testimonials */}
+                    <div className={`h-full rounded-2xl p-8 md:p-10 shadow-md hover:shadow-2xl transition-all duration-500 border backdrop-blur-sm bg-white border-warm-cream/60 hover:border-warm-cream`}>
                       {/* Decorative star background */}
                       <div className={`absolute top-6 right-6 opacity-10 transition-opacity group-hover:opacity-20 ${
                         index === 1 ? 'text-rose-blush' : index === 2 ? 'text-sage-green' : 'text-rose-blush'
@@ -589,8 +583,8 @@ export default function HomePage() {
                       </div>
                       
                       <div className="flex flex-col h-full justify-between relative z-10">
-                        {/* Star Rating */}
-                        <div className="flex gap-2 mb-6">
+                        {/* Star Rating - Fixed height for alignment */}
+                        <div className="flex gap-2 mb-6 h-8">
                           {[...Array(5)].map((_, i) => (
                             <Star 
                               key={i} 
