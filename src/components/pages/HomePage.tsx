@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { CheckCircle, ArrowRight, Star, Activity, Heart, Zap, ShieldCheck } from 'lucide-react';
+import { CheckCircle, ArrowRight, Star, Activity, Heart, Zap, ShieldCheck, Dumbbell, Apple, Leaf } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { BaseCrudService } from '@/integrations';
 import { ClientTestimonials } from '@/entities';
@@ -328,7 +328,7 @@ export default function HomePage() {
               <div className="flex flex-col gap-8 items-start h-full">
                 <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-sage-green/40 shadow-md`}>
                   <div className="text-sage-green">
-                    <ShieldCheck className="w-6 h-6" />
+                    <Apple className="w-6 h-6" />
                   </div>
                 </div>
                 <div>
@@ -347,7 +347,7 @@ export default function HomePage() {
               <div className="flex flex-col gap-8 items-start h-full">
                 <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-rose-blush/40 shadow-md`}>
                   <div className="text-rose-blush">
-                    <Zap className="w-6 h-6" />
+                    <Dumbbell className="w-6 h-6" />
                   </div>
                 </div>
                 <div>
@@ -366,7 +366,7 @@ export default function HomePage() {
               <div className="flex flex-col gap-8 items-start h-full">
                 <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-soft-lavender/40 shadow-md`}>
                   <div className="text-soft-lavender">
-                    <Activity className="w-6 h-6" />
+                    <Leaf className="w-6 h-6" />
                   </div>
                 </div>
                 <div>
