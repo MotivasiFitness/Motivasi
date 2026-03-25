@@ -405,8 +405,8 @@ export default function OnlineTrainingPage() {
                 </div>
                 <div className="text-center md:text-right">
                   <div className="flex items-baseline gap-2 justify-center md:justify-end mb-2">
-                    <span className="font-heading text-6xl font-bold text-soft-bronze">£150</span>
-                    <span className="text-warm-grey text-xl">/ month</span>
+                    <span className="font-heading text-6xl font-bold text-soft-bronze">£499</span>
+                    <span className="text-warm-grey text-xl">/ 12 weeks</span>
                   </div>
                   <p className="font-paragraph text-sm text-warm-grey">
                     No contract • Cancel anytime
