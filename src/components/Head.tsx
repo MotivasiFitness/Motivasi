@@ -13,8 +13,10 @@ export const Head = () => {
       {/* Prevent text size adjustment on landscape orientation */}
       <meta name="text-size-adjust" content="100%" />
       <meta name="apple-touch-fullscreen" content="yes" />
-      <meta name="theme-color" content="#1a1a1a" />
+      <meta name="theme-color" content="#c9956f" />
       <meta name="mobile-web-app-capable" content="yes" />
+      {/* Web App Manifest for PWA support */}
+      <link rel="manifest" href="/manifest.json" />
       {/* Favicon */}
       <link rel="icon" type="image/png" href="https://static.wixstatic.com/media/93e866_81ff1c66b9e449bc92b4e3a2a753a5ec~mv2.png" />
       <link rel="apple-touch-icon" href="https://static.wixstatic.com/media/93e866_81ff1c66b9e449bc92b4e3a2a753a5ec~mv2.png" />
