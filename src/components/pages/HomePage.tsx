@@ -502,7 +502,7 @@ export default function HomePage() {
 
                     <Link
                       to="/store"
-                      className="block w-full bg-sage-green text-white text-center py-6 rounded-full font-medium text-lg hover:shadow-lg hover:shadow-sage-green/40 transition-all duration-300"
+                      className="block w-full bg-sage-green text-black text-center py-6 rounded-full font-medium text-lg hover:shadow-lg hover:shadow-sage-green/40 transition-all duration-300"
                     >
                       {t.home.secureYourSpot}
                     </Link>
