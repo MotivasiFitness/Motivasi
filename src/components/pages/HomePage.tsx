@@ -238,7 +238,7 @@ export default function HomePage() {
         </div>
 
         {/* Right Image - Parallax */}
-        <div className="w-full lg:w-1/2 h-[60vh] lg:h-auto relative overflow-hidden flex items-center justify-center p-8 lg:p-12">
+        <div className="w-full lg:w-1/2 h-[40vh] md:h-[50vh] lg:h-auto relative overflow-hidden flex items-center justify-center p-4 md:p-8 lg:p-12">
           <motion.div 
             className="w-full h-full relative"
             style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]) }}
