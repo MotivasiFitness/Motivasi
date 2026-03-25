@@ -24,7 +24,7 @@ export default function AboutPage() {
   return (
     <div className="bg-soft-white">
       {/* Hero Section */}
-      <section className="py-24 px-8 lg:px-20">
+      <section className="py-24 px-8 lg:px-20 bg-white">
         <div className="max-w-[100rem] mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
