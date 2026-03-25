@@ -1,0 +1,44 @@
+# Google Guidelines: robots.txt for Search Engine Optimization
+# This file tells search engines which pages to crawl and index
+# Place this file in the public folder as /robots.txt
+
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /trainer
+Disallow: /portal
+Disallow: /*.json$
+Disallow: /*?*
+Allow: /?*
+
+# Specific rules for Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Specific rules for Bing
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Sitemap location
+Sitemap: https://motivasi.com/sitemap.xml
+Sitemap: https://motivasi.com/sitemap-blog.xml
+
+# Cache control
+# Google can cache pages for up to 30 days
+# Request-rate: 30
+
+# Comment: Last updated 2026-03-25
+# Instructions: Copy this content to /public/robots.txt in your project root
