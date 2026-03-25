@@ -224,7 +224,7 @@ export default function CheckoutPage() {
   return (
     <div className="bg-soft-white min-h-screen">
       {/* Header */}
-      <section className="py-12 px-8 lg:px-20 bg-warm-sand-beige border-b border-warm-sand-beige">
+      <section className="py-12 px-8 lg:px-20 bg-white border-b border-warm-sand-beige">
         <div className="max-w-[100rem] mx-auto">
           <Link
             to="/store"
