@@ -16,7 +16,7 @@ export default function OnlineTrainingPage() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="py-24 px-8 lg:px-20 bg-white">
+      <section className="py-24 px-8 lg:px-20 bg-warm-cream">
         <div className="max-w-[100rem] mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
