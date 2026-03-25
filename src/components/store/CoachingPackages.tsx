@@ -131,10 +131,10 @@ export default function CoachingPackages() {
         {packages.map((pkg) => (
           <div
             key={pkg.id}
-            className={`rounded-2xl p-8 transition-all duration-300 flex flex-col ${
+            className={`rounded-2xl p-6 md:p-8 transition-all duration-300 flex flex-col ${
               pkg.featured
                 ? 'bg-charcoal-black text-soft-white border-2 border-soft-bronze shadow-xl md:scale-105'
-                : 'bg-soft-white border border-warm-sand-beige hover:border-soft-bronze'
+                : 'hidden md:flex bg-soft-white border border-warm-sand-beige hover:border-soft-bronze'
             }`}
           >
             {/* Featured Badge */}
