@@ -720,7 +720,7 @@ export default function HomePage() {
               >
                 <Link
                   to="/store"
-                  className="block w-full bg-gradient-to-r from-sage-green to-rose-blush text-white px-14 py-6 rounded-full font-medium text-xl hover:shadow-lg hover:shadow-sage-green/30 transition-all duration-300 text-center"
+                  className="block w-full bg-gradient-to-r from-sage-green to-rose-blush text-charcoal-black px-14 py-6 rounded-full font-medium text-xl hover:shadow-lg hover:shadow-sage-green/30 transition-all duration-300 text-center"
                 >
                   Begin your journey (£499/12 weeks)
                 </Link>
