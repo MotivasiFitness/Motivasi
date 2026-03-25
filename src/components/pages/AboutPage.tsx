@@ -246,6 +246,108 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Get In Touch Section */}
+      <section id="get-in-touch" className="py-32 px-8 lg:px-20 bg-warm-sand-beige">
+        <div className="max-w-[100rem] mx-auto">
+          <div className="grid md:grid-cols-2 gap-16 items-start">
+            {/* Left: Contact Info */}
+            <div>
+              <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-8">
+                Get in Touch
+              </h2>
+              <p className="font-paragraph text-lg text-charcoal-black/70 mb-12 leading-relaxed">
+                Ready to start your fitness journey? Reach out to discuss your goals and book your free 10-minute consultation call.
+              </p>
+
+              <div className="space-y-8">
+                <div>
+                  <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2">Email</h3>
+                  <p className="font-paragraph text-base text-soft-bronze">
+                    coach@example.com
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2">Location</h3>
+                  <p className="font-paragraph text-base text-charcoal-black/70">
+                    Available for online coaching worldwide
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Contact Form */}
+            <div className="bg-soft-white rounded-2xl p-8 md:p-12 shadow-md">
+              <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
+                Send a Message
+              </h3>
+              <form className="space-y-6">
+                <div>
+                  <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black focus:outline-none focus:border-soft-bronze"
+                    placeholder="Your name"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    className="w-full px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black focus:outline-none focus:border-soft-bronze"
+                    placeholder="your@email.com"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
+                    Message
+                  </label>
+                  <textarea
+                    rows={4}
+                    className="w-full px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black focus:outline-none focus:border-soft-bronze resize-none"
+                    placeholder="Tell me about your fitness goals..."
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <label className="flex items-start gap-3">
+                    <input
+                      type="checkbox"
+                      className="mt-1 w-4 h-4 accent-soft-bronze"
+                    />
+                    <span className="font-paragraph text-sm text-charcoal-black/70">
+                      I consent to being contacted about my fitness inquiry and coaching opportunities
+                    </span>
+                  </label>
+                  <label className="flex items-start gap-3">
+                    <input
+                      type="checkbox"
+                      className="mt-1 w-4 h-4 accent-soft-bronze"
+                    />
+                    <span className="font-paragraph text-sm text-charcoal-black/70">
+                      I'd like to receive occasional updates about fitness tips and coaching services
+                    </span>
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-charcoal-black text-soft-white py-3 rounded-lg font-paragraph font-medium hover:bg-charcoal-black/90 transition-colors"
+                >
+                  Send Message
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
