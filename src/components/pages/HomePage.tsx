@@ -405,25 +405,25 @@ export default function HomePage() {
         </div>
       </section>
       {/* --- Sticky Signature Offer Section --- */}
-      <section className="relative bg-gradient-to-b from-warm-cream via-warm-cream/5 to-white py-32 px-8 lg:px-24">
+      <section className="relative bg-gradient-to-b from-warm-cream via-warm-cream/5 to-white py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24">
         <div className="max-w-[100rem] mx-auto">
-          <div className="flex flex-col lg:flex-row gap-20 lg:gap-32">
+          <div className="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-20 xl:gap-32">
             
             {/* Left: Scrollable Details */}
-            <div className="w-full lg:w-1/2 space-y-24 flex flex-col">
+            <div className="w-full lg:w-1/2 space-y-12 md:space-y-16 lg:space-y-24 flex flex-col">
               <div>
                 <AnimatedElement>
-                  <span className="text-sage-green font-medium tracking-widest uppercase mb-4 block text-sm">The Signature Package</span>
-                  <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-8">
+                  <span className="text-sage-green font-medium tracking-widest uppercase mb-3 md:mb-4 block text-xs md:text-sm">The Signature Package</span>
+                  <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-charcoal-black mb-4 md:mb-6 lg:mb-8 leading-tight">
                     {t.home.everythingYouNeed}
                   </h2>
-                  <p className="text-xl text-charcoal-black/70 leading-relaxed font-light">
+                  <p className="text-base md:text-lg lg:text-xl text-charcoal-black/70 leading-relaxed font-light">
                     {t.home.everythingYouNeedDesc}
                   </p>
                 </AnimatedElement>
               </div>
 
-              <div className="space-y-16">
+              <div className="space-y-8 md:space-y-12 lg:space-y-16">
                 {[
                   {
                     title: t.home.fourPersonalised,
@@ -442,7 +442,7 @@ export default function HomePage() {
                   }
                 ].map((feature, i) => (
                   <AnimatedElement key={i} className="group">
-                    <div className="aspect-[16/9] rounded-2xl overflow-hidden mb-8 relative">
+                    <div className="aspect-[16/9] rounded-lg md:rounded-xl lg:rounded-2xl overflow-hidden mb-3 md:mb-4 lg:mb-6 relative">
                       <Image 
                         src={feature.image} 
                         alt={feature.title}
@@ -451,8 +451,8 @@ export default function HomePage() {
                       />
                       <div className="absolute inset-0 bg-charcoal-black/10 group-hover:bg-transparent transition-colors" />
                     </div>
-                    <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4">{feature.title}</h3>
-                    <p className="text-lg text-charcoal-black/70 leading-relaxed font-light">{feature.desc}</p>
+                    <h3 className="font-heading text-xl md:text-2xl lg:text-3xl font-bold text-charcoal-black mb-2 md:mb-3 lg:mb-4">{feature.title}</h3>
+                    <p className="text-sm md:text-base lg:text-lg text-charcoal-black/70 leading-relaxed font-light">{feature.desc}</p>
                   </AnimatedElement>
                 ))}
               </div>
