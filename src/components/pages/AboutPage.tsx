@@ -264,7 +264,7 @@ export default function AboutPage() {
                 <div>
                   <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2">Email</h3>
                   <p className="font-paragraph text-base text-soft-bronze">
-                    coach@example.com
+                    hello@motivasi.co.uk
                   </p>
                 </div>
 
