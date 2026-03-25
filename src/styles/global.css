@@ -4,6 +4,34 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile-First Optimization */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  overscroll-behavior-y: contain;
+}
+
+/* Prevent layout shift on iOS */
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+/* Safe area support for notched devices */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+}
+
 /* Global Hover & Active State System */
 /* Applied to all tabs, quick links, and card-style navigation elements */
 
@@ -46,6 +74,23 @@
 
 .interactive-tab-active {
   @apply bg-soft-bronze text-soft-white;
+}
+
+/* Touch-friendly interactive elements */
+@media (hover: none) and (pointer: coarse) {
+  button,
+  a,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Increase padding for touch targets */
+  .interactive-card-hover,
+  .interactive-button-hover,
+  .interactive-tab-button {
+    padding: 12px;
+  }
 }
 
 /* Print Styles */

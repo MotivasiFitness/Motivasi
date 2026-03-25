@@ -38,8 +38,8 @@ function Footer() {
         </svg>
       </div>
 
-      <div className="max-w-[100rem] mx-auto px-8 lg:px-20 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20 py-12 sm:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-12">
           {/* Brand Section */}
           <div>
             <Link to="/" className="inline-flex items-center gap-2 mb-4 hover:opacity-80 transition-opacity">
@@ -51,22 +51,22 @@ function Footer() {
               />
               <span className="font-heading text-lg font-bold text-soft-bronze">Motivasi</span>
             </Link>
-            <p className="font-paragraph text-base text-dark-gray mb-6">
+            <p className="font-paragraph text-sm sm:text-base text-dark-gray mb-6">
               {t.footer.empoweringBusy}
             </p>
-            <div className="flex gap-4">
+            <div className="flex gap-3 sm:gap-4">
               <a 
                 href="https://www.instagram.com/risewithmotivasi?igsh=bml4NmhnNw8yenht" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-rose-blush flex items-center justify-center hover:bg-rose-blush/80 transition-colors text-charcoal-black"
+                className="w-11 h-11 sm:w-10 sm:h-10 rounded-full bg-rose-blush flex items-center justify-center hover:bg-rose-blush/80 transition-colors text-charcoal-black min-h-[44px] min-w-[44px]"
                 aria-label="Instagram"
               >
                 <Instagram size={20} />
               </a>
               <a 
                 href="mailto:hello@motivasi.co.uk"
-                className="w-10 h-10 rounded-full bg-rose-blush flex items-center justify-center hover:bg-rose-blush/80 transition-colors text-charcoal-black"
+                className="w-11 h-11 sm:w-10 sm:h-10 rounded-full bg-rose-blush flex items-center justify-center hover:bg-rose-blush/80 transition-colors text-charcoal-black min-h-[44px] min-w-[44px]"
                 aria-label="Email"
               >
                 <Mail size={20} />
@@ -79,21 +79,21 @@ function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-heading text-xl font-bold mb-4 text-dark-gray">Quick Links</h4>
+            <h4 className="font-heading text-lg sm:text-xl font-bold mb-4 text-dark-gray">Quick Links</h4>
             <nav className="flex flex-col gap-3">
-              <Link to="/" className="font-paragraph text-base text-dark-gray hover:text-soft-bronze transition-colors">
+              <Link to="/" className="font-paragraph text-sm sm:text-base text-dark-gray hover:text-soft-bronze transition-colors py-2 px-2 rounded min-h-[44px] flex items-center">
                 {t.nav.home}
               </Link>
-              <Link to="/about" className="font-paragraph text-base text-dark-gray hover:text-soft-bronze transition-colors">
+              <Link to="/about" className="font-paragraph text-sm sm:text-base text-dark-gray hover:text-soft-bronze transition-colors py-2 px-2 rounded min-h-[44px] flex items-center">
                 {t.nav.about}
               </Link>
-              <Link to="/online-training" className="font-paragraph text-base text-dark-gray hover:text-soft-bronze transition-colors">
+              <Link to="/online-training" className="font-paragraph text-sm sm:text-base text-dark-gray hover:text-soft-bronze transition-colors py-2 px-2 rounded min-h-[44px] flex items-center">
                 {t.nav.onlineTraining}
               </Link>
-              <Link to="/blog" className="font-paragraph text-base text-dark-gray hover:text-soft-bronze transition-colors">
+              <Link to="/blog" className="font-paragraph text-sm sm:text-base text-dark-gray hover:text-soft-bronze transition-colors py-2 px-2 rounded min-h-[44px] flex items-center">
                 {t.nav.faceToFaceTraining}
               </Link>
-              <Link to="/parq" className="font-paragraph text-base text-dark-gray hover:text-soft-bronze transition-colors">
+              <Link to="/parq" className="font-paragraph text-sm sm:text-base text-dark-gray hover:text-soft-bronze transition-colors py-2 px-2 rounded min-h-[44px] flex items-center">
                 {t.nav.parqForm}
               </Link>
             </nav>
@@ -101,36 +101,40 @@ function Footer() {
 
           {/* Legal & Compliance */}
           <div>
-            <h4 className="font-heading text-xl font-bold mb-4 text-dark-gray">Legal & Compliance</h4>
+            <h4 className="font-heading text-lg sm:text-xl font-bold mb-4 text-dark-gray">Legal & Compliance</h4>
             <nav className="flex flex-col gap-3">
-              <Link to="/privacy" className="font-paragraph text-base text-dark-gray hover:text-soft-bronze transition-colors">
+              <Link to="/privacy" className="font-paragraph text-sm sm:text-base text-dark-gray hover:text-soft-bronze transition-colors py-2 px-2 rounded min-h-[44px] flex items-center">
                 Privacy & Cookie Policy
               </Link>
-              <Link to="/terms" className="font-paragraph text-base text-dark-gray hover:text-soft-bronze transition-colors">
+              <Link to="/terms" className="font-paragraph text-sm sm:text-base text-dark-gray hover:text-soft-bronze transition-colors py-2 px-2 rounded min-h-[44px] flex items-center">
                 Terms & Conditions
               </Link>
-              <Link to="/disclaimer" className="font-paragraph text-base text-dark-gray hover:text-soft-bronze transition-colors">
+              <Link to="/disclaimer" className="font-paragraph text-sm sm:text-base text-dark-gray hover:text-soft-bronze transition-colors py-2 px-2 rounded min-h-[44px] flex items-center">
                 Disclaimer
               </Link>
-              <Link to="/accessibility" className="font-paragraph text-base text-dark-gray hover:text-soft-bronze transition-colors">
+              <Link to="/accessibility" className="font-paragraph text-sm sm:text-base text-dark-gray hover:text-soft-bronze transition-colors py-2 px-2 rounded min-h-[44px] flex items-center">
                 Accessibility Statement
               </Link>
               <p className="font-paragraph text-xs text-dark-gray/70 mt-3 pt-3 border-t border-dark-gray/20">
-                🛡️ Motivasi holds appropriate professional and public liability insurance.
+                Motivasi holds appropriate professional and public liability insurance.
               </p>
             </nav>
           </div>
         </div>
 
-        <div className="border-t border-dark-gray/20 mt-12 pt-8">
-          <div className="text-center mb-6">
-            <p className="font-paragraph text-sm text-dark-gray leading-relaxed">
+        <div className="border-t border-dark-gray/20 mt-8 sm:mt-12 pt-6 sm:pt-8">
+          <div className="text-center mb-4 sm:mb-6">
+            <p className="font-paragraph text-xs sm:text-sm text-dark-gray leading-relaxed">
               © Motivasi {new Date().getFullYear()}. All rights reserved. Based in the United Kingdom. Personal data is processed in accordance with our <Link to="/privacy" className="text-soft-bronze hover:underline">Privacy & Cookie Policy</Link> and applicable data protection laws.
             </p>
           </div>
           <div className="text-center">
-            <p className="font-paragraph text-xs text-dark-gray/70">
-              <Link to="/privacy" className="text-soft-bronze hover:underline">Privacy & Cookie Policy</Link> | <Link to="/disclaimer" className="text-soft-bronze hover:underline">Disclaimer</Link> | <Link to="/accessibility" className="text-soft-bronze hover:underline">Accessibility</Link> | <button className="text-soft-bronze hover:underline">Cookie Settings</button>
+            <p className="font-paragraph text-xs text-dark-gray/70 flex flex-wrap justify-center gap-2 sm:gap-3">
+              <Link to="/privacy" className="text-soft-bronze hover:underline">Privacy</Link>
+              <span>|</span>
+              <Link to="/disclaimer" className="text-soft-bronze hover:underline">Disclaimer</Link>
+              <span>|</span>
+              <Link to="/accessibility" className="text-soft-bronze hover:underline">Accessibility</Link>
             </p>
           </div>
         </div>
