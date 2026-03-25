@@ -1335,7 +1335,7 @@ export default function MyProgramPage() {
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
                 {/* Training Length */}
                 <div className="flex flex-col items-center text-center p-4 bg-soft-white border border-soft-bronze/20 rounded-xl">
-                  <Clock className="w-6 h-6 mb-2" style={{ color: '#C9A24D', opacity: 0.88 }} />
+                  <Clock className="w-6 h-6 mb-2 text-warm-bronze opacity-88" />
                   <p className="text-sm text-warm-grey mb-1">Training Length</p>
                   <p className="font-heading text-2xl font-bold text-charcoal-black">
                     30-50 min
@@ -1344,7 +1344,7 @@ export default function MyProgramPage() {
 
                 {/* Weekly Frequency */}
                 <div className="flex flex-col items-center text-center p-4 bg-soft-white border border-soft-bronze/20 rounded-xl">
-                  <Target className="w-6 h-6 mb-2" style={{ color: '#C9A24D', opacity: 0.88 }} />
+                  <Target className="w-6 h-6 mb-2 text-warm-bronze opacity-88" />
                   <p className="text-sm text-warm-grey mb-1">Weekly Frequency</p>
                   <p className="font-heading text-2xl font-bold text-charcoal-black">
                     {weeklyFrequency}x per week
@@ -1353,7 +1353,7 @@ export default function MyProgramPage() {
 
                 {/* Equipment Needed */}
                 <div className="flex flex-col items-center text-center p-4 bg-soft-white border border-soft-bronze/20 rounded-xl">
-                  <Dumbbell className="w-6 h-6 mb-2" style={{ color: '#C9A24D', opacity: 0.88 }} />
+                  <Dumbbell className="w-6 h-6 mb-2 text-warm-bronze opacity-88" />
                   <p className="text-sm text-warm-grey mb-1">Equipment</p>
                   <p className="font-heading text-sm font-bold text-charcoal-black">
                     {equipment}
@@ -1362,7 +1362,7 @@ export default function MyProgramPage() {
 
                 {/* Training Focus */}
                 <div className="flex flex-col items-center text-center p-4 bg-soft-white border border-soft-bronze/20 rounded-xl">
-                  <CheckCircle2 className="w-6 h-6 mb-2" style={{ color: '#C9A24D', opacity: 0.88 }} />
+                  <CheckCircle2 className="w-6 h-6 mb-2 text-warm-bronze opacity-88" />
                   <p className="text-sm text-warm-grey mb-1">Training Focus</p>
                   <p className="font-heading text-sm font-bold text-charcoal-black">
                     {trainingFocus}

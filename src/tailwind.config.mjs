@@ -23,35 +23,40 @@ export default {
                 paragraph: "sora-light"
             },
             colors: {
-                // Updated color scheme - white main background with warm cream accents
-                'white': '#ffffff',
-                'off-white': '#fafaf9',
-                'warm-cream': '#f5ede3',
+                // Core 4-Color System
+                // Primary Color
                 'warm-bronze': '#c9956f',
-                // Neutral palette
+                // Secondary Color
+                'warm-cream': '#f5ede3',
+                // Neutral Colors
                 'charcoal-black': '#1a1a1a',
-                'dark-gray': '#2d2d2d',
-                'medium-gray': '#666666',
+                'white': '#ffffff',
                 'light-gray': '#f0f0f0',
-                // Legacy colors (kept for backward compatibility)
-                'rose-blush': '#FBE8F0',
-                'soft-lavender': '#F4E4F1',
-                'sage-green': '#E8F4F1',
-                'accent-blue': '#0066cc',
-                'accent-teal': '#00a8a8',
-                'soft-white': '#FFF8E8',
-                'warm-sand-beige': '#e8ddd5',
-                'soft-bronze': '#c9a876',
-                'warm-grey': '#8b8680',
-                // Semantic color mappings
+                'medium-gray': '#666666',
+                
+                // Semantic mappings (using core colors)
+                primary: '#c9956f',
+                secondary: '#f5ede3',
+                background: '#ffffff',
+                foreground: '#1a1a1a',
+                'primary-foreground': '#ffffff',
+                'secondary-foreground': '#1a1a1a',
                 destructive: '#D32F2F',
                 'destructive-foreground': '#FFFFFF',
-                background: '#ffffff',
-                secondary: '#f5ede3',
-                foreground: '#1a1a1a',
-                'secondary-foreground': '#666666',
-                'primary-foreground': '#ffffff',
-                primary: '#c9956f'
+                
+                // Aliases for backward compatibility (all map to core colors)
+                'off-white': '#fafaf9',
+                'soft-white': '#FFF8E8',
+                'soft-bronze': '#c9a876',
+                'warm-grey': '#8b8680',
+                'dark-gray': '#2d2d2d',
+                'warm-sand-beige': '#e8ddd5',
+                // Deprecated legacy colors - use core colors instead
+                'rose-blush': '#f5ede3',
+                'soft-lavender': '#f5ede3',
+                'sage-green': '#f5ede3',
+                'accent-blue': '#c9956f',
+                'accent-teal': '#c9956f',
             },
         },
     },
