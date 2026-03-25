@@ -35,23 +35,11 @@ function CookieBanner() {
     };
     
     // Defer cookie check to avoid blocking initial render
-    // Use requestIdleCallback if available (not supported in Safari), fallback to setTimeout
-    let timerId: NodeJS.Timeout | number | null = null;
-    
-    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-      timerId = (window as any).requestIdleCallback(checkCookies);
-    } else {
-      timerId = setTimeout(checkCookies, 100);
-    }
+    // Use setTimeout for maximum compatibility across all browsers and devices
+    const timerId = setTimeout(checkCookies, 100);
     
     return () => {
-      if (timerId !== null) {
-        if (typeof window !== 'undefined' && 'cancelIdleCallback' in window && typeof timerId !== 'number') {
-          (window as any).cancelIdleCallback(timerId);
-        } else if (typeof timerId === 'number') {
-          clearTimeout(timerId);
-        }
-      }
+      clearTimeout(timerId);
     };
   }, []);
 
