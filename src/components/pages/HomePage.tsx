@@ -254,7 +254,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* --- Keywords Section with Softer Design --- */}
-      <div className="relative py-32 px-8 lg:px-24 bg-white overflow-hidden">
+      <div className="relative py-16 px-8 lg:px-24 bg-white overflow-hidden">
         {/* Subtle decorative elements */}
         <div className="absolute top-20 left-12 w-32 h-32 bg-sage-green/3 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-12 w-40 h-40 bg-soft-lavender/3 rounded-full blur-3xl" />
@@ -300,7 +300,7 @@ export default function HomePage() {
         </div>
       </div>
       {/* --- The Philosophy (Text Heavy / Editorial) --- */}
-      <section className="py-32 px-8 lg:px-24 bg-white">
+      <section className="py-20 px-8 lg:px-24 bg-white">
         <div className="max-w-[100rem] mx-auto">
           {/* Title and Subtitle Section */}
           <div className="mb-20">
