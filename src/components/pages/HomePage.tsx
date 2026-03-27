@@ -480,7 +480,7 @@ export default function HomePage() {
 
               <AnimatedElement className="mb-12 delay-300">
                 <p className="text-lg md:text-xl lg:text-2xl text-charcoal-black/70 leading-relaxed max-w-lg font-light tracking-wide">
-                  Transform your fitness journey with personalized coaching designed for your life. Limited spaces available.
+                  Transform your fitness journey with personalised coaching designed for your life. Limited spaces available.
                 </p>
               </AnimatedElement>
 
