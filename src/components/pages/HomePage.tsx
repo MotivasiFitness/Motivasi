@@ -71,7 +71,7 @@ export default function HomePage() {
     restDelta: 0.001
   });
 
-  // Show sticky button after scrolling past hero section (roughly 80vh)
+  // Show sticky button after scrolling past hero section (roughly 80vh) and keep it visible
   useEffect(() => {
     const handleScroll = () => {
       const heroHeight = window.innerHeight * 0.8;
@@ -82,6 +82,14 @@ export default function HomePage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Ensure button stays visible once shown
+  useEffect(() => {
+    if (showStickyButton) {
+      // Button is visible and will remain so
+      return;
+    }
+  }, [showStickyButton]);
+
   return (
     <div className="bg-white min-h-screen w-full overflow-clip font-paragraph text-charcoal-black selection:bg-warm-cream selection:text-charcoal-black">
       {/* Progress Bar */}
@@ -90,21 +98,22 @@ export default function HomePage() {
         style={{ scaleX }}
       />
       
-      {/* Sticky CTA Button - Appears after hero section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: showStickyButton ? 1 : 0, y: showStickyButton ? 0 : 20 }}
-        transition={{ duration: 0.3 }}
-        className="fixed bottom-8 right-8 z-40 pointer-events-none"
-        style={{ pointerEvents: showStickyButton ? 'auto' : 'none' }}
-      >
-        <Link
-          to="/about#get-in-touch"
-          className="group flex items-center gap-3 bg-warm-bronze text-charcoal-black px-8 py-4 rounded-full font-bold text-base shadow-lg hover:shadow-2xl hover:shadow-warm-bronze/40 transition-all duration-300 hover:scale-105"
+      {/* Sticky CTA Button - Appears after hero section and stays visible */}
+      {showStickyButton && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="fixed bottom-8 right-8 z-40"
         >
-          Book Your Free 10‑Minute Call <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-        </Link>
-      </motion.div>
+          <Link
+            to="/about#get-in-touch"
+            className="group flex items-center gap-3 bg-warm-bronze text-charcoal-black px-8 py-4 rounded-full font-bold text-base shadow-lg hover:shadow-2xl hover:shadow-warm-bronze/40 transition-all duration-300 hover:scale-105"
+          >
+            Book Your Free 10‑Minute Call <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </motion.div>
+      )}
       {/* --- Hero Section --- */}
       <section className="relative min-h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-gradient-to-br from-sage-green via-sage-green/80 to-rose-blush">
         {/* Subtle gradient overlay for refined effect */}
