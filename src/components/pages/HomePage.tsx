@@ -405,57 +405,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* --- Everything You Need to Succeed Section --- */}
-      <section className="relative bg-gradient-to-b from-warm-cream via-warm-cream/5 to-white py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24">
-        <div className="max-w-[100rem] mx-auto">
-          <div className="w-full space-y-12 md:space-y-16 lg:space-y-24 flex flex-col">
-            <div>
-              <AnimatedElement>
-                <span className="text-sage-green font-medium tracking-widest uppercase mb-3 md:mb-4 block text-xs md:text-sm">The Signature Package</span>
-                <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-charcoal-black mb-4 md:mb-6 lg:mb-8 leading-tight">
-                  {t.home.everythingYouNeed}
-                </h2>
-                <p className="text-base md:text-lg lg:text-xl text-charcoal-black/70 leading-relaxed font-light">
-                  {t.home.everythingYouNeedDesc}
-                </p>
-              </AnimatedElement>
-            </div>
 
-            <div className="space-y-8 md:space-y-12 lg:space-y-16">
-              {[
-                {
-                  title: t.home.fourPersonalised,
-                  desc: t.home.fourPersonalisedDesc,
-                  image: "https://static.wixstatic.com/media/93e866_7d48abe991484564b3dbdd6baf6b5d8a~mv2.png?originWidth=768&originHeight=448"
-                },
-                {
-                  title: t.home.weeklyCheckIns,
-                  desc: t.home.weeklyCheckInsDesc,
-                  image: "https://static.wixstatic.com/media/93e866_cabe766402e14ec98f048ee9b1a0a4eb~mv2.png?originWidth=768&originHeight=448"
-                },
-                {
-                  title: t.home.nutritionGuidance,
-                  desc: t.home.nutritionGuidanceDesc,
-                  image: "https://static.wixstatic.com/media/93e866_29519bae313f4a8aa77d31574d6fa866~mv2.png?originWidth=768&originHeight=448"
-                }
-              ].map((feature, i) => (
-                <AnimatedElement key={i} className="group">
-                  <div className="aspect-[16/9] rounded-lg md:rounded-xl lg:rounded-2xl overflow-hidden mb-3 md:mb-4 lg:mb-6 relative">
-                    <Image 
-                      src={feature.image} 
-                      alt={feature.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      width={800}
-                    />
-                    <div className="absolute inset-0 bg-charcoal-black/10 group-hover:bg-transparent transition-colors" />
-                  </div>
-                  <h3 className="font-heading text-xl md:text-2xl lg:text-3xl font-bold text-charcoal-black mb-2 md:mb-3 lg:mb-4">{feature.title}</h3>
-                  <p className="text-sm md:text-base lg:text-lg text-charcoal-black/70 leading-relaxed font-light">{feature.desc}</p>
-                </AnimatedElement>
-              ))}</div>
-          </div>
-        </div>
-      </section>
 
       {/* --- Invest in Yourself Hero Section --- */}
       <section className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-soft-lavender via-soft-lavender/80 to-rose-blush/30 py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24">
