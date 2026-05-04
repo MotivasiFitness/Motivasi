@@ -97,7 +97,6 @@ export default function HomePage() {
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-warm-bronze via-warm-bronze to-warm-bronze origin-left z-50"
         style={{ scaleX }}
       />
-      
       {/* Sticky CTA Button - Appears after hero section and stays visible */}
       {showStickyButton && (
         <motion.div
@@ -121,7 +120,6 @@ export default function HomePage() {
           <div className="w-1/2 bg-white" />
           <div className="w-1/2 bg-light-gray" />
         </div>
-
         {/* Center Overlay Text - Positioned Absolutely */}
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
           <motion.div
@@ -147,7 +145,6 @@ export default function HomePage() {
             </motion.div>
           </motion.div>
         </div>
-
         {/* Left Image */}
         <div className="absolute left-0 top-0 w-1/2 h-full overflow-hidden">
           <motion.div
@@ -168,7 +165,6 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-black/10" />
           </motion.div>
         </div>
-
         {/* Right Image */}
         <div className="absolute right-0 top-0 w-1/2 h-full overflow-hidden">
           <motion.div
@@ -187,42 +183,8 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-black/5" />
           </motion.div>
         </div>
-
         {/* Bottom CTA Section */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 bg-white pt-20 pb-12 px-8">
-          <div className="max-w-[100rem] mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-            <AnimatedElement className="flex-1">
-              <p className="text-lg md:text-xl text-charcoal-black font-light max-w-xl">
-                {t.home.readyToFeelDesc}
-              </p>
-            </AnimatedElement>
 
-            <AnimatedElement className="flex flex-wrap gap-4 justify-end">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 300, damping: 10 }}
-              >
-                <Link
-                  to="/store"
-                  className="group inline-flex items-center gap-2 bg-warm-bronze text-white px-8 py-3 rounded-full font-medium text-base transition-all duration-300 hover:shadow-lg hover:shadow-warm-bronze/30"
-                >
-                  Let's get started <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 300, damping: 10 }}
-              >
-                <Link
-                  to="/about"
-                  className="group inline-flex items-center gap-2 px-8 py-3 rounded-full border-2 border-charcoal-black text-charcoal-black font-medium text-base hover:bg-charcoal-black/5 transition-all duration-300 bg-white"
-                >
-                  {t.home.myPhilosophy}
-                </Link>
-              </motion.div>
-            </AnimatedElement>
-          </div>
-        </div>
       </section>
       {/* --- Keywords Section with Softer Design --- */}
       <div className="relative py-16 px-8 lg:px-24 bg-white overflow-hidden">
@@ -375,9 +337,6 @@ export default function HomePage() {
           </AnimatedElement>
         </div>
       </section>
-
-
-
       {/* --- Invest in Yourself Hero Section - Redesigned --- */}
       <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-charcoal-black via-charcoal-black/95 to-warm-bronze/10 py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24">
         {/* Animated gradient background */}
@@ -434,9 +393,7 @@ export default function HomePage() {
                       </span>
                     </motion.div>
 
-                    <h3 className="font-heading text-4xl md:text-5xl font-bold mb-4 text-white leading-tight">{t.home.monthlyCoaching}</h3>
                     <p className="text-white/60 mb-8 font-light text-base md:text-lg">{t.home.cancelAnytime}</p>
-                    
                     {/* Price Display - Prominent */}
                     <motion.div 
                       className="flex items-baseline gap-3 mb-12 pb-8 border-b border-white/10"
@@ -451,7 +408,6 @@ export default function HomePage() {
                         <span className="text-lg md:text-xl text-white/70 font-light">12 weeks</span>
                       </div>
                     </motion.div>
-
                     {/* Features List - Enhanced */}
                     <div className="space-y-4 mb-10">
                       {[
@@ -476,7 +432,6 @@ export default function HomePage() {
                         </motion.div>
                       ))}
                     </div>
-
                     {/* CTA Button */}
                     <motion.div
                       whileHover={{ scale: 1.05 }}
@@ -579,7 +534,6 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
-
       {/* --- Early CTA Section (Reduced Friction) --- */}
       <section className="relative py-24 px-8 lg:px-24 bg-gradient-to-r from-sage-green/95 to-sage-green overflow-hidden">
         <div className="absolute inset-0 opacity-5">
@@ -747,9 +701,7 @@ export default function HomePage() {
               viewport={{ once: true, margin: "-100px" }}
             >
               <div className="max-w-xs">
-                <p className="text-lg md:text-xl lg:text-2xl text-white font-light tracking-wide leading-relaxed">
-                  Your journey to strength starts here
-                </p>
+
               </div>
             </motion.div>
 
@@ -778,15 +730,9 @@ export default function HomePage() {
                 <Link
                   to="/portal"
                   className="group inline-flex items-center justify-center gap-3 bg-gradient-to-r from-sage-green to-warm-bronze text-charcoal-black px-8 py-4 rounded-full font-bold text-base transition-all duration-300 hover:shadow-lg hover:shadow-sage-green/40 hover:scale-105"
-                >
-                  Client Portal <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                >Client Portal 
                 </Link>
-                <Link
-                  to="/store"
-                  className="group inline-flex items-center justify-center gap-3 bg-white/10 border border-white/30 text-white px-8 py-4 rounded-full font-medium text-base transition-all duration-300 hover:bg-white/20 hover:border-white/50"
-                >
-                  Checkout <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
+
               </div>
             </motion.div>
           </div>
