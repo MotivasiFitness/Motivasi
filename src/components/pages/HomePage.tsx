@@ -154,13 +154,13 @@ export default function HomePage() {
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Image
-              src="https://static.wixstatic.com/media/93e866_ef269d4e34974b55aceddc01c79a92ad~mv2.png"
-              alt="Professional fitness coach - left"
+              src="https://static.wixstatic.com/media/93e866_befb471af6704f8eacfde13d90bf0e65~mv2.png"
               className="w-full h-full object-cover"
               width={1000}
-              focalPointX={48.19272855630074}
-              focalPointY={38.573949876456055}
-            />
+              focalPointX={75.20458265139116}
+              focalPointY={27.72873194221509}
+              originWidth={611}
+              originHeight={623} />
             {/* Subtle overlay */}
             <div className="absolute inset-0 bg-black/10" />
           </motion.div>
@@ -174,11 +174,11 @@ export default function HomePage() {
             transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
           >
             <Image
-              src="https://static.wixstatic.com/media/93e866_6e3c159e55534317b0b18c64fe452474~mv2.png"
-              alt="Professional fitness coach - right"
+              src="https://static.wixstatic.com/media/93e866_84be481776af4fc3964a571dc2e19db0~mv2.jpg"
               className="w-full h-full object-cover"
               width={1000}
-            />
+              originWidth={480}
+              originHeight={640} />
             {/* Subtle overlay */}
             <div className="absolute inset-0 bg-black/5" />
           </motion.div>
@@ -187,51 +187,6 @@ export default function HomePage() {
 
       </section>
       {/* --- Keywords Section with Softer Design --- */}
-      <div className="relative py-16 px-8 lg:px-24 bg-white overflow-hidden">
-        {/* Subtle decorative elements */}
-        <div className="absolute top-20 left-12 w-32 h-32 bg-sage-green/3 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-12 w-40 h-40 bg-soft-lavender/3 rounded-full blur-3xl" />
-
-        {/* Main Content */}
-        <div className="relative z-10 max-w-[100rem] mx-auto">
-          {/* Keywords Display - Text only with dividers */}
-          <motion.div 
-            className="flex gap-0 items-center justify-center flex-wrap"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-          >
-            {[
-              { label: t.home.marqueeConfidence },
-              { label: t.home.marqueeBalance },
-              { label: t.home.marqueeNutrition },
-              { label: t.home.marqueeStrength }
-            ].map((item, idx) => (
-              <motion.div
-                key={idx}
-                className="flex items-center"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 300, damping: 10 }}
-              >
-                <span className="text-2xl md:text-3xl lg:text-4xl font-heading text-charcoal-black px-4 md:px-6">
-                  {item.label}
-                </span>
-                
-                {/* Rose/Gold divider between items */}
-                {idx < 3 && (
-                  <motion.div
-                    className="text-2xl md:text-3xl text-soft-bronze/60"
-                    animate={{ opacity: [0.4, 0.8, 0.4] }}
-                    transition={{ repeat: Infinity, duration: 3, delay: idx * 0.2 }}
-                  >
-                    ✦
-                  </motion.div>
-                )}
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </div>
       {/* --- The Philosophy (Text Heavy / Editorial) --- */}
       <section className="py-20 px-8 lg:px-24 bg-white">
         <div className="max-w-[100rem] mx-auto">
@@ -239,7 +194,7 @@ export default function HomePage() {
           <div className="mb-20">
             <AnimatedElement>
               <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-8 leading-tight">
-                {t.home.transformationTitle} <br/>
+                {t.home.transformationTitle} 
                 <span className="bg-gradient-to-r from-[#a8b8a8] to-[#d4a8a8] bg-clip-text text-transparent italic font-black">{t.home.transformationSubtitle}</span>
               </h2>
             </AnimatedElement>
