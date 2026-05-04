@@ -91,7 +91,7 @@ export default function HomePage() {
   }, [showStickyButton]);
 
   return (
-    <div className="bg-white min-h-screen w-full overflow-clip font-paragraph text-charcoal-black selection:bg-warm-cream selection:text-charcoal-black">
+    <div className="bg-white min-h-screen w-full overflow-clip font-sans text-charcoal-black selection:bg-warm-cream selection:text-charcoal-black">
       {/* Progress Bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-warm-bronze via-warm-bronze to-warm-bronze origin-left z-50"

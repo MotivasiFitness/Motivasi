@@ -20,7 +20,8 @@ export default {
             },
             fontFamily: {
                 heading: "cormorantgaramond",
-                paragraph: "sora-light"
+                paragraph: "sora-light",
+                sans: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif"
             },
             colors: {
                 // Core 4-Color System
