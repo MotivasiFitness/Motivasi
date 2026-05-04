@@ -9,7 +9,7 @@ function Footer() {
 
   return (
     <footer className="bg-white text-charcoal-black border-t border-light-gray relative overflow-hidden">
-      <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20 py-24 sm:py-32 lg:py-40 relative z-10">
+      <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20 py-24 sm:py-32 lg:py-40">
         {/* Main Footer Grid - Top Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 sm:gap-16 lg:gap-20 mb-24 sm:mb-32 lg:mb-40 relative z-20">
           {/* Brand Section - Left */}
@@ -18,11 +18,7 @@ function Footer() {
               {t.footer.empoweringBusy}
             </p>
             
-            {/* Motivasi Logo */}
-            <div className="mb-6 flex items-baseline gap-1">
-              <span className="font-heading text-2xl font-bold text-black">moti</span>
-              <span className="font-heading text-2xl font-bold text-blue-600">vasi</span>
-            </div>
+
             <div className="flex gap-4 mb-8">
               <a 
                 href="https://www.instagram.com/risewithmotivasi?igsh=bml4NmhnNw8yenht" 
@@ -94,19 +90,18 @@ function Footer() {
           <div />
         </div>
 
-        {/* Large Background Watermark - Motivasi Branding */}
-        <div className="absolute inset-0 flex items-center justify-end pointer-events-none overflow-hidden">
-          <div className="text-right pr-4 sm:pr-8 lg:pr-12">
-            <div className="font-heading text-[200px] sm:text-[250px] lg:text-[320px] font-bold leading-none whitespace-nowrap">
-              <span className="text-charcoal-black opacity-10">moti</span>
-              <span className="text-blue-600 opacity-10">vasi</span>
+        {/* Footer Bottom Section - Below Large Brand Name */}
+        <div className="border-t border-light-gray pt-8 sm:pt-10 mt-24 sm:mt-32 lg:mt-40 relative z-20">
+          {/* Large Background Watermark - Motivasi Branding */}
+          <div className="absolute -bottom-12 -right-12 pointer-events-none overflow-hidden opacity-5 w-full h-full flex items-end justify-end">
+            <div className="text-right pr-4 sm:pr-8 lg:pr-12">
+              <div className="font-heading text-[200px] sm:text-[250px] lg:text-[320px] font-bold leading-none whitespace-nowrap">
+                <span className="text-charcoal-black">moti</span>
+                <span className="text-blue-600">vasi</span>
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Footer Bottom Section - Below Large Brand Name */}
-        <div className="border-t border-light-gray pt-8 sm:pt-10 relative z-20">
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 relative z-10">
             <p className="font-paragraph text-xs text-medium-gray">
               © {new Date().getFullYear()} Motivasi Ltd. All rights reserved.
             </p>
