@@ -42,7 +42,7 @@ function Header() {
           </Link>
 
           {/* Right Navigation and Actions */}
-          <div className="hidden md:flex items-center gap-2 lg:gap-3 absolute right-0">
+          <div className="hidden md:flex items-center gap-4 lg:gap-6 absolute right-0">
             {isAuthenticated ? (
               <>
                 {isTrainer ? (
@@ -76,8 +76,10 @@ function Header() {
                 <User size={20} className="text-charcoal-black" />
               </button>
             )}
-            <LanguageSwitcher />
-            <MiniCart cartIconClassName="[&_svg]:text-charcoal-black" />
+            <div className="flex items-center gap-4 lg:gap-6">
+              <LanguageSwitcher />
+              <MiniCart cartIconClassName="[&_svg]:text-charcoal-black" />
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
