@@ -105,20 +105,15 @@ export default function HomePage() {
           transition={{ duration: 0.3 }}
           className="fixed bottom-8 right-8 z-40"
         >
-          <Link
-            to="/about#get-in-touch"
-            className="group flex items-center gap-3 bg-warm-bronze text-charcoal-black px-8 py-4 rounded-full font-bold text-base shadow-lg hover:shadow-2xl hover:shadow-warm-bronze/40 transition-all duration-300 hover:scale-105"
-          >
-            Book Your Free 10‑Minute Call <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
+
         </motion.div>
       )}
       {/* --- Hero Section - Minimalist Split Layout --- */}
       <section className="relative min-h-screen w-full overflow-hidden bg-white">
         {/* Split Background - Left Light, Right Light */}
-        <div className="absolute inset-0 flex">
+        <div className="absolute inset-0 flex shadow-[12px_12px_4px_0px_#d9d9d9] mix-blend-normal">
           <div className="w-1/2 bg-white" />
-          <div className="w-1/2 bg-light-gray" />
+
         </div>
         {/* Center Overlay Text - Positioned Absolutely */}
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
@@ -154,84 +149,22 @@ export default function HomePage() {
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Image
-              src="https://static.wixstatic.com/media/93e866_ef269d4e34974b55aceddc01c79a92ad~mv2.png"
-              alt="Professional fitness coach - left"
-              className="w-full h-full object-cover"
+              src="https://static.wixstatic.com/media/93e866_befb471af6704f8eacfde13d90bf0e65~mv2.png"
+              className="w-full h-full object-cover rounded-none"
               width={1000}
-              focalPointX={48.19272855630074}
-              focalPointY={38.573949876456055}
-            />
+              focalPointX={75.20458265139116}
+              focalPointY={27.72873194221509}
+              originWidth={611}
+              originHeight={623} />
             {/* Subtle overlay */}
-            <div className="absolute inset-0 bg-black/10" />
+
           </motion.div>
         </div>
         {/* Right Image */}
-        <div className="absolute right-0 top-0 w-1/2 h-full overflow-hidden">
-          <motion.div
-            className="w-full h-full"
-            initial={{ scale: 1.15 }}
-            animate={{ scale: 1.05 }}
-            transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
-          >
-            <Image
-              src="https://static.wixstatic.com/media/93e866_6e3c159e55534317b0b18c64fe452474~mv2.png"
-              alt="Professional fitness coach - right"
-              className="w-full h-full object-cover"
-              width={1000}
-            />
-            {/* Subtle overlay */}
-            <div className="absolute inset-0 bg-black/5" />
-          </motion.div>
-        </div>
-        {/* Bottom CTA Section */}
 
+        {/* Bottom CTA Section */}
       </section>
       {/* --- Keywords Section with Softer Design --- */}
-      <div className="relative py-16 px-8 lg:px-24 bg-white overflow-hidden">
-        {/* Subtle decorative elements */}
-        <div className="absolute top-20 left-12 w-32 h-32 bg-sage-green/3 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-12 w-40 h-40 bg-soft-lavender/3 rounded-full blur-3xl" />
-
-        {/* Main Content */}
-        <div className="relative z-10 max-w-[100rem] mx-auto">
-          {/* Keywords Display - Text only with dividers */}
-          <motion.div 
-            className="flex gap-0 items-center justify-center flex-wrap"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-          >
-            {[
-              { label: t.home.marqueeConfidence },
-              { label: t.home.marqueeBalance },
-              { label: t.home.marqueeNutrition },
-              { label: t.home.marqueeStrength }
-            ].map((item, idx) => (
-              <motion.div
-                key={idx}
-                className="flex items-center"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 300, damping: 10 }}
-              >
-                <span className="text-2xl md:text-3xl lg:text-4xl font-heading text-charcoal-black px-4 md:px-6">
-                  {item.label}
-                </span>
-                
-                {/* Rose/Gold divider between items */}
-                {idx < 3 && (
-                  <motion.div
-                    className="text-2xl md:text-3xl text-soft-bronze/60"
-                    animate={{ opacity: [0.4, 0.8, 0.4] }}
-                    transition={{ repeat: Infinity, duration: 3, delay: idx * 0.2 }}
-                  >
-                    ✦
-                  </motion.div>
-                )}
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </div>
       {/* --- The Philosophy (Text Heavy / Editorial) --- */}
       <section className="py-20 px-8 lg:px-24 bg-white">
         <div className="max-w-[100rem] mx-auto">
@@ -663,63 +596,7 @@ export default function HomePage() {
         </section>
       )}
       {/* --- Motivasi Hero Section - Three Column Layout --- */}
-      <section className="relative w-full min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center justify-center bg-gradient-to-br from-charcoal-black via-charcoal-black/98 to-warm-bronze/5 overflow-hidden py-20 md:py-32 lg:py-40">
-        {/* Animated gradient background elements */}
-        <motion.div
-          className="absolute -top-96 -right-96 w-[800px] h-[800px] bg-sage-green/10 rounded-full blur-3xl opacity-20 pointer-events-none"
-          animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.3, 0.2] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute -bottom-96 -left-96 w-[800px] h-[800px] bg-rose-blush/10 rounded-full blur-3xl opacity-20 pointer-events-none"
-          animate={{ scale: [1.1, 1, 1.1], opacity: [0.3, 0.2, 0.3] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        />
-
-        {/* Main Content - Three Column Layout */}
-        <div className="relative z-10 w-full px-4 md:px-8 lg:px-24 max-w-[120rem] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center min-h-[400px] md:min-h-[500px]">
-            {/* Left Column - Subheading */}
-            <motion.div
-              className="flex items-center justify-start"
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              viewport={{ once: true, margin: "-100px" }}
-            >
-              <div className="max-w-xs">
-
-              </div>
-            </motion.div>
-
-            {/* Center Column - Large "Motivasi" Text */}
-            <motion.div
-              className="flex items-center justify-center"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              viewport={{ once: true, margin: "-100px" }}
-            >
-              <h2 className="font-heading text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white leading-[0.9] tracking-tighter drop-shadow-2xl text-center">
-                Motivasi
-              </h2>
-            </motion.div>
-
-            {/* Right Column - Portal Access CTA */}
-            <motion.div
-              className="flex items-center justify-end"
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-              viewport={{ once: true, margin: "-100px" }}
-            >
-              <div className="flex flex-col gap-4 max-w-xs">
-
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      <section className="relative w-full min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-charcoal-black via-charcoal-black/98 to-warm-bronze/5 overflow-hidden pt-24 pb-16 px-4 md:px-8 lg:px-12"> <motion.div className="absolute -top-40 -left-40 w-96 h-96 bg-sage-green/10 rounded-full blur-3xl opacity-20 pointer-events-none" animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.3, 0.2] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }} /> <motion.div className="absolute -bottom-40 -right-40 w-96 h-96 bg-rose-blush/10 rounded-full blur-3xl opacity-20 pointer-events-none" animate={{ scale: [1.1, 1, 1.1], opacity: [0.3, 0.2, 0.3] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }} /> <div className="relative z-10 w-full max-w-[120rem] mx-auto flex flex-col items-center justify-center min-h-[400px] md:min-h-[500px]"> <motion.div className="flex items-center justify-center mb-8 lg:mb-12" initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }} viewport={{ once: true, margin: "-100px" }}> <div className="max-w-xs text-center"> <span className="text-lg md:text-xl text-warm-bronze font-medium tracking-widest uppercase">Ignite Your Drive</span> </div> </motion.div> <motion.div className="flex items-center justify-center mb-12 lg:mb-16" initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 1, ease: "easeOut" }} viewport={{ once: true, margin: "-100px" }}> <h2 className="font-heading text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white leading-[0.9] tracking-tighter drop-shadow-2xl text-center bg-gradient-to-r from-sage-green via-warm-bronze to-rose-blush bg-clip-text text-transparent"> Motivasi </h2> </motion.div> <motion.div className="flex items-center justify-center" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }} viewport={{ once: true, margin: "-100px" }}> <div className="flex flex-col gap-4 max-w-xs text-center"> <Link to="/portal" className="inline-flex items-center justify-center gap-3 bg-warm-bronze text-charcoal-black px-8 py-4 rounded-full font-bold text-base shadow-lg hover:shadow-2xl hover:shadow-warm-bronze/40 transition-all duration-300 hover:scale-105"> Access Your Portal <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /> </Link> <p className="text-sm text-white/70 font-light">Your journey to peak performance starts here.</p> </div> </motion.div> </div> </section>
     </div>
   );
 }
