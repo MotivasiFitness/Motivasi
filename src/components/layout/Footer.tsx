@@ -8,12 +8,18 @@ function Footer() {
   const { t } = useLanguage();
 
   return (
-    <footer className="bg-white text-charcoal-black">
+    <footer className="bg-white text-charcoal-black border-t border-light-gray">
       <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20 py-16 sm:py-20">
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 sm:gap-16 lg:gap-20 mb-12">
           {/* Brand Section - Left */}
           <div className="flex flex-col">
+            {/* Motivasi Logo */}
+            <div className="mb-6 flex items-baseline gap-1">
+              <span className="font-heading text-2xl font-bold text-charcoal-black">moti</span>
+              <span className="font-heading text-2xl font-bold text-blue-600">vasi</span>
+            </div>
+            
             <p className="font-paragraph text-sm text-medium-gray mb-8 leading-relaxed max-w-xs">
               {t.footer.empoweringBusy}
             </p>
@@ -42,8 +48,8 @@ function Footer() {
 
           {/* Quick Links - Center Left */}
           <div>
-            <h4 className="font-sans font-bold text-sm uppercase tracking-wide text-charcoal-black mb-6">Quick Links</h4>
-            <nav className="flex flex-col gap-4">
+            <h4 className="font-sans font-bold text-xs uppercase tracking-widest text-charcoal-black mb-6 letter-spacing-wide">Quick Links</h4>
+            <nav className="flex flex-col gap-3">
               <Link to="/" className="font-paragraph text-sm text-medium-gray hover:text-warm-bronze transition-colors">
                 {t.nav.home}
               </Link>
@@ -64,8 +70,8 @@ function Footer() {
 
           {/* Legal & Compliance - Center Right */}
           <div>
-            <h4 className="font-sans font-bold text-sm uppercase tracking-wide text-charcoal-black mb-6">Legal & Compliance</h4>
-            <nav className="flex flex-col gap-4">
+            <h4 className="font-sans font-bold text-xs uppercase tracking-widest text-charcoal-black mb-6 letter-spacing-wide">Legal & Compliance</h4>
+            <nav className="flex flex-col gap-3">
               <Link to="/privacy" className="font-paragraph text-sm text-medium-gray hover:text-warm-bronze transition-colors">
                 Privacy & Cookie Policy
               </Link>
@@ -78,7 +84,7 @@ function Footer() {
               <Link to="/accessibility" className="font-paragraph text-sm text-medium-gray hover:text-warm-bronze transition-colors">
                 Accessibility Statement
               </Link>
-              <p className="font-paragraph text-xs text-medium-gray mt-2">
+              <p className="font-paragraph text-xs text-medium-gray mt-3">
                 Motivasi holds appropriate professional and public liability insurance.
               </p>
             </nav>
