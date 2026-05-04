@@ -20,18 +20,6 @@ function Header() {
           {/* Left Navigation - Hidden on Mobile */}
           <nav className="hidden md:flex items-center gap-6 lg:gap-8 absolute left-0">
             <Link 
-              to="/" 
-              className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors"
-            >
-              {t.nav.home}
-            </Link>
-            <Link 
-              to="/about" 
-              className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors"
-            >
-              {t.nav.about}
-            </Link>
-            <Link 
               to="/online-training" 
               className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors"
             >
@@ -106,20 +94,6 @@ function Header() {
         {isMenuOpen && (
           <nav className="md:hidden py-4 border-t border-light-gray bg-white">
             <div className="flex flex-col gap-2">
-              <Link 
-                to="/" 
-                className="font-paragraph text-base text-charcoal-black hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {t.nav.home}
-              </Link>
-              <Link 
-                to="/about" 
-                className="font-paragraph text-base text-charcoal-black hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {t.nav.about}
-              </Link>
               <Link 
                 to="/online-training" 
                 className="font-paragraph text-base text-charcoal-black hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
