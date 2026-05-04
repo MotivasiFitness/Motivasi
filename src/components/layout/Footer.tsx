@@ -24,15 +24,15 @@ function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 sm:gap-16 lg:gap-20 mb-12 relative z-20">
           {/* Brand Section - Left */}
           <div className="flex flex-col">
-            {/* Motivasi Logo */}
-            <div className="mb-6 flex items-baseline gap-1">
-              <span className="font-heading text-2xl font-bold text-charcoal-black">moti</span>
-              <span className="font-heading text-2xl font-bold text-blue-600">vasi</span>
-            </div>
-            
             <p className="font-paragraph text-sm text-medium-gray mb-8 leading-relaxed max-w-xs">
               {t.footer.empoweringBusy}
             </p>
+            
+            {/* Motivasi Logo */}
+            <div className="mb-6 flex items-baseline gap-1">
+              <span className="font-heading text-2xl font-bold text-black">moti</span>
+              <span className="font-heading text-2xl font-bold text-blue-600">vasi</span>
+            </div>
             <div className="flex gap-4 mb-8">
               <a 
                 href="https://www.instagram.com/risewithmotivasi?igsh=bml4NmhnNw8yenht" 
