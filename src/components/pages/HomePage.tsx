@@ -416,108 +416,81 @@ export default function HomePage() {
 
 
 
-      {/* --- Invest in Yourself Hero Section --- */}
-      <section className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-soft-lavender via-soft-lavender/80 to-rose-blush/30 py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24">
-        {/* Subtle gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-warm-bronze/3 to-transparent pointer-events-none" />
+      {/* --- Invest in Yourself Hero Section - Redesigned --- */}
+      <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-charcoal-black via-charcoal-black/95 to-warm-bronze/10 py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24">
+        {/* Animated gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-warm-bronze/5 to-transparent pointer-events-none" />
         
-        {/* Decorative Botanical Elements - Top Right */}
+        {/* Decorative Glowing Orbs - Top Left */}
         <motion.div
-          className="absolute top-0 right-0 w-96 h-96 opacity-8 pointer-events-none"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 0.08, scale: 1 }}
-          transition={{ duration: 1.4, ease: "easeOut" }}
-        >
-          <svg viewBox="0 0 200 200" className="w-full h-full text-rose-blush" preserveAspectRatio="none">
-            <path d="M200 0 Q180 20 170 40 Q160 60 165 80 Q170 100 160 120 Q150 140 155 160 Q160 180 150 200" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-            <path d="M170 40 Q175 35 180 40 Q175 45 170 40" stroke="currentColor" strokeWidth="0.8" fill="none" />
-            <path d="M165 80 Q172 75 178 82 Q171 87 165 80" stroke="currentColor" strokeWidth="0.8" fill="none" />
-            <path d="M160 120 Q168 115 175 123 Q167 128 160 120" stroke="currentColor" strokeWidth="0.8" fill="none" />
-            <path d="M155 160 Q163 155 170 163 Q162 168 155 160" stroke="currentColor" strokeWidth="0.8" fill="none" />
-          </svg>
-        </motion.div>
-
-        {/* Decorative Botanical Elements - Bottom Left */}
+          className="absolute -top-40 -left-40 w-96 h-96 bg-sage-green/20 rounded-full blur-3xl opacity-30 pointer-events-none"
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        
+        {/* Decorative Glowing Orbs - Bottom Right */}
         <motion.div
-          className="absolute bottom-0 left-0 w-80 h-80 opacity-6 pointer-events-none"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 0.06, scale: 1 }}
-          transition={{ duration: 1.4, delay: 0.2, ease: "easeOut" }}
-        >
-          <svg viewBox="0 0 200 200" className="w-full h-full text-sage-green" preserveAspectRatio="none">
-            <path d="M0 200 Q20 180 30 160 Q40 140 35 120 Q30 100 40 80 Q50 60 45 40 Q40 20 50 0" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-            <path d="M30 160 Q25 165 20 160 Q25 155 30 160" stroke="currentColor" strokeWidth="0.8" fill="none" />
-            <path d="M35 120 Q28 125 22 118 Q29 113 35 120" stroke="currentColor" strokeWidth="0.8" fill="none" />
-            <path d="M40 80 Q32 85 25 77 Q33 72 40 80" stroke="currentColor" strokeWidth="0.8" fill="none" />
-            <path d="M45 40 Q37 45 30 37 Q38 32 45 40" stroke="currentColor" strokeWidth="0.8" fill="none" />
-          </svg>
-        </motion.div>
+          className="absolute -bottom-40 -right-40 w-96 h-96 bg-rose-blush/20 rounded-full blur-3xl opacity-30 pointer-events-none"
+          animate={{ scale: [1.2, 1, 1.2], opacity: [0.5, 0.3, 0.5] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        />
 
-        {/* Content Container */}
-        <div className="relative z-10 max-w-[100rem] mx-auto w-full">
-          <div className="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-20 items-center">
-            
-            {/* Left: Text Content */}
-            <div className="w-full lg:w-1/2 flex flex-col justify-center">
-              <AnimatedElement className="mb-8">
-                <span className="inline-block py-2 px-4 border border-rose-blush/40 rounded-full text-charcoal-black text-sm tracking-widest uppercase font-medium bg-rose-blush/5">
-                  Premium Investment
-                </span>
-              </AnimatedElement>
-
-              <div className="relative z-20 mb-12">
-                <motion.div
-                  className="absolute -inset-8 bg-gradient-to-br from-rose-blush/20 via-soft-lavender/15 to-transparent rounded-3xl blur-2xl -z-10"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 1.5, ease: "easeOut" }}
-                />
+        {/* Content Container - Asymmetrical Layout */}
+        <div className="relative z-10 max-w-[100rem] mx-auto w-full h-full flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+          
+          {/* Left: Large Pricing Card - Takes Visual Priority */}
+          <motion.div 
+            className="w-full lg:w-1/2 flex items-center justify-center lg:justify-end"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <div className="w-full max-w-md">
+              {/* Premium Pricing Card with Enhanced Design */}
+              <div className="relative group">
+                {/* Glowing border effect */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-sage-green via-warm-bronze to-rose-blush rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
                 
-                <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-black text-charcoal-black leading-[1.1] mb-8 tracking-tight">
-                  Invest in Yourself
-                </h2>
-              </div>
-
-              <AnimatedElement className="mb-12 delay-300">
-                <p className="text-lg md:text-xl lg:text-2xl text-charcoal-black/70 leading-relaxed max-w-lg font-light tracking-wide">
-                  Transform your fitness journey with personalised coaching designed for your life. Limited spaces available.
-                </p>
-              </AnimatedElement>
-
-              {/* Decorative Floral Divider */}
-              <motion.div
-                className="mb-12 flex items-center gap-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1.2, delay: 0.6 }}
-              >
-                <div className="flex-1 h-px bg-gradient-to-r from-transparent via-rose-blush/30 to-transparent" />
-                <svg className="w-6 h-6 text-rose-blush/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M12 2C12 2 8 6 8 10C8 13.3 10 16 12 16C14 16 16 13.3 16 10C16 6 12 2 12 2Z" />
-                  <path d="M12 16C12 16 10 18 10 20C10 21.1 11 22 12 22C13 22 14 21.1 14 20C14 18 12 16 12 16Z" />
-                </svg>
-                <div className="flex-1 h-px bg-gradient-to-r from-transparent via-sage-green/30 to-transparent" />
-              </motion.div>
-            </div>
-
-            {/* Right: Pricing Card */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center">
-              <div className="w-full max-w-md">
-                {/* Pricing Section Background Wrapper */}
-                <div className="bg-gradient-to-br from-dark-gray to-dark-gray/95 p-10 md:p-14 rounded-3xl shadow-2xl relative overflow-hidden border-t-4 border-t-rose-blush">
+                {/* Main Card */}
+                <div className="relative bg-gradient-to-br from-charcoal-black/80 to-charcoal-black/60 backdrop-blur-xl p-10 md:p-14 rounded-3xl border border-white/10 overflow-hidden">
                   {/* Decorative background elements */}
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-sage-green/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                  <div className="absolute bottom-0 left-0 w-48 h-48 bg-rose-blush/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-sage-green/15 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+                  <div className="absolute bottom-0 left-0 w-48 h-48 bg-rose-blush/15 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
                   
                   <div className="relative z-10">
-                    <h3 className="font-heading text-3xl md:text-4xl font-bold mb-3 text-white">{t.home.monthlyCoaching}</h3>
-                    <p className="text-white/70 mb-10 font-light text-sm md:text-base">{t.home.cancelAnytime}</p>
-                    
-                    <div className="flex items-baseline gap-3 mb-10">
-                      <span className="font-heading text-6xl md:text-7xl font-bold text-rose-blush">£499</span>
-                      <span className="text-lg md:text-xl text-white/70 font-light">/ 12 weeks</span>
-                    </div>
+                    {/* Premium Badge */}
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.2 }}
+                      viewport={{ once: true }}
+                      className="inline-block mb-6"
+                    >
+                      <span className="inline-block py-2 px-4 border border-sage-green/40 rounded-full text-sage-green text-xs tracking-widest uppercase font-medium bg-sage-green/5">
+                        Limited Availability
+                      </span>
+                    </motion.div>
 
+                    <h3 className="font-heading text-4xl md:text-5xl font-bold mb-4 text-white leading-tight">{t.home.monthlyCoaching}</h3>
+                    <p className="text-white/60 mb-8 font-light text-base md:text-lg">{t.home.cancelAnytime}</p>
+                    
+                    {/* Price Display - Prominent */}
+                    <motion.div 
+                      className="flex items-baseline gap-3 mb-12 pb-8 border-b border-white/10"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.6, delay: 0.3 }}
+                      viewport={{ once: true }}
+                    >
+                      <span className="font-heading text-7xl md:text-8xl font-bold bg-gradient-to-r from-sage-green via-warm-bronze to-rose-blush bg-clip-text text-transparent">£499</span>
+                      <div className="flex flex-col">
+                        <span className="text-lg md:text-xl text-white/70 font-light">per</span>
+                        <span className="text-lg md:text-xl text-white/70 font-light">12 weeks</span>
+                      </div>
+                    </motion.div>
+
+                    {/* Features List - Enhanced */}
                     <div className="space-y-4 mb-10">
                       {[
                         t.home.customTrainingApp,
@@ -526,32 +499,122 @@ export default function HomePage() {
                         t.home.prioritySupport,
                         t.home.monthlyStrategyCalls
                       ].map((item, i) => (
-                        <div key={i} className="flex items-center gap-3">
-                          <div className="w-5 h-5 rounded-full bg-sage-green/30 flex items-center justify-center flex-shrink-0">
-                            <CheckCircle size={12} className="text-sage-green" />
+                        <motion.div 
+                          key={i} 
+                          className="flex items-center gap-3"
+                          initial={{ opacity: 0, x: -10 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.4, delay: 0.4 + i * 0.1 }}
+                          viewport={{ once: true }}
+                        >
+                          <div className="w-6 h-6 rounded-full bg-gradient-to-r from-sage-green to-warm-bronze flex items-center justify-center flex-shrink-0">
+                            <CheckCircle size={14} className="text-white" />
                           </div>
                           <span className="text-base md:text-lg text-white/90 font-light">{item}</span>
-                        </div>
-                      ))}</div>
+                        </motion.div>
+                      ))}
+                    </div>
 
+                    {/* CTA Button */}
                     <motion.div
                       whileHover={{ scale: 1.05 }}
                       transition={{ type: "spring", stiffness: 300, damping: 10 }}
                       className="mb-6"
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.6 }}
+                      viewport={{ once: true }}
                     >
                       <Link
                         to="/store"
-                        className="block w-full bg-sage-green text-black text-center py-5 md:py-6 rounded-full font-medium text-lg hover:shadow-lg hover:shadow-sage-green/40 transition-all duration-300"
+                        className="block w-full bg-gradient-to-r from-sage-green to-warm-bronze text-charcoal-black text-center py-5 md:py-6 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-sage-green/40 transition-all duration-300"
                       >
                         {t.home.secureYourSpot}
                       </Link>
                     </motion.div>
-                    <p className="text-center text-xs md:text-sm text-white/60 font-light">{t.home.limitedSpaces}</p>
+                    <p className="text-center text-xs md:text-sm text-white/50 font-light">{t.home.limitedSpaces}</p>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
+
+          {/* Right: Text Content - Positioned Asymmetrically */}
+          <motion.div 
+            className="w-full lg:w-1/2 flex flex-col justify-center lg:justify-start"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            <div className="max-w-2xl">
+              <AnimatedElement className="mb-8">
+                <span className="inline-block py-2 px-4 border border-sage-green/40 rounded-full text-sage-green text-sm tracking-widest uppercase font-medium bg-sage-green/5">
+                  Transform Your Life
+                </span>
+              </AnimatedElement>
+
+              <div className="relative z-20 mb-12">
+                <motion.div
+                  className="absolute -inset-8 bg-gradient-to-br from-sage-green/20 via-warm-bronze/10 to-transparent rounded-3xl blur-2xl -z-10"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                />
+                
+                <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-8 tracking-tight">
+                  Invest in <span className="bg-gradient-to-r from-sage-green via-warm-bronze to-rose-blush bg-clip-text text-transparent">Yourself</span>
+                </h2>
+              </div>
+
+              <AnimatedElement className="mb-12 delay-300">
+                <p className="text-lg md:text-xl lg:text-2xl text-white/70 leading-relaxed max-w-lg font-light tracking-wide">
+                  Your body is your most valuable asset. Transform your fitness journey with personalised coaching designed specifically for your life, goals, and challenges.
+                </p>
+              </AnimatedElement>
+
+              {/* Key Benefits - Vertical List */}
+              <AnimatedElement className="mb-12 delay-500 space-y-4">
+                {[
+                  { icon: Heart, text: "Personalised programming tailored to you" },
+                  { icon: Zap, text: "Real results in 12 weeks or less" },
+                  { icon: ShieldCheck, text: "Expert form analysis & injury prevention" }
+                ].map((benefit, idx) => {
+                  const Icon = benefit.icon;
+                  return (
+                    <motion.div
+                      key={idx}
+                      className="flex items-center gap-4"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.7 + idx * 0.1 }}
+                      viewport={{ once: true }}
+                    >
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-r from-sage-green to-warm-bronze flex items-center justify-center flex-shrink-0">
+                        <Icon size={18} className="text-charcoal-black" />
+                      </div>
+                      <span className="text-base md:text-lg text-white/80 font-light">{benefit.text}</span>
+                    </motion.div>
+                  );
+                })}
+              </AnimatedElement>
+
+              {/* Decorative Floral Divider */}
+              <motion.div
+                className="flex items-center gap-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.2, delay: 0.6 }}
+              >
+                <div className="flex-1 h-px bg-gradient-to-r from-transparent via-sage-green/30 to-transparent" />
+                <svg className="w-6 h-6 text-sage-green/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M12 2C12 2 8 6 8 10C8 13.3 10 16 12 16C14 16 16 13.3 16 10C16 6 12 2 12 2Z" />
+                  <path d="M12 16C12 16 10 18 10 20C10 21.1 11 22 12 22C13 22 14 21.1 14 20C14 18 12 16 12 16Z" />
+                </svg>
+                <div className="flex-1 h-px bg-gradient-to-r from-transparent via-warm-bronze/30 to-transparent" />
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
