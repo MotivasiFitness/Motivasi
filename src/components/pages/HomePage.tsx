@@ -317,23 +317,10 @@ export default function HomePage() {
       </section>
       {/* --- Visual Breather (Parallax) --- */}
       <section className="relative h-[80vh] w-full overflow-hidden flex items-center justify-center">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="https://static.wixstatic.com/media/93e866_6e3c159e55534317b0b18c64fe452474~mv2.png"
-            alt="Professional home gym setup with strength training equipment"
-            className="w-full h-full object-cover"
-            width={1600}
-          />
-          <div className="absolute inset-0 bg-charcoal-black/40" />
-        </div>
+
         <div className="relative z-10 text-center max-w-4xl px-8">
           <AnimatedElement>
-            <h2 className="font-heading text-5xl md:text-7xl text-white font-black mb-8 leading-tight">
-              {t.home.quote}
-            </h2>
-            <p className="font-paragraph text-xl md:text-2xl text-white font-medium">
-              {t.home.quoteAuthor}
-            </p>
+
           </AnimatedElement>
         </div>
       </section>
@@ -727,11 +714,6 @@ export default function HomePage() {
               viewport={{ once: true, margin: "-100px" }}
             >
               <div className="flex flex-col gap-4 max-w-xs">
-                <Link
-                  to="/portal"
-                  className="group inline-flex items-center justify-center gap-3 bg-gradient-to-r from-sage-green to-warm-bronze text-charcoal-black px-8 py-4 rounded-full font-bold text-base transition-all duration-300 hover:shadow-lg hover:shadow-sage-green/40 hover:scale-105"
-                >Client Portal 
-                </Link>
 
               </div>
             </motion.div>
