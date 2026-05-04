@@ -14,8 +14,8 @@ function Footer() {
         <div className="absolute inset-0 flex items-center justify-end pointer-events-none overflow-hidden">
           <div className="text-right pr-4 sm:pr-8 lg:pr-12">
             <div className="font-heading text-[200px] sm:text-[250px] lg:text-[320px] font-bold leading-none whitespace-nowrap">
-              <span className="text-light-gray opacity-10">moti</span>
-              <span className="text-blue-400 opacity-8">vasi</span>
+              <span className="text-charcoal-black opacity-10">moti</span>
+              <span className="text-blue-600 opacity-10">vasi</span>
             </div>
           </div>
         </div>
