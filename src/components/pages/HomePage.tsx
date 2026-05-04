@@ -114,106 +114,99 @@ export default function HomePage() {
           </Link>
         </motion.div>
       )}
-      {/* --- Hero Section --- */}
-      <section className="relative min-h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-gradient-to-br from-sage-green via-sage-green/80 to-rose-blush">
-        {/* Subtle gradient overlay for refined effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-warm-bronze/3 to-transparent pointer-events-none" />
-        
-        {/* Decorative Botanical Line Illustration - Top Right Corner */}
-        <motion.div
-          className="absolute top-0 right-0 w-96 h-96 opacity-8 pointer-events-none"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 0.08, scale: 1 }}
-          transition={{ duration: 1.4, ease: "easeOut" }}
-        >
-          <svg viewBox="0 0 200 200" className="w-full h-full text-sage-green" preserveAspectRatio="none">
-            {/* Botanical vine with leaves */}
-            <path d="M200 0 Q180 20 170 40 Q160 60 165 80 Q170 100 160 120 Q150 140 155 160 Q160 180 150 200" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-            {/* Leaf details */}
-            <path d="M170 40 Q175 35 180 40 Q175 45 170 40" stroke="currentColor" strokeWidth="0.8" fill="none" />
-            <path d="M165 80 Q172 75 178 82 Q171 87 165 80" stroke="currentColor" strokeWidth="0.8" fill="none" />
-            <path d="M160 120 Q168 115 175 123 Q167 128 160 120" stroke="currentColor" strokeWidth="0.8" fill="none" />
-            <path d="M155 160 Q163 155 170 163 Q162 168 155 160" stroke="currentColor" strokeWidth="0.8" fill="none" />
-          </svg>
-        </motion.div>
+      {/* --- Hero Section - Minimalist Split Layout --- */}
+      <section className="relative min-h-screen w-full overflow-hidden bg-white">
+        {/* Split Background - Left Light, Right Light */}
+        <div className="absolute inset-0 flex">
+          <div className="w-1/2 bg-white" />
+          <div className="w-1/2 bg-light-gray" />
+        </div>
 
-        {/* Decorative Botanical Elements - Bottom Left */}
-        <motion.div
-          className="absolute bottom-0 left-0 w-80 h-80 opacity-6 pointer-events-none"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 0.06, scale: 1 }}
-          transition={{ duration: 1.4, delay: 0.2, ease: "easeOut" }}
-        >
-          <svg viewBox="0 0 200 200" className="w-full h-full text-rose-blush" preserveAspectRatio="none">
-            {/* Botanical vine with leaves - mirrored */}
-            <path d="M0 200 Q20 180 30 160 Q40 140 35 120 Q30 100 40 80 Q50 60 45 40 Q40 20 50 0" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-            {/* Leaf details */}
-            <path d="M30 160 Q25 165 20 160 Q25 155 30 160" stroke="currentColor" strokeWidth="0.8" fill="none" />
-            <path d="M35 120 Q28 125 22 118 Q29 113 35 120" stroke="currentColor" strokeWidth="0.8" fill="none" />
-            <path d="M40 80 Q32 85 25 77 Q33 72 40 80" stroke="currentColor" strokeWidth="0.8" fill="none" />
-            <path d="M45 40 Q37 45 30 37 Q38 32 45 40" stroke="currentColor" strokeWidth="0.8" fill="none" />
-          </svg>
-        </motion.div>
-
-        {/* Left Content */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-24 py-40 lg:py-64 z-10">
-          <div className="max-w-2xl">
-            <AnimatedElement className="mb-8">
-              <span className="inline-block py-2 px-4 border border-sage-green/40 rounded-full text-charcoal-black text-sm tracking-widest uppercase font-medium bg-sage-green/5">
+        {/* Center Overlay Text - Positioned Absolutely */}
+        <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+          >
+            <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-black text-charcoal-black/80 tracking-widest uppercase letter-spacing-2">
+              {t.home.heroTitle}
+            </h2>
+            <motion.div
+              className="mt-6 flex items-center justify-center gap-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              <div className="h-px w-12 bg-warm-bronze/60" />
+              <span className="text-sm md:text-base tracking-widest uppercase text-warm-bronze font-medium">
                 {t.home.tagline}
               </span>
-            </AnimatedElement>
-            
-            {/* Gradient Overlay Background for Text */}
-            <div className="relative z-20">
-              {/* Subtle gradient backdrop behind heading */}
-              <motion.div
-                className="absolute -inset-8 bg-gradient-to-br from-rose-blush/20 via-soft-lavender/15 to-transparent rounded-3xl blur-2xl -z-10"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
-              />
-              
-              <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl font-black text-charcoal-black leading-[1.1] mb-16 tracking-tight" style={{ filter: 'saturate(0.2)' }}>
-                <span className="block overflow-hidden">
-                  <motion.span 
-                    initial={{ y: "100%" }} 
-                    animate={{ y: 0 }} 
-                    transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                    className="block my-0.5 mx-0"
-                  >
-                    {t.home.heroTitle}
-                  </motion.span>
-                </span>
-                <span className="block overflow-hidden">
-                  <motion.span 
-                    initial={{ y: "100%" }} 
-                    animate={{ y: 0 }} 
-                    transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                    className="block my-3.5 mx-0 text-charcoal-black"
-                  >
-                    {t.home.heroSubtitle}
-                  </motion.span>
-                </span>
-              </h1>
-            </div>
+              <div className="h-px w-12 bg-warm-bronze/60" />
+            </motion.div>
+          </motion.div>
+        </div>
 
-            <AnimatedElement className="mb-16 delay-300">
-              <p className="text-xl md:text-2xl text-charcoal-black/70 leading-relaxed max-w-lg font-light tracking-wide">
+        {/* Left Image */}
+        <div className="absolute left-0 top-0 w-1/2 h-full overflow-hidden">
+          <motion.div
+            className="w-full h-full"
+            initial={{ scale: 1.05 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+          >
+            <Image
+              src="https://static.wixstatic.com/media/93e866_ef269d4e34974b55aceddc01c79a92ad~mv2.png"
+              alt="Professional fitness coach - left"
+              className="w-full h-full object-cover"
+              width={800}
+              focalPointX={48.19272855630074}
+              focalPointY={38.573949876456055}
+            />
+            {/* Subtle overlay */}
+            <div className="absolute inset-0 bg-black/10" />
+          </motion.div>
+        </div>
+
+        {/* Right Image */}
+        <div className="absolute right-0 top-0 w-1/2 h-full overflow-hidden">
+          <motion.div
+            className="w-full h-full"
+            initial={{ scale: 1.05 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
+          >
+            <Image
+              src="https://static.wixstatic.com/media/93e866_6e3c159e55534317b0b18c64fe452474~mv2.png"
+              alt="Professional fitness coach - right"
+              className="w-full h-full object-cover"
+              width={800}
+            />
+            {/* Subtle overlay */}
+            <div className="absolute inset-0 bg-black/5" />
+          </motion.div>
+        </div>
+
+        {/* Bottom CTA Section */}
+        <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-white via-white/95 to-transparent pt-20 pb-12 px-8">
+          <div className="max-w-[100rem] mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+            <AnimatedElement className="flex-1">
+              <p className="text-lg md:text-xl text-charcoal-black/70 font-light max-w-xl">
                 {t.home.readyToFeelDesc}
               </p>
             </AnimatedElement>
 
-            <AnimatedElement className="flex flex-wrap gap-6 delay-500">
+            <AnimatedElement className="flex flex-wrap gap-4 justify-end">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 300, damping: 10 }}
               >
                 <Link
                   to="/store"
-                  className="group relative overflow-hidden bg-sage-green text-charcoal-black px-12 py-6 rounded-full font-medium text-lg transition-all duration-300 hover:shadow-lg hover:shadow-sage-green/30 inline-flex items-center gap-2"
+                  className="group inline-flex items-center gap-2 bg-warm-bronze text-white px-8 py-3 rounded-full font-medium text-base transition-all duration-300 hover:shadow-lg hover:shadow-warm-bronze/30"
                 >
-                  Let's get started <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  Let's get started <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </motion.div>
               <motion.div
@@ -222,44 +215,13 @@ export default function HomePage() {
               >
                 <Link
                   to="/about"
-                  className="group flex items-center gap-2 px-12 py-6 rounded-full border-2 border-rose-blush text-charcoal-black font-medium text-lg hover:bg-rose-blush/5 hover:border-rose-blush transition-all duration-300 bg-white"
+                  className="group inline-flex items-center gap-2 px-8 py-3 rounded-full border-2 border-charcoal-black text-charcoal-black font-medium text-base hover:bg-charcoal-black/5 transition-all duration-300 bg-white"
                 >
                   {t.home.myPhilosophy}
                 </Link>
               </motion.div>
             </AnimatedElement>
-
-            {/* Decorative Floral Divider */}
-            <motion.div
-              className="mt-16 flex items-center gap-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1.2, delay: 0.6 }}
-            >
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-sage-green/30 to-transparent" />
-              <svg className="w-6 h-6 text-sage-green/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M12 2C12 2 8 6 8 10C8 13.3 10 16 12 16C14 16 16 13.3 16 10C16 6 12 2 12 2Z" />
-                <path d="M12 16C12 16 10 18 10 20C10 21.1 11 22 12 22C13 22 14 21.1 14 20C14 18 12 16 12 16Z" />
-              </svg>
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-rose-blush/30 to-transparent" />
-            </motion.div>
           </div>
-        </div>
-
-        {/* Right Image - Parallax */}
-        <div className="w-full lg:w-1/2 h-[40vh] md:h-[50vh] lg:h-auto relative overflow-hidden flex items-center justify-center p-4 md:p-8 lg:p-12">
-          <motion.div 
-            className="w-full h-full relative"
-            style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]) }}
-          >
-            <Image
-              src="https://static.wixstatic.com/media/93e866_ef269d4e34974b55aceddc01c79a92ad~mv2.png"
-              alt="Professional fitness coach portrait"
-              className="w-full h-full object-cover rounded-[2rem] lg:rounded-[3rem]"
-              width={1200}
-              focalPointX={48.19272855630074}
-              focalPointY={38.573949876456055} />
-          </motion.div>
         </div>
       </section>
       {/* --- Keywords Section with Softer Design --- */}
