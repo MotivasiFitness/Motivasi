@@ -8,9 +8,9 @@ function Footer() {
   const { t } = useLanguage();
 
   return (
-    <footer className="bg-soft-lavender text-dark-gray">
+    <footer className="bg-warm-cream text-dark-gray">
       {/* Decorative Botanical Divider */}
-      <div className="relative h-12 bg-soft-lavender overflow-hidden">
+      <div className="relative h-12 bg-warm-cream overflow-hidden">
         <svg
           viewBox="0 0 1200 60"
           preserveAspectRatio="none"
