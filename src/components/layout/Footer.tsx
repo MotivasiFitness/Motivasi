@@ -57,10 +57,10 @@ function Footer() {
                 {t.nav.about}
               </Link>
               <Link to="/online-training" className="font-paragraph text-sm text-medium-gray hover:text-warm-bronze transition-colors">
-                {t.nav.onlineTraining}
+                Online
               </Link>
               <Link to="/blog" className="font-paragraph text-sm text-medium-gray hover:text-warm-bronze transition-colors">
-                {t.nav.faceToFaceTraining}
+                Face-to-Face
               </Link>
               <Link to="/parq" className="font-paragraph text-sm text-medium-gray hover:text-warm-bronze transition-colors">
                 {t.nav.parqForm}
