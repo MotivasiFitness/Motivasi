@@ -741,6 +741,22 @@ export default function HomePage() {
                 </Link>
               </motion.div>
             </div>
+
+            {/* Motivasi Logo - Bottom Section */}
+            <motion.div
+              className="mt-24 pt-12 border-t border-white/10"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <Image
+                src="https://static.wixstatic.com/media/93e866_b0f1031d39e14824b52813211f0be569~mv2.png"
+                alt="Motivasi Logo"
+                className="h-12 md:h-16 w-auto mx-auto opacity-90 hover:opacity-100 transition-opacity duration-300"
+                width={300}
+              />
+            </motion.div>
           </AnimatedElement>
         </div>
       </section>
