@@ -9,9 +9,9 @@ function Footer() {
 
   return (
     <footer className="bg-white text-charcoal-black border-t border-light-gray relative overflow-hidden">
-      <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20 py-16 sm:py-20 relative z-10">
+      <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20 py-24 sm:py-32 lg:py-40 relative z-10">
         {/* Large Background Watermark - Motivasi Branding */}
-        <div className="absolute inset-0 flex items-center justify-end pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 flex items-end justify-end pointer-events-none overflow-hidden pb-8 sm:pb-12 lg:pb-16">
           <div className="text-right pr-4 sm:pr-8 lg:pr-12">
             <div className="font-heading text-[200px] sm:text-[250px] lg:text-[320px] font-bold leading-none whitespace-nowrap">
               <span className="text-charcoal-black opacity-10">moti</span>
