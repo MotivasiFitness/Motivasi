@@ -42,7 +42,7 @@ function Header() {
           </Link>
 
           {/* Right Navigation and Actions */}
-          <div className="hidden md:flex items-center gap-6 lg:gap-8 absolute right-0">
+          <div className="hidden md:flex items-center gap-4 lg:gap-5 absolute right-0">
             {isAuthenticated ? (
               <>
                 {isTrainer ? (
@@ -62,7 +62,7 @@ function Header() {
                 )}
                 <button
                   onClick={actions.logout}
-                  className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors flex items-center gap-2 min-h-[44px] min-w-[44px]"
+                  className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors flex items-center gap-2 h-10 px-2"
                 >
                   <LogOut size={16} className="text-charcoal-black" />
                   <span className="hidden lg:inline">Sign Out</span>
@@ -71,13 +71,13 @@ function Header() {
             ) : (
               <button 
                 onClick={actions.login}
-                className="text-charcoal-black hover:text-warm-bronze transition-colors flex items-center justify-center min-h-[44px] min-w-[44px]"
+                className="text-charcoal-black hover:text-warm-bronze transition-colors flex items-center justify-center h-10 w-10"
               >
                 <User size={20} className="text-charcoal-black" />
               </button>
             )}
             <LanguageSwitcher />
-            <MiniCart cartIconClassName="ml-2 [&_svg]:text-charcoal-black" />
+            <MiniCart cartIconClassName="[&_svg]:text-charcoal-black" />
           </div>
 
           {/* Mobile Menu Button */}
