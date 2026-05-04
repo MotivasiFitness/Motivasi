@@ -130,7 +130,7 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
           >
-            <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-widest uppercase letter-spacing-2">
+            <h2 className="font-heading text-3xl md:text-3xl lg:text-3xl font-black text-white tracking-widest uppercase letter-spacing-2">
               {t.home.heroTitle}
             </h2>
             <motion.div
