@@ -42,7 +42,7 @@ function Header() {
           </Link>
 
           {/* Right Navigation and Actions */}
-          <div className="hidden md:flex items-center gap-4 lg:gap-5 absolute right-0">
+          <div className="hidden md:flex items-center gap-2 lg:gap-3 absolute right-0">
             {isAuthenticated ? (
               <>
                 {isTrainer ? (
