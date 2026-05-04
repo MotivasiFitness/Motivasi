@@ -721,7 +721,7 @@ export default function HomePage() {
           </div>
         </section>
       )}
-      {/* --- Motivasi Hero Section - Large Typography --- */}
+      {/* --- Motivasi Hero Section - Three Column Layout --- */}
       <section className="relative w-full min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center justify-center bg-gradient-to-br from-charcoal-black via-charcoal-black/98 to-warm-bronze/5 overflow-hidden py-20 md:py-32 lg:py-40">
         {/* Animated gradient background elements */}
         <motion.div
@@ -735,44 +735,61 @@ export default function HomePage() {
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
         />
 
-        {/* Main Content */}
+        {/* Main Content - Three Column Layout */}
         <div className="relative z-10 w-full px-4 md:px-8 lg:px-24 max-w-[120rem] mx-auto">
-          <motion.div
-            className="text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            {/* Large "Motivasi" Text */}
-            <h2 className="font-heading text-7xl sm:text-8xl md:text-9xl lg:text-[12rem] xl:text-[14rem] font-black text-white leading-[0.9] tracking-tighter mb-8 md:mb-12 drop-shadow-2xl">
-              Motivasi
-            </h2>
-
-            {/* Subtle tagline below */}
-            <motion.p
-              className="text-lg md:text-2xl lg:text-3xl text-white/60 font-light tracking-widest uppercase letter-spacing-2 max-w-3xl mx-auto"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              Your journey to strength starts here
-            </motion.p>
-
-            {/* Decorative line elements */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center min-h-[400px] md:min-h-[500px]">
+            {/* Left Column - Subheading */}
             <motion.div
-              className="mt-12 md:mt-16 flex items-center justify-center gap-6"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              viewport={{ once: true }}
+              className="flex items-center justify-start"
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              viewport={{ once: true, margin: "-100px" }}
             >
-              <div className="h-px w-12 md:w-20 bg-gradient-to-r from-transparent to-white/40" />
-              <div className="w-2 h-2 rounded-full bg-white/40" />
-              <div className="h-px w-12 md:w-20 bg-gradient-to-l from-transparent to-white/40" />
+              <div className="max-w-xs">
+                <p className="text-lg md:text-xl lg:text-2xl text-white/70 font-light tracking-wide leading-relaxed">
+                  Your journey to strength starts here
+                </p>
+              </div>
             </motion.div>
-          </motion.div>
+
+            {/* Center Column - Large "Motivasi" Text */}
+            <motion.div
+              className="flex items-center justify-center"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <h2 className="font-heading text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white leading-[0.9] tracking-tighter drop-shadow-2xl text-center">
+                Motivasi
+              </h2>
+            </motion.div>
+
+            {/* Right Column - Portal Access CTA */}
+            <motion.div
+              className="flex items-center justify-end"
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <div className="flex flex-col gap-4 max-w-xs">
+                <Link
+                  to="/portal"
+                  className="group inline-flex items-center justify-center gap-3 bg-gradient-to-r from-sage-green to-warm-bronze text-charcoal-black px-8 py-4 rounded-full font-bold text-base transition-all duration-300 hover:shadow-lg hover:shadow-sage-green/40 hover:scale-105"
+                >
+                  Client Portal <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <Link
+                  to="/store"
+                  className="group inline-flex items-center justify-center gap-3 bg-white/10 border border-white/30 text-white px-8 py-4 rounded-full font-medium text-base transition-all duration-300 hover:bg-white/20 hover:border-white/50"
+                >
+                  Checkout <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
     </div>
