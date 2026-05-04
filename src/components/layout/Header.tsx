@@ -14,7 +14,7 @@ function Header() {
   const { isTrainer, isClient } = useRole();
 
   return (
-    <header className="bg-white border-b border-light-gray sticky top-0 z-40 shadow-sm safe-area-top">
+    <header className="bg-white border-b border-light-gray sticky top-0 z-40 shadow-sm safe-area-top text-9xl">
       <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20">
         <div className="flex items-center justify-center h-16 sm:h-20 relative">
           {/* Left Navigation - Hidden on Mobile */}
@@ -35,10 +35,7 @@ function Header() {
 
           {/* Centered Brand Name - Split Color Wordmark */}
           <Link to="/" className="flex items-center justify-center hover:opacity-80 transition-opacity flex-shrink-0">
-            <div className="flex items-center" style={{ fontFamily: 'Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', fontSize: '54px', fontWeight: 400, letterSpacing: '7px' }}>
-              <span style={{ color: '#000000' }}>moti</span>
-              <span style={{ color: '#378ADD' }}>vasi</span>
-            </div>
+
           </Link>
 
           {/* Right Navigation and Actions */}
