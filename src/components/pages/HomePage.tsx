@@ -747,7 +747,7 @@ export default function HomePage() {
               viewport={{ once: true, margin: "-100px" }}
             >
               <div className="max-w-xs">
-                <p className="text-lg md:text-xl lg:text-2xl text-white/70 font-light tracking-wide leading-relaxed">
+                <p className="text-lg md:text-xl lg:text-2xl text-white font-light tracking-wide leading-relaxed">
                   Your journey to strength starts here
                 </p>
               </div>
