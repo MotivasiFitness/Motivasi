@@ -26,7 +26,7 @@ function Header() {
               className="h-7 sm:h-8 md:h-10 w-auto"
               width={40}
             />
-            <span className="font-heading text-xl sm:text-2xl font-bold text-charcoal-black hidden sm:inline">Motivasi</span>
+            <span className="font-heading text-xl sm:text-2xl font-bold text-charcoal-black hidden sm:inline [writing-mode:horizontal-tb]">Motivasi</span>
           </Link>
 
           {/* Desktop Navigation */}
