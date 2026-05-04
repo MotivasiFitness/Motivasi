@@ -35,7 +35,7 @@ function Header() {
 
           {/* Centered Brand Name */}
           <Link to="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity flex-shrink-0">
-            <span className="font-heading text-xl sm:text-2xl font-bold text-charcoal-black [writing-mode:horizontal-tb]">Motivasi</span>
+            <span className="font-heading text-[80px] font-bold text-charcoal-black [writing-mode:horizontal-tb]">Motivasi</span>
           </Link>
 
           {/* Right Navigation and Actions */}
