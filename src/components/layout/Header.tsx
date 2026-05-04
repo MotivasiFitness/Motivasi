@@ -21,13 +21,13 @@ function Header() {
           <nav className="hidden md:flex items-center gap-6 lg:gap-8 absolute left-0">
             <Link 
               to="/online-training" 
-              className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors"
+              className="font-paragraph text-sm text-charcoal-black hover:text-warm-bronze transition-colors"
             >
               <span dangerouslySetInnerHTML={{ __html: t.nav.onlineTraining }} />
             </Link>
             <Link 
               to="/blog" 
-              className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors"
+              className="font-paragraph text-sm text-charcoal-black hover:text-warm-bronze transition-colors"
             >
               <span dangerouslySetInnerHTML={{ __html: t.nav.faceToFaceTraining }} />
             </Link>
