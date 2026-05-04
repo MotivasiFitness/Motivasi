@@ -15,7 +15,7 @@ function Header() {
   const { isTrainer, isClient } = useRole();
 
   return (
-    <header className="bg-black border-b border-charcoal-black sticky top-0 z-40 shadow-sm safe-area-top">
+    <header className="bg-white border-b border-light-gray sticky top-0 z-40 shadow-sm safe-area-top">
       <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
@@ -26,32 +26,32 @@ function Header() {
               className="h-7 sm:h-8 md:h-10 w-auto"
               width={40}
             />
-            <span className="font-heading text-xl sm:text-2xl font-bold text-white hidden sm:inline">Motivasi</span>
+            <span className="font-heading text-xl sm:text-2xl font-bold text-charcoal-black hidden sm:inline">Motivasi</span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6 lg:gap-8">
             <Link 
               to="/" 
-              className="font-paragraph text-sm lg:text-base text-white hover:text-warm-bronze transition-colors"
+              className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors"
             >
               {t.nav.home}
             </Link>
             <Link 
               to="/about" 
-              className="font-paragraph text-sm lg:text-base text-white hover:text-warm-bronze transition-colors"
+              className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors"
             >
               {t.nav.about}
             </Link>
             <Link 
               to="/online-training" 
-              className="font-paragraph text-sm lg:text-base text-white hover:text-warm-bronze transition-colors"
+              className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors"
             >
               {t.nav.onlineTraining}
             </Link>
             <Link 
               to="/blog" 
-              className="font-paragraph text-sm lg:text-base text-white hover:text-warm-bronze transition-colors"
+              className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors"
             >
               {t.nav.faceToFaceTraining}
             </Link>
@@ -60,79 +60,79 @@ function Header() {
                 {isTrainer ? (
                   <Link 
                     to="/trainer" 
-                    className="font-paragraph text-sm lg:text-base text-white hover:text-warm-bronze transition-colors"
+                    className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors"
                   >
                     Trainer Hub
                   </Link>
                 ) : (
                   <Link 
                     to="/portal" 
-                    className="font-paragraph text-sm lg:text-base text-white hover:text-warm-bronze transition-colors"
+                    className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors"
                   >
                     My Portal
                   </Link>
                 )}
                 <button
                   onClick={actions.logout}
-                  className="font-paragraph text-sm lg:text-base text-white hover:text-warm-bronze transition-colors flex items-center gap-2 min-h-[44px] min-w-[44px]"
+                  className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors flex items-center gap-2 min-h-[44px] min-w-[44px]"
                 >
-                  <LogOut size={16} className="text-white" />
+                  <LogOut size={16} className="text-charcoal-black" />
                   <span className="hidden lg:inline">Sign Out</span>
                 </button>
               </>
             ) : (
               <button 
                 onClick={actions.login}
-                className="font-paragraph text-sm lg:text-base text-white border-2 border-white bg-black px-4 lg:px-6 py-2 rounded-lg hover:bg-white hover:text-black transition-all font-semibold min-h-[44px]"
+                className="font-paragraph text-sm lg:text-base text-charcoal-black border-2 border-charcoal-black bg-white px-4 lg:px-6 py-2 rounded-lg hover:bg-charcoal-black hover:text-white transition-all font-semibold min-h-[44px]"
               >
                 Portal
               </button>
             )}
             <LanguageSwitcher />
-            <MiniCart cartIconClassName="ml-2 [&_svg]:text-white" />
+            <MiniCart cartIconClassName="ml-2 [&_svg]:text-charcoal-black" />
           </nav>
 
           {/* Mobile Menu Button */}
           <div className="flex items-center gap-3 md:hidden">
-            <MiniCart cartIconClassName="[&_svg]:text-white" />
+            <MiniCart cartIconClassName="[&_svg]:text-charcoal-black" />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="text-charcoal-black p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? <X size={24} className="text-white" /> : <Menu size={24} className="text-white" />}
+              {isMenuOpen ? <X size={24} className="text-charcoal-black" /> : <Menu size={24} className="text-charcoal-black" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-charcoal-black bg-black">
+          <nav className="md:hidden py-4 border-t border-light-gray bg-white">
             <div className="flex flex-col gap-2">
               <Link 
                 to="/" 
-                className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
+                className="font-paragraph text-base text-charcoal-black hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t.nav.home}
               </Link>
               <Link 
                 to="/about" 
-                className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
+                className="font-paragraph text-base text-charcoal-black hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t.nav.about}
               </Link>
               <Link 
                 to="/online-training" 
-                className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
+                className="font-paragraph text-base text-charcoal-black hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t.nav.onlineTraining}
               </Link>
               <Link 
                 to="/blog" 
-                className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
+                className="font-paragraph text-base text-charcoal-black hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t.nav.faceToFaceTraining}
@@ -142,7 +142,7 @@ function Header() {
                   {isTrainer ? (
                     <Link 
                       to="/trainer" 
-                      className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
+                      className="font-paragraph text-base text-charcoal-black hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Trainer Hub
@@ -150,7 +150,7 @@ function Header() {
                   ) : (
                     <Link 
                       to="/portal" 
-                      className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
+                      className="font-paragraph text-base text-charcoal-black hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       My Portal
@@ -161,9 +161,9 @@ function Header() {
                       actions.logout();
                       setIsMenuOpen(false);
                     }}
-                    className="font-paragraph text-base text-white hover:text-warm-bronze transition-colors flex items-center gap-2 px-4 py-3 rounded min-h-[44px] w-full text-left"
+                    className="font-paragraph text-base text-charcoal-black hover:text-warm-bronze transition-colors flex items-center gap-2 px-4 py-3 rounded min-h-[44px] w-full text-left"
                   >
-                    <LogOut size={16} className="text-white" />
+                    <LogOut size={16} className="text-charcoal-black" />
                     Sign Out
                   </button>
                 </>
@@ -173,7 +173,7 @@ function Header() {
                     actions.login();
                     setIsMenuOpen(false);
                   }}
-                  className="font-paragraph text-base text-white border-2 border-white bg-black px-4 py-3 rounded-lg hover:bg-white hover:text-black transition-all font-semibold text-center w-full min-h-[44px]"
+                  className="font-paragraph text-base text-charcoal-black border-2 border-charcoal-black bg-white px-4 py-3 rounded-lg hover:bg-charcoal-black hover:text-white transition-all font-semibold text-center w-full min-h-[44px]"
                 >
                   Client Portal
                 </button>
