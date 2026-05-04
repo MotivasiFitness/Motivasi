@@ -130,7 +130,7 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
           >
-            <h2 className="font-heading text-3xl md:text-3xl lg:text-3xl font-black text-white tracking-widest uppercase letter-spacing-2">
+            <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-widest uppercase letter-spacing-2">
               {t.home.heroTitle}
             </h2>
             <motion.div
@@ -152,15 +152,15 @@ export default function HomePage() {
         <div className="absolute left-0 top-0 w-1/2 h-full overflow-hidden">
           <motion.div
             className="w-full h-full"
-            initial={{ scale: 1.05 }}
-            animate={{ scale: 1 }}
+            initial={{ scale: 1.15 }}
+            animate={{ scale: 1.05 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_ef269d4e34974b55aceddc01c79a92ad~mv2.png"
               alt="Professional fitness coach - left"
               className="w-full h-full object-cover"
-              width={800}
+              width={1000}
               focalPointX={48.19272855630074}
               focalPointY={38.573949876456055}
             />
@@ -173,15 +173,15 @@ export default function HomePage() {
         <div className="absolute right-0 top-0 w-1/2 h-full overflow-hidden">
           <motion.div
             className="w-full h-full"
-            initial={{ scale: 1.05 }}
-            animate={{ scale: 1 }}
+            initial={{ scale: 1.15 }}
+            animate={{ scale: 1.05 }}
             transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_6e3c159e55534317b0b18c64fe452474~mv2.png"
               alt="Professional fitness coach - right"
               className="w-full h-full object-cover"
-              width={800}
+              width={1000}
             />
             {/* Subtle overlay */}
             <div className="absolute inset-0 bg-black/5" />
