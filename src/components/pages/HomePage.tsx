@@ -192,7 +192,7 @@ export default function HomePage() {
         <div className="absolute bottom-0 left-0 right-0 z-20 bg-white pt-20 pb-12 px-8">
           <div className="max-w-[100rem] mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
             <AnimatedElement className="flex-1">
-              <p className="text-lg md:text-xl text-white font-light max-w-xl">
+              <p className="text-lg md:text-xl text-charcoal-black font-light max-w-xl">
                 {t.home.readyToFeelDesc}
               </p>
             </AnimatedElement>
