@@ -35,13 +35,13 @@ function Header() {
               to="/online-training" 
               className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors"
             >
-              {t.nav.onlineTraining}
+              <span dangerouslySetInnerHTML={{ __html: t.nav.onlineTraining }} />
             </Link>
             <Link 
               to="/blog" 
               className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors"
             >
-              {t.nav.faceToFaceTraining}
+              <span dangerouslySetInnerHTML={{ __html: t.nav.faceToFaceTraining }} />
             </Link>
           </nav>
 
@@ -125,14 +125,14 @@ function Header() {
                 className="font-paragraph text-base text-charcoal-black hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
                 onClick={() => setIsMenuOpen(false)}
               >
-                {t.nav.onlineTraining}
+                <span dangerouslySetInnerHTML={{ __html: t.nav.onlineTraining }} />
               </Link>
               <Link 
                 to="/blog" 
                 className="font-paragraph text-base text-charcoal-black hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
                 onClick={() => setIsMenuOpen(false)}
               >
-                {t.nav.faceToFaceTraining}
+                <span dangerouslySetInnerHTML={{ __html: t.nav.faceToFaceTraining }} />
               </Link>
               {isAuthenticated ? (
                 <>

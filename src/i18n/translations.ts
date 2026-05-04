@@ -209,8 +209,8 @@ export const translations: Record<Language, Translations> = {
     nav: {
       home: 'Home',
       about: 'About',
-      onlineTraining: 'Online Training',
-      faceToFaceTraining: 'Face-to-Face Training',
+      onlineTraining: '<strong>ONLINE</strong>',
+      faceToFaceTraining: '<strong>FACE-TO-FACE</strong>',
       results: 'Results',
       contact: 'Contact',
       parqForm: 'PAR-Q',
@@ -405,8 +405,8 @@ export const translations: Record<Language, Translations> = {
     nav: {
       home: 'Home',
       about: 'About',
-      onlineTraining: 'Online Training',
-      faceToFaceTraining: 'Face-to-Face Training',
+      onlineTraining: '<strong>ONLINE</strong>',
+      faceToFaceTraining: '<strong>FACE-TO-FACE</strong>',
       results: 'Results',
       contact: 'Contact',
       parqForm: 'PAR-Q',
@@ -1385,8 +1385,8 @@ export const translations: Record<Language, Translations> = {
     nav: {
       home: 'Home',
       about: 'About',
-      onlineTraining: 'Online Training',
-      faceToFaceTraining: 'Face-to-Face Training',
+      onlineTraining: '<strong>ONLINE</strong>',
+      faceToFaceTraining: '<strong>FACE-TO-FACE</strong>',
       results: 'Results',
       contact: 'Contact',
       parqForm: 'PAR-Q',
@@ -1581,8 +1581,8 @@ export const translations: Record<Language, Translations> = {
     nav: {
       home: 'Home',
       about: 'About',
-      onlineTraining: 'Online Training',
-      faceToFaceTraining: 'Face-to-Face Training',
+      onlineTraining: '<strong>ONLINE</strong>',
+      faceToFaceTraining: '<strong>FACE-TO-FACE</strong>',
       results: 'Results',
       contact: 'Contact',
       parqForm: 'PAR-Q',
