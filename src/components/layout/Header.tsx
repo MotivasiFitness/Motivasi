@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Menu, X, LogOut } from 'lucide-react';
 import { useState, memo } from 'react';
-import { Image } from '@/components/ui/image';
 import { MiniCart } from '@/wix-verticals/react-pages/react-router/routes/root';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useMember } from '@/integrations';
@@ -46,14 +45,8 @@ function Header() {
             </Link>
           </nav>
 
-          {/* Centered Logo and Brand Name */}
+          {/* Centered Brand Name */}
           <Link to="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity flex-shrink-0">
-            <Image
-              src="https://static.wixstatic.com/media/93e866_81ff1c66b9e449bc92b4e3a2a753a5ec~mv2.png"
-              alt="Motivasi Lotus Logo"
-              className="h-7 sm:h-8 md:h-10 w-auto"
-              width={40}
-            />
             <span className="font-heading text-xl sm:text-2xl font-bold text-charcoal-black [writing-mode:horizontal-tb]">Motivasi</span>
           </Link>
 
