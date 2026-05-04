@@ -189,7 +189,7 @@ export default function HomePage() {
         </div>
 
         {/* Bottom CTA Section */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-white via-white/95 to-transparent pt-20 pb-12 px-8">
+        <div className="absolute bottom-0 left-0 right-0 z-20 bg-white pt-20 pb-12 px-8">
           <div className="max-w-[100rem] mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
             <AnimatedElement className="flex-1">
               <p className="text-lg md:text-xl text-white font-light max-w-xl">
