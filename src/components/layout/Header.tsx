@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Menu, X, LogOut } from 'lucide-react';
+import { Menu, X, LogOut, User } from 'lucide-react';
 import { useState, memo } from 'react';
 import { MiniCart } from '@/wix-verticals/react-pages/react-router/routes/root';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -68,9 +68,9 @@ function Header() {
             ) : (
               <button 
                 onClick={actions.login}
-                className="font-paragraph text-sm lg:text-base text-charcoal-black border-2 border-charcoal-black bg-white px-4 lg:px-6 py-2 rounded-lg hover:bg-charcoal-black hover:text-white transition-all font-semibold min-h-[44px]"
+                className="text-charcoal-black hover:text-warm-bronze transition-colors flex items-center justify-center min-h-[44px] min-w-[44px]"
               >
-                Portal
+                <User size={20} className="text-charcoal-black" />
               </button>
             )}
             <LanguageSwitcher />
