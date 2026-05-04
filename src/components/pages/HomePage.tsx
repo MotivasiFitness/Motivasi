@@ -759,68 +759,58 @@ export default function HomePage() {
           </div>
         </section>
       )}
-      {/* --- Final CTA --- */}
-      <section className="relative py-32 px-8 lg:px-24 bg-gradient-to-br from-charcoal-black via-charcoal-black to-charcoal-black/95 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-           <Image
-              src="https://static.wixstatic.com/media/93e866_2d4f518df7c941ac89afe5c8f996af14~mv2.png?originWidth=1600&originHeight=768"
-              alt="Texture"
-              className="w-full h-full object-cover"
-              width={1600}
-            />
-        </div>
-        
-        <div className="relative z-10 max-w-5xl mx-auto text-center">
-          <AnimatedElement>
-            <h2 className="font-heading text-6xl md:text-8xl font-bold text-white mb-10 tracking-tight">
-              {t.home.readyToFeel} <span className="bg-gradient-to-r from-[#a8b8a8] to-[#d4a8a8] bg-clip-text text-transparent">stronger?</span>
-            </h2>
-            <p className="text-xl md:text-2xl text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
-              {t.home.readyToFeelDesc}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 300, damping: 10 }}
-                className="w-full sm:w-auto"
-              >
-                <Link
-                  to="/store"
-                  className="block w-full bg-gradient-to-r from-sage-green to-rose-blush text-charcoal-black px-14 py-6 rounded-full font-medium text-xl hover:shadow-lg hover:shadow-sage-green/30 transition-all duration-300 text-center"
-                >
-                  Begin your journey (£499/12 weeks)
-                </Link>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 300, damping: 10 }}
-                className="w-full sm:w-auto"
-              >
-                <Link
-                  to="/about"
-                  className="block w-full px-14 py-6 rounded-full border-2 border-white/30 text-white font-medium text-xl hover:bg-white/10 hover:border-white/50 transition-all duration-300 text-center"
-                >
-                  {t.home.learnMoreAboutMe}
-                </Link>
-              </motion.div>
-            </div>
+      {/* --- Motivasi Hero Section - Large Typography --- */}
+      <section className="relative w-full min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center justify-center bg-gradient-to-br from-charcoal-black via-charcoal-black/98 to-warm-bronze/5 overflow-hidden py-20 md:py-32 lg:py-40">
+        {/* Animated gradient background elements */}
+        <motion.div
+          className="absolute -top-96 -right-96 w-[800px] h-[800px] bg-sage-green/10 rounded-full blur-3xl opacity-20 pointer-events-none"
+          animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.3, 0.2] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute -bottom-96 -left-96 w-[800px] h-[800px] bg-rose-blush/10 rounded-full blur-3xl opacity-20 pointer-events-none"
+          animate={{ scale: [1.1, 1, 1.1], opacity: [0.3, 0.2, 0.3] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        />
 
-            {/* Motivasi Logo - Bottom Section */}
-            <motion.div
-              className="mt-24 pt-12 border-t border-white/10"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+        {/* Main Content */}
+        <div className="relative z-10 w-full px-4 md:px-8 lg:px-24 max-w-[120rem] mx-auto">
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            {/* Large "Motivasi" Text */}
+            <h2 className="font-heading text-7xl sm:text-8xl md:text-9xl lg:text-[12rem] xl:text-[14rem] font-black text-white leading-[0.9] tracking-tighter mb-8 md:mb-12 drop-shadow-2xl">
+              Motivasi
+            </h2>
+
+            {/* Subtle tagline below */}
+            <motion.p
+              className="text-lg md:text-2xl lg:text-3xl text-white/60 font-light tracking-widest uppercase letter-spacing-2 max-w-3xl mx-auto"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
               viewport={{ once: true }}
             >
-              <Image
-                src="https://static.wixstatic.com/media/93e866_b0f1031d39e14824b52813211f0be569~mv2.png"
-                alt="Motivasi Logo"
-                className="h-12 md:h-16 w-auto mx-auto opacity-90 hover:opacity-100 transition-opacity duration-300"
-                width={300}
-              />
+              Your journey to strength starts here
+            </motion.p>
+
+            {/* Decorative line elements */}
+            <motion.div
+              className="mt-12 md:mt-16 flex items-center justify-center gap-6"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <div className="h-px w-12 md:w-20 bg-gradient-to-r from-transparent to-white/40" />
+              <div className="w-2 h-2 rounded-full bg-white/40" />
+              <div className="h-px w-12 md:w-20 bg-gradient-to-l from-transparent to-white/40" />
             </motion.div>
-          </AnimatedElement>
+          </motion.div>
         </div>
       </section>
     </div>
