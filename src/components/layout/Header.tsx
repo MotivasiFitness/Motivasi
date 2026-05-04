@@ -33,9 +33,12 @@ function Header() {
             </Link>
           </nav>
 
-          {/* Centered Brand Name */}
-          <Link to="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity flex-shrink-0">
-            <span className="font-heading text-[80px] font-bold text-charcoal-black [writing-mode:horizontal-tb]">Motivasi</span>
+          {/* Centered Brand Name - Split Color Wordmark */}
+          <Link to="/" className="flex items-center justify-center hover:opacity-80 transition-opacity flex-shrink-0">
+            <div className="flex items-center" style={{ fontFamily: 'Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', fontSize: '54px', fontWeight: 400, letterSpacing: '7px' }}>
+              <span style={{ color: '#000000' }}>moti</span>
+              <span style={{ color: '#378ADD' }}>vasi</span>
+            </div>
           </Link>
 
           {/* Right Navigation and Actions */}
