@@ -27,7 +27,7 @@ export default {
                 // Primary Color
                 'warm-bronze': '#c9956f',
                 // Secondary Color
-                'warm-cream': '#f5ede3',
+                'warm-cream': '#f3f4f3',
                 // Neutral Colors
                 'charcoal-black': '#1a1a1a',
                 'white': '#ffffff',
@@ -36,7 +36,7 @@ export default {
                 
                 // Semantic mappings (using core colors)
                 primary: '#c9956f',
-                secondary: '#f5ede3',
+                secondary: '#f3f4f3',
                 background: '#ffffff',
                 foreground: '#1a1a1a',
                 'primary-foreground': '#ffffff',
@@ -46,15 +46,15 @@ export default {
                 
                 // Aliases for backward compatibility (all map to core colors)
                 'off-white': '#fafaf9',
-                'soft-white': '#FFF8E8',
+                'soft-white': '#f3f4f3',
                 'soft-bronze': '#c9a876',
                 'warm-grey': '#8b8680',
                 'dark-gray': '#2d2d2d',
                 'warm-sand-beige': '#e8ddd5',
                 // Deprecated legacy colors - use core colors instead
-                'rose-blush': '#f5ede3',
-                'soft-lavender': '#f5ede3',
-                'sage-green': '#f5ede3',
+                'rose-blush': '#f3f4f3',
+                'soft-lavender': '#f3f4f3',
+                'sage-green': '#f3f4f3',
                 'accent-blue': '#c9956f',
                 'accent-teal': '#c9956f',
             },
