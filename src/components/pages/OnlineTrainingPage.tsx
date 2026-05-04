@@ -120,7 +120,7 @@ export default function OnlineTrainingPage() {
             <p className="font-paragraph text-lg text-charcoal-black font-medium leading-relaxed">
               You're never doing this alone — support, guidance, and accountability are built into every step.
             </p>
-            <p className="font-paragraph text-base text-warm-grey leading-relaxed">
+            <p className="font-paragraph text-base text-white leading-relaxed">
               Designed specifically for busy women, mums, and women 35+ navigating changing bodies and busy lives.
             </p>
           </div>
