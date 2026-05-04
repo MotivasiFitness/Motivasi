@@ -14,14 +14,6 @@ function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 sm:gap-16 lg:gap-20 mb-12">
           {/* Brand Section - Left */}
           <div className="flex flex-col">
-            <Link to="/" className="inline-flex items-center gap-2 mb-6 hover:opacity-80 transition-opacity w-fit">
-              <Image
-                src="https://static.wixstatic.com/media/93e866_81ff1c66b9e449bc92b4e3a2a753a5ec~mv2.png"
-                alt="Motivasi Logo"
-                className="h-8 w-auto"
-                width={40}
-              />
-            </Link>
             <p className="font-paragraph text-sm text-medium-gray mb-8 leading-relaxed max-w-xs">
               {t.footer.empoweringBusy}
             </p>
