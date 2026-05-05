@@ -14,20 +14,25 @@ function Header() {
   const { isTrainer, isClient } = useRole();
 
   return (
-    <header className="bg-light-contrast border-b border-secondary-bg sticky top-0 z-40 shadow-sm safe-area-top text-9xl">
+    <header 
+      className="sticky top-0 z-40 shadow-sm safe-area-top text-9xl bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: 'url(https://static.wixstatic.com/media/93e866_261f84f84f544c2eadf73946d48e8637~mv2.png)',
+      }}
+    >
       <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20">
         <div className="flex items-center justify-center h-16 sm:h-20 relative">
           {/* Left Navigation - Hidden on Mobile */}
           <nav className="hidden md:flex items-center gap-6 lg:gap-8 absolute left-0">
             <Link 
               to="/online-training" 
-              className="font-paragraph text-sm text-primary-text hover:text-accent transition-colors"
+              className="font-paragraph text-sm text-white hover:text-gray-200 transition-colors"
             >
               <span dangerouslySetInnerHTML={{ __html: t.nav.onlineTraining }} />
             </Link>
             <Link 
               to="/blog" 
-              className="font-paragraph text-sm text-primary-text hover:text-accent transition-colors"
+              className="font-paragraph text-sm text-white hover:text-gray-200 transition-colors"
             >
               <span dangerouslySetInnerHTML={{ __html: t.nav.faceToFaceTraining }} />
             </Link>
@@ -39,55 +44,55 @@ function Header() {
           </Link>
 
           {/* Right Navigation and Actions */}
-          <div className="hidden md:flex items-center gap-4 lg:gap-6 absolute right-0">
+          <div className="hidden md:flex items-center gap-4 lg:gap-6 absolute right-0 h-full">
             {isAuthenticated ? (
               <>
                 {isTrainer ? (
                   <Link 
                     to="/trainer" 
-                    className="font-paragraph text-sm lg:text-base text-primary-text hover:text-accent transition-colors"
+                    className="font-paragraph text-sm lg:text-base text-white hover:text-gray-200 transition-colors flex items-center"
                   >
                     Trainer Hub
                   </Link>
                 ) : (
                   <Link 
                     to="/portal" 
-                    className="font-paragraph text-sm lg:text-base text-primary-text hover:text-accent transition-colors"
+                    className="font-paragraph text-sm lg:text-base text-white hover:text-gray-200 transition-colors flex items-center"
                   >
                     My Portal
                   </Link>
                 )}
                 <button
                   onClick={actions.logout}
-                  className="font-paragraph text-sm lg:text-base text-primary-text hover:text-accent transition-colors flex items-center gap-2 h-10 px-2"
+                  className="font-paragraph text-sm lg:text-base text-white hover:text-gray-200 transition-colors flex items-center gap-2 h-10 px-2"
                 >
-                  <LogOut size={16} className="text-primary-text" />
+                  <LogOut size={16} className="text-white" />
                   <span className="hidden lg:inline">Sign Out</span>
                 </button>
               </>
             ) : (
               <button 
                 onClick={actions.login}
-                className="text-primary-text hover:text-accent transition-colors flex items-center justify-center h-10 w-10"
+                className="text-white hover:text-gray-200 transition-colors flex items-center justify-center h-10 w-10"
               >
-                <User size={20} className="text-primary-text" />
+                <User size={20} className="text-white" />
               </button>
             )}
             <div className="flex items-center gap-4 lg:gap-6">
               <LanguageSwitcher />
-              <MiniCart cartIconClassName="[&_svg]:text-primary-text" />
+              <MiniCart cartIconClassName="[&_svg]:text-white" />
             </div>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center gap-3 md:hidden absolute right-0">
-            <MiniCart cartIconClassName="[&_svg]:text-primary-text" />
+          <div className="flex items-center gap-3 md:hidden absolute right-0 h-full">
+            <MiniCart cartIconClassName="[&_svg]:text-white" />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-primary-text p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? <X size={24} className="text-primary-text" /> : <Menu size={24} className="text-primary-text" />}
+              {isMenuOpen ? <X size={24} className="text-white" /> : <Menu size={24} className="text-white" />}
             </button>
           </div>
         </div>
