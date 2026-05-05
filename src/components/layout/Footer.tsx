@@ -99,7 +99,7 @@ function Footer() {
         </div>
 
         {/* Footer Bottom Section - Centered */}
-        <div className="border-t border-secondary-bg pt-8 sm:pt-10 mt-24 sm:mt-32 lg:mt-40 relative z-20">
+        <div className="border-t border-secondary-bg pt-8 sm:pt-10 mt-8 sm:mt-12 lg:mt-16 relative z-20">
           <div className="flex flex-col gap-6 items-center text-center">
             <p className="font-paragraph text-xs text-secondary-text">
               © {new Date().getFullYear()} Motivasi Ltd. All rights reserved.
