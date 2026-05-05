@@ -65,7 +65,7 @@ function Footer() {
             
             {/* Large Brand Name - Below Quick Links */}
             <div className="mt-16 sm:mt-20 lg:mt-24 relative">
-              <div className="font-heading text-[120px] sm:text-[140px] lg:text-[180px] font-bold leading-none opacity-10 break-words">
+              <div className="font-heading text-[120px] sm:text-[140px] lg:text-[180px] font-bold leading-none opacity-10 whitespace-nowrap overflow-hidden">
                 <span className="text-primary-text">Motivasi</span>
               </div>
             </div>
