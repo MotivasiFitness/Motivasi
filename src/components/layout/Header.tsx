@@ -21,16 +21,16 @@ function Header() {
       <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20">
         <div className="flex items-center justify-center h-16 sm:h-20 relative">
           {/* Left Navigation - Hidden on Mobile */}
-          <nav className="hidden md:flex items-center gap-6 lg:gap-8 absolute left-0">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8 absolute left-0 h-full">
             <Link 
               to="/online-training" 
-              className="font-paragraph text-sm text-black hover:text-gray-600 transition-colors duration-200"
+              className="font-paragraph text-sm text-black hover:text-gray-600 transition-colors duration-200 flex items-center h-full"
             >
               <span dangerouslySetInnerHTML={{ __html: t.nav.onlineTraining }} />
             </Link>
             <Link 
               to="/about" 
-              className="font-paragraph text-sm text-black hover:text-gray-600 transition-colors duration-200"
+              className="font-paragraph text-sm text-black hover:text-gray-600 transition-colors duration-200 flex items-center h-full"
             >
               <span dangerouslySetInnerHTML={{ __html: t.nav.faceToFaceTraining }} />
             </Link>
