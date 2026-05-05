@@ -11,7 +11,7 @@ function Footer() {
     <footer className="bg-light-contrast text-primary-text border-t border-secondary-bg relative overflow-hidden">
       {/* Large Background Watermark Text */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-        <div className="text-[120px] sm:text-[160px] md:text-[200px] lg:text-[240px] xl:text-[280px] font-heading font-bold leading-none whitespace-nowrap opacity-5 text-primary-text select-none">
+        <div className="text-[100px] sm:text-[130px] md:text-[160px] lg:text-[200px] xl:text-[240px] font-heading font-bold leading-none whitespace-nowrap opacity-5 text-primary-text select-none">
           MOTIVASI
         </div>
       </div>
