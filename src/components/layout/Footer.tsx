@@ -62,6 +62,14 @@ function Footer() {
                 {t.nav.parqForm}
               </Link>
             </nav>
+            
+            {/* Large Brand Name - Below Quick Links */}
+            <div className="mt-16 sm:mt-20 lg:mt-24 relative overflow-hidden">
+              <div className="font-heading text-[120px] sm:text-[140px] lg:text-[180px] font-bold leading-none whitespace-nowrap opacity-10">
+                <span className="text-primary-text">moti</span>
+                <span className="text-blue-600">vasi</span>
+              </div>
+            </div>
           </div>
 
           {/* Legal & Compliance - Center Right */}
@@ -90,18 +98,9 @@ function Footer() {
           <div />
         </div>
 
-        {/* Footer Bottom Section - Below Large Brand Name */}
+        {/* Footer Bottom Section */}
         <div className="border-t border-secondary-bg pt-8 sm:pt-10 mt-24 sm:mt-32 lg:mt-40 relative z-20">
-          {/* Large Background Watermark - Motivasi Branding */}
-          <div className="absolute -bottom-12 -right-12 pointer-events-none overflow-hidden opacity-5 w-full h-full flex items-end justify-end">
-            <div className="text-right pr-4 sm:pr-8 lg:pr-12">
-              <div className="font-heading text-[200px] sm:text-[250px] lg:text-[320px] font-bold leading-none whitespace-nowrap">
-                <span className="text-primary-text">moti</span>
-                <span className="text-blue-600">vasi</span>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col gap-6 relative z-10">
+          <div className="flex flex-col gap-6">
             <p className="font-paragraph text-xs text-secondary-text">
               © {new Date().getFullYear()} Motivasi Ltd. All rights reserved.
             </p>
