@@ -722,7 +722,7 @@ export default function WomensPARQForm() {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full sm:w-auto px-12 py-6 text-lg bg-soft-bronze hover:bg-soft-bronze/90"
+              className="w-full sm:w-auto px-12 py-6 text-lg bg-accent hover:bg-accent/90"
             >
               {isSubmitting ? 'Submitting...' : 'Submit Health Questionnaire'}
             </Button>

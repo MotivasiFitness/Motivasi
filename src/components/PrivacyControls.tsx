@@ -50,12 +50,12 @@ export default function PrivacyControls() {
     <div className="space-y-8">
       {/* Header */}
       <div className="flex items-start gap-4">
-        <Shield className="w-8 h-8 text-soft-bronze flex-shrink-0 mt-1" />
+        <Shield className="w-8 h-8 text-accent flex-shrink-0 mt-1" />
         <div>
-          <h1 className="font-heading text-3xl md:text-4xl font-bold text-charcoal-black mb-2">
+          <h1 className="font-heading text-3xl md:text-4xl font-bold text-primary-text mb-2">
             Privacy & Data Controls
           </h1>
-          <p className="font-paragraph text-base text-warm-grey">
+          <p className="font-paragraph text-base text-secondary-text">
             Manage how your data is collected, used, and shared. You have full control over your privacy settings.
           </p>
         </div>
@@ -85,14 +85,14 @@ export default function PrivacyControls() {
       )}
 
       {/* Profile Visibility */}
-      <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
+      <div className="bg-light-contrast border border-secondary-bg rounded-2xl p-8">
         <div className="flex items-start gap-4 mb-6">
-          <Eye className="w-6 h-6 text-soft-bronze flex-shrink-0 mt-1" />
+          <Eye className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
           <div>
-            <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-2">
+            <h2 className="font-heading text-2xl font-bold text-primary-text mb-2">
               Profile Visibility
             </h2>
-            <p className="font-paragraph text-base text-warm-grey">
+            <p className="font-paragraph text-base text-secondary-text">
               Control who can see your profile and fitness information.
             </p>
           </div>
@@ -116,20 +116,20 @@ export default function PrivacyControls() {
               description: 'Your profile and testimonials may be featured on our website',
             },
           ].map((option) => (
-            <label key={option.value} className="flex items-start gap-4 p-4 border border-warm-sand-beige rounded-lg hover:bg-warm-sand-beige/20 cursor-pointer transition-colors">
+            <label key={option.value} className="flex items-start gap-4 p-4 border border-secondary-bg rounded-lg hover:bg-secondary-bg/20 cursor-pointer transition-colors">
               <input
                 type="radio"
                 name="profileVisibility"
                 value={option.value}
                 checked={settings.profileVisibility === option.value}
                 onChange={(e) => handleSettingChange('profileVisibility', e.target.value)}
-                className="w-5 h-5 accent-soft-bronze mt-1 flex-shrink-0"
+                className="w-5 h-5 accent-accent mt-1 flex-shrink-0"
               />
               <div className="flex-1">
-                <p className="font-heading text-lg font-bold text-charcoal-black">
+                <p className="font-heading text-lg font-bold text-primary-text">
                   {option.label}
                 </p>
-                <p className="font-paragraph text-sm text-warm-grey">
+                <p className="font-paragraph text-sm text-secondary-text">
                   {option.description}
                 </p>
               </div>
@@ -139,14 +139,14 @@ export default function PrivacyControls() {
       </div>
 
       {/* Data Collection & Tracking */}
-      <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
+      <div className="bg-light-contrast border border-secondary-bg rounded-2xl p-8">
         <div className="flex items-start gap-4 mb-6">
-          <Lock className="w-6 h-6 text-soft-bronze flex-shrink-0 mt-1" />
+          <Lock className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
           <div>
-            <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-2">
+            <h2 className="font-heading text-2xl font-bold text-primary-text mb-2">
               Data Collection & Communications
             </h2>
-            <p className="font-paragraph text-base text-warm-grey">
+            <p className="font-paragraph text-base text-secondary-text">
               Choose how we collect and use your data.
             </p>
           </div>
@@ -173,17 +173,17 @@ export default function PrivacyControls() {
               required: false,
             },
           ].map((item) => (
-            <div key={item.key} className="flex items-start gap-4 p-4 border border-warm-sand-beige rounded-lg">
+            <div key={item.key} className="flex items-start gap-4 p-4 border border-secondary-bg rounded-lg">
               <div className="flex-1">
-                <p className="font-heading text-lg font-bold text-charcoal-black mb-1">
+                <p className="font-heading text-lg font-bold text-primary-text mb-1">
                   {item.label}
                   {item.required && (
-                    <span className="text-xs bg-soft-bronze/20 text-soft-bronze px-2 py-1 rounded ml-2">
+                    <span className="text-xs bg-accent/20 text-accent px-2 py-1 rounded ml-2">
                       Required
                     </span>
                   )}
                 </p>
-                <p className="font-paragraph text-sm text-warm-grey">
+                <p className="font-paragraph text-sm text-secondary-text">
                   {item.description}
                 </p>
               </div>
@@ -192,7 +192,7 @@ export default function PrivacyControls() {
                 checked={settings[item.key as keyof PrivacySettings] as boolean}
                 onChange={(e) => handleSettingChange(item.key as keyof PrivacySettings, e.target.checked)}
                 disabled={item.required}
-                className="w-5 h-5 accent-soft-bronze mt-1 flex-shrink-0 disabled:cursor-not-allowed"
+                className="w-5 h-5 accent-accent mt-1 flex-shrink-0 disabled:cursor-not-allowed"
               />
             </div>
           ))}
@@ -200,29 +200,29 @@ export default function PrivacyControls() {
       </div>
 
       {/* Progress Photos */}
-      <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
+      <div className="bg-light-contrast border border-secondary-bg rounded-2xl p-8">
         <div className="flex items-start gap-4 mb-6">
-          <EyeOff className="w-6 h-6 text-soft-bronze flex-shrink-0 mt-1" />
+          <EyeOff className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
           <div>
-            <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-2">
+            <h2 className="font-heading text-2xl font-bold text-primary-text mb-2">
               Progress Photos
             </h2>
-            <p className="font-paragraph text-base text-warm-grey">
+            <p className="font-paragraph text-base text-secondary-text">
               Control how your progress photos are used.
             </p>
           </div>
         </div>
 
         <div className="space-y-4">
-          <div className="flex items-start gap-4 p-4 border border-warm-sand-beige rounded-lg">
+          <div className="flex items-start gap-4 p-4 border border-secondary-bg rounded-lg">
             <div className="flex-1">
-              <p className="font-heading text-lg font-bold text-charcoal-black mb-1">
+              <p className="font-heading text-lg font-bold text-primary-text mb-1">
                 Allow Use in Testimonials
               </p>
-              <p className="font-paragraph text-sm text-warm-grey mb-3">
+              <p className="font-paragraph text-sm text-secondary-text mb-3">
                 Your progress photos may be featured as a testimonial on our website (with your explicit consent for each use).
               </p>
-              <p className="font-paragraph text-xs text-warm-grey italic">
+              <p className="font-paragraph text-xs text-secondary-text italic">
                 You retain full ownership of your photos and can revoke this permission at any time.
               </p>
             </div>
@@ -230,21 +230,21 @@ export default function PrivacyControls() {
               type="checkbox"
               checked={settings.showProgressPhotos}
               onChange={(e) => handleSettingChange('showProgressPhotos', e.target.checked)}
-              className="w-5 h-5 accent-soft-bronze mt-1 flex-shrink-0"
+              className="w-5 h-5 accent-accent mt-1 flex-shrink-0"
             />
           </div>
         </div>
       </div>
 
       {/* Data Management */}
-      <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
+      <div className="bg-light-contrast border border-secondary-bg rounded-2xl p-8">
         <div className="flex items-start gap-4 mb-6">
-          <Download className="w-6 h-6 text-soft-bronze flex-shrink-0 mt-1" />
+          <Download className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
           <div>
-            <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-2">
+            <h2 className="font-heading text-2xl font-bold text-primary-text mb-2">
               Data Management
             </h2>
-            <p className="font-paragraph text-base text-warm-grey">
+            <p className="font-paragraph text-base text-secondary-text">
               Download or delete your personal data.
             </p>
           </div>

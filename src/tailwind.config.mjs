@@ -24,40 +24,49 @@ export default {
                 sans: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif"
             },
             colors: {
-                // Core 4-Color System
-                // Primary Color
-                'warm-bronze': '#c9956f',
-                // Secondary Color
-                'warm-cream': '#f3f4f3',
-                // Neutral Colors
-                'charcoal-black': '#1a1a1a',
-                'white': '#ffffff',
-                'light-gray': '#f0f0f0',
-                'medium-gray': '#666666',
+                // New Brand Color Palette
+                // Primary background: Warm off-white / stone
+                'primary-bg': '#E8E2D8',
+                // Secondary background: Soft cream
+                'secondary-bg': '#F5F1EA',
+                // Primary text: Deep charcoal / near black
+                'primary-text': '#1A1A1A',
+                // Secondary text: Warm grey
+                'secondary-text': '#6E6A64',
+                // Accent / buttons: Black / dark charcoal
+                'accent': '#111111',
+                // Light contrast areas: Pure white
+                'light-contrast': '#FFFFFF',
                 
-                // Semantic mappings (using core colors)
-                primary: '#c9956f',
-                secondary: '#f3f4f3',
-                background: '#ffffff',
-                foreground: '#1a1a1a',
-                'primary-foreground': '#ffffff',
-                'secondary-foreground': '#1a1a1a',
+                // Semantic mappings (using new brand colors)
+                primary: '#111111',
+                secondary: '#F5F1EA',
+                background: '#E8E2D8',
+                foreground: '#1A1A1A',
+                'primary-foreground': '#FFFFFF',
+                'secondary-foreground': '#1A1A1A',
                 destructive: '#D32F2F',
                 'destructive-foreground': '#FFFFFF',
                 
-                // Aliases for backward compatibility (all map to core colors)
-                'off-white': '#fafaf9',
-                'soft-white': '#f3f4f3',
-                'soft-bronze': '#c9a876',
-                'warm-grey': '#8b8680',
-                'dark-gray': '#2d2d2d',
-                'warm-sand-beige': '#e8ddd5',
+                // Aliases for backward compatibility (mapped to new palette)
+                'off-white': '#E8E2D8',
+                'soft-white': '#F5F1EA',
+                'warm-bronze': '#111111',
+                'soft-bronze': '#6E6A64',
+                'warm-grey': '#6E6A64',
+                'charcoal-black': '#1A1A1A',
+                'dark-gray': '#111111',
+                'warm-sand-beige': '#E8E2D8',
+                'white': '#FFFFFF',
+                'light-gray': '#F5F1EA',
+                'medium-gray': '#6E6A64',
                 // Deprecated legacy colors - use core colors instead
-                'rose-blush': '#f3f4f3',
-                'soft-lavender': '#f3f4f3',
-                'sage-green': '#f3f4f3',
-                'accent-blue': '#c9956f',
-                'accent-teal': '#c9956f',
+                'rose-blush': '#F5F1EA',
+                'soft-lavender': '#F5F1EA',
+                'sage-green': '#E8E2D8',
+                'accent-blue': '#111111',
+                'accent-teal': '#111111',
+                'warm-cream': '#F5F1EA',
             },
         },
     },

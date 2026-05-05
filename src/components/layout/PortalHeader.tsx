@@ -18,7 +18,7 @@ export default function PortalHeader({ portalType }: PortalHeaderProps) {
   const backLink = portalType === 'trainer' ? '/trainer' : '/portal';
 
   return (
-    <header className="bg-charcoal-black border-b border-soft-bronze/20 sticky top-0 z-40">
+    <header className="bg-primary-text border-b border-accent/20 sticky top-0 z-40">
       <div className="max-w-[100rem] mx-auto px-6 lg:px-20">
         <div className="flex items-center justify-between h-16">
           {/* Logo & Portal Title */}
@@ -30,8 +30,8 @@ export default function PortalHeader({ portalType }: PortalHeaderProps) {
               width={40}
             />
             <div className="hidden sm:flex flex-col">
-              <span className="font-heading text-sm font-bold text-soft-white">Motivasi</span>
-              <span className="text-xs text-warm-grey">{portalTitle}</span>
+              <span className="font-heading text-sm font-bold text-light-contrast">Motivasi</span>
+              <span className="text-xs text-secondary-text">{portalTitle}</span>
             </div>
           </Link>
 
@@ -39,10 +39,10 @@ export default function PortalHeader({ portalType }: PortalHeaderProps) {
           <div className="hidden md:flex items-center gap-6">
             {/* User Info */}
             <div className="text-right">
-              <p className="font-paragraph text-sm font-medium text-soft-white">
+              <p className="font-paragraph text-sm font-medium text-light-contrast">
                 {member?.profile?.nickname || member?.contact?.firstName || 'User'}
               </p>
-              <p className="text-xs text-warm-grey truncate max-w-xs">
+              <p className="text-xs text-secondary-text truncate max-w-xs">
                 {member?.loginEmail}
               </p>
             </div>
@@ -50,7 +50,7 @@ export default function PortalHeader({ portalType }: PortalHeaderProps) {
             {/* Sign Out Button */}
             <button
               onClick={actions.logout}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-soft-bronze/20 text-soft-bronze hover:bg-soft-bronze/30 transition-colors font-paragraph text-sm font-medium"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent/20 text-accent hover:bg-accent/30 transition-colors font-paragraph text-sm font-medium"
             >
               <LogOut size={16} />
               Sign Out
@@ -60,7 +60,7 @@ export default function PortalHeader({ portalType }: PortalHeaderProps) {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-soft-white p-2"
+            className="md:hidden text-light-contrast p-2"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -69,12 +69,12 @@ export default function PortalHeader({ portalType }: PortalHeaderProps) {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-soft-bronze/20 space-y-4">
-            <div className="px-4 py-3 bg-soft-bronze/10 rounded-lg">
-              <p className="font-paragraph text-sm font-medium text-soft-white">
+          <div className="md:hidden py-4 border-t border-accent/20 space-y-4">
+            <div className="px-4 py-3 bg-accent/10 rounded-lg">
+              <p className="font-paragraph text-sm font-medium text-light-contrast">
                 {member?.profile?.nickname || member?.contact?.firstName || 'User'}
               </p>
-              <p className="text-xs text-warm-grey mt-1">
+              <p className="text-xs text-secondary-text mt-1">
                 {member?.loginEmail}
               </p>
             </div>
@@ -83,7 +83,7 @@ export default function PortalHeader({ portalType }: PortalHeaderProps) {
                 actions.logout();
                 setIsMobileMenuOpen(false);
               }}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-soft-bronze/20 text-soft-bronze hover:bg-soft-bronze/30 transition-colors font-paragraph text-sm font-medium"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-accent/20 text-accent hover:bg-accent/30 transition-colors font-paragraph text-sm font-medium"
             >
               <LogOut size={16} />
               Sign Out

@@ -14,20 +14,20 @@ function Header() {
   const { isTrainer, isClient } = useRole();
 
   return (
-    <header className="bg-white border-b border-light-gray sticky top-0 z-40 shadow-sm safe-area-top text-9xl">
+    <header className="bg-light-contrast border-b border-secondary-bg sticky top-0 z-40 shadow-sm safe-area-top text-9xl">
       <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20">
         <div className="flex items-center justify-center h-16 sm:h-20 relative">
           {/* Left Navigation - Hidden on Mobile */}
           <nav className="hidden md:flex items-center gap-6 lg:gap-8 absolute left-0">
             <Link 
               to="/online-training" 
-              className="font-paragraph text-sm text-charcoal-black hover:text-warm-bronze transition-colors"
+              className="font-paragraph text-sm text-primary-text hover:text-accent transition-colors"
             >
               <span dangerouslySetInnerHTML={{ __html: t.nav.onlineTraining }} />
             </Link>
             <Link 
               to="/blog" 
-              className="font-paragraph text-sm text-charcoal-black hover:text-warm-bronze transition-colors"
+              className="font-paragraph text-sm text-primary-text hover:text-accent transition-colors"
             >
               <span dangerouslySetInnerHTML={{ __html: t.nav.faceToFaceTraining }} />
             </Link>
@@ -45,67 +45,67 @@ function Header() {
                 {isTrainer ? (
                   <Link 
                     to="/trainer" 
-                    className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors"
+                    className="font-paragraph text-sm lg:text-base text-primary-text hover:text-accent transition-colors"
                   >
                     Trainer Hub
                   </Link>
                 ) : (
                   <Link 
                     to="/portal" 
-                    className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors"
+                    className="font-paragraph text-sm lg:text-base text-primary-text hover:text-accent transition-colors"
                   >
                     My Portal
                   </Link>
                 )}
                 <button
                   onClick={actions.logout}
-                  className="font-paragraph text-sm lg:text-base text-charcoal-black hover:text-warm-bronze transition-colors flex items-center gap-2 h-10 px-2"
+                  className="font-paragraph text-sm lg:text-base text-primary-text hover:text-accent transition-colors flex items-center gap-2 h-10 px-2"
                 >
-                  <LogOut size={16} className="text-charcoal-black" />
+                  <LogOut size={16} className="text-primary-text" />
                   <span className="hidden lg:inline">Sign Out</span>
                 </button>
               </>
             ) : (
               <button 
                 onClick={actions.login}
-                className="text-charcoal-black hover:text-warm-bronze transition-colors flex items-center justify-center h-10 w-10"
+                className="text-primary-text hover:text-accent transition-colors flex items-center justify-center h-10 w-10"
               >
-                <User size={20} className="text-charcoal-black" />
+                <User size={20} className="text-primary-text" />
               </button>
             )}
             <div className="flex items-center gap-4 lg:gap-6">
               <LanguageSwitcher />
-              <MiniCart cartIconClassName="[&_svg]:text-charcoal-black" />
+              <MiniCart cartIconClassName="[&_svg]:text-primary-text" />
             </div>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="flex items-center gap-3 md:hidden absolute right-0">
-            <MiniCart cartIconClassName="[&_svg]:text-charcoal-black" />
+            <MiniCart cartIconClassName="[&_svg]:text-primary-text" />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-charcoal-black p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="text-primary-text p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? <X size={24} className="text-charcoal-black" /> : <Menu size={24} className="text-charcoal-black" />}
+              {isMenuOpen ? <X size={24} className="text-primary-text" /> : <Menu size={24} className="text-primary-text" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-light-gray bg-white">
+          <nav className="md:hidden py-4 border-t border-secondary-bg bg-light-contrast">
             <div className="flex flex-col gap-2">
               <Link 
                 to="/online-training" 
-                className="font-paragraph text-base text-charcoal-black hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
+                className="font-paragraph text-base text-primary-text hover:text-accent transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <span dangerouslySetInnerHTML={{ __html: t.nav.onlineTraining }} />
               </Link>
               <Link 
                 to="/blog" 
-                className="font-paragraph text-base text-charcoal-black hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
+                className="font-paragraph text-base text-primary-text hover:text-accent transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <span dangerouslySetInnerHTML={{ __html: t.nav.faceToFaceTraining }} />
@@ -115,7 +115,7 @@ function Header() {
                   {isTrainer ? (
                     <Link 
                       to="/trainer" 
-                      className="font-paragraph text-base text-charcoal-black hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
+                      className="font-paragraph text-base text-primary-text hover:text-accent transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Trainer Hub
@@ -123,7 +123,7 @@ function Header() {
                   ) : (
                     <Link 
                       to="/portal" 
-                      className="font-paragraph text-base text-charcoal-black hover:text-warm-bronze transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
+                      className="font-paragraph text-base text-primary-text hover:text-accent transition-colors px-4 py-3 rounded min-h-[44px] flex items-center"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       My Portal
@@ -134,9 +134,9 @@ function Header() {
                       actions.logout();
                       setIsMenuOpen(false);
                     }}
-                    className="font-paragraph text-base text-charcoal-black hover:text-warm-bronze transition-colors flex items-center gap-2 px-4 py-3 rounded min-h-[44px] w-full text-left"
+                    className="font-paragraph text-base text-primary-text hover:text-accent transition-colors flex items-center gap-2 px-4 py-3 rounded min-h-[44px] w-full text-left"
                   >
-                    <LogOut size={16} className="text-charcoal-black" />
+                    <LogOut size={16} className="text-primary-text" />
                     Sign Out
                   </button>
                 </>
@@ -146,7 +146,7 @@ function Header() {
                     actions.login();
                     setIsMenuOpen(false);
                   }}
-                  className="font-paragraph text-base text-charcoal-black border-2 border-charcoal-black bg-white px-4 py-3 rounded-lg hover:bg-charcoal-black hover:text-white transition-all font-semibold text-center w-full min-h-[44px]"
+                  className="font-paragraph text-base text-primary-text border-2 border-primary-text bg-light-contrast px-4 py-3 rounded-lg hover:bg-primary-text hover:text-light-contrast transition-all font-semibold text-center w-full min-h-[44px]"
                 >
                   Client Portal
                 </button>

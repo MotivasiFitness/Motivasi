@@ -117,8 +117,8 @@ export default function CoachingPackages() {
             onClick={() => setSelectedCurrency(currency)}
             className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
               selectedCurrency === currency
-                ? 'bg-charcoal-black text-soft-white'
-                : 'bg-warm-sand-beige text-charcoal-black hover:bg-warm-sand-beige/80'
+                ? 'bg-accent text-light-contrast'
+                : 'bg-secondary-bg text-primary-text hover:bg-secondary-bg/80'
             }`}
           >
             {currency}
@@ -133,13 +133,13 @@ export default function CoachingPackages() {
             key={pkg.id}
             className={`rounded-2xl p-6 md:p-8 transition-all duration-300 flex flex-col ${
               pkg.featured
-                ? 'bg-charcoal-black text-soft-white border-2 border-soft-bronze shadow-xl md:scale-105'
-                : 'hidden md:flex bg-soft-white border border-warm-sand-beige hover:border-soft-bronze'
+                ? 'bg-accent text-light-contrast border-2 border-accent shadow-xl md:scale-105'
+                : 'hidden md:flex bg-light-contrast border border-secondary-bg hover:border-accent'
             }`}
           >
             {/* Featured Badge */}
             {pkg.featured && (
-              <div className="inline-block bg-soft-bronze text-soft-white px-4 py-1 rounded-full text-sm font-medium mb-4 w-fit">
+              <div className="inline-block bg-accent text-light-contrast px-4 py-1 rounded-full text-sm font-medium mb-4 w-fit">
                 Most Popular
               </div>
             )}
@@ -147,7 +147,7 @@ export default function CoachingPackages() {
             {/* Title */}
             <h3
               className={`font-heading text-2xl md:text-3xl font-bold mb-2 ${
-                pkg.featured ? 'text-soft-white' : 'text-charcoal-black'
+                pkg.featured ? 'text-light-contrast' : 'text-primary-text'
               }`}
             >
               {pkg.title}
@@ -156,7 +156,7 @@ export default function CoachingPackages() {
             {/* Description */}
             <p
               className={`font-paragraph text-base mb-6 ${
-                pkg.featured ? 'text-warm-grey' : 'text-charcoal-black/70'
+                pkg.featured ? 'text-secondary-text' : 'text-primary-text/70'
               }`}
             >
               {pkg.description}
@@ -167,7 +167,7 @@ export default function CoachingPackages() {
               <div className="flex items-baseline gap-2 mb-1">
                 <span
                   className={`font-heading text-4xl md:text-5xl font-bold ${
-                    pkg.featured ? 'text-soft-bronze' : 'text-soft-bronze'
+                    pkg.featured ? 'text-accent' : 'text-accent'
                   }`}
                 >
                   {currencySymbols[selectedCurrency]}
@@ -176,7 +176,7 @@ export default function CoachingPackages() {
               </div>
               <p
                 className={`font-paragraph text-sm ${
-                  pkg.featured ? 'text-warm-grey' : 'text-warm-grey'
+                  pkg.featured ? 'text-secondary-text' : 'text-secondary-text'
                 }`}
               >
                 {pkg.duration}
@@ -190,12 +190,12 @@ export default function CoachingPackages() {
                   <CheckCircle
                     size={20}
                     className={`flex-shrink-0 mt-0.5 ${
-                      pkg.featured ? 'text-soft-bronze' : 'text-soft-bronze'
+                      pkg.featured ? 'text-accent' : 'text-accent'
                     }`}
                   />
                   <span
                     className={`font-paragraph text-sm ${
-                      pkg.featured ? 'text-soft-white/90' : 'text-charcoal-black'
+                      pkg.featured ? 'text-light-contrast/90' : 'text-primary-text'
                     }`}
                   >
                     {feature}
@@ -209,8 +209,8 @@ export default function CoachingPackages() {
               onClick={() => handleCheckout(pkg)}
               className={`w-full py-3 rounded-lg font-medium text-lg transition-all duration-300 flex items-center justify-center gap-2 ${
                 pkg.featured
-                  ? 'bg-soft-bronze text-soft-white hover:bg-soft-white hover:text-charcoal-black'
-                  : 'bg-charcoal-black text-soft-white hover:bg-soft-bronze'
+                  ? 'bg-accent text-light-contrast hover:bg-light-contrast hover:text-primary-text'
+                  : 'bg-primary-text text-light-contrast hover:bg-accent'
               }`}
             >
               {pkg.cta}
@@ -221,32 +221,32 @@ export default function CoachingPackages() {
       </div>
 
       {/* Info Section */}
-      <div className="mt-16 p-8 bg-warm-sand-beige/30 rounded-2xl">
-        <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-4">
+      <div className="mt-16 p-8 bg-secondary-bg/30 rounded-2xl">
+        <h3 className="font-heading text-2xl font-bold text-primary-text mb-4">
           Which Package is Right for You?
         </h3>
         <div className="grid md:grid-cols-3 gap-6">
           <div>
-            <h4 className="font-heading text-lg font-bold text-charcoal-black mb-2">
+            <h4 className="font-heading text-lg font-bold text-primary-text mb-2">
               Online Coaching
             </h4>
-            <p className="font-paragraph text-sm text-charcoal-black/70">
+            <p className="font-paragraph text-sm text-primary-text/70">
               Perfect for busy women who want flexibility and support from anywhere. Ideal for building sustainable habits.
             </p>
           </div>
           <div>
-            <h4 className="font-heading text-lg font-bold text-charcoal-black mb-2">
+            <h4 className="font-heading text-lg font-bold text-primary-text mb-2">
               8-Week Face-to-Face
             </h4>
-            <p className="font-paragraph text-sm text-charcoal-black/70">
+            <p className="font-paragraph text-sm text-primary-text/70">
               Great for getting started with in-person training. Build momentum with consistent sessions and direct feedback.
             </p>
           </div>
           <div>
-            <h4 className="font-heading text-lg font-bold text-charcoal-black mb-2">
+            <h4 className="font-heading text-lg font-bold text-primary-text mb-2">
               12-Week Transformation
             </h4>
-            <p className="font-paragraph text-sm text-charcoal-black/70">
+            <p className="font-paragraph text-sm text-primary-text/70">
               Our most comprehensive package for complete transformation. Maximum results with extended support and tracking.
             </p>
           </div>
