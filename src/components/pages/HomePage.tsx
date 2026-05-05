@@ -2,10 +2,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { CheckCircle, ArrowRight, Star, Activity, Heart, Zap, ShieldCheck, Dumbbell, Apple, Leaf } from 'lucide-react';
+import { CheckCircle, ArrowRight, Star, Activity, Heart, Zap, ShieldCheck, Dumbbell, Apple, Leaf, AlertCircle } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { BaseCrudService } from '@/integrations';
-import { ClientTestimonials } from '@/entities';
+import { ClientTestimonials, ContactFormSubmissions } from '@/entities';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 // --- Utility Components ---
@@ -37,6 +37,210 @@ const AnimatedElement: React.FC<AnimatedElementProps> = ({ children, className, 
 
     return <div ref={ref} className={`${className || ''} opacity-0 translate-y-8 transition-all duration-1000 ease-out motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:translate-y-0 [&.is-visible]:opacity-100 [&.is-visible]:translate-y-0`}>{children}</div>;
 };
+
+// --- Contact Form Component ---
+
+function ContactForm() {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    message: '',
+    healthDataConsent: false,
+    marketingConsent: false,
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      await BaseCrudService.create('contactformsubmissions', {
+        _id: crypto.randomUUID(),
+        fullName: formData.fullName,
+        email: formData.email,
+        message: formData.message,
+        healthDataConsent: formData.healthDataConsent,
+        marketingConsent: formData.marketingConsent,
+        submittedAt: new Date().toISOString(),
+        source: 'homepage',
+      });
+
+      setSubmitStatus('success');
+      setFormData({
+        fullName: '',
+        email: '',
+        message: '',
+        healthDataConsent: false,
+        marketingConsent: false,
+      });
+
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+    } catch (error) {
+      console.error('Failed to submit form:', error);
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Next Steps Info Box */}
+      <div className="flex items-start gap-4 p-6 bg-soft-white rounded-xl border border-warm-sand-beige">
+        <AlertCircle className="text-soft-bronze flex-shrink-0 mt-1" size={20} />
+        <div>
+          <h3 className="font-heading text-lg font-bold text-charcoal-black mb-2">
+            Next Steps
+          </h3>
+          <ol className="font-paragraph text-base text-warm-grey space-y-2">
+            <li><span className="font-bold">1.</span> Complete the PAR-Q questionnaire on our <Link to="/parq" className="text-soft-bronze hover:underline">health form page</Link></li>
+            <li><span className="font-bold">2.</span> Schedule your free 15-minute consultation call</li>
+            <li><span className="font-bold">3.</span> Start your personalised online coaching program</li>
+          </ol>
+        </div>
+      </div>
+
+      {/* Form Fields */}
+      <div className="space-y-4">
+        <div>
+          <label htmlFor="fullName" className="block font-paragraph font-medium text-charcoal-black mb-2">
+            Full Name *
+          </label>
+          <input
+            type="text"
+            id="fullName"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleInputChange}
+            required
+            className="w-full px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black placeholder-warm-grey/50 focus:outline-none focus:ring-2 focus:ring-soft-bronze/50"
+            placeholder="Your name"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="email" className="block font-paragraph font-medium text-charcoal-black mb-2">
+            Email Address *
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            required
+            className="w-full px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black placeholder-warm-grey/50 focus:outline-none focus:ring-2 focus:ring-soft-bronze/50"
+            placeholder="your@email.com"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="message" className="block font-paragraph font-medium text-charcoal-black mb-2">
+            Tell me about your fitness goals *
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            value={formData.message}
+            onChange={handleInputChange}
+            required
+            rows={5}
+            className="w-full px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black placeholder-warm-grey/50 focus:outline-none focus:ring-2 focus:ring-soft-bronze/50 resize-none"
+            placeholder="Share your fitness goals, challenges, and what you're looking for in a coach..."
+          />
+        </div>
+      </div>
+
+      {/* Checkboxes */}
+      <div className="space-y-3">
+        <label className="flex items-start gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            name="healthDataConsent"
+            checked={formData.healthDataConsent}
+            onChange={handleInputChange}
+            className="mt-1 w-4 h-4 accent-soft-bronze"
+          />
+          <span className="font-paragraph text-sm text-charcoal-black/80">
+            I consent to sharing my health information for personalised coaching *
+          </span>
+        </label>
+
+        <label className="flex items-start gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            name="marketingConsent"
+            checked={formData.marketingConsent}
+            onChange={handleInputChange}
+            className="mt-1 w-4 h-4 accent-soft-bronze"
+          />
+          <span className="font-paragraph text-sm text-charcoal-black/80">
+            I'd like to receive updates about coaching programs and fitness tips
+          </span>
+        </label>
+      </div>
+
+      {/* Submit Button */}
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full bg-charcoal-black text-soft-white py-4 rounded-lg font-medium text-lg hover:bg-soft-bronze transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {isSubmitting ? 'Sending...' : 'Send My Information'}
+      </button>
+
+      {/* Status Messages */}
+      {submitStatus === 'success' && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-4 bg-sage-green/10 border border-sage-green/30 rounded-lg text-center"
+        >
+          <p className="font-paragraph text-sage-green font-medium">
+            Thank you! I'll be in touch within 24 hours.
+          </p>
+        </motion.div>
+      )}
+
+      {submitStatus === 'error' && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-4 bg-rose-blush/10 border border-rose-blush/30 rounded-lg text-center"
+        >
+          <p className="font-paragraph text-rose-blush font-medium">
+            Something went wrong. Please try again or email hello@motivasi.co.uk
+          </p>
+        </motion.div>
+      )}
+
+      {/* Direct Contact */}
+      <div className="text-center pt-6 border-t border-warm-sand-beige">
+        <p className="font-paragraph text-base text-warm-grey mb-4">
+          Or reach out directly:
+        </p>
+        <a
+          href="mailto:hello@motivasi.co.uk"
+          className="text-soft-bronze font-medium hover:underline"
+        >
+          hello@motivasi.co.uk
+        </a>
+      </div>
+    </form>
+  );
+}
 
 // --- Main Component ---
 
@@ -605,61 +809,20 @@ export default function HomePage() {
           </div>
         </section>
       )}
-      {/* --- Motivasi Hero Section - Three Column Layout --- */}
-      <section className="relative w-full min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center justify-center bg-gradient-to-br from-charcoal-black via-charcoal-black/98 to-warm-bronze/5 overflow-hidden py-20 md:py-32 lg:py-40">
-        {/* Animated gradient background elements */}
-        <motion.div
-          className="absolute -top-96 -right-96 w-[800px] h-[800px] bg-sage-green/10 rounded-full blur-3xl opacity-20 pointer-events-none"
-          animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.3, 0.2] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute -bottom-96 -left-96 w-[800px] h-[800px] bg-rose-blush/10 rounded-full blur-3xl opacity-20 pointer-events-none"
-          animate={{ scale: [1.1, 1, 1.1], opacity: [0.3, 0.2, 0.3] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        />
+      {/* --- Contact Form Section --- */}
+      <section className="py-24 px-8 lg:px-20 bg-soft-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="font-heading text-4xl font-bold text-charcoal-black mb-4">
+              Let's Get Started
+            </h2>
+            <p className="font-paragraph text-lg text-warm-grey">
+              Fill out the form below and I'll be in touch within 24 hours to discuss your personalised coaching plan.
+            </p>
+          </div>
 
-        {/* Main Content - Three Column Layout */}
-        <div className="relative z-10 w-full px-4 md:px-8 lg:px-24 max-w-[120rem] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center min-h-[400px] md:min-h-[500px]">
-            {/* Left Column - Subheading */}
-            <motion.div
-              className="flex items-center justify-start"
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              viewport={{ once: true, margin: "-100px" }}
-            >
-              <div className="max-w-xs">
-
-              </div>
-            </motion.div>
-
-            {/* Center Column - Large "Motivasi" Text */}
-            <motion.div
-              className="flex items-center justify-center"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              viewport={{ once: true, margin: "-100px" }}
-            >
-              <h2 className="font-heading text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white leading-[0.9] tracking-tighter drop-shadow-2xl text-center">
-                Motivasi
-              </h2>
-            </motion.div>
-
-            {/* Right Column - Portal Access CTA */}
-            <motion.div
-              className="flex items-center justify-end"
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-              viewport={{ once: true, margin: "-100px" }}
-            >
-              <div className="flex flex-col gap-4 max-w-xs">
-
-              </div>
-            </motion.div>
+          <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-2xl p-8 md:p-12">
+            <ContactForm />
           </div>
         </div>
       </section>
