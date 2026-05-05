@@ -472,7 +472,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* --- Invest in Yourself Hero Section - Redesigned --- */}
-      <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-charcoal-black via-charcoal-black/95 to-warm-bronze/10 py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24">
+      <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-charcoal-black via-charcoal-black/95 to-warm-bronze/10 py-8 md:py-12 lg:py-16 px-4 md:px-8 lg:px-24">
         {/* Animated gradient background */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-warm-bronze/5 to-transparent pointer-events-none" />
         
