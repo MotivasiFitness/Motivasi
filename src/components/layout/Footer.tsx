@@ -9,13 +9,6 @@ function Footer() {
 
   return (
     <footer className="bg-light-contrast text-primary-text border-t border-secondary-bg relative overflow-hidden">
-      {/* Large Background Watermark Text */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-        <div className="text-[100px] sm:text-[130px] md:text-[160px] lg:text-[200px] xl:text-[240px] font-heading font-bold leading-none whitespace-nowrap opacity-5 text-primary-text select-none">
-          MOTIVASI
-        </div>
-      </div>
-
       <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20 py-24 sm:py-32 lg:py-40">
         {/* Main Footer Grid - Top Section - Centered */}
         <div className="flex flex-col items-center text-center mb-24 sm:mb-32 lg:mb-40 relative z-20">
@@ -92,6 +85,13 @@ function Footer() {
                   Motivasi holds appropriate professional and public liability insurance.
                 </p>
               </nav>
+            </div>
+          </div>
+
+          {/* Large Background Watermark Text - Below Insurance Text */}
+          <div className="flex items-center justify-center pointer-events-none overflow-hidden mb-16 sm:mb-20 lg:mb-24">
+            <div className="text-[100px] sm:text-[130px] md:text-[160px] lg:text-[200px] xl:text-[240px] font-heading font-bold leading-none whitespace-nowrap opacity-5 text-primary-text select-none">
+              MOTIVASI
             </div>
           </div>
         </div>
