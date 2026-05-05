@@ -24,13 +24,13 @@ function Header() {
           <nav className="hidden md:flex items-center gap-6 lg:gap-8 absolute left-0 h-full">
             <Link 
               to="/online-training" 
-              className="font-paragraph text-sm text-black hover:text-gray-600 transition-colors duration-200 flex items-center h-full"
+              className="font-paragraph text-sm text-white hover:text-gray-300 transition-colors duration-200 flex items-center h-full"
             >
               <span dangerouslySetInnerHTML={{ __html: t.nav.onlineTraining }} />
             </Link>
             <Link 
               to="/about" 
-              className="font-paragraph text-sm text-black hover:text-gray-600 transition-colors duration-200 flex items-center h-full"
+              className="font-paragraph text-sm text-white hover:text-gray-300 transition-colors duration-200 flex items-center h-full"
             >
               <span dangerouslySetInnerHTML={{ __html: t.nav.faceToFaceTraining }} />
             </Link>
@@ -48,41 +48,41 @@ function Header() {
                 {isTrainer ? (
                   <Link 
                     to="/trainer" 
-                    className="font-paragraph text-sm lg:text-base text-black hover:text-gray-600 transition-colors duration-200 flex items-center"
+                    className="font-paragraph text-sm lg:text-base text-white hover:text-gray-300 transition-colors duration-200 flex items-center"
                   >
                     Trainer Hub
                   </Link>
                 ) : (
                   <Link 
                     to="/portal" 
-                    className="font-paragraph text-sm lg:text-base text-black hover:text-gray-600 transition-colors duration-200 flex items-center"
+                    className="font-paragraph text-sm lg:text-base text-white hover:text-gray-300 transition-colors duration-200 flex items-center"
                   >
                     My Portal
                   </Link>
                 )}
                 <button
                   onClick={actions.logout}
-                  className="font-paragraph text-sm lg:text-base text-black hover:text-gray-600 transition-colors duration-200 flex items-center gap-2 h-10 px-2"
+                  className="font-paragraph text-sm lg:text-base text-white hover:text-gray-300 transition-colors duration-200 flex items-center gap-2 h-10 px-2"
                 >
-                  <LogOut size={16} className="text-black" />
+                  <LogOut size={16} className="text-white" />
                   <span className="hidden lg:inline">Sign Out</span>
                 </button>
               </>
             ) : (
               <button 
                 onClick={actions.login}
-                className="text-black hover:text-gray-600 transition-colors duration-200 flex items-center justify-center h-10 w-10"
+                className="text-white hover:text-gray-300 transition-colors duration-200 flex items-center justify-center h-10 w-10"
               >
-                <User size={20} className="text-black" />
+                <User size={20} className="text-white" />
               </button>
             )}
             <div className="flex items-center gap-4 lg:gap-6">
               <LanguageSwitcher />
               <button
                 onClick={cartActions.toggleCart}
-                className="relative text-black hover:text-gray-600 transition-colors duration-200 flex items-center justify-center h-10 w-10"
+                className="relative text-white hover:text-gray-300 transition-colors duration-200 flex items-center justify-center h-10 w-10"
               >
-                <ShoppingCart size={20} className="text-black" />
+                <ShoppingCart size={20} className="text-white" />
                 {itemCount > 0 && (
                   <span className="absolute -top-2 -right-2 bg-black text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                     {itemCount}
@@ -97,10 +97,10 @@ function Header() {
             <LanguageSwitcher />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-black p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? <X size={24} className="text-black" /> : <Menu size={24} className="text-black" />}
+              {isMenuOpen ? <X size={24} className="text-white" /> : <Menu size={24} className="text-white" />}
             </button>
           </div>
         </div>
