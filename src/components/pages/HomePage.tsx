@@ -148,7 +148,7 @@ export default function HomePage() {
             className="mb-12 md:mb-16 flex justify-center"
           >
             <Image
-              src="https://static.wixstatic.com/media/93e866_e015867e73174d37a4e31a402f9b2e0c~mv2.jpg"
+              src="https://static.wixstatic.com/media/93e866_09b0ccd0d04e40cda3d278b62df0355f~mv2.png"
               alt="Brand Logo"
               className="w-32 md:w-40 lg:w-48 h-auto object-contain"
               width={200}
