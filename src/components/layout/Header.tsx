@@ -94,7 +94,6 @@ function Header() {
           {/* Mobile Menu Button */}
           <div className="flex items-center gap-3 md:hidden absolute right-0 h-full">
             <LanguageSwitcher />
-            <MiniCart cartIconClassName="[&_svg]:text-white" />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
