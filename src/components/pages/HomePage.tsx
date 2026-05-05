@@ -648,7 +648,7 @@ export default function HomePage() {
                       <div className="w-10 h-10 rounded-full bg-gradient-to-r from-sage-green to-warm-bronze flex items-center justify-center flex-shrink-0">
                         <Icon size={18} className="text-charcoal-black" />
                       </div>
-                      <span className="text-base md:text-lg text-white/80 font-light">{benefit.text}</span>
+                      <span className="text-base md:text-lg text-charcoal-black font-light">{benefit.text}</span>
                     </motion.div>
                   );
                 })}
