@@ -384,10 +384,10 @@ export default function HomePage() {
       </section>
       {/* --- Keywords Section with Softer Design --- */}
       {/* --- The Philosophy (Text Heavy / Editorial) --- */}
-      <section className="py-20 px-8 lg:px-24 bg-white">
+      <section className="py-12 px-8 lg:px-24 bg-white">
         <div className="max-w-[100rem] mx-auto">
           {/* Title and Subtitle Section */}
-          <div className="mb-20">
+          <div className="mb-12">
             <AnimatedElement>
               <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-8 leading-tight">
                 {t.home.transformationTitle} 
