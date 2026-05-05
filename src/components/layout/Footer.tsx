@@ -89,7 +89,7 @@ function Footer() {
           </div>
 
           {/* Large Background Watermark Text - Below Insurance Text */}
-          <div className="flex items-center justify-center pointer-events-none overflow-hidden mb-16 sm:mb-20 lg:mb-24">
+          <div className="flex items-center justify-center pointer-events-none overflow-hidden mb-4 sm:mb-6 lg:mb-8">
             <div className="text-[100px] sm:text-[130px] md:text-[160px] lg:text-[200px] xl:text-[240px] font-heading font-bold leading-none whitespace-nowrap opacity-5 text-primary-text select-none">
               MOTIVASI
             </div>
