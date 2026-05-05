@@ -157,7 +157,7 @@ export default function HomePage() {
 
           {/* Main Content - Text Only */}
           <div className="w-full max-w-2xl">
-            <div className="flex flex-col justify-center text-center p-8 bg-charcoal-black/60 backdrop-blur-md rounded-3xl shadow-xl border border-white/10">
+            <div className="flex flex-col justify-center text-center p-8">
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.3 }}>
                 <h2 className="font-heading text-5xl md:text-7xl lg:text-8xl font-black leading-tight mb-6 tracking-tight text-warm-cream">
                   {t.home.heroTitle}
