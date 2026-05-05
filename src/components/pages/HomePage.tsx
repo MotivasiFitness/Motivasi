@@ -115,12 +115,25 @@ export default function HomePage() {
       )}
       {/* --- Hero Section - Minimalist Split Layout --- */}
       <section className="relative min-h-screen w-full overflow-hidden bg-charcoal-black pt-24 md:pt-32 lg:pt-40 px-6 md:px-12">
-        <div className="absolute inset-0 flex">
+        <div className="relative z-10 max-w-[100rem] mx-auto flex flex-col items-center justify-center min-h-[calc(100vh-theme(spacing.24))] lg:min-h-[calc(100vh-theme(spacing.32))] pt-12 pb-16 px-6 md:px-12">
+          {/* Centered Brand Logo */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="mb-12 md:mb-16 flex justify-center"
+          >
+            <Image
+              src="https://static.wixstatic.com/media/93e866_e015867e73174d37a4e31a402f9b2e0c~mv2.jpg"
+              alt="Brand Logo"
+              className="w-32 md:w-40 lg:w-48 h-auto object-contain"
+              width={200}
+            />
+          </motion.div>
 
-        </div>
-
-        <div className="relative z-10 max-w-[100rem] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 items-center min-h-[calc(100vh-theme(spacing.24))] lg:min-h-[calc(100vh-theme(spacing.32))] pt-24 pb-16 px-6 md:px-12">
-          <div className="order-2 lg:order-1 col-span-1 lg:col-span-2 flex flex-col justify-center text-center lg:text-left p-8 bg-charcoal-black/70 backdrop-blur-sm rounded-3xl shadow-xl border border-white/10">
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center w-full">
+            <div className="order-2 lg:order-1 col-span-1 lg:col-span-2 flex flex-col justify-center text-center lg:text-left p-8 bg-charcoal-black/70 backdrop-blur-sm rounded-3xl shadow-xl border border-white/10">
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.3 }}>
               <h2 className="font-heading text-5xl md:text-7xl lg:text-8xl font-black leading-tight mb-6 tracking-tight text-warm-cream">
                 {t.home.heroTitle}
@@ -133,7 +146,7 @@ export default function HomePage() {
                 <div className="h-px w-16 bg-warm-bronze/80" />
               </motion.div>
             </motion.div>
-          </div>
+            </div>
 
           <div className="order-1 lg:order-2 col-span-1 relative w-full h-96 md:h-[500px] lg:h-[600px] overflow-hidden rounded-3xl shadow-2xl shadow-warm-bronze/20">
             <motion.div className="w-full h-full" initial={{ scale: 1.15, x: 20 }} animate={{ scale: 1.05, x: 0 }} transition={{ duration: 1.2, ease: "easeOut" }}>
@@ -147,6 +160,7 @@ export default function HomePage() {
                 originHeight={623} />
               <div className="absolute inset-0 bg-gradient-to-t from-charcoal-black/70 via-transparent to-charcoal-black/20" />
             </motion.div>
+          </div>
           </div>
         </div>
       </section>
