@@ -318,7 +318,7 @@ export default function HomePage() {
         </motion.div>
       )}
       {/* --- Hero Section - Full Background Image with Header Overlap --- */}
-      <section className="relative w-full min-h-screen overflow-hidden -mt-20 md:-mt-24 lg:-mt-32 pt-20 md:pt-24 lg:pt-32">
+      <section className="relative w-full min-h-screen overflow-visible -mt-20 md:-mt-24 lg:-mt-32 pt-20 md:pt-24 lg:pt-32">
         {/* Background Image - Full Coverage */}
         <div className="absolute inset-0 w-full h-full">
           <motion.div 

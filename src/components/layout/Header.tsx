@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import { Menu, X, LogOut, User } from 'lucide-react';
+import { Menu, X, LogOut, User, ShoppingCart } from 'lucide-react';
 import { useState, memo } from 'react';
-import { MiniCart } from '@/wix-verticals/react-pages/react-router/routes/root';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useMember } from '@/integrations';
 import { useRole } from '@/hooks/useRole';
+import { useCart } from '@/integrations';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 function Header() {
@@ -12,6 +12,7 @@ function Header() {
   const { t } = useLanguage();
   const { member, isAuthenticated, actions } = useMember();
   const { isTrainer, isClient } = useRole();
+  const { itemCount, actions: cartActions } = useCart();
 
   return (
     <header 
@@ -87,7 +88,17 @@ function Header() {
             )}
             <div className="flex items-center gap-4 lg:gap-6">
               <LanguageSwitcher />
-              <MiniCart cartIconClassName="[&_svg]:text-white" />
+              <button
+                onClick={cartActions.toggleCart}
+                className="relative text-white hover:text-warm-cream transition-colors duration-200 flex items-center justify-center h-10 w-10"
+              >
+                <ShoppingCart size={20} className="text-white" />
+                {itemCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-warm-bronze text-charcoal-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {itemCount}
+                  </span>
+                )}
+              </button>
             </div>
           </div>
 
