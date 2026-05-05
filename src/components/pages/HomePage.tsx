@@ -363,7 +363,7 @@ export default function HomePage() {
           <div className="w-full max-w-2xl">
             <div className="flex flex-col justify-center text-center p-8">
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.3 }}>
-                <h2 className="font-sans text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6 tracking-tight text-warm-cream">
+                <h2 className="font-sans text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-tight mb-6 text-white drop-shadow-lg" style={{ fontWeight: 900, letterSpacing: '0.08em', lineHeight: 1.15 }}>
                   TRANSFORM YOUR STRENGTH
                 </h2>
                 <motion.div className="mt-6 flex items-center justify-center gap-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.6 }}>
