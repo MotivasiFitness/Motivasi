@@ -617,8 +617,8 @@ export default function HomePage() {
                   transition={{ duration: 1.5, ease: "easeOut" }}
                 />
                 
-                <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-8 tracking-tight">
-                  Invest in <span className="bg-gradient-to-r from-sage-green via-warm-bronze to-rose-blush bg-clip-text text-transparent">Yourself</span>
+                <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-black leading-[1.1] mb-8 tracking-tight">
+                  <span className="bg-gradient-to-r from-sage-green via-warm-bronze to-rose-blush bg-clip-text text-transparent">Invest in Yourself</span>
                 </h2>
               </div>
 
