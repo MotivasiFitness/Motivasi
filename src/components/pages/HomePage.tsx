@@ -96,15 +96,15 @@ function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
       {/* Next Steps Info Box */}
-      <div className="flex items-start gap-4 p-6 bg-soft-white rounded-xl border border-warm-sand-beige">
-        <AlertCircle className="text-soft-bronze flex-shrink-0 mt-1" size={20} />
+      <div className="flex items-start gap-3 sm:gap-4 p-4 sm:p-6 bg-soft-white rounded-xl border border-warm-sand-beige">
+        <AlertCircle className="text-soft-bronze flex-shrink-0 mt-1" size={18} />
         <div>
-          <h3 className="font-heading text-lg font-bold text-charcoal-black mb-2">
+          <h3 className="font-heading text-base sm:text-lg font-bold text-charcoal-black mb-2">
             Next Steps
           </h3>
-          <ol className="font-paragraph text-base text-warm-grey space-y-2">
+          <ol className="font-paragraph text-sm sm:text-base text-warm-grey space-y-1 sm:space-y-2">
             <li><span className="font-bold">1.</span> Complete the PAR-Q questionnaire on our <Link to="/parq" className="text-soft-bronze hover:underline">health form page</Link></li>
             <li><span className="font-bold">2.</span> Schedule your free 15-minute consultation call</li>
             <li><span className="font-bold">3.</span> Start your personalised online coaching program</li>
@@ -113,9 +113,9 @@ function ContactForm() {
       </div>
 
       {/* Form Fields */}
-      <div className="space-y-4">
+      <div className="space-y-3 sm:space-y-4">
         <div>
-          <label htmlFor="fullName" className="block font-paragraph font-medium text-charcoal-black mb-2">
+          <label htmlFor="fullName" className="block font-paragraph font-medium text-charcoal-black mb-2 text-sm sm:text-base">
             Full Name *
           </label>
           <input
@@ -125,13 +125,13 @@ function ContactForm() {
             value={formData.fullName}
             onChange={handleInputChange}
             required
-            className="w-full px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black placeholder-warm-grey/50 focus:outline-none focus:ring-2 focus:ring-soft-bronze/50"
+            className="w-full px-3 sm:px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black placeholder-warm-grey/50 focus:outline-none focus:ring-2 focus:ring-soft-bronze/50 text-base min-h-[44px]"
             placeholder="Your name"
           />
         </div>
 
         <div>
-          <label htmlFor="email" className="block font-paragraph font-medium text-charcoal-black mb-2">
+          <label htmlFor="email" className="block font-paragraph font-medium text-charcoal-black mb-2 text-sm sm:text-base">
             Email Address *
           </label>
           <input
@@ -141,13 +141,13 @@ function ContactForm() {
             value={formData.email}
             onChange={handleInputChange}
             required
-            className="w-full px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black placeholder-warm-grey/50 focus:outline-none focus:ring-2 focus:ring-soft-bronze/50"
+            className="w-full px-3 sm:px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black placeholder-warm-grey/50 focus:outline-none focus:ring-2 focus:ring-soft-bronze/50 text-base min-h-[44px]"
             placeholder="your@email.com"
           />
         </div>
 
         <div>
-          <label htmlFor="message" className="block font-paragraph font-medium text-charcoal-black mb-2">
+          <label htmlFor="message" className="block font-paragraph font-medium text-charcoal-black mb-2 text-sm sm:text-base">
             Tell me about your fitness goals *
           </label>
           <textarea
@@ -156,37 +156,37 @@ function ContactForm() {
             value={formData.message}
             onChange={handleInputChange}
             required
-            rows={5}
-            className="w-full px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black placeholder-warm-grey/50 focus:outline-none focus:ring-2 focus:ring-soft-bronze/50 resize-none"
+            rows={4}
+            className="w-full px-3 sm:px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black placeholder-warm-grey/50 focus:outline-none focus:ring-2 focus:ring-soft-bronze/50 resize-none text-base min-h-[120px]"
             placeholder="Share your fitness goals, challenges, and what you're looking for in a coach..."
           />
         </div>
       </div>
 
       {/* Checkboxes */}
-      <div className="space-y-3">
-        <label className="flex items-start gap-3 cursor-pointer">
+      <div className="space-y-2 sm:space-y-3">
+        <label className="flex items-start gap-2 sm:gap-3 cursor-pointer">
           <input
             type="checkbox"
             name="healthDataConsent"
             checked={formData.healthDataConsent}
             onChange={handleInputChange}
-            className="mt-1 w-4 h-4 accent-soft-bronze"
+            className="mt-1 w-4 h-4 accent-soft-bronze flex-shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center"
           />
-          <span className="font-paragraph text-sm text-charcoal-black/80">
+          <span className="font-paragraph text-xs sm:text-sm text-charcoal-black/80 pt-1">
             I consent to sharing my health information for personalised coaching *
           </span>
         </label>
 
-        <label className="flex items-start gap-3 cursor-pointer">
+        <label className="flex items-start gap-2 sm:gap-3 cursor-pointer">
           <input
             type="checkbox"
             name="marketingConsent"
             checked={formData.marketingConsent}
             onChange={handleInputChange}
-            className="mt-1 w-4 h-4 accent-soft-bronze"
+            className="mt-1 w-4 h-4 accent-soft-bronze flex-shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center"
           />
-          <span className="font-paragraph text-sm text-charcoal-black/80">
+          <span className="font-paragraph text-xs sm:text-sm text-charcoal-black/80 pt-1">
             I'd like to receive updates about coaching programs and fitness tips
           </span>
         </label>
@@ -196,7 +196,7 @@ function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full bg-charcoal-black text-soft-white py-4 rounded-lg font-medium text-lg hover:bg-soft-bronze transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full bg-charcoal-black text-soft-white py-3 sm:py-4 rounded-lg font-medium text-base sm:text-lg hover:bg-soft-bronze transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
       >
         {isSubmitting ? 'Sending...' : 'Send My Information'}
       </button>
@@ -206,9 +206,9 @@ function ContactForm() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-4 bg-sage-green/10 border border-sage-green/30 rounded-lg text-center"
+          className="p-3 sm:p-4 bg-sage-green/10 border border-sage-green/30 rounded-lg text-center"
         >
-          <p className="font-paragraph text-sage-green font-medium">
+          <p className="font-paragraph text-sage-green font-medium text-sm sm:text-base">
             Thank you! I'll be in touch within 24 hours.
           </p>
         </motion.div>
@@ -218,22 +218,22 @@ function ContactForm() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-4 bg-rose-blush/10 border border-rose-blush/30 rounded-lg text-center"
+          className="p-3 sm:p-4 bg-rose-blush/10 border border-rose-blush/30 rounded-lg text-center"
         >
-          <p className="font-paragraph text-rose-blush font-medium">
+          <p className="font-paragraph text-rose-blush font-medium text-sm sm:text-base">
             Something went wrong. Please try again or email hello@motivasi.co.uk
           </p>
         </motion.div>
       )}
 
       {/* Direct Contact */}
-      <div className="text-center pt-6 border-t border-warm-sand-beige">
-        <p className="font-paragraph text-base text-warm-grey mb-4">
+      <div className="text-center pt-4 sm:pt-6 border-t border-warm-sand-beige">
+        <p className="font-paragraph text-sm sm:text-base text-warm-grey mb-3 sm:mb-4">
           Or reach out directly:
         </p>
         <a
           href="mailto:hello@motivasi.co.uk"
-          className="text-soft-bronze font-medium hover:underline"
+          className="text-soft-bronze font-medium hover:underline text-sm sm:text-base"
         >
           hello@motivasi.co.uk
         </a>
@@ -307,18 +307,20 @@ export default function HomePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed bottom-8 right-8 z-40"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 z-40 px-2"
         >
           <Link
             to="/about#get-in-touch"
-            className="group flex items-center gap-3 bg-warm-bronze text-charcoal-black px-8 py-4 rounded-full font-bold text-base shadow-lg hover:shadow-2xl hover:shadow-warm-bronze/40 transition-all duration-300 hover:scale-105"
+            className="group flex items-center gap-2 sm:gap-3 bg-warm-bronze text-charcoal-black px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-full font-bold text-xs sm:text-sm md:text-base shadow-lg hover:shadow-2xl hover:shadow-warm-bronze/40 transition-all duration-300 hover:scale-105 min-h-[44px] min-w-[44px] justify-center"
           >
-            Book Your Free 10‑Minute Call <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            <span className="hidden sm:inline">Book Your Free 10‑Minute Call</span>
+            <span className="sm:hidden">Book Call</span>
+            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.div>
       )}
       {/* --- Hero Section - Full Background Image with Header Overlap --- */}
-      <section className="relative w-full min-h-screen overflow-visible -mt-20 md:-mt-24 lg:-mt-32 pt-20 md:pt-24 lg:pt-32">
+      <section className="relative w-full min-h-screen sm:min-h-screen overflow-visible -mt-16 sm:-mt-20 md:-mt-24 lg:-mt-32 pt-16 sm:pt-20 md:pt-24 lg:pt-32">
         {/* Background Image - Full Coverage */}
         <div className="absolute inset-0 w-full h-full">
           <motion.div 
@@ -336,6 +338,7 @@ export default function HomePage() {
               originWidth={611}
               originHeight={623}
               alt="Hero Background"
+              loading="eager"
             />
           </motion.div>
           {/* Gradient Overlay */}
@@ -343,35 +346,36 @@ export default function HomePage() {
         </div>
 
         {/* Content - Positioned Over Background */}
-        <div className="relative z-10 max-w-[100rem] mx-auto flex flex-col items-center justify-center min-h-[calc(100vh-theme(spacing.24))] lg:min-h-[calc(100vh-theme(spacing.32))] pb-16 px-6 md:px-12">
+        <div className="relative z-10 max-w-[100rem] mx-auto flex flex-col items-center justify-center min-h-[calc(100vh-theme(spacing.16))] sm:min-h-[calc(100vh-theme(spacing.20))] md:min-h-[calc(100vh-theme(spacing.24))] lg:min-h-[calc(100vh-theme(spacing.32))] pb-8 sm:pb-12 md:pb-16 px-4 sm:px-6 md:px-12">
           {/* Centered Brand Logo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="mb-12 md:mb-16 flex justify-center"
+            className="mb-8 sm:mb-12 md:mb-16 flex justify-center"
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_09b0ccd0d04e40cda3d278b62df0355f~mv2.png"
               alt="Brand Logo"
-              className="w-32 md:w-40 lg:w-48 h-auto object-contain"
+              className="w-24 sm:w-32 md:w-40 lg:w-48 h-auto object-contain"
               width={200}
+              loading="eager"
             />
           </motion.div>
 
           {/* Main Content - Text Only */}
           <div className="w-full max-w-2xl">
-            <div className="flex flex-col justify-center text-center p-8">
+            <div className="flex flex-col justify-center text-center p-4 sm:p-6 md:p-8">
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.3 }}>
-                <h2 className="font-sans font-black leading-tight mb-6 text-white drop-shadow-lg" style={{ fontSize: '56px', fontWeight: 900, letterSpacing: '0.08em', lineHeight: 1.15 }}>
+                <h2 className="font-sans font-black leading-tight mb-4 sm:mb-6 text-white drop-shadow-lg text-3xl sm:text-4xl md:text-5xl lg:text-6xl" style={{ fontWeight: 900, letterSpacing: '0.08em', lineHeight: 1.15 }}>
                   TRANSFORM YOUR STRENGTH
                 </h2>
-                <motion.div className="mt-6 flex items-center justify-center gap-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.6 }}>
-                  <div className="h-px w-16 bg-warm-bronze/80" />
-                  <span className="text-base md:text-lg tracking-widest uppercase font-medium text-white">
+                <motion.div className="mt-4 sm:mt-6 flex items-center justify-center gap-2 sm:gap-4 flex-wrap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.6 }}>
+                  <div className="h-px w-8 sm:w-16 bg-warm-bronze/80" />
+                  <span className="text-xs sm:text-sm md:text-base lg:text-lg tracking-widest uppercase font-medium text-white px-2">
                     {t.home.tagline}
                   </span>
-                  <div className="h-px w-16 bg-warm-bronze/80" />
+                  <div className="h-px w-8 sm:w-16 bg-warm-bronze/80" />
                 </motion.div>
               </motion.div>
             </div>

@@ -18,51 +18,51 @@ function Header() {
     <header 
       className="sticky top-0 z-40 shadow-sm safe-area-top bg-transparent"
     >
-      <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20">
-        <div className="flex items-center justify-center h-16 sm:h-20 relative">
+      <div className="max-w-[100rem] mx-auto px-3 sm:px-4 md:px-6 lg:px-20">
+        <div className="flex items-center justify-center h-14 sm:h-16 md:h-20 relative">
           {/* Left Navigation - Hidden on Mobile */}
           <nav className="hidden md:flex items-center gap-6 lg:gap-8 absolute left-0 h-full">
             <Link 
               to="/online-training" 
-              className="font-paragraph text-sm text-white hover:text-gray-300 transition-colors duration-200 flex items-center h-full"
+              className="font-paragraph text-sm text-white hover:text-gray-300 transition-colors duration-200 flex items-center h-full min-h-[44px]"
             >
               <span dangerouslySetInnerHTML={{ __html: t.nav.onlineTraining }} />
             </Link>
             <Link 
               to="/about" 
-              className="font-paragraph text-sm text-white hover:text-gray-300 transition-colors duration-200 flex items-center h-full"
+              className="font-paragraph text-sm text-white hover:text-gray-300 transition-colors duration-200 flex items-center h-full min-h-[44px]"
             >
               <span dangerouslySetInnerHTML={{ __html: t.nav.faceToFaceTraining }} />
             </Link>
           </nav>
 
           {/* Centered Brand Name - Split Color Wordmark */}
-          <Link to="/" className="flex items-center justify-center hover:opacity-80 transition-opacity flex-shrink-0">
+          <Link to="/" className="flex items-center justify-center hover:opacity-80 transition-opacity flex-shrink-0 min-h-[44px]">
 
           </Link>
 
           {/* Right Navigation and Actions */}
-          <div className="hidden md:flex items-center gap-4 lg:gap-6 absolute right-0 h-full">
+          <div className="hidden md:flex items-center gap-3 lg:gap-6 absolute right-0 h-full">
             {isAuthenticated ? (
               <>
                 {isTrainer ? (
                   <Link 
                     to="/trainer" 
-                    className="font-paragraph text-sm lg:text-base text-white hover:text-gray-300 transition-colors duration-200 flex items-center"
+                    className="font-paragraph text-sm lg:text-base text-white hover:text-gray-300 transition-colors duration-200 flex items-center min-h-[44px] px-2"
                   >
                     Trainer Hub
                   </Link>
                 ) : (
                   <Link 
                     to="/portal" 
-                    className="font-paragraph text-sm lg:text-base text-white hover:text-gray-300 transition-colors duration-200 flex items-center"
+                    className="font-paragraph text-sm lg:text-base text-white hover:text-gray-300 transition-colors duration-200 flex items-center min-h-[44px] px-2"
                   >
                     My Portal
                   </Link>
                 )}
                 <button
                   onClick={actions.logout}
-                  className="font-paragraph text-sm lg:text-base text-white hover:text-gray-300 transition-colors duration-200 flex items-center gap-2 h-10 px-2"
+                  className="font-paragraph text-sm lg:text-base text-white hover:text-gray-300 transition-colors duration-200 flex items-center gap-2 min-h-[44px] px-2"
                 >
                   <LogOut size={16} className="text-white" />
                   <span className="hidden lg:inline">Sign Out</span>
@@ -71,20 +71,20 @@ function Header() {
             ) : (
               <button 
                 onClick={actions.login}
-                className="text-white hover:text-gray-300 transition-colors duration-200 flex items-center justify-center h-10 w-10"
+                className="text-white hover:text-gray-300 transition-colors duration-200 flex items-center justify-center min-h-[44px] min-w-[44px]"
               >
                 <User size={20} className="text-white" />
               </button>
             )}
-            <div className="flex items-center gap-4 lg:gap-6">
+            <div className="flex items-center gap-2 lg:gap-4">
               <LanguageSwitcher />
               <button
                 onClick={cartActions.toggleCart}
-                className="relative text-white hover:text-gray-300 transition-colors duration-200 flex items-center justify-center h-10 w-10"
+                className="relative text-white hover:text-gray-300 transition-colors duration-200 flex items-center justify-center min-h-[44px] min-w-[44px]"
               >
                 <ShoppingCart size={20} className="text-white" />
                 {itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-black text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-black text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                     {itemCount}
                   </span>
                 )}
@@ -93,7 +93,7 @@ function Header() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center gap-3 md:hidden absolute right-0 h-full">
+          <div className="flex items-center gap-2 md:hidden absolute right-0 h-full">
             <LanguageSwitcher />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -107,8 +107,8 @@ function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-gray-200 bg-white relative z-10">
-            <div className="flex flex-col gap-2">
+          <nav className="md:hidden py-3 border-t border-gray-200 bg-white relative z-10">
+            <div className="flex flex-col gap-1">
               <Link 
                 to="/online-training" 
                 className="font-paragraph text-base text-black hover:text-gray-600 transition-colors duration-200 px-4 py-3 rounded min-h-[44px] flex items-center"

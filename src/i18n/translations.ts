@@ -231,7 +231,7 @@ export const translations: Record<Language, Translations> = {
       empoweringBusy: 'Empowering busy women to achieve fat loss and strength without extreme diets or intimidation.',
     },
     home: {
-      tagline: 'Motivasi - Online Coaching for Women 35+',
+      tagline: 'Motivasi - Coaching for Women 35+',
       heroTitle: 'Sculpt Your',
       heroSubtitle: 'Strength.',
       startJourney: 'Start Your Journey',
@@ -427,7 +427,7 @@ export const translations: Record<Language, Translations> = {
       empoweringBusy: 'Empowering busy women to achieve fat loss and strength without extreme diets or intimidation.',
     },
     home: {
-      tagline: 'Motivasi - Online Coaching for Women 35+',
+      tagline: 'Motivasi - Coaching for Women 35+',
       heroTitle: 'Sculpt Your',
       heroSubtitle: 'Strength.',
       startJourney: 'Start Your Journey',
@@ -1407,7 +1407,7 @@ export const translations: Record<Language, Translations> = {
       empoweringBusy: 'Empowering busy women to achieve fat loss and strength without extreme diets or intimidation.',
     },
     home: {
-      tagline: 'Motivasi - Online Coaching for Women 35+',
+      tagline: 'Motivasi - Coaching for Women 35+',
       heroTitle: 'Sculpt Your',
       heroSubtitle: 'Strength.',
       startJourney: 'Start Your Journey',
@@ -1603,7 +1603,7 @@ export const translations: Record<Language, Translations> = {
       empoweringBusy: 'Empowering busy women to achieve fat loss and strength without extreme diets or intimidation.',
     },
     home: {
-      tagline: 'Motivasi - Online Coaching for Women 35+',
+      tagline: 'Motivasi - Coaching for Women 35+',
       heroTitle: 'Sculpt Your',
       heroSubtitle: 'Strength.',
       startJourney: 'Start Your Journey',
