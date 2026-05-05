@@ -48,48 +48,51 @@ function Footer() {
             </p>
           </div>
 
-          {/* Quick Links - Centered */}
-          <div className="mb-16 sm:mb-20 lg:mb-24">
-            <h4 className="font-sans font-bold text-xs uppercase tracking-widest text-primary-text mb-6 letter-spacing-wide">Quick Links</h4>
-            <nav className="flex flex-col gap-3 items-center">
-              <Link to="/" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
-                {t.nav.home}
-              </Link>
-              <Link to="/about" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
-                {t.nav.about}
-              </Link>
-              <Link to="/online-training" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
-                Online
-              </Link>
-              <Link to="/blog" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
-                Face-to-Face
-              </Link>
-              <Link to="/parq" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
-                {t.nav.parqForm}
-              </Link>
-            </nav>
-          </div>
+          {/* Quick Links & Legal & Compliance - Side by Side */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 mb-16 sm:mb-20 lg:mb-24 md:text-left">
+            {/* Quick Links */}
+            <div>
+              <h4 className="font-sans font-bold text-xs uppercase tracking-widest text-primary-text mb-6 letter-spacing-wide">Quick Links</h4>
+              <nav className="flex flex-col gap-3">
+                <Link to="/" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
+                  {t.nav.home}
+                </Link>
+                <Link to="/about" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
+                  {t.nav.about}
+                </Link>
+                <Link to="/online-training" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
+                  Online
+                </Link>
+                <Link to="/blog" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
+                  Face-to-Face
+                </Link>
+                <Link to="/parq" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
+                  {t.nav.parqForm}
+                </Link>
+              </nav>
+            </div>
 
-          {/* Legal & Compliance - Centered */}
-          <div className="mb-16 sm:mb-20 lg:mb-24">
-            <h4 className="font-sans font-bold text-xs uppercase tracking-widest text-primary-text mb-6 letter-spacing-wide">Legal & Compliance</h4>
-            <nav className="flex flex-col gap-3 items-center">
-              <Link to="/privacy" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
-                Privacy & Cookie Policy
-              </Link>
-              <Link to="/terms" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
-                Terms & Conditions
-              </Link>
-              <Link to="/disclaimer" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
-                Disclaimer
-              </Link>
-              <Link to="/accessibility" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
-                Accessibility Statement
-              </Link>
-              <p className="font-paragraph text-xs text-secondary-text mt-3 max-w-sm">
-                Motivasi holds appropriate professional and public liability insurance.
-              </p>
-            </nav>
+            {/* Legal & Compliance */}
+            <div>
+              <h4 className="font-sans font-bold text-xs uppercase tracking-widest text-primary-text mb-6 letter-spacing-wide">Legal & Compliance</h4>
+              <nav className="flex flex-col gap-3">
+                <Link to="/privacy" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
+                  Privacy & Cookie Policy
+                </Link>
+                <Link to="/terms" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
+                  Terms & Conditions
+                </Link>
+                <Link to="/disclaimer" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
+                  Disclaimer
+                </Link>
+                <Link to="/accessibility" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
+                  Accessibility Statement
+                </Link>
+                <p className="font-paragraph text-xs text-secondary-text mt-3">
+                  Motivasi holds appropriate professional and public liability insurance.
+                </p>
+              </nav>
+            </div>
           </div>
         </div>
 
