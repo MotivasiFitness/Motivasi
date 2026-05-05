@@ -357,7 +357,7 @@ export default function HomePage() {
             <Image
               src="https://static.wixstatic.com/media/93e866_09b0ccd0d04e40cda3d278b62df0355f~mv2.png"
               alt="Brand Logo"
-              className="w-20 sm:w-32 md:w-40 lg:w-48 h-auto object-contain"
+              className="w-32 sm:w-32 md:w-40 lg:w-48 h-auto object-contain"
               width={200}
               loading="eager"
             />
