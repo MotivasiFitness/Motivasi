@@ -22,11 +22,11 @@ export default function LanguageSwitcher() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-center h-10 w-10 rounded-lg hover:bg-gray-100 transition-colors text-black hover:text-gray-600"
+        className="flex items-center justify-center h-10 w-10 rounded-lg hover:bg-gray-100 transition-colors text-white hover:text-gray-300"
         aria-label={t.header.selectLanguage}
         title={t.header.selectLanguage}
       >
-        <Globe size={20} className="text-black" />
+        <Globe size={20} className="text-white" />
       </button>
 
       {isOpen && (
