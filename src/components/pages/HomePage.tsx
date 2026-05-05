@@ -704,8 +704,8 @@ export default function HomePage() {
       </section>
       {/* --- Testimonials (Dynamic Masonry Layout) --- */}
       {testimonials.length > 0 && (
-        <section className="py-32 bg-warm-cream overflow-hidden">
-          <div className="px-8 lg:px-24 mb-20 max-w-[100rem] mx-auto">
+        <section className="py-20 bg-warm-cream overflow-hidden">
+          <div className="px-8 lg:px-24 mb-16 max-w-[100rem] mx-auto">
             <AnimatedElement>
               <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-6">
                 {t.home.realWomen}
