@@ -16,31 +16,21 @@ function Header() {
 
   return (
     <header 
-      className="sticky top-0 z-40 shadow-sm safe-area-top"
+      className="sticky top-0 z-40 shadow-sm safe-area-top bg-white"
     >
-      {/* Background with overlay for blending */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: 'url(https://static.wixstatic.com/media/93e866_261f84f84f544c2eadf73946d48e8637~mv2.png)',
-        }}
-      />
-      {/* Gradient overlay for smooth blending */}
-      <div className="absolute inset-0 bg-gradient-to-b from-charcoal-black/50 via-charcoal-black/40 to-charcoal-black/30" />
-      
-      <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20 relative z-10">
+      <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20">
         <div className="flex items-center justify-center h-16 sm:h-20 relative">
           {/* Left Navigation - Hidden on Mobile */}
           <nav className="hidden md:flex items-center gap-6 lg:gap-8 absolute left-0">
             <Link 
               to="/online-training" 
-              className="font-paragraph text-sm text-white hover:text-warm-cream transition-colors duration-200"
+              className="font-paragraph text-sm text-black hover:text-gray-600 transition-colors duration-200"
             >
               <span dangerouslySetInnerHTML={{ __html: t.nav.onlineTraining }} />
             </Link>
             <Link 
               to="/about" 
-              className="font-paragraph text-sm text-white hover:text-warm-cream transition-colors duration-200"
+              className="font-paragraph text-sm text-black hover:text-gray-600 transition-colors duration-200"
             >
               <span dangerouslySetInnerHTML={{ __html: t.nav.faceToFaceTraining }} />
             </Link>
@@ -58,43 +48,43 @@ function Header() {
                 {isTrainer ? (
                   <Link 
                     to="/trainer" 
-                    className="font-paragraph text-sm lg:text-base text-white hover:text-warm-cream transition-colors duration-200 flex items-center"
+                    className="font-paragraph text-sm lg:text-base text-black hover:text-gray-600 transition-colors duration-200 flex items-center"
                   >
                     Trainer Hub
                   </Link>
                 ) : (
                   <Link 
                     to="/portal" 
-                    className="font-paragraph text-sm lg:text-base text-white hover:text-warm-cream transition-colors duration-200 flex items-center"
+                    className="font-paragraph text-sm lg:text-base text-black hover:text-gray-600 transition-colors duration-200 flex items-center"
                   >
                     My Portal
                   </Link>
                 )}
                 <button
                   onClick={actions.logout}
-                  className="font-paragraph text-sm lg:text-base text-white hover:text-warm-cream transition-colors duration-200 flex items-center gap-2 h-10 px-2"
+                  className="font-paragraph text-sm lg:text-base text-black hover:text-gray-600 transition-colors duration-200 flex items-center gap-2 h-10 px-2"
                 >
-                  <LogOut size={16} className="text-white" />
+                  <LogOut size={16} className="text-black" />
                   <span className="hidden lg:inline">Sign Out</span>
                 </button>
               </>
             ) : (
               <button 
                 onClick={actions.login}
-                className="text-white hover:text-warm-cream transition-colors duration-200 flex items-center justify-center h-10 w-10"
+                className="text-black hover:text-gray-600 transition-colors duration-200 flex items-center justify-center h-10 w-10"
               >
-                <User size={20} className="text-white" />
+                <User size={20} className="text-black" />
               </button>
             )}
             <div className="flex items-center gap-4 lg:gap-6">
               <LanguageSwitcher />
               <button
                 onClick={cartActions.toggleCart}
-                className="relative text-white hover:text-warm-cream transition-colors duration-200 flex items-center justify-center h-10 w-10"
+                className="relative text-black hover:text-gray-600 transition-colors duration-200 flex items-center justify-center h-10 w-10"
               >
-                <ShoppingCart size={20} className="text-white" />
+                <ShoppingCart size={20} className="text-black" />
                 {itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-warm-bronze text-charcoal-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 bg-black text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                     {itemCount}
                   </span>
                 )}
@@ -107,28 +97,28 @@ function Header() {
             <LanguageSwitcher />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="text-black p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? <X size={24} className="text-white" /> : <Menu size={24} className="text-white" />}
+              {isMenuOpen ? <X size={24} className="text-black" /> : <Menu size={24} className="text-black" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-secondary-bg bg-light-contrast relative z-10">
+          <nav className="md:hidden py-4 border-t border-gray-200 bg-white relative z-10">
             <div className="flex flex-col gap-2">
               <Link 
                 to="/online-training" 
-                className="font-paragraph text-base text-primary-text hover:text-accent transition-colors duration-200 px-4 py-3 rounded min-h-[44px] flex items-center"
+                className="font-paragraph text-base text-black hover:text-gray-600 transition-colors duration-200 px-4 py-3 rounded min-h-[44px] flex items-center"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <span dangerouslySetInnerHTML={{ __html: t.nav.onlineTraining }} />
               </Link>
               <Link 
                 to="/about" 
-                className="font-paragraph text-base text-primary-text hover:text-accent transition-colors duration-200 px-4 py-3 rounded min-h-[44px] flex items-center"
+                className="font-paragraph text-base text-black hover:text-gray-600 transition-colors duration-200 px-4 py-3 rounded min-h-[44px] flex items-center"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <span dangerouslySetInnerHTML={{ __html: t.nav.faceToFaceTraining }} />
@@ -138,7 +128,7 @@ function Header() {
                   {isTrainer ? (
                     <Link 
                       to="/trainer" 
-                      className="font-paragraph text-base text-primary-text hover:text-accent transition-colors duration-200 px-4 py-3 rounded min-h-[44px] flex items-center"
+                      className="font-paragraph text-base text-black hover:text-gray-600 transition-colors duration-200 px-4 py-3 rounded min-h-[44px] flex items-center"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Trainer Hub
@@ -146,7 +136,7 @@ function Header() {
                   ) : (
                     <Link 
                       to="/portal" 
-                      className="font-paragraph text-base text-primary-text hover:text-accent transition-colors duration-200 px-4 py-3 rounded min-h-[44px] flex items-center"
+                      className="font-paragraph text-base text-black hover:text-gray-600 transition-colors duration-200 px-4 py-3 rounded min-h-[44px] flex items-center"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       My Portal
@@ -157,9 +147,9 @@ function Header() {
                       actions.logout();
                       setIsMenuOpen(false);
                     }}
-                    className="font-paragraph text-base text-primary-text hover:text-accent transition-colors duration-200 flex items-center gap-2 px-4 py-3 rounded min-h-[44px] w-full text-left"
+                    className="font-paragraph text-base text-black hover:text-gray-600 transition-colors duration-200 flex items-center gap-2 px-4 py-3 rounded min-h-[44px] w-full text-left"
                   >
-                    <LogOut size={16} className="text-primary-text" />
+                    <LogOut size={16} className="text-black" />
                     Sign Out
                   </button>
                 </>
@@ -169,7 +159,7 @@ function Header() {
                     actions.login();
                     setIsMenuOpen(false);
                   }}
-                  className="font-paragraph text-base text-primary-text border-2 border-primary-text bg-light-contrast px-4 py-3 rounded-lg hover:bg-primary-text hover:text-light-contrast transition-all duration-200 font-semibold text-center w-full min-h-[44px]"
+                  className="font-paragraph text-base text-black border-2 border-black bg-white px-4 py-3 rounded-lg hover:bg-black hover:text-white transition-all duration-200 font-semibold text-center w-full min-h-[44px]"
                 >
                   Client Portal
                 </button>
