@@ -64,10 +64,9 @@ function Footer() {
             </nav>
             
             {/* Large Brand Name - Below Quick Links */}
-            <div className="mt-16 sm:mt-20 lg:mt-24 relative overflow-hidden">
-              <div className="font-heading text-[120px] sm:text-[140px] lg:text-[180px] font-bold leading-none whitespace-nowrap opacity-10">
-                <span className="text-primary-text">moti</span>
-                <span className="text-blue-600">vasi</span>
+            <div className="mt-16 sm:mt-20 lg:mt-24 relative">
+              <div className="font-heading text-[120px] sm:text-[140px] lg:text-[180px] font-bold leading-none opacity-10 break-words">
+                <span className="text-primary-text">Motivasi</span>
               </div>
             </div>
           </div>
