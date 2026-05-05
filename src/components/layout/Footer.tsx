@@ -11,7 +11,7 @@ function Footer() {
     <footer className="bg-light-contrast text-primary-text border-t border-secondary-bg relative overflow-hidden">
       {/* Large Background Watermark Text */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-        <div className="text-[200px] sm:text-[280px] md:text-[350px] lg:text-[450px] xl:text-[550px] font-heading font-bold leading-none whitespace-nowrap opacity-5 text-primary-text select-none">
+        <div className="text-[120px] sm:text-[160px] md:text-[200px] lg:text-[240px] xl:text-[280px] font-heading font-bold leading-none whitespace-nowrap opacity-5 text-primary-text select-none">
           MOTIVASI
         </div>
       </div>
@@ -90,13 +90,6 @@ function Footer() {
                 Motivasi holds appropriate professional and public liability insurance.
               </p>
             </nav>
-          </div>
-
-          {/* Large Brand Name - Centered */}
-          <div className="mt-16 sm:mt-20 lg:mt-24 relative">
-            <div className="font-heading text-[120px] sm:text-[140px] lg:text-[180px] font-bold leading-none opacity-10 whitespace-nowrap overflow-hidden">
-              <span className="text-primary-text">Motivasi</span>
-            </div>
           </div>
         </div>
 
