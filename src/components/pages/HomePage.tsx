@@ -320,7 +320,7 @@ export default function HomePage() {
         </motion.div>
       )}
       {/* --- Hero Section - Full Background Image with Header Overlap --- */}
-      <section className="relative w-full min-h-screen sm:min-h-screen overflow-visible -mt-16 sm:-mt-20 md:-mt-24 lg:-mt-32 pt-16 sm:pt-20 md:pt-24 lg:pt-32">
+      <section className="relative w-full min-h-screen overflow-hidden -mt-16 sm:-mt-20 md:-mt-24 lg:-mt-32 pt-16 sm:pt-20 md:pt-24 lg:pt-32">
         {/* Background Image - Full Coverage */}
         <div className="absolute inset-0 w-full h-full">
           <motion.div 
@@ -346,36 +346,36 @@ export default function HomePage() {
         </div>
 
         {/* Content - Positioned Over Background */}
-        <div className="relative z-10 max-w-[100rem] mx-auto flex flex-col items-center justify-center min-h-[calc(100vh-theme(spacing.16))] sm:min-h-[calc(100vh-theme(spacing.20))] md:min-h-[calc(100vh-theme(spacing.24))] lg:min-h-[calc(100vh-theme(spacing.32))] pb-8 sm:pb-12 md:pb-16 px-4 sm:px-6 md:px-12">
+        <div className="relative z-10 w-full flex flex-col items-center justify-center min-h-[calc(100vh-theme(spacing.16))] sm:min-h-[calc(100vh-theme(spacing.20))] md:min-h-[calc(100vh-theme(spacing.24))] lg:min-h-[calc(100vh-theme(spacing.32))] pb-8 sm:pb-12 md:pb-16 px-3 sm:px-6 md:px-12">
           {/* Centered Brand Logo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="mb-8 sm:mb-12 md:mb-16 flex justify-center"
+            className="mb-6 sm:mb-12 md:mb-16 flex justify-center flex-shrink-0"
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_09b0ccd0d04e40cda3d278b62df0355f~mv2.png"
               alt="Brand Logo"
-              className="w-24 sm:w-32 md:w-40 lg:w-48 h-auto object-contain"
+              className="w-20 sm:w-32 md:w-40 lg:w-48 h-auto object-contain"
               width={200}
               loading="eager"
             />
           </motion.div>
 
           {/* Main Content - Text Only */}
-          <div className="w-full max-w-2xl">
-            <div className="flex flex-col justify-center text-center p-4 sm:p-6 md:p-8">
+          <div className="w-full flex items-center justify-center">
+            <div className="flex flex-col justify-center text-center w-full max-w-3xl px-3">
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.3 }}>
-                <h2 className="font-sans font-black leading-tight mb-4 sm:mb-6 text-white drop-shadow-lg text-3xl sm:text-4xl md:text-5xl lg:text-6xl" style={{ fontWeight: 900, letterSpacing: '0.08em', lineHeight: 1.15 }}>
+                <h2 className="font-sans font-black leading-tight mb-3 sm:mb-6 text-white drop-shadow-lg text-2xl sm:text-3xl md:text-5xl lg:text-6xl break-words" style={{ fontWeight: 900, letterSpacing: '0.05em', lineHeight: 1.1, wordBreak: 'break-word' }}>
                   TRANSFORM YOUR STRENGTH
                 </h2>
-                <motion.div className="mt-4 sm:mt-6 flex items-center justify-center gap-2 sm:gap-4 flex-wrap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.6 }}>
-                  <div className="h-px w-8 sm:w-16 bg-warm-bronze/80" />
-                  <span className="text-xs sm:text-sm md:text-base lg:text-lg tracking-widest uppercase font-medium text-white px-2">
+                <motion.div className="mt-3 sm:mt-6 flex items-center justify-center gap-1 sm:gap-4 flex-wrap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.6 }}>
+                  <div className="h-px w-6 sm:w-16 bg-warm-bronze/80 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm md:text-base lg:text-lg tracking-widest uppercase font-medium text-white px-2 flex-shrink-0">
                     {t.home.tagline}
                   </span>
-                  <div className="h-px w-8 sm:w-16 bg-warm-bronze/80" />
+                  <div className="h-px w-6 sm:w-16 bg-warm-bronze/80 flex-shrink-0" />
                 </motion.div>
               </motion.div>
             </div>
