@@ -802,16 +802,24 @@ export default function HomePage() {
                       ].map((item, i) => (
                         <motion.div 
                           key={i} 
-                          className="flex items-center gap-3"
+                          className={`flex items-center gap-3 p-3 rounded-lg ${
+                            i === 0 || i === 1 ? 'bg-[#FDF6E3]' : ''
+                          }`}
                           initial={{ opacity: 0, x: -10 }}
                           whileInView={{ opacity: 1, x: 0 }}
                           transition={{ duration: 0.4, delay: 0.4 + i * 0.1 }}
                           viewport={{ once: true }}
                         >
-                          <div className="w-6 h-6 rounded-full bg-gradient-to-r from-sage-green to-warm-bronze flex items-center justify-center flex-shrink-0">
+                          <div className={`w-6 h-6 rounded-full ${
+                            i === 0 || i === 1 
+                              ? 'bg-gradient-to-r from-sage-green to-warm-bronze' 
+                              : 'bg-gradient-to-r from-sage-green to-warm-bronze'
+                          } flex items-center justify-center flex-shrink-0`}>
                             <CheckCircle size={14} className="text-white" />
                           </div>
-                          <span className="text-base md:text-lg text-white/90 font-light">{item}</span>
+                          <span className={`text-base md:text-lg font-light ${
+                            i === 0 || i === 1 ? 'text-black' : 'text-white/90'
+                          }`}>{item}</span>
                         </motion.div>
                       ))}
                     </div>
