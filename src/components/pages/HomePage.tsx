@@ -771,7 +771,7 @@ export default function HomePage() {
                       viewport={{ once: true }}
                       className="inline-block mb-6"
                     >
-                      <span className="inline-block py-2 px-4 border border-sage-green/40 rounded-full text-sage-green text-xs tracking-widest uppercase font-medium bg-sage-green/5">
+                      <span className="inline-block py-2 px-4 border border-[#D4AF37]/40 rounded-full text-[#D4AF37] text-xs tracking-widest uppercase font-medium bg-[#D4AF37]/5">
                         Limited Availability
                       </span>
                     </motion.div>
@@ -849,7 +849,7 @@ export default function HomePage() {
           >
             <div className="max-w-2xl">
               <AnimatedElement className="mb-8">
-                <span className="inline-block py-2 px-4 border border-yellow-500/40 rounded-full text-yellow-600 text-sm tracking-widest uppercase font-medium bg-yellow-500/5">
+                <span className="inline-block py-2 px-4 border border-[#D4AF37]/40 rounded-full text-[#D4AF37] text-sm tracking-widest uppercase font-medium bg-[#D4AF37]/5">
                   Transform Your Life
                 </span>
               </AnimatedElement>
