@@ -233,7 +233,7 @@ function ContactForm() {
         </p>
         <a
           href="mailto:hello@motivasi.co.uk"
-          className="text-soft-bronze font-medium hover:underline text-sm sm:text-base"
+          className="text-soft-bronze font-bold hover:underline text-sm sm:text-base"
         >
           hello@motivasi.co.uk
         </a>
