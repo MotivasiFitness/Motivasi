@@ -32,10 +32,15 @@ function EmailLogo() {
       {/* White envelope icon */}
       <g>
         {/* Envelope body */}
-        <rect x="10" y="13" width="20" height="14" rx="1.5" fill="white" />
+        <rect x="10" y="13" width="20" height="14" rx="1.5" stroke="white" strokeWidth="1.5" fill="none" />
         
         {/* Envelope flap - top triangle */}
         <path d="M 10 13 L 20 20.5 L 30 13" stroke="white" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        
+        {/* Mail lines - horizontal lines representing letter content */}
+        <line x1="13" y1="17" x2="27" y2="17" stroke="white" strokeWidth="1" strokeLinecap="round" />
+        <line x1="13" y1="20" x2="27" y2="20" stroke="white" strokeWidth="1" strokeLinecap="round" />
+        <line x1="13" y1="23" x2="22" y2="23" stroke="white" strokeWidth="1" strokeLinecap="round" />
       </g>
     </svg>
   );
