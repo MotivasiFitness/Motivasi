@@ -533,7 +533,7 @@ export default function HomePage() {
                       transition={{ duration: 0.6, delay: 0.3 }}
                       viewport={{ once: true }}
                     >
-                      <span className="font-heading text-7xl md:text-8xl font-bold bg-gradient-to-r from-sage-green via-warm-bronze to-rose-blush bg-clip-text text-transparent">£499</span>
+                      <span className="font-heading text-7xl md:text-8xl font-bold text-white">£499</span>
                       <div className="flex flex-col">
                         <span className="text-lg md:text-xl text-white/70 font-light">per</span>
                         <span className="text-lg md:text-xl text-white/70 font-light">12 weeks</span>
