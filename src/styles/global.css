@@ -354,6 +354,16 @@ input[type="radio"]:checked {
   }
 }
 
+/* Scrollbar Hide Utility - For horizontal scroll sections */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
 /* Print Styles */
 @media print {
   /* Hide navigation, sidebar, and interactive elements */

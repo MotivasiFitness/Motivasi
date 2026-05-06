@@ -709,9 +709,9 @@ export default function HomePage() {
             </AnimatedElement>
           </div>
 
-          {/* Dynamic Masonry Grid */}
-          <div className="px-8 lg:px-24 max-w-[100rem] mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-max">
+          {/* Mobile Horizontal Scroll - Hidden on lg and above */}
+          <div className="lg:hidden overflow-x-auto scrollbar-hide">
+            <div className="flex gap-6 px-8 pb-4 min-w-min">
               {testimonials.map((testimonial, index) => {
                 return (
                   <motion.div
