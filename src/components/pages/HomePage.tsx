@@ -125,7 +125,7 @@ function ContactForm() {
             value={formData.fullName}
             onChange={handleInputChange}
             required
-            className="w-full px-3 sm:px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black placeholder-warm-grey/50 focus:outline-none focus:ring-2 focus:ring-soft-bronze/50 text-base min-h-[44px]"
+            className="w-full px-3 sm:px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black placeholder-warm-grey/50 focus:outline-none focus:ring-2 focus:ring-soft-bronze/50 text-base min-h-[44px] bg-soft-white"
             placeholder="Your name"
           />
         </div>
@@ -141,7 +141,7 @@ function ContactForm() {
             value={formData.email}
             onChange={handleInputChange}
             required
-            className="w-full px-3 sm:px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black placeholder-warm-grey/50 focus:outline-none focus:ring-2 focus:ring-soft-bronze/50 text-base min-h-[44px]"
+            className="w-full px-3 sm:px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black placeholder-warm-grey/50 focus:outline-none focus:ring-2 focus:ring-soft-bronze/50 text-base min-h-[44px] bg-soft-white"
             placeholder="your@email.com"
           />
         </div>
@@ -157,7 +157,7 @@ function ContactForm() {
             onChange={handleInputChange}
             required
             rows={4}
-            className="w-full px-3 sm:px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black placeholder-warm-grey/50 focus:outline-none focus:ring-2 focus:ring-soft-bronze/50 resize-none text-base min-h-[120px]"
+            className="w-full px-3 sm:px-4 py-3 border border-warm-sand-beige rounded-lg font-paragraph text-charcoal-black placeholder-warm-grey/50 focus:outline-none focus:ring-2 focus:ring-soft-bronze/50 resize-none text-base min-h-[120px] bg-soft-white"
             placeholder="Share your fitness goals, challenges, and what you're looking for in a coach..."
           />
         </div>
@@ -814,7 +814,7 @@ export default function HomePage() {
         </section>
       )}
       {/* --- Contact Form Section --- */}
-      <section className="py-24 px-8 lg:px-20 bg-soft-white">
+      <section className="py-24 px-8 lg:px-20 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="font-heading text-4xl font-bold text-charcoal-black mb-4">
@@ -825,7 +825,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-2xl p-8 md:p-12">
+          <div className="bg-white border border-warm-sand-beige rounded-2xl p-8 md:p-12">
             <ContactForm />
           </div>
         </div>
