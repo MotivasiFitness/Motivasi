@@ -893,7 +893,7 @@ export default function HomePage() {
                       <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${idx === 0 ? 'from-sage-green to-warm-bronze' : idx === 1 ? 'from-warm-bronze to-rose-blush' : 'from-rose-blush to-sage-green'} flex items-center justify-center flex-shrink-0`}>
                         <Icon size={18} className="text-yellow-400" />
                       </div>
-                      <span className="text-base md:text-lg text-charcoal-black font-light">{benefit.text}</span>
+                      <span className="text-base md:text-lg text-white font-light">{benefit.text}</span>
                     </motion.div>
                   );
                 })}
