@@ -1,8 +1,27 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Mail } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { memo } from 'react';
+
+// Instagram Logo Component with Gradient
+function InstagramLogo() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="instagramGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#FD5949" />
+          <stop offset="5%" stopColor="#D6249F" />
+          <stop offset="45%" stopColor="#285AEB" />
+        </linearGradient>
+      </defs>
+      <rect x="2" y="2" width="20" height="20" rx="4.5" fill="url(#instagramGradient)" />
+      <rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="white" strokeWidth="1.5" />
+      <circle cx="12" cy="12" r="3.5" fill="none" stroke="white" strokeWidth="1.5" />
+      <circle cx="16.5" cy="7.5" r="1" fill="white" />
+    </svg>
+  );
+}
 
 function Footer() {
   const { t } = useLanguage();
@@ -30,10 +49,10 @@ function Footer() {
                 href="https://www.instagram.com/risewithmotivasi?igsh=bml4NmhnNw8yenht" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center hover:text-accent transition-colors text-primary-text"
+                className="w-10 h-10 flex items-center justify-center hover:opacity-80 transition-opacity"
                 aria-label="Instagram"
               >
-                <Instagram size={20} />
+                <InstagramLogo />
               </a>
               <a 
                 href="mailto:hello@motivasi.co.uk"
