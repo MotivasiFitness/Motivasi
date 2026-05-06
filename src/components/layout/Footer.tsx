@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { Mail } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { memo } from 'react';
@@ -19,6 +18,25 @@ function InstagramLogo() {
       <rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="white" strokeWidth="1.5" />
       <circle cx="12" cy="12" r="3.5" fill="none" stroke="white" strokeWidth="1.5" />
       <circle cx="16.5" cy="7.5" r="1" fill="white" />
+    </svg>
+  );
+}
+
+// Email Logo Component with Blue Circle Background
+function EmailLogo() {
+  return (
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Blue circular background */}
+      <circle cx="20" cy="20" r="20" fill="#1E88E5" />
+      
+      {/* White envelope icon */}
+      <g>
+        {/* Envelope body */}
+        <rect x="10" y="13" width="20" height="14" rx="1.5" fill="white" />
+        
+        {/* Envelope flap - top triangle */}
+        <path d="M 10 13 L 20 20.5 L 30 13" stroke="white" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      </g>
     </svg>
   );
 }
@@ -56,10 +74,10 @@ function Footer() {
               </a>
               <a 
                 href="mailto:hello@motivasi.co.uk"
-                className="w-10 h-10 flex items-center justify-center hover:text-accent transition-colors text-primary-text"
+                className="flex items-center justify-center hover:opacity-80 transition-opacity"
                 aria-label="Email"
               >
-                <Mail size={20} />
+                <EmailLogo />
               </a>
             </div>
             <p className="font-paragraph text-xs text-secondary-text">
