@@ -926,10 +926,10 @@ export default function HomePage() {
         
         <div className="relative z-10 max-w-[100rem] mx-auto text-center">
           <AnimatedElement>
-            <h2 className="font-heading text-4xl md:text-5xl font-bold text-charcoal-black mb-6">
+            <h2 className="font-heading text-4xl md:text-5xl font-bold text-white mb-6">
               Ready to get started?
             </h2>
-            <p className="text-lg text-charcoal-black/90 mb-10 max-w-2xl mx-auto font-light">
+            <p className="text-lg text-white/90 mb-10 max-w-2xl mx-auto font-light">
               Join my coaching program and transform your fitness journey. Limited spaces available.
             </p>
             <motion.div
