@@ -38,7 +38,7 @@ const AnimatedElement: React.FC<AnimatedElementProps> = ({ children, className, 
         return () => observer.disconnect();
     }, [threshold]);
 
-    return <div ref={ref} className={`${className || ''} opacity-0 translate-y-8 transition-all duration-1000 ease-out motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:translate-y-0 [&.is-visible]:opacity-100 [&.is-visible]:translate-y-0`}>{children}</div>;
+    return <div ref={ref} className={`${className || ''} opacity-0 translate-y-8 transition-all duration-1000 ease-out motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:translate-y-0 [&.is-visible]:opacity-100 [&.is-visible]:translate-y-0 text-white`}>{children}</div>;
 };
 
 // --- Testimonial Carousel Component ---
