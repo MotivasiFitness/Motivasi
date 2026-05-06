@@ -221,7 +221,7 @@ function ContactForm() {
           className="p-3 sm:p-4 bg-rose-blush/10 border border-rose-blush/30 rounded-lg text-center"
         >
           <p className="font-paragraph text-rose-blush font-medium text-sm sm:text-base">
-            Something went wrong. Please try again or email hello@motivasi.co.uk
+            Something went wrong. Please try again or email <span className="font-bold">hello@motivasi.co.uk</span>
           </p>
         </motion.div>
       )}
@@ -235,7 +235,7 @@ function ContactForm() {
           href="mailto:hello@motivasi.co.uk"
           className="text-soft-bronze font-bold hover:underline text-sm sm:text-base"
         >
-          hello@motivasi.co.uk
+          <span className="font-bold">hello@motivasi.co.uk</span>
         </a>
       </div>
     </form>
