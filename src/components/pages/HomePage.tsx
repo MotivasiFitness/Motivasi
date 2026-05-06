@@ -453,7 +453,8 @@ function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full bg-charcoal-black text-soft-white py-3 sm:py-4 rounded-lg font-medium text-base sm:text-lg hover:bg-soft-bronze transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+        className="w-full text-charcoal-black py-3 sm:py-4 rounded-lg font-medium text-base sm:text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+        style={{ backgroundColor: '#D4AF37' }}
       >
         {isSubmitting ? 'Sending...' : 'Send My Information'}
       </button>
