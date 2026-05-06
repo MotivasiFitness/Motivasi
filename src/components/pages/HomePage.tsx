@@ -757,7 +757,7 @@ export default function HomePage() {
                 <div className="absolute -inset-1 bg-gradient-to-r from-sage-green via-warm-bronze to-rose-blush rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
                 
                 {/* Main Card */}
-                <div className="relative bg-gradient-to-br from-charcoal-black/80 to-charcoal-black/60 backdrop-blur-xl p-10 md:p-14 rounded-3xl border border-white/10 overflow-hidden">
+                <div className="relative bg-[#FDF6E3] backdrop-blur-xl p-10 md:p-14 rounded-3xl border border-white/10 overflow-hidden">
                   {/* Decorative background elements */}
                   <div className="absolute top-0 right-0 w-64 h-64 bg-sage-green/15 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
                   <div className="absolute bottom-0 left-0 w-48 h-48 bg-rose-blush/15 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
@@ -776,19 +776,19 @@ export default function HomePage() {
                       </span>
                     </motion.div>
 
-                    <p className="text-white/60 mb-8 font-light text-base md:text-lg">{t.home.cancelAnytime}</p>
+                    <p className="text-charcoal-black/60 mb-8 font-light text-base md:text-lg">{t.home.cancelAnytime}</p>
                     {/* Price Display - Prominent */}
                     <motion.div 
-                      className="flex items-baseline gap-3 mb-12 pb-8 border-b border-white/10"
+                      className="flex items-baseline gap-3 mb-12 pb-8 border-b border-charcoal-black/10"
                       initial={{ opacity: 0, scale: 0.9 }}
                       whileInView={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.6, delay: 0.3 }}
                       viewport={{ once: true }}
                     >
-                      <span className="font-heading text-7xl md:text-8xl font-bold text-white">£499</span>
+                      <span className="font-heading text-7xl md:text-8xl font-bold text-charcoal-black">£499</span>
                       <div className="flex flex-col">
-                        <span className="text-lg md:text-xl text-white/70 font-light">per</span>
-                        <span className="text-lg md:text-xl text-white/70 font-light">12 weeks</span>
+                        <span className="text-lg md:text-xl text-charcoal-black/70 font-light">per</span>
+                        <span className="text-lg md:text-xl text-charcoal-black/70 font-light">12 weeks</span>
                       </div>
                     </motion.div>
                     {/* Features List - Enhanced */}
@@ -802,24 +802,16 @@ export default function HomePage() {
                       ].map((item, i) => (
                         <motion.div 
                           key={i} 
-                          className={`flex items-center gap-3 p-3 rounded-lg ${
-                            i === 0 || i === 1 ? 'bg-[#FDF6E3]' : ''
-                          }`}
+                          className="flex items-center gap-3 p-3 rounded-lg"
                           initial={{ opacity: 0, x: -10 }}
                           whileInView={{ opacity: 1, x: 0 }}
                           transition={{ duration: 0.4, delay: 0.4 + i * 0.1 }}
                           viewport={{ once: true }}
                         >
-                          <div className={`w-6 h-6 rounded-full ${
-                            i === 0 || i === 1 
-                              ? 'bg-gradient-to-r from-sage-green to-warm-bronze' 
-                              : 'bg-gradient-to-r from-sage-green to-warm-bronze'
-                          } flex items-center justify-center flex-shrink-0`}>
+                          <div className="w-6 h-6 rounded-full bg-gradient-to-r from-sage-green to-warm-bronze flex items-center justify-center flex-shrink-0">
                             <CheckCircle size={14} className="text-white" />
                           </div>
-                          <span className={`text-base md:text-lg font-light ${
-                            i === 0 || i === 1 ? 'text-black' : 'text-white/90'
-                          }`}>{item}</span>
+                          <span className="text-base md:text-lg font-light text-black">{item}</span>
                         </motion.div>
                       ))}
                     </div>
