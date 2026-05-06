@@ -863,12 +863,12 @@ export default function HomePage() {
                 />
                 
                 <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-black leading-[1.1] mb-8 tracking-tight">
-                  <span className="bg-gradient-to-r from-[#1A1A1A] to-[#111111] bg-clip-text text-transparent">Invest in Yourself</span>
+                  <span className="text-white">Invest in Yourself</span>
                 </h2>
               </div>
 
               <AnimatedElement className="mb-12 delay-300">
-                <p className="text-lg md:text-xl lg:text-2xl text-charcoal-black leading-relaxed max-w-lg font-light tracking-wide">
+                <p className="text-lg md:text-xl lg:text-2xl text-white leading-relaxed max-w-lg font-light tracking-wide">
                   Your body is your most valuable asset. Transform your fitness journey with personalised coaching designed specifically for your life, goals, and challenges.
                 </p>
               </AnimatedElement>
