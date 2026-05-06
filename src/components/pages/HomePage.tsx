@@ -7,6 +7,9 @@ import { Image } from '@/components/ui/image';
 import { BaseCrudService } from '@/integrations';
 import { ClientTestimonials, ContactFormSubmissions } from '@/entities';
 import { useLanguage } from '@/i18n/LanguageContext';
+import MobileOptimizedCTA from '@/components/MobileOptimizedCTA';
+import { UrgencyCTA, QuickActionCTA, BenefitFocusedCTA, LimitedAvailabilityCTA, SocialProofCTA } from '@/components/MobileCTAVariations';
+import MobileContactOptions from '@/components/MobileContactOptions';
 
 // --- Utility Components ---
 
@@ -301,17 +304,12 @@ export default function HomePage() {
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-warm-bronze via-warm-bronze to-warm-bronze origin-left z-50"
         style={{ scaleX }}
       />
-      {/* Sticky CTA Button - Appears after hero section and stays visible */}
-      {showStickyButton && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 z-40 px-2"
-        >
-
-        </motion.div>
-      )}
+      
+      {/* Mobile-Optimized CTA - Floating variant with WhatsApp integration */}
+      <MobileOptimizedCTA 
+        variant="floating"
+        showAfterScroll={800}
+      />
       {/* --- Hero Section - Full Background Image with Header Overlap --- */}
       <section className="relative w-full min-h-screen overflow-hidden -mt-16 sm:-mt-20 md:-mt-24 lg:-mt-32 pt-16 sm:pt-20 md:pt-24 lg:pt-32">
         {/* Background Image - Full Coverage */}
