@@ -512,8 +512,8 @@ export default function HomePage() {
     // Defer testimonial loading to avoid blocking initial render
     const timer = setTimeout(async () => {
       try {
-        const { items } = await BaseCrudService.getAll<ClientTestimonials>('clienttestimonials', [], { limit: 4 });
-        setTestimonials(items.filter(t => t.featuredOnHomepage));
+        const { items } = await BaseCrudService.getAll<ClientTestimonials>('clienttestimonials', [], { limit: 5 });
+        setTestimonials(items);
       } catch (error) {
         console.error('Failed to load testimonials:', error);
       } finally {
