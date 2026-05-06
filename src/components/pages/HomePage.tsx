@@ -360,7 +360,7 @@ export default function HomePage() {
           <div className="w-full flex items-center justify-center">
             <div className="flex flex-col justify-center text-center w-full max-w-3xl px-3">
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.3 }}>
-                <h2 className="font-sans font-black leading-tight mb-3 sm:mb-6 text-white drop-shadow-lg text-2xl sm:text-3xl md:text-5xl lg:text-6xl break-words" style={{ fontWeight: 900, letterSpacing: '0.05em', lineHeight: 1.1, wordBreak: 'break-word' }}>
+                <h2 className="font-sans font-black leading-tight mb-3 sm:mb-6 text-white drop-shadow-lg text-2xl sm:text-3xl md:text-5xl lg:text-6xl" style={{ fontWeight: 900, letterSpacing: '0.05em', lineHeight: 1.1, wordSpacing: '9999px' }}>
                   TRANSFORM YOUR STRENGTH
                 </h2>
                 <motion.div className="mt-3 sm:mt-6 flex items-center justify-center gap-1 sm:gap-4 flex-wrap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.6 }}>
@@ -382,7 +382,7 @@ export default function HomePage() {
           {/* Title and Subtitle Section */}
           <div className="mb-12">
             <AnimatedElement>
-              <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-8 leading-tight">
+              <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold text-charcoal-black mb-8 leading-tight" style={{ wordSpacing: '9999px' }}>
                 {t.home.transformationTitle} 
                 <span className="bg-gradient-to-r from-[#a8b8a8] to-[#d4a8a8] bg-clip-text text-transparent italic font-black">{t.home.transformationSubtitle}</span>
               </h2>
