@@ -6,7 +6,7 @@ import { memo } from 'react';
 // Instagram Logo Component with Gradient
 function InstagramLogo() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="instagramGradient" x1="0%" y1="100%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#FD5949" />
