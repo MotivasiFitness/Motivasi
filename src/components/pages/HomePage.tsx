@@ -575,7 +575,7 @@ export default function HomePage() {
                     >
                       <Link
                         to="/store"
-                        className="block w-full bg-gradient-to-r from-sage-green to-warm-bronze text-charcoal-black text-center py-5 md:py-6 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-sage-green/40 transition-all duration-300"
+                        className="block w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-charcoal-black text-center py-5 md:py-6 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-yellow-500/40 transition-all duration-300"
                       >
                         {t.home.secureYourSpot}
                       </Link>
