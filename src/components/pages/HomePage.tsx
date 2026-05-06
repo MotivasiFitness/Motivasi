@@ -309,14 +309,7 @@ export default function HomePage() {
           transition={{ duration: 0.3 }}
           className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 z-40 px-2"
         >
-          <Link
-            to="/about#get-in-touch"
-            className="group flex items-center gap-2 sm:gap-3 bg-warm-bronze text-charcoal-black px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-full font-bold text-xs sm:text-sm md:text-base shadow-lg hover:shadow-2xl hover:shadow-warm-bronze/40 transition-all duration-300 hover:scale-105 min-h-[44px] min-w-[44px] justify-center"
-          >
-            <span className="hidden sm:inline">Book Your Free 10‑Minute Call</span>
-            <span className="sm:hidden">Book Call</span>
-            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
+
         </motion.div>
       )}
       {/* --- Hero Section - Full Background Image with Header Overlap --- */}
@@ -604,7 +597,7 @@ export default function HomePage() {
           >
             <div className="max-w-2xl">
               <AnimatedElement className="mb-8">
-                <span className="inline-block py-2 px-4 border border-sage-green/40 rounded-full text-sage-green text-sm tracking-widest uppercase font-medium bg-sage-green/5">
+                <span className="inline-block py-2 px-4 border border-yellow-500/40 rounded-full text-yellow-600 text-sm tracking-widest uppercase font-medium bg-yellow-500/5">
                   Transform Your Life
                 </span>
               </AnimatedElement>
