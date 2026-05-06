@@ -638,8 +638,8 @@ export default function HomePage() {
                       transition={{ duration: 0.5, delay: 0.7 + idx * 0.1 }}
                       viewport={{ once: true }}
                     >
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-r from-sage-green to-warm-bronze flex items-center justify-center flex-shrink-0">
-                        <Icon size={18} className="text-charcoal-black" />
+                      <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${idx === 0 ? 'from-sage-green to-warm-bronze' : idx === 1 ? 'from-warm-bronze to-rose-blush' : 'from-rose-blush to-sage-green'} flex items-center justify-center flex-shrink-0`}>
+                        <Icon size={18} className="text-white" />
                       </div>
                       <span className="text-base md:text-lg text-charcoal-black font-light">{benefit.text}</span>
                     </motion.div>
