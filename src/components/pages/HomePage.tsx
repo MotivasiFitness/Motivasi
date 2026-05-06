@@ -380,7 +380,7 @@ export default function HomePage() {
       <section className="py-12 px-8 lg:px-24 bg-white">
         <div className="max-w-[100rem] mx-auto">
           {/* Title and Subtitle Section */}
-          <div className="mb-12">
+          <div className="mb-12 text-center">
             <AnimatedElement>
               <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold text-charcoal-black mb-8 leading-tight" style={{ wordSpacing: '9999px' }}>
                 {t.home.transformationTitle} 
@@ -388,8 +388,8 @@ export default function HomePage() {
               </h2>
             </AnimatedElement>
             <AnimatedElement className="delay-200">
-              <div className="w-24 h-1.5 bg-gradient-to-r from-sage-green to-rose-blush mb-8 rounded-full" />
-              <p className="text-lg text-charcoal-black mb-8 leading-relaxed font-light max-w-2xl">
+              <div className="w-24 h-1.5 bg-gradient-to-r from-sage-green to-rose-blush mb-8 rounded-full mx-auto" />
+              <p className="text-lg text-charcoal-black mb-8 leading-relaxed font-light max-w-2xl mx-auto">
                 You've tried the crash diets. You've done the endless cardio. It's time for a sustainable approach that honours your body and your busy life.
               </p>
               <Link to="/about" className="text-charcoal-black font-medium border-b-2 border-sage-green pb-2 hover:text-sage-green transition-colors inline-flex items-center gap-2">
