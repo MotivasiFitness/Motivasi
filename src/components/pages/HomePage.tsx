@@ -460,7 +460,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* --- Visual Breather (Parallax) --- */}
-      <section className="relative h-[40vh] w-full overflow-hidden flex items-center justify-center">
+      <section className="relative h-[12vh] w-full overflow-hidden flex items-center justify-center">
 
         <div className="relative z-10 text-center max-w-4xl px-8">
           <AnimatedElement>
