@@ -91,7 +91,7 @@ function Footer() {
           </div>
 
           {/* Quick Links & Legal & Compliance - Side by Side */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 mb-16 sm:mb-20 lg:mb-24 md:text-left">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 mb-8 sm:mb-10 lg:mb-12 md:text-left">
             {/* Quick Links */}
             <div>
               <h4 className="font-sans font-bold text-xs uppercase tracking-widest text-primary-text mb-6 letter-spacing-wide">Quick Links</h4>
