@@ -1,8 +1,8 @@
 // HPI 1.6-G
 import React, { useEffect, useState, useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { CheckCircle, ArrowRight, Star, Activity, Heart, Zap, ShieldCheck, Dumbbell, Apple, Leaf, AlertCircle } from 'lucide-react';
+import { CheckCircle, ArrowRight, Star, Activity, Heart, Zap, ShieldCheck, Dumbbell, Apple, Leaf, AlertCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { BaseCrudService } from '@/integrations';
 import { ClientTestimonials, ContactFormSubmissions } from '@/entities';
@@ -40,6 +40,260 @@ const AnimatedElement: React.FC<AnimatedElementProps> = ({ children, className, 
 
     return <div ref={ref} className={`${className || ''} opacity-0 translate-y-8 transition-all duration-1000 ease-out motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:translate-y-0 [&.is-visible]:opacity-100 [&.is-visible]:translate-y-0`}>{children}</div>;
 };
+
+// --- Testimonial Carousel Component ---
+
+interface TestimonialCarouselProps {
+  testimonials: ClientTestimonials[];
+}
+
+function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const [autoPlay, setAutoPlay] = useState(true);
+
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+  };
+
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
+  };
+
+  const paginate = (newDirection: number) => {
+    setDirection(newDirection);
+    setCurrentIndex((prev) => (prev + newDirection + testimonials.length) % testimonials.length);
+    setAutoPlay(false);
+  };
+
+  // Auto-play carousel
+  useEffect(() => {
+    if (!autoPlay) {
+      const timer = setTimeout(() => setAutoPlay(true), 5000);
+      return () => clearTimeout(timer);
+    }
+
+    const interval = setInterval(() => {
+      setDirection(1);
+      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, [autoPlay, testimonials.length]);
+
+  return (
+    <div className="relative w-full">
+      {/* Carousel Container */}
+      <div className="relative h-full overflow-hidden rounded-2xl">
+        <AnimatePresence initial={false} custom={direction} mode="wait">
+          <motion.div
+            key={currentIndex}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              x: { type: "spring", stiffness: 300, damping: 30 },
+              opacity: { duration: 0.5 },
+            }}
+            drag="x"
+            dragElastic={1}
+            dragConstraints={{ left: 0, right: 0 }}
+            onDragEnd={(e, { offset, velocity }) => {
+              const swipe = swipePower(offset.x, velocity.x);
+              if (swipe < -swipeConfidenceThreshold) {
+                paginate(1);
+              } else if (swipe > swipeConfidenceThreshold) {
+                paginate(-1);
+              }
+            }}
+            className="w-full"
+          >
+            {/* Testimonial Card */}
+            <div className="group relative">
+              <div className="h-full rounded-2xl p-8 md:p-10 shadow-md hover:shadow-2xl transition-all duration-500 border backdrop-blur-sm bg-white border-warm-cream/60 hover:border-warm-cream">
+                {/* Decorative star background */}
+                <div
+                  className={`absolute top-6 right-6 opacity-10 transition-opacity group-hover:opacity-20 ${
+                    currentIndex === 1 ? 'text-rose-blush' : currentIndex === 2 ? 'text-sage-green' : 'text-rose-blush'
+                  }`}
+                >
+                  <Star size={40} fill="currentColor" />
+                </div>
+
+                <div className="flex flex-col h-full justify-between relative z-10">
+                  {/* Star Rating */}
+                  <motion.div
+                    className="flex gap-2 mb-6 h-8"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                  >
+                    {[...Array(5)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 0.3, delay: 0.1 + i * 0.05 }}
+                      >
+                        <Star
+                          size={24}
+                          className="font-bold text-charcoal-black"
+                          fill="currentColor"
+                          strokeWidth={1.5}
+                        />
+                      </motion.div>
+                    ))}
+                  </motion.div>
+
+                  {/* Testimonial Text */}
+                  <motion.p
+                    className="leading-relaxed mb-8 font-light text-lg text-charcoal-black"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                  >
+                    "{testimonials[currentIndex].testimonialText}"
+                  </motion.p>
+
+                  {/* Client Info */}
+                  <motion.div
+                    className={`flex items-center gap-4 pt-6 border-t ${
+                      currentIndex === 1
+                        ? 'border-rose-blush/30'
+                        : currentIndex === 2
+                        ? 'border-sage-green/20'
+                        : 'border-rose-blush/30'
+                    }`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                  >
+                    {testimonials[currentIndex].transformationImage ? (
+                      <motion.div
+                        className="w-12 h-12 rounded-full overflow-hidden border-2 flex-shrink-0"
+                        style={{
+                          borderColor:
+                            currentIndex === 1
+                              ? 'rgba(251,232,240,0.5)'
+                              : currentIndex === 2
+                              ? 'rgba(232,244,241,0.5)'
+                              : 'rgba(251,232,240,0.5)',
+                        }}
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 0.4, delay: 0.3 }}
+                      >
+                        <Image
+                          src={testimonials[currentIndex].transformationImage}
+                          alt={testimonials[currentIndex].clientName || 'Client'}
+                          className="w-full h-full object-cover"
+                          width={48}
+                        />
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 border-2 ${
+                          currentIndex === 1
+                            ? 'bg-rose-blush/30 text-charcoal-black border-rose-blush/40'
+                            : currentIndex === 2
+                            ? 'bg-sage-green/20 text-charcoal-black border-sage-green/40'
+                            : 'bg-rose-blush/30 text-charcoal-black border-rose-blush/40'
+                        }`}
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 0.4, delay: 0.3 }}
+                      >
+                        {testimonials[currentIndex].clientName?.charAt(0)}
+                      </motion.div>
+                    )}
+                    <div className="min-w-0">
+                      <h4 className="font-bold text-sm md:text-base text-charcoal-black">
+                        {testimonials[currentIndex].clientName}
+                      </h4>
+                      <div className="flex flex-col sm:flex-row sm:gap-2 text-xs md:text-sm text-charcoal-black/60">
+                        {testimonials[currentIndex].clientAgeRange && (
+                          <span>{testimonials[currentIndex].clientAgeRange}</span>
+                        )}
+                        {testimonials[currentIndex].keyAchievement && (
+                          <>
+                            <span className="hidden sm:inline">•</span>
+                            <span className="font-medium text-charcoal-black/80">
+                              {testimonials[currentIndex].keyAchievement}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Navigation Buttons */}
+      <div className="flex items-center justify-between mt-8 gap-4">
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => paginate(-1)}
+          className="p-3 rounded-full bg-charcoal-black text-white hover:bg-warm-bronze transition-colors"
+          aria-label="Previous testimonial"
+        >
+          <ChevronLeft size={24} />
+        </motion.button>
+
+        {/* Dot Indicators */}
+        <div className="flex gap-2 justify-center flex-1">
+          {testimonials.map((_, index) => (
+            <motion.button
+              key={index}
+              onClick={() => {
+                setDirection(index > currentIndex ? 1 : -1);
+                setCurrentIndex(index);
+                setAutoPlay(false);
+              }}
+              className={`h-2 rounded-full transition-all ${
+                index === currentIndex
+                  ? 'bg-charcoal-black w-8'
+                  : 'bg-charcoal-black/30 w-2 hover:bg-charcoal-black/50'
+              }`}
+              whileHover={{ scale: 1.2 }}
+              aria-label={`Go to testimonial ${index + 1}`}
+            />
+          ))}
+        </div>
+
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => paginate(1)}
+          className="p-3 rounded-full bg-charcoal-black text-white hover:bg-warm-bronze transition-colors"
+          aria-label="Next testimonial"
+        >
+          <ChevronRight size={24} />
+        </motion.button>
+      </div>
+    </div>
+  );
+}
 
 // --- Contact Form Component ---
 
@@ -693,7 +947,7 @@ export default function HomePage() {
           </AnimatedElement>
         </div>
       </section>
-      {/* --- Testimonials (Dynamic Masonry Layout) --- */}
+      {/* --- Testimonials Carousel Section --- */}
       {testimonials.length > 0 && (
         <section className="py-20 bg-warm-cream overflow-hidden">
           <div className="px-8 lg:px-24 mb-16 max-w-[100rem] mx-auto">
@@ -707,100 +961,9 @@ export default function HomePage() {
             </AnimatedElement>
           </div>
 
-          {/* Mobile Horizontal Scroll - Hidden on lg and above */}
-          <div className="lg:hidden overflow-x-auto scrollbar-hide">
-            <div className="flex gap-6 px-8 pb-4 min-w-min">
-              {testimonials.map((testimonial, index) => {
-                return (
-                  <motion.div
-                    key={testimonial._id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.15 }}
-                    viewport={{ once: true, margin: "-100px" }}
-                    className={`group relative`}
-                  >
-                    {/* White background for all testimonials */}
-                    <div className={`h-full rounded-2xl p-8 md:p-10 shadow-md hover:shadow-2xl transition-all duration-500 border backdrop-blur-sm bg-white border-warm-cream/60 hover:border-warm-cream`}>
-                      {/* Decorative star background */}
-                      <div className={`absolute top-6 right-6 opacity-10 transition-opacity group-hover:opacity-20 ${
-                        index === 1 ? 'text-rose-blush' : index === 2 ? 'text-sage-green' : 'text-rose-blush'
-                      }`}>
-                        <Star size={40} fill="currentColor" />
-                      </div>
-                      
-                      <div className="flex flex-col h-full justify-between relative z-10">
-                        {/* Star Rating - Fixed height for alignment */}
-                        <div className="flex gap-2 mb-6 h-8">
-                          {[...Array(5)].map((_, i) => (
-                            <Star 
-                              key={i} 
-                              size={24} 
-                              className="font-bold text-charcoal-black"
-                              fill="currentColor" 
-                              strokeWidth={1.5}
-                            />
-                          ))}
-                        </div>
-
-                        {/* Testimonial Text */}
-                        <p className={`leading-relaxed mb-8 font-light text-lg text-charcoal-black`}>
-                          "{testimonial.testimonialText}"
-                        </p>
-
-                        {/* Client Info */}
-                        <div className={`flex items-center gap-4 pt-6 border-t ${
-                          index === 1 
-                            ? 'border-rose-blush/30'
-                            : index === 2
-                            ? 'border-sage-green/20'
-                            : 'border-rose-blush/30'
-                        }`}>
-                          {testimonial.transformationImage ? (
-                            <div className="w-12 h-12 rounded-full overflow-hidden border-2 flex-shrink-0" style={{
-                              borderColor: index === 1 ? 'rgba(251,232,240,0.5)' : index === 2 ? 'rgba(232,244,241,0.5)' : 'rgba(251,232,240,0.5)'
-                            }}>
-                              <Image
-                                src={testimonial.transformationImage}
-                                alt={testimonial.clientName || "Client"}
-                                className="w-full h-full object-cover"
-                                width={48}
-                              />
-                            </div>
-                          ) : (
-                            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 border-2 ${
-                              index === 1 
-                                ? 'bg-rose-blush/30 text-charcoal-black border-rose-blush/40'
-                                : index === 2
-                                ? 'bg-sage-green/20 text-charcoal-black border-sage-green/40'
-                                : 'bg-rose-blush/30 text-charcoal-black border-rose-blush/40'
-                            }`}>
-                              {testimonial.clientName?.charAt(0)}
-                            </div>
-                          )}
-                          <div className="min-w-0">
-                            <h4 className={`font-bold text-sm md:text-base text-charcoal-black`}>
-                              {testimonial.clientName}
-                            </h4>
-                            <div className={`flex flex-col sm:flex-row sm:gap-2 text-xs md:text-sm text-charcoal-black/60`}>
-                              {testimonial.clientAgeRange && <span>{testimonial.clientAgeRange}</span>}
-                              {testimonial.keyAchievement && (
-                                <>
-                                  <span className="hidden sm:inline">•</span>
-                                  <span className={`font-medium text-charcoal-black/80`}>
-                                    {testimonial.keyAchievement}
-                                  </span>
-                                </>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
+          {/* Carousel - Desktop and Mobile */}
+          <div className="px-8 lg:px-24 max-w-[100rem] mx-auto">
+            <TestimonialCarousel testimonials={testimonials} />
           </div>
         </section>
       )}
