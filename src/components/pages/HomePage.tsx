@@ -940,7 +940,8 @@ export default function HomePage() {
             >
               <Link
                 to="/store"
-                className="inline-flex items-center gap-3 bg-white text-charcoal-black px-12 py-5 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-white/30 transition-all duration-300"
+                className="inline-flex items-center gap-3 text-charcoal-black px-12 py-5 rounded-full font-bold text-lg hover:shadow-2xl transition-all duration-300"
+                style={{ backgroundColor: '#D4AF37' }}
               >
                 Book Your Package <ArrowRight className="w-5 h-5" />
               </Link>
