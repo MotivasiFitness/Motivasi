@@ -133,11 +133,12 @@ export default function CoachingPackages() {
             key={pkg.id}
             className={`rounded-2xl p-6 md:p-8 transition-all duration-300 flex flex-col ${
               idx === 0
-                ? 'bg-emerald-green text-light-contrast border-2 border-emerald-green shadow-xl md:scale-105'
+                ? 'text-light-contrast border-2 shadow-xl md:scale-105'
                 : pkg.featured
                 ? 'bg-accent text-light-contrast border-2 border-accent shadow-xl md:scale-105'
                 : 'hidden md:flex bg-light-contrast border border-secondary-bg hover:border-accent'
             }`}
+            style={idx === 0 ? { backgroundColor: '#004B87', borderColor: '#004B87' } : undefined}
           >
             {/* Featured Badge */}
             {pkg.featured && (
