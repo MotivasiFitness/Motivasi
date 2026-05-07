@@ -134,7 +134,7 @@ export default function OnlineTrainingPage() {
               How It Works
             </h2>
 
-            <p className="font-paragraph text-xl text-warm-grey max-w-3xl mx-auto">
+            <p className="font-paragraph text-xl text-soft-white max-w-3xl mx-auto">
               A simple, proven process to get you results.
             </p>
           </div>
@@ -171,7 +171,7 @@ export default function OnlineTrainingPage() {
                     <h3 className="font-heading text-xl font-bold text-soft-white mb-4">
                       {item.title}
                     </h3>
-                    <p className="font-paragraph text-warm-grey">
+                    <p className="font-paragraph text-soft-white">
                       {item.desc}
                     </p>
                   </div>
