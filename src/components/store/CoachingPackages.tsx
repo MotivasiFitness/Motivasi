@@ -133,9 +133,9 @@ export default function CoachingPackages() {
             key={pkg.id}
             className={`rounded-2xl p-6 md:p-8 transition-all duration-300 flex flex-col ${
               idx === 0
-                ? 'text-light-contrast border-2 shadow-xl md:scale-105'
+                ? 'text-white border-2 shadow-xl md:scale-105'
                 : pkg.featured
-                ? 'bg-accent text-light-contrast border-2 border-accent shadow-xl md:scale-105'
+                ? 'bg-accent text-white border-2 border-accent shadow-xl md:scale-105'
                 : 'hidden md:flex bg-light-contrast border border-secondary-bg hover:border-accent'
             }`}
             style={idx === 0 ? { backgroundColor: '#2E5090', borderColor: '#2E5090' } : undefined}
@@ -150,7 +150,7 @@ export default function CoachingPackages() {
             {/* Title */}
             <h3
               className={`font-heading text-2xl md:text-3xl font-bold mb-2 ${
-                pkg.featured ? 'text-light-contrast' : 'text-primary-text'
+                idx === 0 || pkg.featured ? 'text-white' : 'text-primary-text'
               }`}
             >
               {pkg.title}
@@ -159,7 +159,7 @@ export default function CoachingPackages() {
             {/* Description */}
             <p
               className={`font-paragraph text-base mb-6 ${
-                pkg.featured ? 'text-white' : 'text-primary-text/70'
+                idx === 0 || pkg.featured ? 'text-white' : 'text-primary-text/70'
               }`}
             >
               {pkg.description}
@@ -170,7 +170,7 @@ export default function CoachingPackages() {
               <div className="flex items-baseline gap-2 mb-1">
                 <span
                   className={`font-heading text-4xl md:text-5xl font-bold ${
-                    pkg.featured ? 'text-accent' : 'text-accent'
+                    idx === 0 || pkg.featured ? 'text-white' : 'text-accent'
                   }`}
                 >
                   {currencySymbols[selectedCurrency]}
@@ -179,7 +179,7 @@ export default function CoachingPackages() {
               </div>
               <p
                 className={`font-paragraph text-sm ${
-                  pkg.featured ? 'text-secondary-text' : 'text-secondary-text'
+                  idx === 0 || pkg.featured ? 'text-white/80' : 'text-secondary-text'
                 }`}
               >
                 {pkg.duration}
@@ -193,12 +193,12 @@ export default function CoachingPackages() {
                   <CheckCircle
                     size={20}
                     className={`flex-shrink-0 mt-0.5 ${
-                      pkg.featured ? 'text-accent' : 'text-accent'
+                      idx === 0 || pkg.featured ? 'text-white' : 'text-accent'
                     }`}
                   />
                   <span
                     className={`font-paragraph text-sm ${
-                      pkg.featured ? 'text-light-contrast/90' : 'text-primary-text'
+                      idx === 0 || pkg.featured ? 'text-white' : 'text-primary-text'
                     }`}
                   >
                     {feature}
