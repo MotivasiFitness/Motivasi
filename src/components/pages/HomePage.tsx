@@ -630,7 +630,7 @@ export default function HomePage() {
       </section>
       {/* --- Keywords Section with Softer Design --- */}
       {/* --- The Philosophy (Text Heavy / Editorial) --- */}
-      <section className="py-12 px-8 lg:px-24 bg-white">
+      <section className="py-12 px-8 lg:px-24" style={{ backgroundColor: '#2E5090' }}>
         <div className="max-w-[100rem] mx-auto">
           {/* Title and Subtitle Section */}
           <div className="mb-12 text-center">
