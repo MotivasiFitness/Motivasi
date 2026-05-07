@@ -210,11 +210,8 @@ export default function CoachingPackages() {
             {/* CTA Button */}
             <button
               onClick={() => handleCheckout(pkg)}
-              className={`w-full py-3 rounded-lg font-medium text-lg transition-all duration-300 flex items-center justify-center gap-2 ${
-                pkg.featured
-                  ? 'bg-emerald-green text-light-contrast hover:bg-emerald-green/90'
-                  : 'bg-charcoal-black text-light-contrast hover:bg-charcoal-black/90'
-              }`}
+              className={`w-full py-3 rounded-lg font-medium text-lg transition-all duration-300 flex items-center justify-center gap-2`}
+              style={{ backgroundColor: '#FFB81C' }}
             >
               {pkg.cta}
               <ArrowRight size={20} />
