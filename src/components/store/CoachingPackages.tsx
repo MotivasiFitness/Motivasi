@@ -128,11 +128,13 @@ export default function CoachingPackages() {
 
       {/* Packages Grid */}
       <div className="grid md:grid-cols-3 gap-8">
-        {packages.map((pkg) => (
+        {packages.map((pkg, idx) => (
           <div
             key={pkg.id}
             className={`rounded-2xl p-6 md:p-8 transition-all duration-300 flex flex-col ${
-              pkg.featured
+              idx === 0
+                ? 'bg-emerald-green text-light-contrast border-2 border-emerald-green shadow-xl md:scale-105'
+                : pkg.featured
                 ? 'bg-accent text-light-contrast border-2 border-accent shadow-xl md:scale-105'
                 : 'hidden md:flex bg-light-contrast border border-secondary-bg hover:border-accent'
             }`}

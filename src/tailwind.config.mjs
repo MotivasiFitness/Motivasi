@@ -37,6 +37,8 @@ export default {
                 'accent': '#111111',
                 // Light contrast areas: Pure white
                 'light-contrast': '#FFFFFF',
+                // Emerald green
+                'emerald-green': '#10B981',
                 
                 // Semantic mappings (using new brand colors)
                 primary: '#111111',
