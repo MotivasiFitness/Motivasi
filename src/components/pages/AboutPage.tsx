@@ -205,7 +205,7 @@ export default function AboutPage() {
         </div>
       </section>
       {/* Approach Section */}
-      <section className="py-24 px-8 lg:px-20 bg-charcoal-black">
+      <section className="py-24 px-8 lg:px-20" style={{ backgroundColor: '#2E5090' }}>
         <div className="max-w-[100rem] mx-auto">
           <div className="text-center mb-16">
             <h2 className="font-heading text-5xl font-bold text-soft-white mb-6">
