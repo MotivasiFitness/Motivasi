@@ -138,7 +138,7 @@ export default function CoachingPackages() {
                 ? 'bg-accent text-light-contrast border-2 border-accent shadow-xl md:scale-105'
                 : 'hidden md:flex bg-light-contrast border border-secondary-bg hover:border-accent'
             }`}
-            style={idx === 0 ? { backgroundColor: '#004B87', borderColor: '#004B87' } : undefined}
+            style={idx === 0 ? { backgroundColor: '#2E5090', borderColor: '#2E5090' } : undefined}
           >
             {/* Featured Badge */}
             {pkg.featured && (
