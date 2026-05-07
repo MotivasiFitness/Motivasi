@@ -865,7 +865,7 @@ export default function HomePage() {
                 />
                 
                 <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-black leading-[1.1] mb-8 tracking-tight">
-                  <span className="text-white">Invest in Yourself</span>
+                  <span style={{ color: '#D4AF37' }}>Invest in Yourself</span>
                 </h2>
               </div>
 
