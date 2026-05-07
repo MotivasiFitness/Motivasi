@@ -289,7 +289,7 @@ export default function FaceToFaceTrainingPage() {
         </div>
       </section>
       {/* Contact Section */}
-      <section className="py-24 px-8 lg:px-20 bg-charcoal-black">
+      <section className="py-24 px-8 lg:px-20 bg-slate-blue">
         <div className="max-w-[100rem] mx-auto">
           <div className="grid md:grid-cols-2 gap-16">
             {/* Contact Info */}

@@ -39,6 +39,8 @@ export default {
                 'light-contrast': '#FFFFFF',
                 // Emerald green
                 'emerald-green': '#10B981',
+                // Slate blue
+                'slate-blue': '#2E5090',
                 
                 // Semantic mappings (using new brand colors)
                 primary: '#111111',
