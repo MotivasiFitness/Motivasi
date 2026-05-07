@@ -159,7 +159,7 @@ export default function CoachingPackages() {
             {/* Description */}
             <p
               className={`font-paragraph text-base mb-6 ${
-                pkg.featured ? 'text-secondary-text' : 'text-primary-text/70'
+                pkg.featured ? 'text-white' : 'text-primary-text/70'
               }`}
             >
               {pkg.description}
