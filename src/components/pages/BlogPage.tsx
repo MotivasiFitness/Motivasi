@@ -136,7 +136,7 @@ export default function FaceToFaceTrainingPage() {
                 key={idx}
                 className={`rounded-2xl p-8 transition-all duration-300 ${
                   package_.featured
-                    ? 'bg-charcoal-black text-soft-white border-2 border-soft-bronze shadow-xl'
+                    ? 'bg-slate-blue text-soft-white border-2 border-soft-bronze shadow-xl'
                     : 'bg-soft-white border border-warm-sand-beige hover:border-soft-bronze'
                 }`}
               >
