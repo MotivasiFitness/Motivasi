@@ -118,20 +118,20 @@ export default function AboutPage() {
       </section>
 
       {/* Mission Section */}
-      <section className="py-24 px-8 lg:px-20 bg-warm-sand-beige">
+      <section className="py-24 px-8 lg:px-20 bg-emerald-green">
         <div className="max-w-[100rem] mx-auto">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="w-16 h-16 bg-soft-bronze rounded-full flex items-center justify-center mx-auto mb-6">
-              <Heart className="text-soft-white" size={32} />
+            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-6">
+              <Heart className="text-emerald-green" size={32} />
             </div>
-            <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-6">
+            <h2 className="font-heading text-5xl font-bold text-white mb-6">
               My Approach
             </h2>
-            <div className="space-y-6 font-paragraph text-xl text-charcoal-black leading-relaxed">
+            <div className="space-y-6 font-paragraph text-xl text-white leading-relaxed">
               <p>
                 My approach is grounded in lived experience and professional expertise. I don't believe in extreme diets, punishment-style workouts, or intimidation. I believe in strength training that supports your body, practical nutrition that fits around family life, and consistent guidance that helps you feel capable and in control again.
               </p>
-              <p className="text-2xl font-bold text-soft-bronze">
+              <p className="text-2xl font-bold text-white">
                 You don't need to "bounce back." You deserve to move forward — stronger than before.
               </p>
             </div>
