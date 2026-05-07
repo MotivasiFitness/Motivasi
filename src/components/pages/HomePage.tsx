@@ -454,7 +454,7 @@ function ContactForm() {
         type="submit"
         disabled={isSubmitting}
         className="w-full text-charcoal-black py-3 sm:py-4 rounded-lg font-medium text-base sm:text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
-        style={{ backgroundColor: '#D4AF37' }}
+        style={{ backgroundColor: '#FFB81C' }}
       >
         {isSubmitting ? 'Sending...' : 'Send My Information'}
       </button>
@@ -772,7 +772,7 @@ export default function HomePage() {
                       viewport={{ once: true }}
                       className="inline-block mb-6"
                     >
-                      <span className="inline-block py-2 px-4 border border-[#D4AF37]/40 rounded-full text-[#D4AF37] text-xs tracking-widest uppercase font-medium bg-[#D4AF37]/5">
+                      <span className="inline-block py-2 px-4 border border-[#FFB81C]/40 rounded-full text-[#FFB81C] text-xs tracking-widest uppercase font-medium bg-[#FFB81C]/5">
                         Limited Availability
                       </span>
                     </motion.div>
@@ -826,7 +826,7 @@ export default function HomePage() {
                       <Link
                         to="/store"
                         className="block w-full text-charcoal-black text-center py-5 md:py-6 rounded-full font-bold text-lg hover:shadow-2xl transition-all duration-300"
-                        style={{ backgroundColor: '#D4AF37' }}
+                        style={{ backgroundColor: '#FFB81C' }}
                       >
                         {t.home.secureYourSpot}
                       </Link>
@@ -939,7 +939,7 @@ export default function HomePage() {
               <Link
                 to="/store"
                 className="inline-flex items-center gap-3 text-charcoal-black px-12 py-5 rounded-full font-bold text-lg hover:shadow-2xl transition-all duration-300"
-                style={{ backgroundColor: '#D4AF37' }}
+                style={{ backgroundColor: '#FFB81C' }}
               >
                 Book Your Package <ArrowRight className="w-5 h-5" />
               </Link>
