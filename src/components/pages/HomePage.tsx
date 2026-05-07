@@ -867,7 +867,7 @@ export default function HomePage() {
               </div>
 
               <AnimatedElement className="mb-12 delay-300">
-                <p className="text-lg md:text-xl lg:text-2xl text-white leading-relaxed max-w-lg font-light tracking-wide">
+                <p className="text-lg md:text-xl lg:text-2xl text-white leading-relaxed max-w-2xl font-light tracking-wide text-center lg:text-left">
                   Your body is your most valuable asset. Transform your fitness journey with personalised coaching designed specifically for your life, goals, and challenges.
                 </p>
               </AnimatedElement>
