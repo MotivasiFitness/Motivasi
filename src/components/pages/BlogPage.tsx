@@ -297,7 +297,7 @@ export default function FaceToFaceTrainingPage() {
               <h2 className="font-heading text-5xl font-bold text-soft-white mb-8">
                 {t.blog.getInTouch}
               </h2>
-              <p className="font-paragraph text-lg text-warm-grey mb-12">
+              <p className="font-paragraph text-lg text-white mb-12">
                 {t.blog.readyToStart}
               </p>
 
@@ -310,7 +310,7 @@ export default function FaceToFaceTrainingPage() {
                     <h3 className="font-heading text-lg font-bold text-soft-white mb-1">
                       Email
                     </h3>
-                    <a href="mailto:hello@motivasi.co.uk" className="font-paragraph text-warm-grey hover:text-soft-bronze transition-colors">
+                    <a href="mailto:hello@motivasi.co.uk" className="font-paragraph text-white hover:text-soft-bronze transition-colors">
                       hello@motivasi.co.uk
                     </a>
                   </div>
@@ -324,7 +324,7 @@ export default function FaceToFaceTrainingPage() {
                     <h3 className="font-heading text-lg font-bold text-soft-white mb-1">
                       Locations
                     </h3>
-                    <p className="font-paragraph text-warm-grey">
+                    <p className="font-paragraph text-white">
                       Harpenden, Berkhamsted, Redbourn, Tring, Wheathampstead, St Albans
                     </p>
                   </div>
