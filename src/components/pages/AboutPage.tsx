@@ -221,7 +221,7 @@ export default function AboutPage() {
               <h3 className="font-heading text-3xl font-bold text-soft-bronze mb-4">
                 {t.about.personalised}
               </h3>
-              <p className="font-paragraph text-base text-warm-grey">
+              <p className="font-paragraph text-base text-white">
                 {t.about.personalisedDesc}
               </p>
             </div>
@@ -230,7 +230,7 @@ export default function AboutPage() {
               <h3 className="font-heading text-3xl font-bold text-soft-bronze mb-4">
                 {t.about.evidenceBased}
               </h3>
-              <p className="font-paragraph text-base text-warm-grey">
+              <p className="font-paragraph text-base text-white">
                 {t.about.evidenceBasedDesc}
               </p>
             </div>
@@ -239,7 +239,7 @@ export default function AboutPage() {
               <h3 className="font-heading text-3xl font-bold text-soft-bronze mb-4">
                 {t.about.supportive}
               </h3>
-              <p className="font-paragraph text-base text-warm-grey">
+              <p className="font-paragraph text-base text-white">
                 {t.about.supportiveDesc}
               </p>
             </div>
