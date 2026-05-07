@@ -787,7 +787,7 @@ export default function HomePage() {
                       viewport={{ once: true }}
                     >
                       <span className="font-heading text-7xl md:text-8xl font-bold text-charcoal-black">£499</span>
-                      <span className="text-lg md:text-xl text-white font-light">per 12 weeks</span>
+                      <span className="text-lg md:text-xl text-charcoal-black font-light">per 12 weeks</span>
                     </motion.div>
                     {/* Features List - Enhanced */}
                     <div className="space-y-4 mb-10">
