@@ -126,7 +126,7 @@ function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) {
           >
             {/* Testimonial Card */}
             <div className="group relative">
-              <div className="h-full rounded-2xl p-8 md:p-10 shadow-md hover:shadow-2xl transition-all duration-500 border backdrop-blur-sm bg-white border-warm-cream/60 hover:border-warm-cream">
+              <div className="h-full rounded-2xl p-8 md:p-10 shadow-lg hover:shadow-2xl transition-all duration-500 border-2 backdrop-blur-sm bg-white border-warm-cream hover:border-warm-bronze/60">
                 {/* Decorative star background */}
                 <div
                   className={`absolute top-6 right-6 opacity-10 transition-opacity group-hover:opacity-20 ${
