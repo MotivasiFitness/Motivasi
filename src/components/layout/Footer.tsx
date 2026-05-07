@@ -6,7 +6,7 @@ import { memo } from 'react';
 // Instagram Logo Component with Gradient
 function InstagramLogo() {
   return (
-    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="instagramGradient" x1="0%" y1="100%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#FD5949" />
@@ -14,10 +14,10 @@ function InstagramLogo() {
           <stop offset="45%" stopColor="#285AEB" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4.5" fill="url(#instagramGradient)" />
-      <rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="white" strokeWidth="1.5" />
-      <circle cx="12" cy="12" r="3.5" fill="none" stroke="white" strokeWidth="1.5" />
-      <circle cx="16.5" cy="7.5" r="1" fill="white" />
+      <circle cx="20" cy="20" r="20" fill="url(#instagramGradient)" />
+      <rect x="10" y="10" width="20" height="20" rx="4.5" fill="none" stroke="white" strokeWidth="1.5" />
+      <circle cx="20" cy="20" r="5.5" fill="none" stroke="white" strokeWidth="1.5" />
+      <circle cx="27.5" cy="12.5" r="1.5" fill="white" />
     </svg>
   );
 }
@@ -72,14 +72,14 @@ function Footer() {
                 href="https://www.instagram.com/risewithmotivasi?igsh=bml4NmhnNw8yenht" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center hover:opacity-80 transition-opacity"
+                className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center hover:opacity-80 transition-opacity"
                 aria-label="Instagram"
               >
                 <InstagramLogo />
               </a>
               <a 
                 href="mailto:hello@motivasi.co.uk"
-                className="flex items-center justify-center hover:opacity-80 transition-opacity"
+                className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center hover:opacity-80 transition-opacity"
                 aria-label="Email"
               >
                 <EmailLogo />
