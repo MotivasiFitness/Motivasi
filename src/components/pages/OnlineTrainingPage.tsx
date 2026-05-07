@@ -338,10 +338,10 @@ export default function OnlineTrainingPage() {
       {/* CTA Section */}
       <section className="py-24 px-8 lg:px-20" style={{ backgroundColor: '#2E5090' }}>
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="font-heading text-5xl font-bold text-soft-white mb-6">
+          <h2 className="font-heading text-5xl font-bold text-white mb-6">
             Ready to Transform From Home?
           </h2>
-          <p className="font-paragraph text-lg text-warm-grey mb-8">
+          <p className="font-paragraph text-lg text-white mb-8">
             Start your online coaching journey today. No gym. No excuses. Just real results.
           </p>
           <button
