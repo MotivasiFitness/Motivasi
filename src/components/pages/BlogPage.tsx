@@ -460,24 +460,24 @@ export default function FaceToFaceTrainingPage() {
         </div>
       </section>
       {/* Final CTA Section */}
-      <section className="py-24 px-8 lg:px-20 bg-soft-bronze">
+      <section className="py-24 px-8 lg:px-20 bg-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="font-heading text-5xl font-bold text-soft-white mb-6">
+          <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-6">
             {t.blog.readyToTransform}
           </h2>
-          <p className="font-paragraph text-lg text-soft-white mb-8">
+          <p className="font-paragraph text-lg text-charcoal-black mb-8">
             {t.blog.startYourJourney}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
               onClick={scrollToForm}
-              className="bg-soft-white text-soft-bronze px-8 py-4 rounded-lg font-medium text-lg hover:bg-opacity-90 transition-colors"
+              className="bg-soft-bronze text-soft-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-opacity-90 transition-colors"
             >
               {t.blog.bookConsultation}
             </button>
             <Link
               to="/"
-              className="border-2 border-soft-white text-soft-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-white/10 transition-colors inline-flex items-center justify-center gap-2"
+              className="border-2 border-charcoal-black text-charcoal-black px-8 py-4 rounded-lg font-medium text-lg hover:bg-charcoal-black/5 transition-colors inline-flex items-center justify-center gap-2"
             >
               {t.blog.backToHome}
               <ArrowRight size={20} />
