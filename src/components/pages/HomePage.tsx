@@ -758,7 +758,7 @@ export default function HomePage() {
                 <div className="absolute -inset-1 bg-gradient-to-r from-sage-green via-warm-bronze to-rose-blush rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
                 
                 {/* Main Card */}
-                <div className="relative bg-[#FDF6E3] backdrop-blur-xl p-10 md:p-14 rounded-3xl border border-white/10 overflow-hidden">
+                <div className="relative bg-white backdrop-blur-xl p-10 md:p-14 rounded-3xl border border-white/10 overflow-hidden">
                   {/* Decorative background elements */}
                   <div className="absolute top-0 right-0 w-64 h-64 bg-sage-green/15 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
                   <div className="absolute bottom-0 left-0 w-48 h-48 bg-rose-blush/15 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
