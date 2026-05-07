@@ -211,7 +211,7 @@ export default function AboutPage() {
             <h2 className="font-heading text-5xl font-bold text-soft-white mb-6">
               {t.about.myCoachingApproach}
             </h2>
-            <p className="font-paragraph text-xl text-warm-grey max-w-3xl mx-auto">
+            <p className="font-paragraph text-xl text-white max-w-3xl mx-auto">
               {t.about.holisticSustainable}
             </p>
           </div>
