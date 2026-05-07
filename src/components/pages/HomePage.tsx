@@ -877,7 +877,7 @@ export default function HomePage() {
                 {[
                   { icon: Heart, text: "Personalised programming tailored to you" },
                   { icon: Zap, text: "Real results in 12 weeks or less" },
-                  { icon: ShieldCheck, text: "Expert form analysis & injury prevention" }
+                  { icon: Heart, text: "Expert form analysis & injury prevention" }
                 ].map((benefit, idx) => {
                   const Icon = benefit.icon;
                   return (
