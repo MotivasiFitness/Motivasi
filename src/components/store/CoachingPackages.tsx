@@ -212,8 +212,8 @@ export default function CoachingPackages() {
               onClick={() => handleCheckout(pkg)}
               className={`w-full py-3 rounded-lg font-medium text-lg transition-all duration-300 flex items-center justify-center gap-2 ${
                 pkg.featured
-                  ? 'bg-accent text-light-contrast hover:bg-light-contrast hover:text-primary-text'
-                  : 'bg-primary-text text-light-contrast hover:bg-accent'
+                  ? 'bg-emerald-green text-light-contrast hover:bg-emerald-green/90'
+                  : 'bg-charcoal-black text-light-contrast hover:bg-charcoal-black/90'
               }`}
             >
               {pkg.cta}
