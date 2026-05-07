@@ -196,10 +196,10 @@ export default function FaceToFaceTrainingPage() {
       <section className="py-24 px-8 lg:px-20 bg-slate-blue">
         <div className="max-w-[100rem] mx-auto">
           <div className="text-center mb-16">
-            <h2 className="font-heading text-5xl font-bold text-soft-white mb-6">
+            <h2 className="font-heading text-5xl font-bold text-white mb-6">
               {t.blog.serviceAreas}
             </h2>
-            <p className="font-paragraph text-xl text-warm-grey max-w-3xl mx-auto">
+            <p className="font-paragraph text-xl text-white max-w-3xl mx-auto">
               {t.blog.providesFaceToFace}
             </p>
           </div>
@@ -219,7 +219,7 @@ export default function FaceToFaceTrainingPage() {
           </div>
 
           <div className="mt-16 text-center">
-            <p className="font-paragraph text-lg text-warm-grey max-w-2xl mx-auto">
+            <p className="font-paragraph text-lg text-white max-w-2xl mx-auto">
               {t.blog.cantFindLocation}
             </p>
           </div>
