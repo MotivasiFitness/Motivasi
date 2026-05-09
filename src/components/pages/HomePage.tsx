@@ -720,81 +720,62 @@ export default function HomePage() {
       {/* --- Training Locations Section --- */}
       <section className="relative w-full py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24" style={{ backgroundColor: '#5B7FBD' }}>
         <div className="max-w-[100rem] mx-auto">
-          <AnimatedElement className="mb-16 text-center">
-            <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-              Our Training Locations
-            </h2>
-            <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto font-light">
-              Find your nearest personal training studio and start your transformation today
-            </p>
-          </AnimatedElement>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {locations.map((location, index) => (
-              <AnimatedElement key={location._id} className={`delay-${index * 100}`}>
-                <motion.div
-                  className="bg-white rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 h-full flex flex-col"
-                  whileHover={{ y: -4 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {location.locationImage && (
-                    <div className="mb-6 rounded-xl overflow-hidden h-48 md:h-56">
-                      <Image
-                        src={location.locationImage}
-                        alt={location.locationName || 'Training Location'}
-                        width={400}
-                        height={300}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                  
-                  <h3 className="font-heading text-2xl md:text-3xl font-bold text-charcoal-black mb-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
+            {/* Left Side - Location List */}
+            <AnimatedElement>
+              <div className="space-y-3">
+                {locations.map((location, index) => (
+                  <motion.button
+                    key={location._id}
+                    className="w-full bg-white text-charcoal-black px-6 py-4 rounded-lg font-semibold text-lg hover:bg-soft-white transition-colors duration-300 text-left shadow-md hover:shadow-lg"
+                    whileHover={{ x: 4 }}
+                    transition={{ duration: 0.2 }}
+                  >
                     {location.locationName}
-                  </h3>
-                  
-                  {location.address && (
-                    <p className="text-charcoal-black/70 text-base mb-4 flex-grow">
-                      {location.address}
-                    </p>
-                  )}
-                  
-                  <div className="space-y-3 mb-6">
-                    {location.phoneNumber && (
-                      <div className="flex items-center gap-3">
-                        <div className="w-5 h-5 rounded-full bg-slate-blue/20 flex items-center justify-center">
-                          <span className="text-slate-blue text-sm">📞</span>
-                        </div>
-                        <a href={`tel:${location.phoneNumber}`} className="text-charcoal-black hover:text-slate-blue transition-colors">
-                          {location.phoneNumber}
-                        </a>
-                      </div>
-                    )}
-                    
-                    {location.email && (
-                      <div className="flex items-center gap-3">
-                        <div className="w-5 h-5 rounded-full bg-slate-blue/20 flex items-center justify-center">
-                          <span className="text-slate-blue text-sm">✉️</span>
-                        </div>
-                        <a href={`mailto:${location.email}`} className="text-charcoal-black hover:text-slate-blue transition-colors">
-                          {location.email}
-                        </a>
-                      </div>
-                    )}
+                  </motion.button>
+                ))}
+              </div>
+            </AnimatedElement>
+
+            {/* Right Side - Content */}
+            <AnimatedElement>
+              <div className="text-white">
+                <span className="inline-block py-1 px-3 bg-yellow-400 text-charcoal-black rounded-full text-xs font-bold tracking-widest uppercase mb-4">
+                  Premium Locations
+                </span>
+                <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6">
+                  Invest in Yourself
+                </h2>
+                <p className="text-lg text-white/90 mb-8 leading-relaxed">
+                  Your body is your most valuable asset. Transform your fitness journey with personalized coaching designed specifically for you.
+                </p>
+                
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-yellow-400 flex items-center justify-center flex-shrink-0 mt-1">
+                      <span className="text-charcoal-black font-bold text-sm">✓</span>
+                    </div>
+                    <p className="text-white/90">Personalised programming tailored to you</p>
                   </div>
-                  
-                  {location.description && (
-                    <p className="text-charcoal-black/60 text-sm mb-6 flex-grow">
-                      {location.description}
-                    </p>
-                  )}
-                  
-                  <button className="w-full bg-slate-blue hover:bg-slate-blue/90 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
-                    Learn More
-                  </button>
-                </motion.div>
-              </AnimatedElement>
-            ))}
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-yellow-400 flex items-center justify-center flex-shrink-0 mt-1">
+                      <span className="text-charcoal-black font-bold text-sm">✓</span>
+                    </div>
+                    <p className="text-white/90">Real results in 12 weeks or less</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-yellow-400 flex items-center justify-center flex-shrink-0 mt-1">
+                      <span className="text-charcoal-black font-bold text-sm">✓</span>
+                    </div>
+                    <p className="text-white/90">Expert guidance & every progression</p>
+                  </div>
+                </div>
+
+                <button className="inline-flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-charcoal-black px-8 py-4 rounded-full font-bold text-lg transition-colors duration-300">
+                  Find your location <ArrowRight size={20} />
+                </button>
+              </div>
+            </AnimatedElement>
           </div>
         </div>
       </section>
