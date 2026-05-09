@@ -724,7 +724,7 @@ export default function PrivacyPage() {
 
             {/* Final CTA */}
             <section className="mt-16 pt-12 border-t border-warm-sand-beige">
-              <div className="bg-charcoal-black text-soft-white rounded-2xl p-8 md:p-12 text-center">
+              <div className="bg-slate-blue text-soft-white rounded-2xl p-8 md:p-12 text-center">
                 <h2 className="font-heading text-3xl font-bold mb-4">
                   Questions About Your Privacy?
                 </h2>
@@ -733,7 +733,7 @@ export default function PrivacyPage() {
                 </p>
                 <a
                   href="mailto:hello@motivasi.co.uk"
-                  className="inline-block bg-soft-bronze text-soft-white px-10 py-4 rounded-lg font-medium text-lg hover:bg-soft-white hover:text-charcoal-black transition-colors"
+                  className="inline-block bg-gold text-charcoal-black px-10 py-4 rounded-lg font-medium text-lg hover:bg-soft-white hover:text-charcoal-black transition-colors"
                 >
                   Contact Us
                 </a>
