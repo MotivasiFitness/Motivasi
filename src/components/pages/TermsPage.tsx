@@ -673,14 +673,14 @@ export default function TermsPage() {
 
             {/* Final Notice */}
             <section className="mt-16 pt-12 border-t border-warm-sand-beige">
-              <div className="bg-charcoal-black text-soft-white rounded-2xl p-8 md:p-12">
+              <div className="bg-slate-blue text-white rounded-2xl p-8 md:p-12">
                 <div className="flex gap-4">
-                  <AlertCircle className="w-8 h-8 text-soft-bronze flex-shrink-0 mt-1" />
+                  <AlertCircle className="w-8 h-8 text-white flex-shrink-0 mt-1" />
                   <div>
-                    <h2 className="font-heading text-2xl font-bold mb-4 bg-slate-blue text-white px-4 py-2 rounded">
+                    <h2 className="font-heading text-2xl font-bold mb-4">
                       Important Notice
                     </h2>
-                    <p className="font-paragraph text-lg text-warm-grey leading-relaxed">
+                    <p className="font-paragraph text-lg text-white leading-relaxed">
                       These Terms & Conditions constitute the entire agreement between you and Motivasi regarding your use of our services. If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions shall continue in full force and effect.
                     </p>
                   </div>
