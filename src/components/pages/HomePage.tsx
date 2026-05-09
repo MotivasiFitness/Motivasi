@@ -718,7 +718,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* --- Training Locations Section --- */}
-      <section className="relative w-full py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24" style={{ backgroundColor: '#5B7FBD' }}>
+      <section className="relative w-full py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24 bg-slate-blue">
         <div className="max-w-[100rem] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
             {/* Left Side - Location List */}
