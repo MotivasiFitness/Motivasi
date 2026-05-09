@@ -779,9 +779,9 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <button className="inline-flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-charcoal-black px-8 py-4 rounded-full font-bold text-lg transition-colors duration-300">
-                  Find your location <ArrowRight size={20} />
-                </button>
+                <a href="mailto:info@motivasi.com" className="inline-flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-charcoal-black px-8 py-4 rounded-full font-bold text-lg transition-colors duration-300">
+                  Book a Consultation <ArrowRight size={20} />
+                </a>
               </div>
             </AnimatedElement>
           </div>
