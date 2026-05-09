@@ -658,7 +658,7 @@ export default function HomePage() {
               <div className="flex flex-col gap-8 items-start h-full">
                 <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-sage-green/40 shadow-md`}>
                   <div className="text-sage-green">
-                    <Apple className="w-6 h-6" />
+                    <Apple className="w-6 h-6 text-sage-green fill-sage-green" />
                   </div>
                 </div>
                 <div>
@@ -677,7 +677,7 @@ export default function HomePage() {
               <div className="flex flex-col gap-8 items-start h-full">
                 <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-rose-blush/40 shadow-md`}>
                   <div className="text-emerald-green">
-                    <Dumbbell className="w-6 h-6 stroke-[2.5]" />
+                    <Dumbbell className="w-6 h-6 stroke-[2.5] text-emerald-green" />
                   </div>
                 </div>
                 <div>
@@ -696,7 +696,7 @@ export default function HomePage() {
               <div className="flex flex-col gap-8 items-start h-full">
                 <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-soft-lavender/40 shadow-md`}>
                   <div className="text-sage-green">
-                    <Leaf className="w-6 h-6" />
+                    <Leaf className="w-6 h-6 text-sage-green fill-sage-green" />
                   </div>
                 </div>
                 <div>
