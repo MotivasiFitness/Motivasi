@@ -677,7 +677,7 @@ export default function TermsPage() {
                 <div className="flex gap-4">
                   <AlertCircle className="w-8 h-8 text-soft-bronze flex-shrink-0 mt-1" />
                   <div>
-                    <h2 className="font-heading text-2xl font-bold mb-4">
+                    <h2 className="font-heading text-2xl font-bold mb-4 bg-slate-blue text-white px-4 py-2 rounded">
                       Important Notice
                     </h2>
                     <p className="font-paragraph text-lg text-warm-grey leading-relaxed">
