@@ -728,7 +728,7 @@ export default function PrivacyPage() {
                 <h2 className="font-heading text-3xl font-bold mb-4">
                   Questions About Your Privacy?
                 </h2>
-                <p className="font-paragraph text-lg text-warm-grey mb-8">
+                <p className="font-paragraph text-lg text-white mb-8">
                   We're here to help. Contact us anytime with your privacy concerns or data requests.
                 </p>
                 <a
