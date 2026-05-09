@@ -51,7 +51,7 @@ function Footer() {
 
   return (
     <footer className="bg-light-contrast text-primary-text border-t border-secondary-bg relative overflow-hidden">
-      <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20 py-8 sm:py-10 lg:py-12">
+      <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20 py-8 sm:py-10 lg:py-12 pb-4 sm:pb-6 lg:pb-8">
         {/* Main Footer Grid - Top Section - Centered */}
         <div className="flex flex-col items-center text-center mb-16 sm:mb-20 lg:mb-24 relative z-20">
           {/* Large Background Watermark Text - Brand Name */}
