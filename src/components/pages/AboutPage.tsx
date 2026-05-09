@@ -287,7 +287,7 @@ export default function AboutPage() {
               </h3>
               <form className="space-y-6">
                 <div>
-                  <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
+                  <label className="block font-paragraph text-sm font-bold text-charcoal-black mb-2">
                     Full Name
                   </label>
                   <input
@@ -298,7 +298,7 @@ export default function AboutPage() {
                 </div>
 
                 <div>
-                  <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
+                  <label className="block font-paragraph text-sm font-bold text-charcoal-black mb-2">
                     Email Address
                   </label>
                   <input
@@ -309,7 +309,7 @@ export default function AboutPage() {
                 </div>
 
                 <div>
-                  <label className="block font-paragraph text-sm font-medium text-charcoal-black mb-2">
+                  <label className="block font-paragraph text-sm font-bold text-charcoal-black mb-2">
                     Message
                   </label>
                   <textarea
