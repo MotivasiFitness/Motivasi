@@ -270,8 +270,11 @@ export default function AboutPage() {
 
                 <div>
                   <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2">Location</h3>
-                  <p className="font-paragraph text-base text-charcoal-black/70">
+                  <p className="font-paragraph text-base text-charcoal-black/70 mb-3">
                     Available for online coaching worldwide
+                  </p>
+                  <p className="font-paragraph text-sm text-charcoal-black/60">
+                    Harpenden, Berkhamsted, Redbourn, Wheathampstead, Studham, Ashridge
                   </p>
                 </div>
               </div>
