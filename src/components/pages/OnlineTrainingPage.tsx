@@ -315,7 +315,7 @@ export default function OnlineTrainingPage() {
         </div>
       </section>
       {/* Testimonial Section */}
-      <section className="py-24 px-8 lg:px-20 bg-warm-sand-beige">
+      <section className="py-24 px-8 lg:px-20 bg-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-8">
             Real Results From Real Women
