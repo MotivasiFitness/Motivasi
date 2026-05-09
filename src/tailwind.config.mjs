@@ -41,6 +41,8 @@ export default {
                 'emerald-green': '#10B981',
                 // Slate blue
                 'slate-blue': '#2E5090',
+                // Gold
+                'gold': '#D4AF37',
                 
                 // Semantic mappings (using new brand colors)
                 primary: '#111111',
