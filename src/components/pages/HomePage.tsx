@@ -744,7 +744,7 @@ export default function HomePage() {
                 <span className="inline-block py-1 px-3 bg-yellow-400 text-charcoal-black rounded-full text-xs font-bold tracking-widest uppercase mb-4">
                   Transform your life
                 </span>
-                <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6">
+                <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 text-white">
                   Invest in Yourself
                 </h2>
                 <p className="text-lg text-white/90 mb-8 leading-relaxed">
