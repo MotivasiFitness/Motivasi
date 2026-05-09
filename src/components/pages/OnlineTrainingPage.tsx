@@ -34,7 +34,8 @@ export default function OnlineTrainingPage() {
               </p>
               <button
                 onClick={scrollToForm}
-                className="inline-flex items-center gap-2 bg-charcoal-black text-soft-white px-10 py-5 rounded-full font-medium text-lg hover:bg-soft-bronze transition-colors"
+                className="inline-flex items-center gap-2 text-charcoal-black px-10 py-5 rounded-full font-medium text-lg hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: '#FFB81C' }}
               >
                 Get Started <ArrowRight size={20} />
               </button>
@@ -346,7 +347,8 @@ export default function OnlineTrainingPage() {
           </p>
           <button
             onClick={scrollToForm}
-            className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white px-10 py-5 rounded-full font-medium text-lg hover:bg-soft-white hover:text-charcoal-black transition-colors"
+            className="inline-flex items-center gap-2 text-charcoal-black px-10 py-5 rounded-full font-medium text-lg hover:opacity-90 transition-opacity"
+            style={{ backgroundColor: '#FFB81C' }}
           >
             Get Started Now <ArrowRight size={20} />
           </button>
