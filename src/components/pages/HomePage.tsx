@@ -272,8 +272,8 @@ function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) {
               }}
               className={`h-2 rounded-full transition-all ${
                 index === currentIndex
-                  ? 'bg-charcoal-black w-8'
-                  : 'bg-charcoal-black/30 w-2 hover:bg-charcoal-black/50'
+                  ? 'bg-slate-blue w-8'
+                  : 'bg-slate-blue/30 w-2 hover:bg-slate-blue/50'
               }`}
               whileHover={{ scale: 1.2 }}
               aria-label={`Go to testimonial ${index + 1}`}
