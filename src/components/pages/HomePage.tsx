@@ -815,8 +815,6 @@ export default function HomePage() {
                     </div>
                     {/* CTA Button */}
                     <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 10 }}
                       className="mb-6"
                       initial={{ opacity: 0, y: 10 }}
                       whileInView={{ opacity: 1, y: 0 }}
@@ -825,10 +823,19 @@ export default function HomePage() {
                     >
                       <Link
                         to="/store"
-                        className="block w-full text-charcoal-black text-center py-5 md:py-6 rounded-full font-bold text-lg hover:shadow-2xl transition-all duration-300"
+                        className="block w-full text-charcoal-black text-center py-6 md:py-7 rounded-full font-bold text-lg md:text-xl transition-all duration-300 shadow-lg hover:shadow-2xl relative overflow-hidden group active:scale-95"
                         style={{ backgroundColor: '#FFB81C' }}
                       >
-                        {t.home.secureYourSpot}
+                        <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-500 -skew-x-12"></span>
+                        <span className="relative flex items-center justify-center gap-2">
+                          {t.home.secureYourSpot}
+                          <motion.span
+                            animate={{ x: [0, 4, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                          >
+                            <ArrowRight className="w-5 h-5" />
+                          </motion.span>
+                        </span>
                       </Link>
                     </motion.div>
                     <p className="text-center text-xs md:text-sm text-white/50 font-light">{t.home.limitedSpaces}</p>
