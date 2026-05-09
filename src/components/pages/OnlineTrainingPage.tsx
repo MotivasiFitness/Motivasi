@@ -355,7 +355,7 @@ export default function OnlineTrainingPage() {
         </div>
       </section>
       {/* Contact Form Section */}
-      <section ref={contactFormRef} className="py-24 px-8 lg:px-20 bg-soft-white">
+      <section ref={contactFormRef} className="py-24 px-8 lg:px-20 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="font-heading text-4xl font-bold text-charcoal-black mb-4">
