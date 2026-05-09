@@ -779,7 +779,7 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <a href="mailto:info@motivasi.com" className="inline-flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-charcoal-black px-8 py-4 rounded-full font-bold text-lg transition-colors duration-300">
+                <a href="mailto:info@motivasi.com" className="inline-flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-charcoal-black px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border-2 border-yellow-500">
                   Book a Consultation <ArrowRight size={20} />
                 </a>
               </div>
