@@ -932,16 +932,26 @@ export default function HomePage() {
               Join my coaching program and transform your fitness journey. Limited spaces available.
             </p>
             <motion.div
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.08, y: -4 }}
+              whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 300, damping: 10 }}
               className="inline-block"
             >
               <Link
                 to="/store"
-                className="inline-flex items-center gap-3 text-charcoal-black px-12 py-5 rounded-full font-bold text-lg hover:shadow-2xl transition-all duration-300"
+                className="inline-flex items-center gap-3 text-charcoal-black px-14 py-6 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-2xl relative overflow-hidden group"
                 style={{ backgroundColor: '#FFB81C' }}
               >
-                Book Your Package <ArrowRight className="w-5 h-5" />
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-500 -skew-x-12"></span>
+                <span className="relative flex items-center gap-3">
+                  Book Your Package 
+                  <motion.span
+                    animate={{ x: [0, 4, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    <ArrowRight className="w-5 h-5" />
+                  </motion.span>
+                </span>
               </Link>
             </motion.div>
           </AnimatedElement>
