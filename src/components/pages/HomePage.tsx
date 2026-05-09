@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { CheckCircle, ArrowRight, Star, Activity, Heart, Zap, ShieldCheck, Dumbbell, Apple, Leaf, AlertCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { CheckCircle, ArrowRight, Star, Activity, Heart, Zap, ShieldCheck, Dumbbell, Apple, Leaf, AlertCircle, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { BaseCrudService } from '@/integrations';
 import { ClientTestimonials, ContactFormSubmissions, TrainingLocations } from '@/entities';
@@ -727,10 +727,11 @@ export default function HomePage() {
                 {locations.map((location, index) => (
                   <motion.button
                     key={location._id}
-                    className="w-full bg-white text-charcoal-black px-6 py-4 rounded-lg font-semibold text-lg hover:bg-soft-white transition-colors duration-300 text-left shadow-md hover:shadow-lg"
+                    className="w-full bg-white text-charcoal-black px-6 py-4 rounded-lg font-semibold text-lg hover:bg-soft-white transition-colors duration-300 text-left shadow-md hover:shadow-lg flex items-center gap-3"
                     whileHover={{ x: 4 }}
                     transition={{ duration: 0.2 }}
                   >
+                    <MapPin size={20} className="flex-shrink-0 text-slate-blue" />
                     {location.locationName}
                   </motion.button>
                 ))}
