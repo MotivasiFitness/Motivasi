@@ -384,7 +384,8 @@ export default function OnlineTrainingPage() {
 
               <Link
                 to="/parq"
-                className="block w-full bg-charcoal-black text-soft-white text-center py-4 rounded-lg font-medium text-lg hover:bg-soft-bronze transition-colors"
+                className="block w-full text-charcoal-black text-center py-4 rounded-lg font-medium text-lg hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: '#FFB81C' }}
               >
                 Complete Health Questionnaire
               </Link>
