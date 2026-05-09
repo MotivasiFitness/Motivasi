@@ -775,6 +775,29 @@ export interface TrainerQualifications {
 
 
 /**
+ * Collection ID: traininglocations
+ * Interface for TrainingLocations
+ */
+export interface TrainingLocations {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  locationName?: string;
+  /** @wixFieldType text */
+  address?: string;
+  /** @wixFieldType text */
+  phoneNumber?: string;
+  /** @wixFieldType text */
+  email?: string;
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  locationImage?: string;
+  /** @wixFieldType text */
+  description?: string;
+}
+
+
+/**
  * Collection ID: weeklycheckins
  * Interface for WeeklyCheckins
  */
