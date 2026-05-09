@@ -720,6 +720,13 @@ export default function HomePage() {
       {/* --- Training Locations Section --- */}
       <section className="relative w-full py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24 bg-slate-blue">
         <div className="max-w-[100rem] mx-auto">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white">
+              Find Coaching Near You
+            </h2>
+          </div>
+        </div>
+        <div className="max-w-[100rem] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
             {/* Left Side - Location List */}
             <AnimatedElement>
