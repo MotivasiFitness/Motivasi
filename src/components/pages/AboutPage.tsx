@@ -339,7 +339,7 @@ export default function AboutPage() {
 
                 <button
                   type="submit"
-                  className="w-full bg-gold text-charcoal-black py-3 rounded-lg font-paragraph font-medium hover:bg-gold/90 transition-colors"
+                  className="w-full bg-gold text-charcoal-black py-4 px-6 rounded-lg font-paragraph font-bold text-lg hover:bg-gold/80 active:bg-gold/70 transition-all duration-200 shadow-md hover:shadow-lg"
                 >
                   Send Message
                 </button>
