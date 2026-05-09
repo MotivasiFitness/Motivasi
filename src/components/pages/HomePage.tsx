@@ -742,7 +742,7 @@ export default function HomePage() {
             <AnimatedElement>
               <div className="text-white">
                 <span className="inline-block py-1 px-3 bg-yellow-400 text-charcoal-black rounded-full text-xs font-bold tracking-widest uppercase mb-4">
-                  Premium Locations
+                  Transform your life
                 </span>
                 <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6">
                   Invest in Yourself
