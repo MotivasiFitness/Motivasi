@@ -103,7 +103,7 @@ export default function OnlineTrainingPage() {
                 key={idx}
                 className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 hover:border-soft-bronze transition-colors"
               >
-                <div className="w-16 h-16 bg-soft-bronze/10 rounded-xl flex items-center justify-center mb-6 text-soft-bronze">
+                <div className="w-16 h-16 bg-slate-blue/10 rounded-xl flex items-center justify-center mb-6 text-slate-blue">
                   {feature.icon}
                 </div>
                 <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-3">
