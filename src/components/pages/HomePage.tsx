@@ -781,15 +781,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* --- Visual Breather (Parallax) --- */}
-      <section className="relative h-[12vh] w-full overflow-hidden flex items-center justify-center">
-
-        <div className="relative z-10 text-center max-w-4xl px-8">
-          <AnimatedElement>
-
-          </AnimatedElement>
-        </div>
-      </section>
       {/* --- Early CTA Section (Reduced Friction) --- */}
       <section className="relative py-24 px-8 lg:px-24 overflow-hidden" style={{ background: 'linear-gradient(to right, #2E5090 95%, #2E5090)' }}>
         <div className="absolute inset-0 opacity-5">
