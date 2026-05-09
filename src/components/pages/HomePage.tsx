@@ -827,7 +827,7 @@ export default function HomePage() {
                         style={{ backgroundColor: '#FFB81C' }}
                       >
                         <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-500 -skew-x-12"></span>
-                        <span className="relative flex items-center justify-center gap-2">
+                        <span className="relative flex items-center justify-center gap-2 font-bold">
                           {t.home.secureYourSpot}
                           <motion.span
                             animate={{ x: [0, 4, 0] }}
