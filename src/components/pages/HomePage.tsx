@@ -675,7 +675,7 @@ export default function HomePage() {
             {/* Feature card 2 */}
             <AnimatedElement className={`group bg-rose-blush/5 p-12 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-rose-blush`}>
               <div className="flex flex-col gap-8 items-start h-full">
-                <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-rose-blush/40 shadow-md`}>
+                <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-emerald-green/40 shadow-md`}>
                   <div className="text-emerald-green">
                     <Dumbbell className="w-6 h-6 stroke-[2.5] text-emerald-green" />
                   </div>
@@ -694,7 +694,7 @@ export default function HomePage() {
             {/* Feature card 3 */}
             <AnimatedElement className={`group bg-soft-lavender/5 p-12 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-soft-lavender`}>
               <div className="flex flex-col gap-8 items-start h-full">
-                <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-soft-lavender/40 shadow-md`}>
+                <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-emerald-green/40 shadow-md`}>
                   <div className="text-emerald-green">
                     <Leaf className="w-6 h-6 text-emerald-green fill-emerald-green" />
                   </div>
