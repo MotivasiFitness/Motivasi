@@ -972,7 +972,7 @@ export default function HomePage() {
               <h2 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-6">
                 {t.home.realWomen}
               </h2>
-              <p className="text-xl text-charcoal-black/70 font-light max-w-2xl">
+              <p className="text-xl text-charcoal-black/70 font-semibold max-w-2xl">
                 {t.home.realWomenDesc}
               </p>
             </AnimatedElement>
