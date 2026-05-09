@@ -455,7 +455,7 @@ export default function OnlineTrainingPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/online-training"
-                className="flex-1 bg-charcoal-black text-soft-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-soft-bronze transition-colors text-center"
+                className="flex-1 bg-yellow-600 text-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-yellow-700 transition-colors text-center"
               >
                 Book Your Free 10‑Minute Call
               </Link>
