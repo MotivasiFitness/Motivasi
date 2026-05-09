@@ -991,7 +991,7 @@ export default function HomePage() {
             <h2 className="font-heading text-4xl font-bold text-charcoal-black mb-4">
               Let's Get Started
             </h2>
-            <p className="font-paragraph text-lg text-warm-grey">
+            <p className="font-paragraph text-lg font-bold text-warm-grey">
               Fill out the form below and I'll be in touch within 24 hours to discuss your personalised coaching plan.
             </p>
           </div>
