@@ -396,7 +396,7 @@ export default function OnlineTrainingPage() {
                 </p>
                 <a
                   href="mailto:hello@motivasi.co.uk"
-                  className="text-soft-bronze font-medium hover:underline"
+                  className="text-soft-bronze font-bold hover:underline"
                 >
                   hello@motivasi.co.uk
                 </a>
