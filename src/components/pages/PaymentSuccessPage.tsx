@@ -166,7 +166,7 @@ export default function PaymentSuccessPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/"
-              className="flex-1 bg-charcoal-black text-soft-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-soft-bronze transition-colors text-center"
+              className="flex-1 bg-gold text-charcoal-black px-8 py-4 rounded-lg font-medium text-lg hover:opacity-90 transition-opacity text-center"
             >
               Back to Home
             </Link>
