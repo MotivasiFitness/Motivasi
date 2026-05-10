@@ -238,7 +238,6 @@ export default function CheckoutPage() {
           </h1>
         </div>
       </section>
-
       {/* Main Content */}
       <section className="py-16 px-8 lg:px-20">
         <div className="max-w-[100rem] mx-auto">
@@ -255,8 +254,8 @@ export default function CheckoutPage() {
                 )}
 
                 {/* Personal Information */}
-                <div className="bg-warm-sand-beige/20 border border-warm-sand-beige rounded-2xl p-8">
-                  <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
+                <div className="bg-warm-sand-beige/20 rounded-2xl p-8 border-[1.3333300352096558px] border-solid border-[#111111ff]">
+                  <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6 border-[1.3333300352096558px] border-solid border-[#ffffffff]">
                     Personal Information
                   </h2>
                   <div className="grid md:grid-cols-2 gap-6">
@@ -322,7 +321,7 @@ export default function CheckoutPage() {
                 </div>
 
                 {/* Billing Address */}
-                <div className="bg-warm-sand-beige/20 border border-warm-sand-beige rounded-2xl p-8">
+                <div className="bg-warm-sand-beige/20 rounded-2xl p-8 border-[1.3333300352096558px] border-solid border-[#111111ff]">
                   <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
                     Billing Address
                   </h2>
@@ -526,7 +525,7 @@ export default function CheckoutPage() {
 
             {/* Order Summary Sidebar */}
             <div className="lg:col-span-1">
-              <div className="bg-warm-sand-beige/20 border border-warm-sand-beige rounded-2xl p-8 sticky top-8">
+              <div className="bg-warm-sand-beige/20 rounded-2xl p-8 sticky top-8 border-[1.3333300352096558px] border-solid border-[#111111ff]">
                 <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
                   Order Summary
                 </h2>
