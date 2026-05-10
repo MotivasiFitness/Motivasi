@@ -27,7 +27,7 @@ export default function PrivacyPage() {
         <div className="max-w-[100rem] mx-auto">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-soft-bronze font-paragraph text-base hover:underline mb-8"
+            className="inline-flex items-center gap-2 text-dark-gray font-paragraph text-base hover:underline mb-8"
           >
             <ArrowLeft size={20} />
             Back to Home
@@ -44,11 +44,11 @@ export default function PrivacyPage() {
       </section>
 
       {/* Main Content */}
-      <section className="py-16 px-8 lg:px-20">
+      <section className="py-16 px-8 lg:px-20 bg-white">
         <div className="max-w-[100rem] mx-auto grid lg:grid-cols-4 gap-12">
           {/* Sidebar Navigation */}
           <div className="lg:col-span-1">
-            <div className="sticky top-32 bg-white border border-warm-sand-beige rounded-2xl p-6">
+            <div className="sticky top-32 bg-warm-sand-beige/20 border border-warm-sand-beige rounded-2xl p-6">
               <h3 className="font-heading text-lg font-bold text-charcoal-black mb-6">
                 Contents
               </h3>
