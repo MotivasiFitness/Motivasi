@@ -37,12 +37,14 @@ export default function TermsPage() {
             <ArrowLeft size={20} />
             Back to Home
           </Link>
-          <h1 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-4">
-            Terms & Conditions
-          </h1>
-          <p className="font-paragraph text-lg text-charcoal-black">
-            Last updated: January 2026
-          </p>
+          <div className="text-center">
+            <h1 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-4">
+              Terms & Conditions
+            </h1>
+            <p className="font-paragraph text-lg text-charcoal-black">
+              Last updated: January 2026
+            </p>
+          </div>
         </div>
       </section>
 

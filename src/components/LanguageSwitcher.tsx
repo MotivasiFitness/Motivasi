@@ -23,7 +23,8 @@ export default function LanguageSwitcher() {
   const isAboutPage = location.pathname === '/about';
   const isBlogPage = location.pathname === '/blog';
   const isPrivacyPage = location.pathname === '/privacy';
-  const shouldUseBlackText = isOnlineTrainingPage || isAboutPage || isBlogPage || isPrivacyPage;
+  const isTermsPage = location.pathname === '/terms';
+  const shouldUseBlackText = isOnlineTrainingPage || isAboutPage || isBlogPage || isPrivacyPage || isTermsPage;
 
   const currentLanguage = languageOptions.find(opt => opt.code === language);
 
