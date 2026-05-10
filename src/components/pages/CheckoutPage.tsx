@@ -222,7 +222,7 @@ export default function CheckoutPage() {
   const total = calculateTotal();
 
   return (
-    <div className="bg-soft-white min-h-screen">
+    <div className="bg-white min-h-screen">
       {/* Header */}
       <section className="py-12 px-8 lg:px-20 bg-white border-b border-warm-sand-beige">
         <div className="max-w-[100rem] mx-auto">
