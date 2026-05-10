@@ -222,7 +222,7 @@ export default function CoachingPackages() {
 
       {/* Info Section */}
       <div className="mt-16 p-8 bg-secondary-bg/30 rounded-2xl">
-        <h3 className="font-heading text-2xl font-bold text-primary-text mb-4">
+        <h3 className="font-heading text-2xl font-bold text-primary-text mb-4 text-center">
           Which Package is Right for You?
         </h3>
         <div className="grid md:grid-cols-3 gap-6">

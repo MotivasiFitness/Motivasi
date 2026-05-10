@@ -206,7 +206,7 @@ const router = createBrowserRouter([
           <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
             <div className="bg-soft-white py-12 px-8 lg:px-20">
               <div className="max-w-[100rem] mx-auto">
-                <h1 className="font-heading text-5xl font-bold text-charcoal-black mb-12">
+                <h1 className="font-heading text-5xl font-bold text-charcoal-black mb-12 text-center">
                   Book Your Coaching Package
                 </h1>
                 <CoachingPackages />
