@@ -20,10 +20,10 @@ export default function DisclaimerPage() {
     <div className="bg-soft-white">
       {/* Header */}
       <section className="py-16 px-8 lg:px-20 bg-warm-sand-beige">
-        <div className="max-w-[100rem] mx-auto">
+        <div className="max-w-[100rem] mx-auto text-center">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-soft-bronze font-paragraph text-base hover:underline mb-8"
+            className="inline-flex items-center gap-2 text-dark-gray font-paragraph text-base hover:underline mb-8"
           >
             <ArrowLeft size={20} />
             Back to Home
@@ -38,7 +38,7 @@ export default function DisclaimerPage() {
       </section>
 
       {/* Main Content */}
-      <section className="py-16 px-8 lg:px-20">
+      <section className="py-16 px-8 lg:px-20 bg-white">
         <div className="max-w-[100rem] mx-auto grid lg:grid-cols-4 gap-12">
           {/* Sidebar Navigation */}
           <div className="lg:col-span-1">
@@ -64,8 +64,8 @@ export default function DisclaimerPage() {
           <div className="lg:col-span-3 space-y-12">
             {/* Introduction */}
             <section className="scroll-mt-20">
-              <div className="bg-soft-bronze/10 border border-soft-bronze/30 rounded-2xl p-8 flex gap-4">
-                <AlertTriangle className="w-6 h-6 text-soft-bronze flex-shrink-0 mt-1" />
+              <div className="bg-slate-blue/10 border border-slate-blue/30 rounded-2xl p-8 flex gap-4">
+                <AlertTriangle className="w-6 h-6 text-slate-blue flex-shrink-0 mt-1" />
                 <div>
                   <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-3">
                     Important Disclaimer
@@ -346,16 +346,16 @@ export default function DisclaimerPage() {
 
             {/* Final CTA */}
             <section className="mt-16 pt-12 border-t border-warm-sand-beige">
-              <div className="bg-charcoal-black text-soft-white rounded-2xl p-8 md:p-12 text-center">
+              <div className="bg-slate-blue text-soft-white rounded-2xl p-8 md:p-12 text-center">
                 <h2 className="font-heading text-3xl font-bold mb-4">
                   Ready to Get Started?
                 </h2>
-                <p className="font-paragraph text-lg text-warm-grey mb-8">
+                <p className="font-paragraph text-lg text-soft-white mb-8">
                   By proceeding with Motivasi, you acknowledge that you have read and understood this disclaimer.
                 </p>
                 <Link
                   to="/store"
-                  className="inline-block bg-soft-bronze text-soft-white px-10 py-4 rounded-lg font-medium text-lg hover:bg-soft-white hover:text-charcoal-black transition-colors"
+                  className="inline-block bg-gold text-charcoal-black px-10 py-4 rounded-lg font-medium text-lg hover:bg-gold/90 transition-colors"
                 >
                   View Our Packages
                 </Link>
