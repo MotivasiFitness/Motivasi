@@ -31,7 +31,7 @@ export default function PaymentSuccessPage() {
           </p>
           <Link
             to="/"
-            className="inline-flex items-center gap-2 bg-soft-bronze text-soft-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-charcoal-black transition-colors"
+            className="inline-flex items-center gap-2 text-soft-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-charcoal-black transition-colors bg-gold"
           >
             Back to Home
             <ArrowRight size={20} />
