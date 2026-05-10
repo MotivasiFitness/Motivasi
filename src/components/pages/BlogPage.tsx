@@ -448,7 +448,7 @@ export default function FaceToFaceTrainingPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-charcoal-black text-soft-white py-3 rounded-lg font-medium text-lg hover:bg-soft-bronze transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-gold text-charcoal-black py-3 rounded-lg font-medium text-lg hover:bg-yellow-600 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? t.blog.sending : t.blog.sendBtn}
                 </button>
