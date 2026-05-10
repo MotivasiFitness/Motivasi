@@ -62,7 +62,7 @@ export default function PaymentSuccessPage() {
           {/* Order Details */}
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             {/* Order Summary */}
-            <div className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8">
+            <div className="bg-soft-white border-2 border-charcoal-black rounded-2xl p-8">
               <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
                 Order Summary
               </h2>
