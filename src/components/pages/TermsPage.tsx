@@ -32,7 +32,7 @@ export default function TermsPage() {
         <div className="max-w-[100rem] mx-auto">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-soft-bronze font-paragraph text-base hover:underline mb-8"
+            className="inline-flex items-center gap-2 text-dark-gray font-paragraph text-base hover:underline mb-8"
           >
             <ArrowLeft size={20} />
             Back to Home
@@ -49,11 +49,11 @@ export default function TermsPage() {
       </section>
 
       {/* Main Content */}
-      <section className="py-16 px-8 lg:px-20">
+      <section className="py-16 px-8 lg:px-20 bg-white">
         <div className="max-w-[100rem] mx-auto grid lg:grid-cols-4 gap-12">
           {/* Sidebar Navigation */}
           <div className="lg:col-span-1">
-            <div className="sticky top-32 bg-white border border-warm-sand-beige rounded-2xl p-6">
+            <div className="sticky top-32 bg-warm-sand-beige/20 border border-warm-sand-beige rounded-2xl p-6">
               <h3 className="font-heading text-lg font-bold text-charcoal-black mb-6">
                 Contents
               </h3>
@@ -675,18 +675,19 @@ export default function TermsPage() {
 
             {/* Final Notice */}
             <section className="mt-16 pt-12 border-t border-warm-sand-beige">
-              <div className="bg-slate-blue text-white rounded-2xl p-8 md:p-12">
-                <div className="flex gap-4">
-                  <AlertCircle className="w-8 h-8 text-white flex-shrink-0 mt-1" />
-                  <div>
-                    <h2 className="font-heading text-2xl font-bold mb-4">
-                      Important Notice
-                    </h2>
-                    <p className="font-paragraph text-lg text-white leading-relaxed">
-                      These Terms & Conditions constitute the entire agreement between you and Motivasi regarding your use of our services. If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions shall continue in full force and effect.
-                    </p>
-                  </div>
-                </div>
+              <div className="bg-slate-blue text-soft-white rounded-2xl p-8 md:p-12 text-center">
+                <h2 className="font-heading text-3xl font-bold mb-4">
+                  Ready to Get Started?
+                </h2>
+                <p className="font-paragraph text-lg text-soft-white mb-8">
+                  By proceeding with Motivasi, you acknowledge that you have read and understood these Terms & Conditions.
+                </p>
+                <Link
+                  to="/store"
+                  className="inline-block bg-gold text-charcoal-black px-10 py-4 rounded-lg font-medium text-lg hover:bg-gold/90 transition-colors"
+                >
+                  View Our Packages
+                </Link>
               </div>
             </section>
           </div>
