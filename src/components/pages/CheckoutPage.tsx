@@ -466,7 +466,7 @@ export default function CheckoutPage() {
                   </div>
 
                   {/* Terms Checkbox */}
-                  <div className="flex items-start gap-3 p-4 bg-soft-white border border-warm-sand-beige rounded-lg">
+                  <div className="flex items-start gap-3 p-4 bg-soft-white border-2 border-black rounded-lg">
                     <input
                       type="checkbox"
                       id="termsAccepted"
@@ -482,7 +482,7 @@ export default function CheckoutPage() {
                   </div>
 
                   {/* Disclaimer Acknowledgement Checkbox */}
-                  <div className="flex items-start gap-3 p-4 bg-soft-white border border-warm-sand-beige rounded-lg">
+                  <div className="flex items-start gap-3 p-4 bg-soft-white border-2 border-black rounded-lg">
                     <input
                       type="checkbox"
                       id="disclaimerAcknowledged"
