@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, LogOut, User, ShoppingCart } from 'lucide-react';
 import { useState, memo } from 'react';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -13,6 +13,13 @@ function Header() {
   const { member, isAuthenticated, actions } = useMember();
   const { isTrainer, isClient } = useRole();
   const { itemCount, actions: cartActions } = useCart();
+  const location = useLocation();
+  
+  // Check if we're on the online training page
+  const isOnlineTrainingPage = location.pathname === '/online-training';
+  const linkTextColor = isOnlineTrainingPage ? 'text-charcoal-black' : 'text-white';
+  const linkHoverColor = isOnlineTrainingPage ? 'hover:text-gray-600' : 'hover:text-gray-300';
+  const iconColor = isOnlineTrainingPage ? 'text-charcoal-black' : 'text-white';
 
   return (
     <header 
@@ -24,13 +31,13 @@ function Header() {
           <nav className="hidden md:flex items-center gap-6 lg:gap-8 absolute left-0 h-full">
             <Link 
               to="/online-training" 
-              className="font-paragraph text-sm text-white hover:text-gray-300 transition-colors duration-200 flex items-center h-full min-h-[44px]"
+              className={`font-paragraph text-sm ${linkTextColor} ${linkHoverColor} transition-colors duration-200 flex items-center h-full min-h-[44px]`}
             >
               <span dangerouslySetInnerHTML={{ __html: t.nav.onlineTraining }} />
             </Link>
             <Link 
               to="/about" 
-              className="font-paragraph text-sm text-white hover:text-gray-300 transition-colors duration-200 flex items-center h-full min-h-[44px]"
+              className={`font-paragraph text-sm ${linkTextColor} ${linkHoverColor} transition-colors duration-200 flex items-center h-full min-h-[44px]`}
             >
               <span dangerouslySetInnerHTML={{ __html: t.nav.faceToFaceTraining }} />
             </Link>
@@ -48,41 +55,41 @@ function Header() {
                 {isTrainer ? (
                   <Link 
                     to="/trainer" 
-                    className="font-paragraph text-sm lg:text-base text-white hover:text-gray-300 transition-colors duration-200 flex items-center min-h-[44px] px-2"
+                    className={`font-paragraph text-sm lg:text-base ${linkTextColor} ${linkHoverColor} transition-colors duration-200 flex items-center min-h-[44px] px-2`}
                   >
                     Trainer Hub
                   </Link>
                 ) : (
                   <Link 
                     to="/portal" 
-                    className="font-paragraph text-sm lg:text-base text-white hover:text-gray-300 transition-colors duration-200 flex items-center min-h-[44px] px-2"
+                    className={`font-paragraph text-sm lg:text-base ${linkTextColor} ${linkHoverColor} transition-colors duration-200 flex items-center min-h-[44px] px-2`}
                   >
                     My Portal
                   </Link>
                 )}
                 <button
                   onClick={actions.logout}
-                  className="font-paragraph text-sm lg:text-base text-white hover:text-gray-300 transition-colors duration-200 flex items-center gap-2 min-h-[44px] px-2"
+                  className={`font-paragraph text-sm lg:text-base ${linkTextColor} ${linkHoverColor} transition-colors duration-200 flex items-center gap-2 min-h-[44px] px-2`}
                 >
-                  <LogOut size={16} className="text-white" />
+                  <LogOut size={16} className={iconColor} />
                   <span className="hidden lg:inline">Sign Out</span>
                 </button>
               </>
             ) : (
               <button 
                 onClick={actions.login}
-                className="text-white hover:text-gray-300 transition-colors duration-200 flex items-center justify-center min-h-[44px] min-w-[44px]"
+                className={`${linkTextColor} ${linkHoverColor} transition-colors duration-200 flex items-center justify-center min-h-[44px] min-w-[44px]`}
               >
-                <User size={20} className="text-white" />
+                <User size={20} className={iconColor} />
               </button>
             )}
             <div className="flex items-center gap-2 lg:gap-4">
               <LanguageSwitcher />
               <button
                 onClick={cartActions.toggleCart}
-                className="relative text-white hover:text-gray-300 transition-colors duration-200 flex items-center justify-center min-h-[44px] min-w-[44px]"
+                className={`relative ${linkTextColor} ${linkHoverColor} transition-colors duration-200 flex items-center justify-center min-h-[44px] min-w-[44px]`}
               >
-                <ShoppingCart size={20} className="text-white" />
+                <ShoppingCart size={20} className={iconColor} />
                 {itemCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-black text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                     {itemCount}
@@ -97,10 +104,10 @@ function Header() {
             <LanguageSwitcher />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className={`${linkTextColor} p-2 min-h-[44px] min-w-[44px] flex items-center justify-center`}
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? <X size={24} className="text-white" /> : <Menu size={24} className="text-white" />}
+              {isMenuOpen ? <X size={24} className={iconColor} /> : <Menu size={24} className={iconColor} />}
             </button>
           </div>
         </div>
