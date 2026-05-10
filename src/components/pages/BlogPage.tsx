@@ -224,9 +224,9 @@ export default function FaceToFaceTrainingPage() {
         </div>
       </section>
       {/* Why Face-to-Face Section */}
-      <section className="py-24 px-8 lg:px-20 bg-warm-sand-beige/30">
+      <section className="py-24 px-8 lg:px-20 bg-white">
         <div className="max-w-[100rem] mx-auto">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="grid md:grid-cols-2 gap-16 items-center bg-white">
             <div>
               <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-8">
                 {t.blog.whyChooseFaceToFace}
