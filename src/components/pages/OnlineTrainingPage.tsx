@@ -324,7 +324,7 @@ export default function OnlineTrainingPage() {
           <div className="bg-soft-white rounded-2xl p-12 border border-warm-sand-beige">
             <div className="flex justify-center gap-1 mb-6">
               {[...Array(5)].map((_, i) => (
-                <span key={i} className="text-soft-bronze text-2xl">★</span>
+                <span key={i} className="text-soft-bronze text-2xl font-bold">★</span>
               ))}
             </div>
             <p className="font-paragraph text-xl text-charcoal-black mb-6 leading-relaxed italic">
