@@ -502,7 +502,7 @@ export default function CheckoutPage() {
                 <button
                   type="submit"
                   disabled={isProcessing}
-                  className="w-full bg-charcoal-black text-soft-white py-4 rounded-lg font-medium text-lg hover:bg-soft-bronze transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full bg-gold text-charcoal-black py-4 rounded-lg font-medium text-lg hover:bg-yellow-600 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {isProcessing ? (
                     <>
