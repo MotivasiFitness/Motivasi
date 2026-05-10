@@ -15,7 +15,7 @@ function Header() {
   const { itemCount, actions: cartActions } = useCart();
   const location = useLocation();
   
-  // Check if we're on the online training, about, blog, privacy, terms, disclaimer, or checkout page
+  // Check if we're on the online training, about, blog, privacy, terms, disclaimer, checkout, or payment success page
   const isOnlineTrainingPage = location.pathname === '/online-training';
   const isAboutPage = location.pathname === '/about';
   const isBlogPage = location.pathname === '/blog';
@@ -23,7 +23,8 @@ function Header() {
   const isTermsPage = location.pathname === '/terms';
   const isDisclaimerPage = location.pathname === '/disclaimer';
   const isCheckoutPage = location.pathname === '/checkout';
-  const shouldUseBlackText = isOnlineTrainingPage || isAboutPage || isBlogPage || isPrivacyPage || isTermsPage || isDisclaimerPage || isCheckoutPage;
+  const isPaymentSuccessPage = location.pathname === '/payment-success';
+  const shouldUseBlackText = isOnlineTrainingPage || isAboutPage || isBlogPage || isPrivacyPage || isTermsPage || isDisclaimerPage || isCheckoutPage || isPaymentSuccessPage;
   const linkTextColor = shouldUseBlackText ? 'text-charcoal-black' : 'text-white';
   const linkHoverColor = shouldUseBlackText ? 'hover:text-gray-600' : 'hover:text-gray-300';
   const iconColor = shouldUseBlackText ? 'text-charcoal-black' : 'text-white';
