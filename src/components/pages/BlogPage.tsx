@@ -162,8 +162,8 @@ export default function FaceToFaceTrainingPage() {
                 <ul className="space-y-4 mb-8">
                   {package_.features.map((feature, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <CheckCircle size={20} className={`flex-shrink-0 mt-0.5 ${package_.featured ? 'text-soft-bronze' : 'text-soft-bronze'}`} />
-                      <span className={`font-paragraph ${package_.featured ? 'text-soft-white/90' : 'text-charcoal-black'}`}>
+                      <CheckCircle size={20} className={`flex-shrink-0 mt-0.5 ${idx === 1 ? 'text-white' : package_.featured ? 'text-soft-bronze' : 'text-soft-bronze'}`} />
+                      <span className={`font-paragraph ${idx === 1 ? 'text-white' : package_.featured ? 'text-soft-white/90' : 'text-charcoal-black'}`}>
                         {feature}
                       </span>
                     </li>
@@ -171,11 +171,7 @@ export default function FaceToFaceTrainingPage() {
                 </ul>
                 <button
                   onClick={scrollToForm}
-                  className={`w-full py-3 rounded-lg font-medium text-lg transition-all duration-300 ${
-                    package_.featured
-                      ? 'bg-soft-bronze text-soft-white hover:bg-soft-white hover:text-charcoal-black'
-                      : 'bg-charcoal-black text-soft-white hover:bg-soft-bronze'
-                  }`}
+                  className="w-full bg-gold text-charcoal-black py-3 rounded-lg font-medium text-lg transition-all duration-300 hover:bg-opacity-90"
                 >
                   {t.blog.getStarted}
                 </button>
