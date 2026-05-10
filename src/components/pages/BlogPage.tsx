@@ -469,7 +469,7 @@ export default function FaceToFaceTrainingPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
               onClick={scrollToForm}
-              className="bg-soft-bronze text-soft-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-opacity-90 transition-colors"
+              className="bg-gold text-charcoal-black px-8 py-4 rounded-lg font-medium text-lg hover:bg-opacity-90 transition-colors"
             >
               {t.blog.bookConsultation}
             </button>
