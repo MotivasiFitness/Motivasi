@@ -162,8 +162,8 @@ export default function FaceToFaceTrainingPage() {
                 <ul className="space-y-4 mb-8">
                   {package_.features.map((feature, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <CheckCircle size={20} className={`flex-shrink-0 mt-0.5 ${idx === 1 ? 'text-white' : package_.featured ? 'text-soft-bronze' : 'text-soft-bronze'}`} />
-                      <span className={`font-paragraph ${idx === 1 ? 'text-white' : package_.featured ? 'text-soft-white/90' : 'text-charcoal-black'}`}>
+                      <CheckCircle size={20} className={`flex-shrink-0 mt-0.5 ${idx === 1 ? 'text-white' : idx === 0 ? 'text-white' : 'text-soft-bronze'}`} />
+                      <span className={`font-paragraph ${idx === 1 ? 'text-white' : idx === 0 ? 'text-white' : 'text-charcoal-black'}`}>
                         {feature}
                       </span>
                     </li>
