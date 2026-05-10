@@ -15,11 +15,13 @@ function Header() {
   const { itemCount, actions: cartActions } = useCart();
   const location = useLocation();
   
-  // Check if we're on the online training page
+  // Check if we're on the online training or about page
   const isOnlineTrainingPage = location.pathname === '/online-training';
-  const linkTextColor = isOnlineTrainingPage ? 'text-charcoal-black' : 'text-white';
-  const linkHoverColor = isOnlineTrainingPage ? 'hover:text-gray-600' : 'hover:text-gray-300';
-  const iconColor = isOnlineTrainingPage ? 'text-charcoal-black' : 'text-white';
+  const isAboutPage = location.pathname === '/about';
+  const shouldUseBlackText = isOnlineTrainingPage || isAboutPage;
+  const linkTextColor = shouldUseBlackText ? 'text-charcoal-black' : 'text-white';
+  const linkHoverColor = shouldUseBlackText ? 'hover:text-gray-600' : 'hover:text-gray-300';
+  const iconColor = shouldUseBlackText ? 'text-charcoal-black' : 'text-white';
 
   return (
     <header 
