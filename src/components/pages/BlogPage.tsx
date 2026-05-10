@@ -147,10 +147,10 @@ export default function FaceToFaceTrainingPage() {
                     {t.blog.mostPopular}
                   </div>
                 )}
-                <h3 className={`font-heading text-3xl font-bold mb-2 ${package_.featured ? 'text-white' : 'text-charcoal-black'}`}>
+                <h3 className={`font-heading text-3xl font-bold mb-2 ${idx === 1 ? 'text-white' : package_.featured ? 'text-white' : 'text-charcoal-black'}`}>
                   {package_.title}
                 </h3>
-                <div className={`flex items-baseline gap-2 mb-2 ${package_.featured ? 'text-white' : 'text-soft-bronze'}`}>
+                <div className={`flex items-baseline gap-2 mb-2 ${idx === 1 ? 'text-white' : package_.featured ? 'text-white' : 'text-soft-bronze'}`}>
                   <span className="font-heading text-4xl font-bold">{package_.price}</span>
                   <span className={package_.featured ? 'text-white' : 'text-warm-grey'}>
                     {package_.duration}
