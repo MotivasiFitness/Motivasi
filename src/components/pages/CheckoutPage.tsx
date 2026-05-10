@@ -389,7 +389,7 @@ export default function CheckoutPage() {
                 </div>
 
                 {/* Card Details */}
-                <div className="bg-warm-sand-beige/20 border border-warm-sand-beige rounded-2xl p-8">
+                <div className="bg-warm-sand-beige/20 border-2 border-black rounded-2xl p-8">
                   <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-6">
                     Payment Details
                   </h2>
