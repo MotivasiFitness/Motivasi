@@ -24,7 +24,7 @@ export default function PrivacyPage() {
     <div className="bg-soft-white">
       {/* Header */}
       <section className="py-16 px-8 lg:px-20 bg-warm-sand-beige">
-        <div className="max-w-[100rem] mx-auto">
+        <div className="max-w-[100rem] mx-auto text-center">
           <Link
             to="/"
             className="inline-flex items-center gap-2 text-soft-bronze font-paragraph text-base hover:underline mb-8"
