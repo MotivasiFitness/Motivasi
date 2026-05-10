@@ -2,6 +2,7 @@ import { useLanguage } from '@/i18n/LanguageContext';
 import { Language } from '@/i18n/translations';
 import { Globe } from 'lucide-react';
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const languageOptions: { code: Language; label: string; flag: string }[] = [
   { code: 'en-GB', label: 'English (UK)', flag: '🇬🇧' },
@@ -15,6 +16,13 @@ const languageOptions: { code: Language; label: string; flag: string }[] = [
 export default function LanguageSwitcher() {
   const { language, setLanguage, t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  // Check if we're on pages that need black text
+  const isOnlineTrainingPage = location.pathname === '/online-training';
+  const isAboutPage = location.pathname === '/about';
+  const isBlogPage = location.pathname === '/blog';
+  const shouldUseBlackText = isOnlineTrainingPage || isAboutPage || isBlogPage;
 
   const currentLanguage = languageOptions.find(opt => opt.code === language);
 
@@ -22,11 +30,15 @@ export default function LanguageSwitcher() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-center h-10 w-10 rounded-lg hover:bg-gray-100 transition-colors text-white hover:text-gray-300"
+        className={`flex items-center justify-center h-10 w-10 rounded-lg hover:bg-gray-100 transition-colors ${
+          shouldUseBlackText 
+            ? 'text-charcoal-black hover:text-gray-600' 
+            : 'text-white hover:text-gray-300'
+        }`}
         aria-label={t.header.selectLanguage}
         title={t.header.selectLanguage}
       >
-        <Globe size={20} className="text-white" />
+        <Globe size={20} className={shouldUseBlackText ? 'text-charcoal-black' : 'text-white'} />
       </button>
 
       {isOpen && (
