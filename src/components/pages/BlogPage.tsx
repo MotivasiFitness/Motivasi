@@ -93,7 +93,7 @@ export default function FaceToFaceTrainingPage() {
         </div>
       </section>
       {/* Training Options Section */}
-      <section className="py-24 px-8 lg:px-20">
+      <section className="py-24 px-8 lg:px-20 bg-white">
         <div className="max-w-[100rem] mx-auto">
           <div className="text-center mb-16">
             <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-6">
