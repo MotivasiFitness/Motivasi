@@ -20,22 +20,24 @@ export default function AccessibilityPage() {
         <div className="max-w-[100rem] mx-auto">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-soft-bronze font-paragraph text-base hover:underline mb-8"
+            className="inline-flex items-center gap-2 text-dark-gray font-paragraph text-base hover:underline mb-8"
           >
             <ArrowLeft size={20} />
             Back to Home
           </Link>
-          <h1 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-4">
-            Accessibility Statement
-          </h1>
-          <p className="font-paragraph text-lg text-charcoal-black">
-            Our commitment to making Motivasi accessible to everyone
-          </p>
+          <div className="text-center">
+            <h1 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-4">
+              Accessibility Statement
+            </h1>
+            <p className="font-paragraph text-lg text-charcoal-black">
+              Our commitment to making Motivasi accessible to everyone
+            </p>
+          </div>
         </div>
       </section>
 
       {/* Main Content */}
-      <section className="py-16 px-8 lg:px-20">
+      <section className="py-16 px-8 lg:px-20 bg-white">
         <div className="max-w-[100rem] mx-auto grid lg:grid-cols-4 gap-12">
           {/* Sidebar Navigation */}
           <div className="lg:col-span-1">
@@ -59,6 +61,21 @@ export default function AccessibilityPage() {
 
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-12">
+            {/* Introduction */}
+            <section className="scroll-mt-20">
+              <div className="bg-slate-blue/10 border border-slate-blue/30 rounded-2xl p-8 flex gap-4">
+                <Eye className="w-6 h-6 text-slate-blue flex-shrink-0 mt-1" />
+                <div>
+                  <h2 className="font-heading text-2xl font-bold text-charcoal-black mb-3">
+                    Our Commitment to Accessibility
+                  </h2>
+                  <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
+                    Motivasi is committed to ensuring digital accessibility for people with disabilities. We are continually improving the user experience for everyone and applying relevant accessibility standards. This accessibility statement applies to www.motivasi.co.uk and all associated pages, services, and digital content provided by Motivasi.
+                  </p>
+                </div>
+              </div>
+            </section>
+
             {/* Commitment */}
             <section id="commitment" className="scroll-mt-20">
               <h2 className="font-heading text-4xl font-bold text-charcoal-black mb-6">
@@ -253,21 +270,28 @@ export default function AccessibilityPage() {
               <h2 className="font-heading text-4xl font-bold text-charcoal-black mb-6">
                 Accessibility Feedback
               </h2>
-              <div className="space-y-4 font-paragraph text-base text-warm-grey leading-relaxed">
-                <p>
+              <div className="space-y-6">
+                <p className="font-paragraph text-base text-warm-grey leading-relaxed">
                   We welcome feedback on the accessibility of our website. If you encounter any accessibility barriers or have suggestions for improvement, please contact us:
                 </p>
-                <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-2xl p-8">
-                  <p className="font-paragraph text-base text-charcoal-black mb-4">
-                    <span className="font-bold">Email:</span>
-                  </p>
-                  <a
-                    href="mailto:hello@motivasi.co.uk?subject=Accessibility%20Feedback"
-                    className="text-soft-bronze hover:underline font-medium text-lg"
-                  >
-                    hello@motivasi.co.uk
-                  </a>
-                  <p className="font-paragraph text-sm text-warm-grey mt-4">
+
+                <div className="bg-warm-sand-beige/30 border border-warm-sand-beige rounded-2xl p-8 space-y-4">
+                  <div className="flex gap-4">
+                    <Eye className="w-6 h-6 text-soft-bronze flex-shrink-0 mt-1" />
+                    <div>
+                      <h3 className="font-heading text-lg font-bold text-charcoal-black mb-2">
+                        Email
+                      </h3>
+                      <a
+                        href="mailto:hello@motivasi.co.uk?subject=Accessibility%20Feedback"
+                        className="font-paragraph text-soft-bronze hover:underline"
+                      >
+                        hello@motivasi.co.uk
+                      </a>
+                    </div>
+                  </div>
+
+                  <p className="font-paragraph text-sm text-warm-grey">
                     Please include details about the accessibility issue you encountered and any suggestions for improvement. We aim to respond to all accessibility feedback within 5 business days.
                   </p>
                 </div>
@@ -305,16 +329,16 @@ export default function AccessibilityPage() {
 
             {/* Final CTA */}
             <section className="mt-16 pt-12 border-t border-warm-sand-beige">
-              <div className="bg-charcoal-black text-soft-white rounded-2xl p-8 md:p-12 text-center">
+              <div className="bg-slate-blue text-soft-white rounded-2xl p-8 md:p-12 text-center">
                 <h2 className="font-heading text-3xl font-bold mb-4">
                   Need Help?
                 </h2>
-                <p className="font-paragraph text-lg text-warm-grey mb-8">
+                <p className="font-paragraph text-lg text-soft-white mb-8">
                   If you have any questions about accessibility or need assistance, please don't hesitate to contact us.
                 </p>
                 <a
                   href="mailto:hello@motivasi.co.uk"
-                  className="inline-block bg-soft-bronze text-soft-white px-10 py-4 rounded-lg font-medium text-lg hover:bg-soft-white hover:text-charcoal-black transition-colors"
+                  className="inline-block bg-gold text-charcoal-black px-10 py-4 rounded-lg font-medium text-lg hover:bg-gold/90 transition-colors"
                 >
                   Contact Us
                 </a>
