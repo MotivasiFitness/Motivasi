@@ -27,7 +27,8 @@ export default function LanguageSwitcher() {
   const isDisclaimerPage = location.pathname === '/disclaimer';
   const isCheckoutPage = location.pathname === '/checkout';
   const isPaymentSuccessPage = location.pathname === '/payment-success';
-  const shouldUseBlackText = isOnlineTrainingPage || isAboutPage || isBlogPage || isPrivacyPage || isTermsPage || isDisclaimerPage || isCheckoutPage || isPaymentSuccessPage;
+  const isStorePage = location.pathname.startsWith('/store');
+  const shouldUseBlackText = isOnlineTrainingPage || isAboutPage || isBlogPage || isPrivacyPage || isTermsPage || isDisclaimerPage || isCheckoutPage || isPaymentSuccessPage || isStorePage;
 
   const currentLanguage = languageOptions.find(opt => opt.code === language);
 
