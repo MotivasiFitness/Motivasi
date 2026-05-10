@@ -152,11 +152,11 @@ export default function FaceToFaceTrainingPage() {
                 </h3>
                 <div className={`flex items-baseline gap-2 mb-2 ${idx === 1 ? 'text-white' : package_.featured ? 'text-white' : 'text-soft-bronze'}`}>
                   <span className="font-heading text-4xl font-bold">{package_.price}</span>
-                  <span className={package_.featured ? 'text-white' : 'text-warm-grey'}>
+                  <span className={idx === 1 ? 'text-white' : package_.featured ? 'text-white' : 'text-warm-grey'}>
                     {package_.duration}
                   </span>
                 </div>
-                <p className={`font-paragraph mb-8 ${package_.featured ? 'text-white' : 'text-charcoal-black'}`}>
+                <p className={`font-paragraph mb-8 ${idx === 1 ? 'text-white' : package_.featured ? 'text-white' : 'text-charcoal-black'}`}>
                   {package_.description}
                 </p>
                 <ul className="space-y-4 mb-8">
