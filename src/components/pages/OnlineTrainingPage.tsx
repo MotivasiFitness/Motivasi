@@ -448,7 +448,7 @@ export default function OnlineTrainingPage() {
           </div>
 
           {/* Decision Prompt */}
-          <div className="mt-16 bg-soft-white border border-warm-sand-beige rounded-2xl p-8 md:p-12">
+          <div className="mt-16 bg-white border border-warm-sand-beige rounded-2xl p-8 md:p-12">
             <p className="font-paragraph text-lg text-charcoal-black leading-relaxed mb-8">
               Not sure which option is right for you? If your schedule changes week to week, online coaching gives you expert support without the pressure of fixed appointments. Most of my clients choose online coaching for flexibility, accountability, and long-term results.
             </p>
