@@ -788,7 +788,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* --- Early CTA Section (Reduced Friction) --- */}
-      <section className="relative py-24 px-8 lg:px-24 overflow-hidden" style={{ background: 'linear-gradient(to right, #2E5090 95%, #2E5090)' }}>
+      <section className="relative py-24 px-8 lg:px-24 overflow-hidden" style={{ background: 'linear-gradient(to right, #986A6C 95%, #986A6C)' }}>
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-rose-blush rounded-full blur-3xl" />
