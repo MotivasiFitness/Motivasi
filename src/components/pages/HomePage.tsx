@@ -273,9 +273,22 @@ function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) {
               }}
               className={`h-2 rounded-full transition-all ${
                 index === currentIndex
-                  ? 'bg-slate-blue w-8'
-                  : 'bg-slate-blue/30 w-2 hover:bg-slate-blue/50'
+                  ? 'w-8'
+                  : 'w-2'
               }`}
+              style={{
+                backgroundColor: index === currentIndex ? '#9b6a6c' : 'rgba(155, 106, 108, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                if (index !== currentIndex) {
+                  e.currentTarget.style.backgroundColor = 'rgba(155, 106, 108, 0.5)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (index !== currentIndex) {
+                  e.currentTarget.style.backgroundColor = 'rgba(155, 106, 108, 0.3)';
+                }
+              }}
               whileHover={{ scale: 1.2 }}
               aria-label={`Go to testimonial ${index + 1}`}
             />
