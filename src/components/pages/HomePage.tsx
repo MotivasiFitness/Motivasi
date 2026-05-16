@@ -810,11 +810,11 @@ export default function HomePage() {
             >
               <Link
                 to="/store"
-                className="inline-flex items-center gap-3 text-charcoal-black px-14 py-6 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-2xl relative overflow-hidden group"
+                className="inline-flex items-center gap-3 px-14 py-6 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-2xl relative overflow-hidden group"
                 style={{ backgroundColor: '#58355E' }}
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-500 -skew-x-12"></span>
-                <span className="relative flex items-center gap-3">
+                <span className="relative flex items-center gap-3 text-white">
                   Book a 15 minute Consultation
                   <motion.span
                     animate={{ x: [0, 4, 0] }}
