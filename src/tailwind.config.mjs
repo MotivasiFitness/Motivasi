@@ -43,9 +43,11 @@ export default {
                 'slate-blue': '#2E5090',
                 // Gold
                 'gold': '#D4AF37',
+                // CTA Purple
+                'cta-purple': '#58355E',
                 
                 // Semantic mappings (using new brand colors)
-                primary: '#111111',
+                primary: '#58355E',
                 secondary: '#F5F1EA',
                 background: '#E8E2D8',
                 foreground: '#1A1A1A',
@@ -57,11 +59,11 @@ export default {
                 // Aliases for backward compatibility (mapped to new palette)
                 'off-white': '#E8E2D8',
                 'soft-white': '#F5F1EA',
-                'warm-bronze': '#111111',
+                'warm-bronze': '#58355E',
                 'soft-bronze': '#6E6A64',
                 'warm-grey': '#6E6A64',
                 'charcoal-black': '#1A1A1A',
-                'dark-gray': '#111111',
+                'dark-gray': '#58355E',
                 'warm-sand-beige': '#E8E2D8',
                 'white': '#FFFFFF',
                 'light-gray': '#F5F1EA',
@@ -70,8 +72,8 @@ export default {
                 'rose-blush': '#F5F1EA',
                 'soft-lavender': '#F5F1EA',
                 'sage-green': '#E8E2D8',
-                'accent-blue': '#111111',
-                'accent-teal': '#111111',
+                'accent-blue': '#58355E',
+                'accent-teal': '#58355E',
                 'warm-cream': '#F5F1EA',
             },
         },
