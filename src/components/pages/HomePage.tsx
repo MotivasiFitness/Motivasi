@@ -779,8 +779,8 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <a href="mailto:info@motivasi.com" className="inline-flex items-center gap-2 hover:bg-yellow-500 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border-2 border-yellow-500 text-primary-foreground bg-cta-buttons">
-                  Book a Consultation <ArrowRight size={20} className="bg-[#58355eff]" />
+                <a href="mailto:info@motivasi.com" className="inline-flex items-center gap-2 hover:opacity-90 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-white" style={{ backgroundColor: '#58355E' }}>
+                  Book a Consultation <ArrowRight size={20} className="text-white" />
                 </a>
               </div>
             </AnimatedElement>
