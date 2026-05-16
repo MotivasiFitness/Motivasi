@@ -773,19 +773,19 @@ export default function HomePage() {
                 
                 <div className="space-y-4 mb-8">
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-yellow-400 flex items-center justify-center flex-shrink-0 mt-1">
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ backgroundColor: '#f2d7d9' }}>
                       <span className="text-charcoal-black font-bold text-sm">✓</span>
                     </div>
                     <p className="text-white/90">Personalised programming tailored to you</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-yellow-400 flex items-center justify-center flex-shrink-0 mt-1">
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ backgroundColor: '#f2d7d9' }}>
                       <span className="text-charcoal-black font-bold text-sm">✓</span>
                     </div>
                     <p className="text-white/90">Real results in 12 weeks or less</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-yellow-400 flex items-center justify-center flex-shrink-0 mt-1">
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ backgroundColor: '#f2d7d9' }}>
                       <span className="text-charcoal-black font-bold text-sm">✓</span>
                     </div>
                     <p className="text-white/90">Expert guidance & every progression</p>
