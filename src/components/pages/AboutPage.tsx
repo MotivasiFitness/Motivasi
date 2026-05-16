@@ -69,7 +69,7 @@ export default function AboutPage() {
             <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-12 text-center">
               Why Women Choose to Train With Me
             </h2>
-            <div className="bg-warm-sand-beige/30 rounded-2xl p-12 md:p-16">
+            <div className="rounded-2xl p-12 md:p-16\" style={{ backgroundColor: '#F2D7D9' }}>
               <ul className="space-y-8">
                 <li className="flex gap-6 items-start">
                   <div className="w-8 h-8 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-1">

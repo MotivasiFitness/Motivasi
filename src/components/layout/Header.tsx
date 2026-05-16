@@ -34,7 +34,7 @@ function Header() {
     <header 
       className="sticky top-0 z-40 shadow-sm safe-area-top bg-transparent"
     >
-      <div className="max-w-[100rem] mx-auto px-3 sm:px-4 md:px-6 lg:px-20">
+      <div className="max-w-[100rem] mx-auto px-3 sm:px-4 md:px-6 lg:px-20 bg-secondary">
         <div className="flex items-center justify-center h-14 sm:h-16 md:h-20 relative">
           {/* Left Navigation - Hidden on Mobile */}
           <nav className="hidden md:flex items-center gap-6 lg:gap-8 absolute left-0 h-full">
