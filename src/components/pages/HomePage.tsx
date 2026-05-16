@@ -731,7 +731,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* --- Training Locations Section --- */}
-      <section className="relative w-full py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24" style={{ backgroundColor: '#986A6C' }}>
+      <section className="relative w-full py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24" style={{ backgroundColor: '#9B6A6C' }}>
         <div className="max-w-[100rem] mx-auto">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white" style={{ wordSpacing: '0.15em' }}>
