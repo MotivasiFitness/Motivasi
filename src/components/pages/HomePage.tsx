@@ -691,11 +691,11 @@ export default function HomePage() {
             </AnimatedElement>
 
             {/* Feature card 2 */}
-            <AnimatedElement className={`group bg-rose-blush/5 p-12 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-rose-blush`}>
+            <AnimatedElement className={`group bg-rose-blush/5 p-12 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-primary`}>
               <div className="flex flex-col gap-8 items-center h-full text-center">
-                <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-emerald-green/40 shadow-md`}>
-                  <div className="text-emerald-green">
-                    <Dumbbell className="w-6 h-6 stroke-[2.5] text-emerald-green" />
+                <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-primary shadow-md`}>
+                  <div className="text-primary">
+                    <Dumbbell className="w-6 h-6 stroke-[2.5] text-primary" />
                   </div>
                 </div>
                 <div>
@@ -710,11 +710,11 @@ export default function HomePage() {
             </AnimatedElement>
 
             {/* Feature card 3 */}
-            <AnimatedElement className={`group bg-soft-lavender/5 p-12 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-soft-lavender`}>
+            <AnimatedElement className={`group bg-soft-lavender/5 p-12 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border border-warm-cream/50 hover:border-warm-cream border-l-2 border-l-primary`}>
               <div className="flex flex-col gap-8 items-center h-full text-center">
-                <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-emerald-green/40 shadow-md`}>
-                  <div className="text-emerald-green">
-                    <Leaf className="w-6 h-6 text-emerald-green fill-emerald-green" />
+                <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-primary shadow-md`}>
+                  <div className="text-primary">
+                    <Leaf className="w-6 h-6 text-primary fill-primary" />
                   </div>
                 </div>
                 <div>
