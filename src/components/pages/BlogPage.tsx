@@ -171,7 +171,8 @@ export default function FaceToFaceTrainingPage() {
                 </ul>
                 <button
                   onClick={scrollToForm}
-                  className="w-full bg-gold text-charcoal-black py-3 rounded-lg font-medium text-lg transition-all duration-300 hover:bg-opacity-90"
+                  className="w-full py-3 rounded-lg font-medium text-lg transition-all duration-300 hover:opacity-90"
+                  style={{ backgroundColor: '#9B6A6C', color: 'white' }}
                 >
                   {t.blog.getStarted}
                 </button>
@@ -448,7 +449,8 @@ export default function FaceToFaceTrainingPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gold text-charcoal-black py-3 rounded-lg font-medium text-lg hover:bg-yellow-600 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-3 rounded-lg font-medium text-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90"
+                  style={{ backgroundColor: '#9B6A6C', color: 'white' }}
                 >
                   {isSubmitting ? t.blog.sending : t.blog.sendBtn}
                 </button>
@@ -469,7 +471,8 @@ export default function FaceToFaceTrainingPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
               onClick={scrollToForm}
-              className="bg-gold text-charcoal-black px-8 py-4 rounded-lg font-medium text-lg hover:bg-opacity-90 transition-colors"
+              className="px-8 py-4 rounded-lg font-medium text-lg hover:opacity-90 transition-colors"
+              style={{ backgroundColor: '#9B6A6C', color: 'white' }}
             >
               {t.blog.bookConsultation}
             </button>
