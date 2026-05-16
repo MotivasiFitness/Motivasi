@@ -255,7 +255,7 @@ function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => paginate(-1)}
-          className="p-3 rounded-full bg-charcoal-black text-white hover:bg-warm-bronze transition-colors"
+          className="p-3 rounded-full bg-[#58355E] text-white hover:bg-warm-bronze transition-colors"
           aria-label="Previous testimonial"
         >
           <ChevronLeft size={24} />
@@ -286,7 +286,7 @@ function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => paginate(1)}
-          className="p-3 rounded-full bg-charcoal-black text-white hover:bg-warm-bronze transition-colors"
+          className="p-3 rounded-full bg-[#58355E] text-white hover:bg-warm-bronze transition-colors"
           aria-label="Next testimonial"
         >
           <ChevronRight size={24} />
