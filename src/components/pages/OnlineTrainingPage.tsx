@@ -34,8 +34,8 @@ export default function OnlineTrainingPage() {
               </p>
               <button
                 onClick={scrollToForm}
-                className="inline-flex items-center gap-2 text-charcoal-black px-10 py-5 rounded-full font-medium text-lg hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: '#FFB81C' }}
+                className="inline-flex items-center gap-2 text-white px-10 py-5 rounded-full font-medium text-lg hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: '#58355E' }}
               >
                 Get Started <ArrowRight size={20} />
               </button>
@@ -347,8 +347,8 @@ export default function OnlineTrainingPage() {
           </p>
           <button
             onClick={scrollToForm}
-            className="inline-flex items-center gap-2 text-charcoal-black px-10 py-5 rounded-full font-medium text-lg hover:opacity-90 transition-opacity"
-            style={{ backgroundColor: '#FFB81C' }}
+            className="inline-flex items-center gap-2 text-white px-10 py-5 rounded-full font-medium text-lg hover:opacity-90 transition-opacity"
+            style={{ backgroundColor: '#58355E' }}
           >
             Get Started Now <ArrowRight size={20} />
           </button>
@@ -384,8 +384,8 @@ export default function OnlineTrainingPage() {
 
               <Link
                 to="/parq"
-                className="block w-full text-charcoal-black text-center py-4 rounded-lg font-medium text-lg hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: '#FFB81C' }}
+                className="block w-full text-white text-center py-4 rounded-lg font-medium text-lg hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: '#58355E' }}
               >
                 Complete Health Questionnaire
               </Link>
