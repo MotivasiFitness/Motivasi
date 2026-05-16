@@ -337,7 +337,7 @@ export default function OnlineTrainingPage() {
         </div>
       </section>
       {/* CTA Section */}
-      <section className="py-24 px-8 lg:px-20" style={{ backgroundColor: '#2E5090' }}>
+      <section className="py-24 px-8 lg:px-20" style={{ backgroundColor: '#9B6A6C' }}>
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="font-heading text-5xl font-bold text-white mb-6">
             Ready to Transform From Home?
