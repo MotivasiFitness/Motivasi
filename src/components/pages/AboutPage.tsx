@@ -118,7 +118,7 @@ export default function AboutPage() {
       </section>
 
       {/* Mission Section */}
-      <section className="py-24 px-8 lg:px-20" style={{ backgroundColor: '#2E5090' }}>
+      <section className="py-24 px-8 lg:px-20" style={{ backgroundColor: '#EEC9D2' }}>
         <div className="max-w-[100rem] mx-auto">
           <div className="max-w-4xl mx-auto text-center">
             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-6">
