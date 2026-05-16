@@ -64,7 +64,7 @@ export default function AboutPage() {
       </section>
       {/* Why Women Choose to Train With Me Section */}
       <section className="py-24 px-8 lg:px-20 bg-soft-white">
-        <div className="max-w-[100rem] mx-auto">
+        <div className="max-w-[100rem] mx-auto" style={{ backgroundColor: '#F2D7D9' }}>
           <div className="max-w-4xl mx-auto">
             <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-12 text-center">
               Why Women Choose to Train With Me
