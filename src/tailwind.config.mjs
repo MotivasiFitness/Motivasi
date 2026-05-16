@@ -24,57 +24,42 @@ export default {
                 sans: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif"
             },
             colors: {
-                // New Brand Color Palette
-                // Primary background: Warm off-white / stone
-                'primary-bg': '#E8E2D8',
-                // Secondary background: Soft cream
-                'secondary-bg': '#F5F1EA',
-                // Primary text: Deep charcoal / near black
-                'primary-text': '#1A1A1A',
-                // Secondary text: Warm grey
-                'secondary-text': '#6E6A64',
-                // Accent / buttons: Black / dark charcoal
-                'accent': '#111111',
-                // Light contrast areas: Pure white
-                'light-contrast': '#FFFFFF',
-                // Emerald green
-                'emerald-green': '#10B981',
-                // Slate blue
-                'slate-blue': '#2E5090',
-                // Gold
-                'gold': '#D4AF37',
-                // CTA Purple
-                'cta-purple': '#58355E',
-                
-                // Semantic mappings (using new brand colors)
-                primary: '#58355E',
-                secondary: '#F5F1EA',
-                background: '#E8E2D8',
-                foreground: '#1A1A1A',
-                'primary-foreground': '#FFFFFF',
-                'secondary-foreground': '#1A1A1A',
-                destructive: '#D32F2F',
-                'destructive-foreground': '#FFFFFF',
-                
-                // Aliases for backward compatibility (mapped to new palette)
-                'off-white': '#E8E2D8',
-                'soft-white': '#F5F1EA',
-                'warm-bronze': '#58355E',
-                'soft-bronze': '#6E6A64',
-                'warm-grey': '#6E6A64',
-                'charcoal-black': '#1A1A1A',
-                'dark-gray': '#58355E',
-                'warm-sand-beige': '#E8E2D8',
-                'white': '#FFFFFF',
-                'light-gray': '#F5F1EA',
-                'medium-gray': '#6E6A64',
-                // Deprecated legacy colors - use core colors instead
-                'rose-blush': '#F5F1EA',
-                'soft-lavender': '#F5F1EA',
-                'sage-green': '#E8E2D8',
-                'accent-blue': '#58355E',
-                'accent-teal': '#58355E',
-                'warm-cream': '#F5F1EA',
+                primary: "#58355E",
+                "primary-foreground": "#FFFFFF",
+                secondary: "#F5F1EA",
+                "secondary-foreground": "#1A1A1A",
+                background: "#E8E2D8",
+                "primary-bg": "#E8E2D8",
+                "secondary-bg": "#F5F1EA",
+                "primary-text": "#1A1A1A",
+                "secondary-text": "#6E6A64",
+                accent: "#111111",
+                "light-contrast": "#FFFFFF",
+                "emerald-green": "#10B981",
+                "slate-blue": "#2E5090",
+                gold: "#D4AF37",
+                "cta-purple": "#58355E",
+                foreground: "#1A1A1A",
+                destructive: "#D32F2F",
+                "destructive-foreground": "#FFFFFF",
+                "off-white": "#E8E2D8",
+                "soft-white": "#F5F1EA",
+                "warm-bronze": "#58355E",
+                "soft-bronze": "#6E6A64",
+                "warm-grey": "#6E6A64",
+                "charcoal-black": "#1A1A1A",
+                "dark-gray": "#58355E",
+                "warm-sand-beige": "#E8E2D8",
+                white: "#FFFFFF",
+                "light-gray": "#F5F1EA",
+                "medium-gray": "#6E6A64",
+                "rose-blush": "#F5F1EA",
+                "soft-lavender": "#F5F1EA",
+                "sage-green": "#E8E2D8",
+                "accent-blue": "#58355E",
+                "accent-teal": "#58355E",
+                "warm-cream": "#F5F1EA",
+                "cta-buttons": "#58355eff"
             },
         },
     },

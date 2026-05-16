@@ -565,7 +565,6 @@ export default function HomePage() {
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-warm-bronze via-warm-bronze to-warm-bronze origin-left z-50"
         style={{ scaleX }}
       />
-      
       {/* Mobile-Optimized CTA - Floating variant with WhatsApp integration */}
       <MobileOptimizedCTA 
         variant="floating"
@@ -780,15 +779,14 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <a href="mailto:info@motivasi.com" className="inline-flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-charcoal-black px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border-2 border-yellow-500">
-                  Book a Consultation <ArrowRight size={20} />
+                <a href="mailto:info@motivasi.com" className="inline-flex items-center gap-2 hover:bg-yellow-500 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border-2 border-yellow-500 text-primary-foreground bg-cta-buttons">
+                  Book a Consultation <ArrowRight size={20} className="bg-[#58355eff]" />
                 </a>
               </div>
             </AnimatedElement>
           </div>
         </div>
       </section>
-
       {/* --- Early CTA Section (Reduced Friction) --- */}
       <section className="relative py-24 px-8 lg:px-24 overflow-hidden" style={{ background: 'linear-gradient(to right, #2E5090 95%, #2E5090)' }}>
         <div className="absolute inset-0 opacity-5">
@@ -813,7 +811,7 @@ export default function HomePage() {
               <Link
                 to="/store"
                 className="inline-flex items-center gap-3 text-charcoal-black px-14 py-6 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-2xl relative overflow-hidden group"
-                style={{ backgroundColor: '#FFB81C' }}
+                style={{ backgroundColor: '#58355E' }}
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-500 -skew-x-12"></span>
                 <span className="relative flex items-center gap-3">
