@@ -264,7 +264,6 @@ export default function OnlineTrainingPage() {
           </div>
         </div>
       </section>
-
       {/* Why Women Choose Motivasi Section */}
       <section className="py-24 px-8 lg:px-20" style={{ backgroundColor: '#9B6A6C' }}>
         <div className="max-w-4xl mx-auto">
@@ -455,13 +454,13 @@ export default function OnlineTrainingPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/online-training"
-                className="flex-1 bg-yellow-600 text-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-yellow-700 transition-colors text-center"
+                className="flex-1 text-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-yellow-700 transition-colors text-center bg-primary"
               >
                 Book Your Free 10‑Minute Call
               </Link>
               <Link
                 to="/blog"
-                className="flex-1 border-2 border-charcoal-black text-charcoal-black px-8 py-4 rounded-lg font-medium text-lg hover:bg-warm-sand-beige/30 transition-colors text-center"
+                className="flex-1 border-2 border-charcoal-black px-8 py-4 rounded-lg font-medium text-lg hover:bg-warm-sand-beige/30 transition-colors text-center bg-primary text-primary-foreground"
               >
                 Book In-Person Training
               </Link>
