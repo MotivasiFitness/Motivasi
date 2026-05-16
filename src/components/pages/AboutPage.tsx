@@ -342,7 +342,10 @@ export default function AboutPage() {
 
                 <button
                   type="submit"
-                  className="w-full bg-gold text-charcoal-black py-4 px-6 rounded-lg font-paragraph font-bold text-lg hover:bg-gold/80 active:bg-gold/70 transition-all duration-200 shadow-md hover:shadow-lg"
+                  className="w-full py-4 px-6 rounded-lg font-paragraph font-bold text-lg transition-all duration-200 shadow-md hover:shadow-lg text-white"
+                  style={{ backgroundColor: '#9B6A6C' }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#8a5a5c'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#9B6A6C'}
                 >
                   Send Message
                 </button>
