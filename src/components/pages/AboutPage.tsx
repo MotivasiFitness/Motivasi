@@ -160,11 +160,11 @@ export default function AboutPage() {
                 className="bg-soft-white border border-warm-sand-beige rounded-2xl p-8 hover:border-soft-bronze hover:shadow-lg transition-all"
               >
                 {qual.certificateImage && (
-                  <div className="aspect-video w-full rounded-xl overflow-hidden mb-6">
+                  <div className="aspect-video w-full rounded-xl overflow-hidden mb-6 bg-light-gray flex items-center justify-center">
                     <Image
                       src={qual.certificateImage}
                       alt={`${qual.qualificationName} certificate`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                       width={600}
                     />
                   </div>
