@@ -594,8 +594,8 @@ export default function HomePage() {
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Image
-              src="https://static.wixstatic.com/media/93e866_e211b0c1e3844ba8906a49102799244c~mv2.jpg"
-              className="w-full h-full object-contain object-center"
+              src="https://static.wixstatic.com/media/93e866_6f036b1ce127440bb52b85943f173ba8~mv2.png"
+              className="w-full h-full object-cover object-center"
               width={1920}
               height={1080}
               alt="Strength Training for Women 35+ - Hero Background"
