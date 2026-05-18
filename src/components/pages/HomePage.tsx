@@ -589,13 +589,13 @@ export default function HomePage() {
         <div className="absolute inset-0 w-full h-full">
           <motion.div 
             className="w-full h-full" 
-            initial={{ scale: 1.15, x: 20 }} 
-            animate={{ scale: 1.05, x: 0 }} 
+            initial={{ scale: 1, opacity: 0 }} 
+            animate={{ scale: 1, opacity: 1 }} 
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_be66d1155968496ab4cfcbd3e47acf6e~mv2.jpg"
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full object-contain object-center"
               width={1200}
               focalPointX={75.20458265139116}
               focalPointY={27.72873194221509}
