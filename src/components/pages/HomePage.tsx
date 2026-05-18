@@ -607,13 +607,13 @@ export default function HomePage() {
         </div>
 
         {/* Content - Positioned Over Background */}
-        <div className="relative z-10 w-full flex flex-col items-center justify-center min-h-[calc(100vh-theme(spacing.16))] sm:min-h-[calc(100vh-theme(spacing.20))] md:min-h-[calc(100vh-theme(spacing.24))] lg:min-h-[calc(100vh-theme(spacing.32))] pb-8 sm:pb-12 md:pb-16 px-3 sm:px-6 md:px-12">
-          {/* Centered Brand Logo */}
+        <div className="relative z-10 w-full flex flex-col items-center min-h-[calc(100vh-theme(spacing.16))] sm:min-h-[calc(100vh-theme(spacing.20))] md:min-h-[calc(100vh-theme(spacing.24))] lg:min-h-[calc(100vh-theme(spacing.32))] pb-8 sm:pb-12 md:pb-16 px-3 sm:px-6 md:px-12">
+          {/* Centered Brand Logo - Top Position */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="mb-2 sm:mb-4 md:mb-6 flex justify-center flex-shrink-0"
+            className="pt-8 sm:pt-12 md:pt-16 lg:pt-20 flex justify-center flex-shrink-0"
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_09b0ccd0d04e40cda3d278b62df0355f~mv2.png"
@@ -624,8 +624,8 @@ export default function HomePage() {
             />
           </motion.div>
 
-          {/* Main Content - Text Only */}
-          <div className="w-full flex items-center justify-center">
+          {/* Main Content - Text Only - Centered Vertically */}
+          <div className="w-full flex items-center justify-center flex-1">
             <div className="flex flex-col justify-center text-center w-full max-w-3xl px-3">
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.3 }}>
                 <motion.div className="mt-3 sm:mt-6 flex items-center justify-center gap-1 sm:gap-4 flex-wrap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.6 }}>
