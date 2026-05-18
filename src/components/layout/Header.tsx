@@ -15,26 +15,15 @@ function Header() {
   const { itemCount, actions: cartActions } = useCart();
   const location = useLocation();
   
-  // Check if we're on the online training, about, blog, privacy, terms, disclaimer, checkout, payment success, or store page
-  const isHomePage = location.pathname === '/';
-  const isOnlineTrainingPage = location.pathname === '/online-training';
-  const isAboutPage = location.pathname === '/about';
-  const isBlogPage = location.pathname === '/blog';
-  const isPrivacyPage = location.pathname === '/privacy';
-  const isTermsPage = location.pathname === '/terms';
-  const isDisclaimerPage = location.pathname === '/disclaimer';
-  const isCheckoutPage = location.pathname === '/checkout';
-  const isPaymentSuccessPage = location.pathname === '/payment-success';
-  const isStorePage = location.pathname.startsWith('/store');
-  const shouldUseBlackText = isOnlineTrainingPage || isAboutPage || isBlogPage || isPrivacyPage || isTermsPage || isDisclaimerPage || isCheckoutPage || isPaymentSuccessPage || isStorePage;
-  const linkTextColor = shouldUseBlackText ? 'text-charcoal-black' : 'text-white';
-  const linkHoverColor = shouldUseBlackText ? 'hover:text-gray-600' : 'hover:text-gray-300';
-  const iconColor = shouldUseBlackText ? 'text-charcoal-black' : 'text-white';
+  // Header now has white background, so always use black text
+  const linkTextColor = 'text-charcoal-black';
+  const linkHoverColor = 'hover:text-gray-600';
+  const iconColor = 'text-charcoal-black';
 
   return (
     <header 
       className="sticky top-0 z-40 shadow-sm safe-area-top"
-      style={{ backgroundColor: '#000000' }}
+      style={{ backgroundColor: '#FFFFFF' }}
     >
       <div className={`max-w-[100rem] mx-auto px-3 sm:px-4 md:px-6 lg:px-20`}>
         <div className="flex items-center justify-center h-14 sm:h-16 md:h-20 relative">
