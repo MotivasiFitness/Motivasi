@@ -722,10 +722,10 @@ export default function HomePage() {
         </div>
       </section>
       {/* --- Training Locations Section --- */}
-      <section className="relative w-full py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24" style={{ backgroundColor: '#9B6A6C' }}>
+      <section className="relative w-full py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24" style={{ backgroundColor: '#FFFFFF' }}>
         <div className="max-w-[100rem] mx-auto">
           <div className="text-center mb-12 md:mb-16">
-            <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white" style={{ wordSpacing: '0.15em' }}>
+            <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal-black" style={{ wordSpacing: '0.15em' }}>
               Find Coaching Near You
             </h2>
           </div>
@@ -738,7 +738,7 @@ export default function HomePage() {
                 {locations.map((location, index) => (
                   <motion.button
                     key={location._id}
-                    className="w-full bg-white text-charcoal-black px-6 py-4 rounded-lg font-semibold text-lg hover:bg-soft-white transition-colors duration-300 text-left shadow-md hover:shadow-lg flex items-center gap-3"
+                    className="w-full bg-soft-white text-charcoal-black px-6 py-4 rounded-lg font-semibold text-lg hover:bg-warm-sand-beige transition-colors duration-300 text-left shadow-md hover:shadow-lg flex items-center gap-3"
                     whileHover={{ x: 4 }}
                     transition={{ duration: 0.2 }}
                   >
@@ -751,35 +751,35 @@ export default function HomePage() {
 
             {/* Right Side - Content */}
             <AnimatedElement>
-              <div className="text-white">
-                <span className="inline-block py-1 px-3 text-charcoal-black rounded-full text-xs font-bold tracking-widest uppercase mb-4" style={{ backgroundColor: '#F2D7D9' }}>
+              <div className="text-charcoal-black">
+                <span className="inline-block py-1 px-3 text-white rounded-full text-xs font-bold tracking-widest uppercase mb-4" style={{ backgroundColor: '#58355E' }}>
                   Transform your life
                 </span>
-                <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 text-white">
+                <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 text-charcoal-black">
                   Invest in Yourself
                 </h2>
-                <p className="text-lg text-white/90 mb-8 leading-relaxed">
+                <p className="text-lg text-charcoal-black/80 mb-8 leading-relaxed">
                   Your body is your most valuable asset. Transform your fitness journey with personalized coaching designed specifically for you.
                 </p>
                 
                 <div className="space-y-4 mb-8">
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ backgroundColor: '#f2d7d9' }}>
-                      <span className="text-charcoal-black font-bold text-sm">✓</span>
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ backgroundColor: '#58355E' }}>
+                      <span className="text-white font-bold text-sm">✓</span>
                     </div>
-                    <p className="text-white/90">Personalised programming tailored to you</p>
+                    <p className="text-charcoal-black/80">Personalised programming tailored to you</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ backgroundColor: '#f2d7d9' }}>
-                      <span className="text-charcoal-black font-bold text-sm">✓</span>
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ backgroundColor: '#58355E' }}>
+                      <span className="text-white font-bold text-sm">✓</span>
                     </div>
-                    <p className="text-white/90">Real results in 12 weeks or less</p>
+                    <p className="text-charcoal-black/80">Real results in 12 weeks or less</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ backgroundColor: '#f2d7d9' }}>
-                      <span className="text-charcoal-black font-bold text-sm">✓</span>
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ backgroundColor: '#58355E' }}>
+                      <span className="text-white font-bold text-sm">✓</span>
                     </div>
-                    <p className="text-white/90">Expert guidance & every progression</p>
+                    <p className="text-charcoal-black/80">Expert guidance & every progression</p>
                   </div>
                 </div>
 
