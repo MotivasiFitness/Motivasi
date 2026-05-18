@@ -594,15 +594,11 @@ export default function HomePage() {
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Image
-              src="https://static.wixstatic.com/media/93e866_be66d1155968496ab4cfcbd3e47acf6e~mv2.jpg"
+              src="https://static.wixstatic.com/media/93e866_e211b0c1e3844ba8906a49102799244c~mv2.jpg"
               className="w-full h-full object-cover object-center"
               width={1920}
               height={1080}
-              focalPointX={75.20458265139116}
-              focalPointY={27.72873194221509}
-              originWidth={611}
-              originHeight={623}
-              alt="Hero Background"
+              alt="Strength Training for Women 35+ - Hero Background"
               loading="eager"
             />
           </motion.div>
