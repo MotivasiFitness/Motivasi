@@ -594,7 +594,7 @@ export default function HomePage() {
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Image
-              src="https://static.wixstatic.com/media/93e866_befb471af6704f8eacfde13d90bf0e65~mv2.png"
+              src="https://static.wixstatic.com/media/93e866_be66d1155968496ab4cfcbd3e47acf6e~mv2.jpg"
               className="w-full h-full object-cover object-center"
               width={1200}
               focalPointX={75.20458265139116}
