@@ -618,8 +618,8 @@ export default function HomePage() {
             <Image
               src="https://static.wixstatic.com/media/93e866_09b0ccd0d04e40cda3d278b62df0355f~mv2.png"
               alt="Brand Logo"
-              className="w-20 sm:w-28 md:w-32 lg:w-40 h-auto object-contain"
-              width={160}
+              className="w-32 sm:w-40 md:w-48 lg:w-56 h-auto object-contain"
+              width={224}
               loading="eager"
             />
           </motion.div>
