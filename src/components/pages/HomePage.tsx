@@ -613,13 +613,13 @@ export default function HomePage() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="mb-6 sm:mb-12 md:mb-16 flex justify-center flex-shrink-0"
+            className="mb-4 sm:mb-8 md:mb-12 flex justify-center flex-shrink-0"
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_09b0ccd0d04e40cda3d278b62df0355f~mv2.png"
               alt="Brand Logo"
-              className="w-48 sm:w-56 md:w-64 lg:w-80 h-auto object-contain"
-              width={320}
+              className="w-32 sm:w-40 md:w-48 lg:w-56 h-auto object-contain"
+              width={224}
               loading="eager"
             />
           </motion.div>
