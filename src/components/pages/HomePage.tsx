@@ -588,14 +588,14 @@ export default function HomePage() {
         {/* Background Image - Full Coverage - Extends Behind Header */}
         <div className="absolute inset-0 w-full h-full overflow-hidden -top-16 sm:-top-20 md:-top-24 lg:-top-32">
           <motion.div 
-            className="w-full h-full flex items-center justify-center" 
+            className="w-full h-full" 
             initial={{ scale: 1, opacity: 0 }} 
             animate={{ scale: 1, opacity: 1 }} 
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_6f036b1ce127440bb52b85943f173ba8~mv2.png"
-              className="w-auto h-auto max-w-full max-h-full object-contain"
+              className="w-full h-full object-cover"
               width={1920}
               height={1080}
               alt="Strength Training for Women 35+ - Hero Background"
