@@ -630,9 +630,6 @@ export default function HomePage() {
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.3 }}>
                 <motion.div className="mt-3 sm:mt-6 flex items-center justify-center gap-1 sm:gap-4 flex-wrap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.6 }}>
                   <div className="h-px w-6 sm:w-16 bg-warm-bronze/80 flex-shrink-0" />
-                  <span className="text-xs sm:text-sm md:text-base lg:text-lg tracking-widest uppercase font-medium text-white px-2 flex-shrink-0">
-                    {t.home.tagline}
-                  </span>
                   <div className="h-px w-6 sm:w-16 bg-warm-bronze/80 flex-shrink-0" />
                 </motion.div>
               </motion.div>
