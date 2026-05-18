@@ -34,7 +34,7 @@ function Header() {
   return (
     <header 
       className="sticky top-0 z-40 shadow-sm safe-area-top"
-      style={{ backgroundColor: isHomePage ? 'transparent' : '#3d3531' }}
+      style={{ backgroundColor: isHomePage ? 'transparent' : '#000000' }}
     >
       <div className={`max-w-[100rem] mx-auto px-3 sm:px-4 md:px-6 lg:px-20`}>
         <div className="flex items-center justify-center h-14 sm:h-16 md:h-20 relative">
