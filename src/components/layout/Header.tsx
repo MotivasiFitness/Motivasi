@@ -23,7 +23,7 @@ function Header() {
 
   return (
     <header 
-      className="sticky top-0 z-40 safe-area-top m-0 p-0 bg-black/30 backdrop-blur-sm"
+      className="sticky top-0 z-40 safe-area-top m-0 p-0 bg-black/10 backdrop-blur-md"
     >
       <div className={`max-w-[100rem] mx-auto px-3 sm:px-4 md:px-6 lg:px-20 m-0 p-0`}>
         <div className="flex items-center justify-center h-20 sm:h-24 md:h-32 relative">
@@ -111,7 +111,7 @@ function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden py-3 border-t border-gray-700 bg-black/80 backdrop-blur relative z-10">
+          <nav className="md:hidden py-3 border-t border-gray-700 bg-black/20 backdrop-blur-md relative z-10">
             <div className="flex flex-col gap-1">
               <Link 
                 to="/online-training" 
