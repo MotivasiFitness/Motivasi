@@ -589,8 +589,8 @@ export default function HomePage() {
         <div className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center -mt-20 sm:-mt-24 md:-mt-32">
           <motion.div 
             className="w-full h-full flex items-center justify-center" 
-            initial={{ scale: 1, opacity: 0 }} 
-            animate={{ scale: 1, opacity: 1 }} 
+            initial={{ scale: 0.95, opacity: 0 }} 
+            animate={{ scale: 0.95, opacity: 1 }} 
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Image
