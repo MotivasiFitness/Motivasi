@@ -584,18 +584,18 @@ export default function HomePage() {
         showAfterScroll={800}
       />
       {/* --- Hero Section - Full Background Image with Header Overlap --- */}
-      <section className="relative w-full overflow-hidden min-h-screen m-0 p-0 -mt-20 sm:-mt-24 md:-mt-32 pt-20 sm:pt-24 md:pt-32 bg-charcoal-black">
+      <section className="relative w-full overflow-hidden h-auto m-0 p-0 -mt-20 sm:-mt-24 md:-mt-32 pt-20 sm:pt-24 md:pt-32 bg-charcoal-black">
         {/* Background Image - Extends Behind Header */}
-        <div className="absolute inset-0 w-full h-full overflow-hidden -mt-20 sm:-mt-24 md:-mt-32">
+        <div className="w-full h-auto overflow-hidden">
           <motion.div 
-            className="w-full h-full" 
+            className="w-full h-auto" 
             initial={{ scale: 0.95, opacity: 0 }} 
             animate={{ scale: 0.95, opacity: 1 }} 
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Image
               src="https://storage.googleapis.com/naturalsync/Gemini_Generated_Image_gn9t1bgn9t1bgn9t.png"
-              className="w-auto h-auto max-w-full max-h-full object-contain"
+              className="w-full h-auto object-cover"
               width={1920}
               height={1080}
               alt="Strength Training for Women 35+ - Hero Background"
@@ -607,13 +607,13 @@ export default function HomePage() {
         </div>
 
         {/* Content - Positioned Over Background */}
-        <div className="relative w-full h-full flex flex-col items-center justify-center px-3 sm:px-6 md:px-12 z-10">
+        <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center px-3 sm:px-6 md:px-12 z-10">
           {/* Centered Brand Logo - Top Center Position */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex justify-center flex-shrink-0"
+            className="flex justify-center flex-shrink-0 absolute top-8 sm:top-12 md:top-16"
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_09b0ccd0d04e40cda3d278b62df0355f~mv2.png"
