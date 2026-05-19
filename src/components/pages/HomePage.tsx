@@ -594,7 +594,7 @@ export default function HomePage() {
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Image
-              src="https://static.wixstatic.com/media/93e866_e352e414fbcc496dadef099eefdd361d~mv2.png?originWidth=1920&originHeight=1024"
+              src="https://storage.googleapis.com/naturalsync/website%20header.jpg"
               className="w-full h-full object-cover"
               width={1920}
               height={1080}
