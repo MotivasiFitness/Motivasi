@@ -43,16 +43,7 @@ function Header() {
             </Link>
           </nav>
 
-          {/* Centered Brand Logo */}
-          <Link to="/" className="flex items-center justify-center hover:opacity-80 transition-opacity flex-shrink-0 min-h-[44px]">
-            <Image
-              src="https://static.wixstatic.com/media/93e866_09b0ccd0d04e40cda3d278b62df0355f~mv2.png"
-              alt="Brand Logo"
-              className="w-20 sm:w-24 md:w-28 h-auto object-contain"
-              width={112}
-              loading="eager"
-            />
-          </Link>
+
 
           {/* Right Navigation and Actions */}
           <div className="hidden md:flex items-center gap-3 lg:gap-6 absolute right-0 h-full">
