@@ -584,18 +584,18 @@ export default function HomePage() {
         showAfterScroll={800}
       />
       {/* --- Hero Section - Full Background Image with Header Overlap --- */}
-      <section className="relative w-full h-screen overflow-hidden">
+      <section className="relative w-full overflow-hidden">
         {/* Background Image - Full Size */}
-        <div className="absolute inset-0 w-full h-full overflow-hidden">
+        <div className="w-full overflow-hidden">
           <motion.div 
-            className="w-full h-full" 
+            className="w-full" 
             initial={{ scale: 1.05, opacity: 0 }} 
             animate={{ scale: 0.95, opacity: 1 }} 
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_b2ff009c5cfc479a9a94f46c5390c391~mv2.jpg"
-              className="w-full h-full object-contain"
+              className="w-full h-auto object-cover"
               width={1920}
               height={1080}
               alt="Strength Training for Women 35+ - Hero Background"
@@ -607,13 +607,13 @@ export default function HomePage() {
         </div>
 
         {/* Content - Positioned Over Background */}
-        <div className="relative z-10 w-full flex flex-col items-center min-h-[calc(100vh-theme(spacing.16))] sm:min-h-[calc(100vh-theme(spacing.20))] md:min-h-[calc(100vh-theme(spacing.24))] lg:min-h-[calc(100vh-theme(spacing.32))] pb-8 sm:pb-12 md:pb-16 px-3 sm:px-6 md:px-12">
+        <div className="absolute inset-0 w-full flex flex-col items-center justify-center px-3 sm:px-6 md:px-12 z-10">
           {/* Centered Brand Logo - Top Center Position */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="pt-2 sm:pt-3 md:pt-4 lg:pt-6 flex justify-center flex-shrink-0"
+            className="flex justify-center flex-shrink-0"
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_09b0ccd0d04e40cda3d278b62df0355f~mv2.png"
@@ -628,7 +628,7 @@ export default function HomePage() {
           <div className="w-full flex items-center justify-center flex-1">
             <div className="flex flex-col justify-center text-center w-full max-w-3xl px-3">
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.3 }}>
-                <motion.div className="mt-3 sm:mt-6 flex items-center justify-center gap-1 sm:gap-4 flex-wrap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.6 }}>
+                <motion.div className="flex items-center justify-center gap-1 sm:gap-4 flex-wrap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.6 }}>
                   <div className="h-px w-6 sm:w-16 bg-warm-bronze/80 flex-shrink-0" />
                   <div className="h-px w-6 sm:w-16 bg-warm-bronze/80 flex-shrink-0" />
                 </motion.div>
