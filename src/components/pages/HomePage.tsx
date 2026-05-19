@@ -584,18 +584,18 @@ export default function HomePage() {
         showAfterScroll={800}
       />
       {/* --- Hero Section - Full Background Image with Header Overlap --- */}
-      <section className="relative w-full overflow-hidden min-h-screen">
-        {/* Background Image - Full Size */}
-        <div className="w-full h-screen overflow-hidden flex items-center justify-center">
+      <section className="relative w-full overflow-hidden">
+        {/* Background Image - Fit to Content */}
+        <div className="w-full overflow-hidden flex items-center justify-center">
           <motion.div 
-            className="w-full h-full flex items-center justify-center" 
+            className="w-full flex items-center justify-center" 
             initial={{ scale: 1, opacity: 0 }} 
             animate={{ scale: 1, opacity: 1 }} 
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_b2ff009c5cfc479a9a94f46c5390c391~mv2.jpg"
-              className="w-full h-full object-contain"
+              className="w-full h-auto object-cover"
               width={1920}
               height={1080}
               alt="Strength Training for Women 35+ - Hero Background"
