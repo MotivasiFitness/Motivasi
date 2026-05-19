@@ -584,7 +584,7 @@ export default function HomePage() {
         showAfterScroll={800}
       />
       {/* --- Hero Section - Full Background Image with Header Overlap --- */}
-      <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden h-auto m-0 p-0 -mt-20 sm:-mt-24 md:-mt-32 pt-20 sm:pt-24 md:pt-32" style={{ backgroundColor: '#986A6C' }}>
+      <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden h-auto m-0 p-0 -mt-20 sm:-mt-24 md:-mt-32 pt-20 sm:pt-24 md:pt-32" style={{ backgroundColor: '#986A6C', background: 'linear-gradient(to right, #986A6C 95%, #986A6C)' }}>
         {/* Background Image - Extends Behind Header */}
         <div className="w-full h-auto overflow-hidden px-4 sm:px-8 md:px-12 lg:px-16 py-8 sm:py-12 md:py-16">
           <motion.div 
