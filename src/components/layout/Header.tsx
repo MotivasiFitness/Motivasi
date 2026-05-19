@@ -27,7 +27,7 @@ function Header() {
       style={{ backgroundColor: 'transparent' }}
     >
       <div className={`max-w-[100rem] mx-auto px-3 sm:px-4 md:px-6 lg:px-20`}>
-        <div className="flex items-center justify-center h-14 sm:h-16 md:h-20 relative">
+        <div className="flex items-center justify-center h-20 sm:h-24 md:h-32 relative">
           {/* Left Navigation - Hidden on Mobile */}
           <nav className="hidden md:flex items-center gap-6 lg:gap-8 absolute left-0 h-full">
             <Link 
