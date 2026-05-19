@@ -588,7 +588,7 @@ export default function HomePage() {
         {/* Background Image - Extends Behind Header */}
         <div className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center -mt-20 sm:-mt-24 md:-mt-32">
           <motion.div 
-            className="w-full h-screen max-h-screen" 
+            className="w-full h-full" 
             initial={{ scale: 1, opacity: 0 }} 
             animate={{ scale: 1, opacity: 1 }} 
             transition={{ duration: 1.2, ease: "easeOut" }}
