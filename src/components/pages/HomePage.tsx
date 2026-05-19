@@ -595,7 +595,7 @@ export default function HomePage() {
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_3da6e68094ba45bfaa701dbead28c311~mv2.png"
-              className="w-auto h-auto max-w-full max-h-full object-contain"
+              className="w-full h-full object-cover"
               width={1920}
               height={1080}
               alt="Strength Training for Women 35+ - Hero Background"
