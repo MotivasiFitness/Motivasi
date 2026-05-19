@@ -595,7 +595,7 @@ export default function HomePage() {
           >
             <Image
               src="https://storage.googleapis.com/naturalsync/Gemini_Generated_Image_gn9t1bgn9t1bgn9t.png"
-              className="w-full h-full object-cover"
+              className="w-auto h-auto max-w-full max-h-full object-contain"
               width={1920}
               height={1080}
               alt="Strength Training for Women 35+ - Hero Background"
