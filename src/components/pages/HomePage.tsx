@@ -588,14 +588,14 @@ export default function HomePage() {
         {/* Background Image - Extends Behind Header */}
         <div className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center -mt-20 sm:-mt-24 md:-mt-32">
           <motion.div 
-            className="w-full h-full" 
+            className="w-full h-screen max-h-screen" 
             initial={{ scale: 1, opacity: 0 }} 
             animate={{ scale: 1, opacity: 1 }} 
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Image
               src="https://storage.googleapis.com/naturalsync/website%20header.jpg"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center"
               width={1920}
               height={1080}
               alt="Strength Training for Women 35+ - Hero Background"
