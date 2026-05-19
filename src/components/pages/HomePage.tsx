@@ -586,9 +586,9 @@ export default function HomePage() {
       {/* --- Hero Section - Full Background Image with Header Overlap --- */}
       <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden h-auto m-0 p-0 -mt-20 sm:-mt-24 md:-mt-32 pt-20 sm:pt-24 md:pt-32 bg-charcoal-black">
         {/* Background Image - Extends Behind Header */}
-        <div className="w-full h-auto overflow-hidden">
+        <div className="w-full h-auto overflow-hidden px-4 sm:px-8 md:px-12 lg:px-16 py-8 sm:py-12 md:py-16">
           <motion.div 
-            className="w-full h-auto" 
+            className="w-full h-auto rounded-2xl overflow-hidden" 
             initial={{ scale: 0.95, opacity: 0 }} 
             animate={{ scale: 0.95, opacity: 1 }} 
             transition={{ duration: 1.2, ease: "easeOut" }}
@@ -603,7 +603,7 @@ export default function HomePage() {
             />
           </motion.div>
           {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-charcoal-black/20 via-charcoal-black/30 to-charcoal-black/50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-charcoal-black/20 via-charcoal-black/30 to-charcoal-black/50 rounded-2xl" />
         </div>
 
         {/* Content - Positioned Over Background */}
