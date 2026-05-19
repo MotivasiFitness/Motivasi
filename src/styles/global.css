@@ -20,10 +20,14 @@
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 /* Reserve space for images to prevent layout shift */

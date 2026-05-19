@@ -572,7 +572,7 @@ export default function HomePage() {
   }, [showStickyButton]);
 
   return (
-    <div className="bg-white min-h-screen w-full overflow-clip font-sans text-charcoal-black selection:bg-warm-cream selection:text-charcoal-black">
+    <div className="bg-white min-h-screen w-full overflow-clip font-sans text-charcoal-black selection:bg-warm-cream selection:text-charcoal-black m-0 p-0">
       {/* Progress Bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-warm-bronze via-warm-bronze to-warm-bronze origin-left z-50"
@@ -584,7 +584,7 @@ export default function HomePage() {
         showAfterScroll={800}
       />
       {/* --- Hero Section - Full Background Image with Header Overlap --- */}
-      <section className="relative w-full overflow-hidden min-h-screen">
+      <section className="relative w-full overflow-hidden min-h-screen m-0 p-0">
         {/* Background Image - Full Viewport Height */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
           <motion.div 
