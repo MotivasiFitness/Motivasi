@@ -613,7 +613,7 @@ export default function HomePage() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex justify-center flex-shrink-0 absolute top-8 sm:top-12 md:top-16"
+            className="flex justify-center flex-shrink-0 absolute top-20 sm:top-28 md:top-36"
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_09b0ccd0d04e40cda3d278b62df0355f~mv2.png"
