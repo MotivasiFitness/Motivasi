@@ -585,17 +585,17 @@ export default function HomePage() {
       />
       {/* --- Hero Section - Full Background Image with Header Overlap --- */}
       <section className="relative w-full h-screen overflow-hidden">
-        {/* Background Image - Smaller Size */}
-        <div className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center">
+        {/* Background Image - Full Size */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
           <motion.div 
-            className="w-3/4 h-3/4 max-w-2xl" 
+            className="w-full h-full" 
             initial={{ scale: 1.05, opacity: 0 }} 
             animate={{ scale: 1, opacity: 1 }} 
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Image
               src="https://static.wixstatic.com/media/93e866_b2ff009c5cfc479a9a94f46c5390c391~mv2.jpg"
-              className="w-full h-full object-cover rounded-2xl"
+              className="w-full h-full object-cover"
               width={1920}
               height={1080}
               alt="Strength Training for Women 35+ - Hero Background"
