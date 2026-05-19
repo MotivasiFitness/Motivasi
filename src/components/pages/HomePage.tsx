@@ -584,18 +584,18 @@ export default function HomePage() {
         showAfterScroll={800}
       />
       {/* --- Hero Section - Full Background Image with Header Overlap --- */}
-      <section className="relative w-full overflow-hidden min-h-screen m-0 p-0 -mt-20 sm:-mt-24 md:-mt-32 pt-20 sm:pt-24 md:pt-32">
+      <section className="relative w-full overflow-hidden min-h-screen m-0 p-0 -mt-20 sm:-mt-24 md:-mt-32 pt-20 sm:pt-24 md:pt-32 bg-charcoal-black">
         {/* Background Image - Extends Behind Header */}
         <div className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center -mt-20 sm:-mt-24 md:-mt-32">
           <motion.div 
-            className="w-full h-full" 
+            className="w-full h-full flex items-center justify-center" 
             initial={{ scale: 1, opacity: 0 }} 
             animate={{ scale: 1, opacity: 1 }} 
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Image
-              src="https://storage.googleapis.com/naturalsync/website%20header.jpg"
-              className="w-full h-full object-cover object-center"
+              src="https://static.wixstatic.com/media/93e866_3da6e68094ba45bfaa701dbead28c311~mv2.png"
+              className="w-auto h-auto max-w-full max-h-full object-contain"
               width={1920}
               height={1080}
               alt="Strength Training for Women 35+ - Hero Background"
@@ -603,7 +603,7 @@ export default function HomePage() {
             />
           </motion.div>
           {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-charcoal-black/40 via-charcoal-black/50 to-charcoal-black/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-charcoal-black/20 via-charcoal-black/30 to-charcoal-black/50" />
         </div>
 
         {/* Content - Positioned Over Background */}
