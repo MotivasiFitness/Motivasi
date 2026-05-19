@@ -590,7 +590,7 @@ export default function HomePage() {
           <motion.div 
             className="w-full h-full" 
             initial={{ scale: 1.05, opacity: 0 }} 
-            animate={{ scale: 1, opacity: 1 }} 
+            animate={{ scale: 0.95, opacity: 1 }} 
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Image
