@@ -586,9 +586,9 @@ export default function HomePage() {
       {/* --- Hero Section - Full Background Image with Header Overlap --- */}
       <section className="relative w-full overflow-hidden min-h-screen m-0 p-0 -mt-20 sm:-mt-24 md:-mt-32 pt-20 sm:pt-24 md:pt-32 bg-charcoal-black">
         {/* Background Image - Extends Behind Header */}
-        <div className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center -mt-20 sm:-mt-24 md:-mt-32">
+        <div className="absolute inset-0 w-full h-full overflow-hidden -mt-20 sm:-mt-24 md:-mt-32">
           <motion.div 
-            className="w-full h-full flex items-center justify-center" 
+            className="w-full h-full" 
             initial={{ scale: 0.95, opacity: 0 }} 
             animate={{ scale: 0.95, opacity: 1 }} 
             transition={{ duration: 1.2, ease: "easeOut" }}
