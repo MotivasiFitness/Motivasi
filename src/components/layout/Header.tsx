@@ -6,6 +6,7 @@ import { useMember } from '@/integrations';
 import { useRole } from '@/hooks/useRole';
 import { useCart } from '@/integrations';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { Image } from '@/components/ui/image';
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -43,9 +44,15 @@ function Header() {
             </Link>
           </nav>
 
-          {/* Centered Brand Name - Split Color Wordmark */}
+          {/* Centered Brand Logo */}
           <Link to="/" className="flex items-center justify-center hover:opacity-80 transition-opacity flex-shrink-0 min-h-[44px]">
-
+            <Image
+              src="https://static.wixstatic.com/media/93e866_09b0ccd0d04e40cda3d278b62df0355f~mv2.png"
+              alt="Brand Logo"
+              className="w-20 sm:w-24 md:w-28 h-auto object-contain"
+              width={112}
+              loading="eager"
+            />
           </Link>
 
           {/* Right Navigation and Actions */}
