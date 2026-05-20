@@ -607,7 +607,7 @@ export default function HomePage() {
         </div>
 
         {/* Content - Positioned Over Background */}
-        <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center px-3 sm:px-6 md:px-12 z-10">
+        <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center px-3 sm:px-6 md:px-12 z-10 bg-[transparent]">
           {/* Centered Brand Logo - Top Center Position */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -629,8 +629,7 @@ export default function HomePage() {
             <div className="flex flex-col justify-center text-center w-full max-w-3xl px-3">
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.3 }}>
                 <motion.div className="flex items-center justify-center gap-1 sm:gap-4 flex-wrap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.6 }}>
-                  <div className="h-px w-6 sm:w-16 bg-warm-bronze/80 flex-shrink-0" />
-                  <div className="h-px w-6 sm:w-16 bg-warm-bronze/80 flex-shrink-0" />
+
                 </motion.div>
               </motion.div>
             </div>

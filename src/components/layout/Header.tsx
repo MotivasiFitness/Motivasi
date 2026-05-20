@@ -23,7 +23,7 @@ function Header() {
 
   return (
     <header 
-      className="sticky top-0 z-40 safe-area-top m-0 p-0 bg-black/10 backdrop-blur-md"
+      className="sticky top-0 z-40 safe-area-top m-0 p-0 backdrop-blur-md bg-[#8c6c6cff]"
     >
       <div className={`max-w-[100rem] mx-auto px-3 sm:px-4 md:px-6 lg:px-20 m-0 p-0`}>
         <div className="flex items-center justify-center h-20 sm:h-24 md:h-32 relative">
