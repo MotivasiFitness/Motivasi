@@ -217,7 +217,7 @@ export default function AboutPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-8">
+            <div className="text-center p-8 border border-white rounded-lg">
               <h3 className="font-heading text-3xl font-bold text-white mb-4">
                 {t.about.personalised}
               </h3>
@@ -226,7 +226,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="text-center p-8">
+            <div className="text-center p-8 border border-white rounded-lg">
               <h3 className="font-heading text-3xl font-bold text-white mb-4">
                 {t.about.evidenceBased}
               </h3>
@@ -235,7 +235,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="text-center p-8">
+            <div className="text-center p-8 border border-white rounded-lg">
               <h3 className="font-heading text-3xl font-bold text-white mb-4">
                 {t.about.supportive}
               </h3>
