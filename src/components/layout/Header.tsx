@@ -27,8 +27,8 @@ function Header() {
     >
       <div className={`max-w-[100rem] mx-auto px-3 sm:px-4 md:px-6 lg:px-20 m-0 p-0`}>
         <div className="flex items-center justify-center h-20 sm:h-24 md:h-32 relative">
-          {/* Brand Logo - Left Side */}
-          <div className="absolute left-0 h-full flex items-center">
+          {/* Brand Logo - Center */}
+          <div className="h-full flex items-center">
             <Image
               src="https://static.wixstatic.com/media/93e866_09b0ccd0d04e40cda3d278b62df0355f~mv2.png"
               alt="Brand Logo"
@@ -39,7 +39,7 @@ function Header() {
           </div>
 
           {/* Left Navigation - Hidden on Mobile */}
-          <nav className="hidden md:flex items-center gap-6 lg:gap-8 absolute left-0 h-full ml-32 lg:ml-40">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8 absolute left-0 h-full pl-4 lg:pl-6">
             <Link 
               to="/online-training" 
               className={`font-paragraph text-sm ${linkTextColor} ${linkHoverColor} transition-colors duration-200 flex items-center h-full min-h-[44px]`}
@@ -57,7 +57,7 @@ function Header() {
 
 
           {/* Right Navigation and Actions */}
-          <div className="hidden md:flex items-center gap-3 lg:gap-6 absolute right-0 h-full">
+          <div className="hidden md:flex items-center gap-3 lg:gap-6 absolute right-0 h-full pr-4 lg:pr-6">
             {isAuthenticated ? (
               <>
                 {isTrainer ? (
