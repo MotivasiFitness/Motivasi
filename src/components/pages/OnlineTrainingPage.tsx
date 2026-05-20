@@ -276,37 +276,37 @@ export default function OnlineTrainingPage() {
             </p>
           </div>
 
-          <div className="bg-soft-white/10 border border-soft-white/20 rounded-2xl p-8 md:p-12">
+          <div className="bg-white border border-soft-white/20 rounded-2xl p-8 md:p-12">
             <div className="grid md:grid-cols-2 gap-8">
               <div className="flex gap-4 items-start">
-                <div className="w-6 h-6 rounded-full bg-soft-white flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-slate-blue font-heading font-bold text-sm">✓</span>
+                <div className="w-6 h-6 rounded-full bg-slate-blue flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-white font-heading font-bold text-sm">✓</span>
                 </div>
-                <p className="font-paragraph text-base text-soft-white leading-relaxed">
+                <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
                   Coaching designed by a mum who understands the realities of busy life
                 </p>
               </div>
               <div className="flex gap-4 items-start">
-                <div className="w-6 h-6 rounded-full bg-soft-white flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-slate-blue font-heading font-bold text-sm">✓</span>
+                <div className="w-6 h-6 rounded-full bg-slate-blue flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-white font-heading font-bold text-sm">✓</span>
                 </div>
-                <p className="font-paragraph text-base text-soft-white leading-relaxed">
+                <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
                   Specialist support for pre-/postnatal training and women's health
                 </p>
               </div>
               <div className="flex gap-4 items-start">
-                <div className="w-6 h-6 rounded-full bg-soft-white flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-slate-blue font-heading font-bold text-sm">✓</span>
+                <div className="w-6 h-6 rounded-full bg-slate-blue flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-white font-heading font-bold text-sm">✓</span>
                 </div>
-                <p className="font-paragraph text-base text-soft-white leading-relaxed">
+                <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
                   Realistic programmes that work around family, work, and energy levels
                 </p>
               </div>
               <div className="flex gap-4 items-start">
-                <div className="w-6 h-6 rounded-full bg-soft-white flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-slate-blue font-heading font-bold text-sm">✓</span>
+                <div className="w-6 h-6 rounded-full bg-slate-blue flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-white font-heading font-bold text-sm">✓</span>
                 </div>
-                <p className="font-paragraph text-base text-soft-white leading-relaxed">
+                <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
                   A focus on sustainable fat loss, strength, and confidence — not extremes
                 </p>
               </div>
