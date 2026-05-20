@@ -217,29 +217,29 @@ export default function AboutPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-8 border border-white rounded-lg">
-              <h3 className="font-heading text-3xl font-bold text-white mb-4">
+            <div className="text-center p-8 border border-white rounded-lg bg-white">
+              <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4">
                 {t.about.personalised}
               </h3>
-              <p className="font-paragraph text-base text-white">
+              <p className="font-paragraph text-base text-charcoal-black">
                 {t.about.personalisedDesc}
               </p>
             </div>
 
-            <div className="text-center p-8 border border-white rounded-lg">
-              <h3 className="font-heading text-3xl font-bold text-white mb-4">
+            <div className="text-center p-8 border border-white rounded-lg bg-white">
+              <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4">
                 {t.about.evidenceBased}
               </h3>
-              <p className="font-paragraph text-base text-white">
+              <p className="font-paragraph text-base text-charcoal-black">
                 {t.about.evidenceBasedDesc}
               </p>
             </div>
 
-            <div className="text-center p-8 border border-white rounded-lg">
-              <h3 className="font-heading text-3xl font-bold text-white mb-4">
+            <div className="text-center p-8 border border-white rounded-lg bg-white">
+              <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4">
                 {t.about.supportive}
               </h3>
-              <p className="font-paragraph text-base text-white">
+              <p className="font-paragraph text-base text-charcoal-black">
                 {t.about.supportiveDesc}
               </p>
             </div>
