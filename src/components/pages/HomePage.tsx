@@ -585,12 +585,12 @@ export default function HomePage() {
       />
       {/* --- Hero Section with Background Image --- */}
       <section 
-        className="w-full min-h-[250px] sm:min-h-[350px] md:min-h-[600px] flex items-center justify-center relative overflow-hidden"
+        className="w-full min-h-[280px] sm:min-h-[400px] md:min-h-[600px] flex items-center justify-center relative overflow-hidden"
         style={{
           backgroundImage: 'url(https://storage.googleapis.com/naturalsync/Gemini_Generated_Image_gn9t1bgn9t1bgn9t.png)',
-          backgroundSize: 'contain',
+          backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
+          backgroundAttachment: 'scroll',
           backgroundRepeat: 'no-repeat'
         }}
       >
