@@ -584,7 +584,7 @@ export default function HomePage() {
         showAfterScroll={800}
       />
       {/* --- Hero Section - Full Background Image with Header Overlap --- */}
-      <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden h-[500px] sm:h-[600px] md:h-[700px] lg:h-[800px] m-0 p-0 -mt-20 sm:-mt-24 md:-mt-32 pt-20 sm:pt-24 md:pt-32">
+      <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden h-[400px] sm:h-[480px] md:h-[560px] lg:h-[640px] m-0 p-0 -mt-20 sm:-mt-24 md:-mt-32 pt-20 sm:pt-24 md:pt-32">
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
           <Image
