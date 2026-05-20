@@ -584,9 +584,15 @@ export default function HomePage() {
         showAfterScroll={800}
       />
       {/* --- Hero Section - Full Background Image with Header Overlap --- */}
-      <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden h-[500px] sm:h-[600px] md:h-[700px] lg:h-[800px] m-0 p-0 -mt-20 sm:-mt-24 md:-mt-32 pt-20 sm:pt-24 md:pt-32" style={{ backgroundColor: '#986A6C', background: 'linear-gradient(to right, #986A6C 95%, #986A6C)' }}>
-        {/* Background Color Only */}
+      <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden h-[500px] sm:h-[600px] md:h-[700px] lg:h-[800px] m-0 p-0 -mt-20 sm:-mt-24 md:-mt-32 pt-20 sm:pt-24 md:pt-32">
+        {/* Background Image */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
+          <Image
+            src="https://storage.googleapis.com/naturalsync/Gemini_Generated_Image_gn9t1bgn9t1bgn9t.png"
+            alt="Hero background"
+            className="w-full h-full object-cover"
+            width={1920}
+          />
           {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-charcoal-black/20 via-charcoal-black/30 to-charcoal-black/50" />
         </div>
