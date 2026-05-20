@@ -724,7 +724,7 @@ export default function HomePage() {
       <section className="relative w-full py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-24" style={{ backgroundColor: '#FFFFFF' }}>
         <div className="max-w-[100rem] mx-auto">
           <div className="text-center mb-12 md:mb-16">
-            <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal-black" style={{ wordSpacing: 'clamp(0.02em, 2vw, 0.15em)' }}>
+            <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal-black" style={{ wordSpacing: 'clamp(-0.08em, 1vw, 0.12em)' }}>
               Find Coaching Near You
             </h2>
           </div>
