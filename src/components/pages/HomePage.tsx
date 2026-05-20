@@ -584,6 +584,99 @@ export default function HomePage() {
         showAfterScroll={800}
       />
 
+      {/* --- Hero Section with Image --- */}
+      <section className="w-full max-w-[120rem] mx-auto px-4 md:px-8 lg:px-12 py-12 md:py-16 lg:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          {/* Left Content */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="flex flex-col justify-center"
+          >
+            <motion.span
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="inline-block py-2 px-4 text-white rounded-full text-xs font-bold tracking-widest uppercase mb-6 w-fit"
+              style={{ backgroundColor: '#58355E' }}
+            >
+              Your Transformation Starts Here
+            </motion.span>
+            
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold text-charcoal-black mb-6 leading-tight"
+            >
+              Sustainable Fitness for Busy Women
+            </motion.h1>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="text-lg md:text-xl text-charcoal-black/80 mb-8 leading-relaxed font-light max-w-xl"
+            >
+              Personalized online coaching designed for women who want real results without extreme diets or endless cardio sessions.
+            </motion.p>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="flex flex-col sm:flex-row gap-4"
+            >
+              <motion.div
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Link
+                  to="/store"
+                  className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl text-white"
+                  style={{ backgroundColor: '#58355E' }}
+                >
+                  Start Your Journey
+                  <ArrowRight size={20} />
+                </Link>
+              </motion.div>
+              
+              <motion.div
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <a
+                  href="mailto:hello@motivasi.co.uk"
+                  className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl border-2 border-charcoal-black text-charcoal-black hover:bg-warm-sand-beige"
+                >
+                  Book Consultation
+                </a>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+
+          {/* Right Image */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="relative"
+          >
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+              <Image
+                src="https://storage.googleapis.com/naturalsync/Gemini_Generated_Image_gn9t1bgn9t1bgn9t.png"
+                alt="Fitness transformation and coaching"
+                className="w-full h-auto object-cover"
+                width={600}
+              />
+              {/* Overlay gradient for depth */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent pointer-events-none rounded-3xl" />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* --- Keywords Section with Softer Design --- */}
       {/* --- The Philosophy (Text Heavy / Editorial) --- */}
       <section className="py-12 px-8 lg:px-24" style={{ backgroundColor: '#FFFFFF' }}>
