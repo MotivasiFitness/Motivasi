@@ -585,7 +585,7 @@ export default function HomePage() {
       />
       {/* --- Hero Section with Background Image --- */}
       <section 
-        className="w-full h-screen flex items-center justify-center relative overflow-hidden"
+        className="w-full min-h-[500px] md:min-h-[600px] flex items-center justify-center relative overflow-hidden"
         style={{
           backgroundImage: 'url(https://storage.googleapis.com/naturalsync/Gemini_Generated_Image_gn9t1bgn9t1bgn9t.png)',
           backgroundSize: 'cover',
@@ -597,7 +597,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-black/40" />
         
         {/* Content */}
-        <div className="relative z-10 w-full max-w-[120rem] mx-auto px-4 md:px-8 lg:px-12 py-8 md:py-12 lg:py-16">
+        <div className="relative z-10 w-full max-w-[120rem] mx-auto px-4 md:px-8 lg:px-12 py-6 md:py-8 lg:py-10">
           <div className="flex flex-col items-start justify-center max-w-2xl">
             {/* Left Content */}
             <motion.div
