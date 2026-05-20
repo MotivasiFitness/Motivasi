@@ -583,6 +583,155 @@ export default function HomePage() {
         variant="floating"
         showAfterScroll={800}
       />
+      {/* --- HERO SECTION --- */}
+      <section className="relative w-full min-h-screen flex items-center justify-center px-4 md:px-8 lg:px-24 overflow-hidden" style={{ backgroundColor: '#58355E' }}>
+        {/* Decorative Background Elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 right-20 w-72 h-72 bg-white rounded-full blur-3xl" />
+          <div className="absolute bottom-20 left-20 w-96 h-96 bg-rose-blush rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative z-10 max-w-[100rem] mx-auto w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Left Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="text-white"
+            >
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="inline-block mb-6"
+              >
+                <span className="inline-block py-2 px-4 text-white rounded-full text-xs font-bold tracking-widest uppercase" style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)', backdropFilter: 'blur(10px)' }}>
+                  Transform Your Fitness Journey
+                </span>
+              </motion.div>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+              >
+                Sustainable Strength,
+                <span className="block text-rose-blush italic font-black">Real Results</span>
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed max-w-xl font-light"
+              >
+                Personalized online coaching designed for busy women who want to build strength, boost confidence, and achieve lasting results—without extreme diets or endless cardio.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                className="flex flex-col sm:flex-row gap-4"
+              >
+                <motion.div
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                >
+                  <Link
+                    to="/store"
+                    className="inline-flex items-center gap-3 px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-base md:text-lg transition-all duration-300 shadow-lg hover:shadow-2xl relative overflow-hidden group"
+                    style={{ backgroundColor: '#F5F1EA', color: '#58355E' }}
+                  >
+                    <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-500 -skew-x-12"></span>
+                    <span className="relative flex items-center gap-3">
+                      Book Free Consultation
+                      <motion.span
+                        animate={{ x: [0, 4, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      >
+                        <ArrowRight className="w-5 h-5" />
+                      </motion.span>
+                    </span>
+                  </Link>
+                </motion.div>
+
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-base md:text-lg border-2 border-white text-white hover:bg-white/10 transition-all duration-300"
+                >
+                  Learn More
+                </motion.button>
+              </motion.div>
+
+              {/* Trust Indicators */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="mt-12 flex flex-wrap gap-6 md:gap-8"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                    <CheckCircle size={20} className="text-rose-blush" />
+                  </div>
+                  <span className="text-sm md:text-base font-medium">Personalized Programs</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                    <CheckCircle size={20} className="text-rose-blush" />
+                  </div>
+                  <span className="text-sm md:text-base font-medium">Expert Guidance</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                    <CheckCircle size={20} className="text-rose-blush" />
+                  </div>
+                  <span className="text-sm md:text-base font-medium">Real Results</span>
+                </div>
+              </motion.div>
+            </motion.div>
+
+            {/* Right Side - Visual Element */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="hidden lg:flex items-center justify-center"
+            >
+              <div className="relative w-full aspect-square max-w-md">
+                {/* Placeholder for hero image - can be replaced with actual image */}
+                <div className="absolute inset-0 rounded-3xl overflow-hidden bg-gradient-to-br from-rose-blush/30 to-sage-green/30 border-2 border-white/20 flex items-center justify-center">
+                  <div className="text-center">
+                    <Activity size={80} className="text-white/40 mx-auto mb-4" />
+                    <p className="text-white/60 font-light">Hero Image</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        >
+          <div className="w-6 h-10 border-2 border-white/40 rounded-full flex items-start justify-center p-2">
+            <motion.div
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="w-1 h-2 bg-white/60 rounded-full"
+            />
+          </div>
+        </motion.div>
+      </section>
+
       {/* --- Keywords Section with Softer Design --- */}
       {/* --- The Philosophy (Text Heavy / Editorial) --- */}
       <section className="py-12 px-8 lg:px-24" style={{ backgroundColor: '#FFFFFF' }}>
