@@ -704,12 +704,14 @@ export default function HomePage() {
               className="hidden lg:flex items-center justify-center"
             >
               <div className="relative w-full aspect-square max-w-md">
-                {/* Placeholder for hero image - can be replaced with actual image */}
-                <div className="absolute inset-0 rounded-3xl overflow-hidden bg-gradient-to-br from-rose-blush/30 to-sage-green/30 border-2 border-white/20 flex items-center justify-center">
-                  <div className="text-center">
-                    <Activity size={80} className="text-white/40 mx-auto mb-4" />
-                    <p className="text-white/60 font-light">Hero Image</p>
-                  </div>
+                {/* Hero Image */}
+                <div className="absolute inset-0 rounded-3xl overflow-hidden border-2 border-white/20">
+                  <Image
+                    src="https://storage.googleapis.com/naturalsync/Gemini_Generated_Image_gn9t1bgn9t1bgn9t.png"
+                    alt="Fitness coaching hero image"
+                    className="w-full h-full object-cover"
+                    width={500}
+                  />
                 </div>
               </div>
             </motion.div>
