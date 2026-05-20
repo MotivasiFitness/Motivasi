@@ -608,22 +608,6 @@ export default function HomePage() {
 
         {/* Content - Positioned Over Background */}
         <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center px-3 sm:px-6 md:px-12 z-10 bg-[transparent]">
-          {/* Centered Brand Logo - Top Center Position */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex justify-center flex-shrink-0 absolute top-20 sm:top-28 md:top-36"
-          >
-            <Image
-              src="https://static.wixstatic.com/media/93e866_09b0ccd0d04e40cda3d278b62df0355f~mv2.png"
-              alt="Brand Logo"
-              className="w-32 sm:w-40 md:w-48 lg:w-56 h-auto object-contain"
-              width={224}
-              loading="eager"
-            />
-          </motion.div>
-
           {/* Main Content - Text Only - Centered Vertically */}
           <div className="w-full flex items-center justify-center flex-1">
             <div className="flex flex-col justify-center text-center w-full max-w-3xl px-3">
