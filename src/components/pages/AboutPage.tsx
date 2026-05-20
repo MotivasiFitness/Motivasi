@@ -24,14 +24,14 @@ export default function AboutPage() {
   return (
     <div className="bg-soft-white">
       {/* Hero Section */}
-      <section className="py-24 px-8 lg:px-20 bg-white">
+      <section className="py-24 px-8 lg:px-20" style={{ backgroundColor: '#986A6C' }}>
         <div className="max-w-[100rem] mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 className="font-heading text-6xl font-bold text-charcoal-black mb-8">
+              <h1 className="font-heading text-6xl font-bold text-white mb-8">
                 Meet Your Coach
               </h1>
-              <div className="space-y-6 font-paragraph text-lg text-charcoal-black leading-relaxed">
+              <div className="space-y-6 font-paragraph text-lg text-white leading-relaxed">
                 <p>
                   I'm a mum of two — and like many women, I know first-hand how much life changes after having children. Between sleepless nights, work, family responsibilities, and a body that no longer feels the same, fitness can quickly become confusing, overwhelming, or something that gets pushed to the bottom of the list.
                 </p>
