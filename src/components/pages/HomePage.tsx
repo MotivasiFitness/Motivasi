@@ -585,23 +585,8 @@ export default function HomePage() {
       />
       {/* --- Hero Section - Full Background Image with Header Overlap --- */}
       <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden h-[500px] sm:h-[600px] md:h-[700px] lg:h-[800px] m-0 p-0 -mt-20 sm:-mt-24 md:-mt-32 pt-20 sm:pt-24 md:pt-32" style={{ backgroundColor: '#986A6C', background: 'linear-gradient(to right, #986A6C 95%, #986A6C)' }}>
-        {/* Background Image - Extends Behind Header */}
+        {/* Background Color Only */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
-          <motion.div 
-            className="w-full h-full overflow-hidden" 
-            initial={{ scale: 0.95, opacity: 0 }} 
-            animate={{ scale: 0.95, opacity: 1 }} 
-            transition={{ duration: 1.2, ease: "easeOut" }}
-          >
-            <Image
-              src="https://static.wixstatic.com/media/93e866_3915d9080fbd49088e5cda323e92b6a7~mv2.png"
-              className="w-full h-full object-cover object-center"
-              width={1920}
-              height={800}
-              alt="Strength Training for Women 35+ - Hero Background"
-              loading="eager"
-            />
-          </motion.div>
           {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-charcoal-black/20 via-charcoal-black/30 to-charcoal-black/50" />
         </div>
