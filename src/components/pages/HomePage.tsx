@@ -583,34 +583,6 @@ export default function HomePage() {
         variant="floating"
         showAfterScroll={800}
       />
-      {/* --- Hero Section - Full Background Image with Header Overlap --- */}
-      <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden h-[400px] sm:h-[480px] md:h-[560px] lg:h-[640px] m-0 p-0 -mt-20 sm:-mt-24 md:-mt-32 pt-20 sm:pt-24 md:pt-32">
-        {/* Background Image */}
-        <div className="absolute inset-0 w-full h-full overflow-hidden">
-          <Image
-            src="https://storage.googleapis.com/naturalsync/Gemini_Generated_Image_gn9t1bgn9t1bgn9t.png"
-            alt="Hero background"
-            className="w-full h-full object-cover"
-            width={1920}
-          />
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-charcoal-black/20 via-charcoal-black/30 to-charcoal-black/50" />
-        </div>
-
-        {/* Content - Positioned Over Background */}
-        <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center px-3 sm:px-6 md:px-12 z-10 bg-[transparent]">
-          {/* Main Content - Text Only - Centered Vertically */}
-          <div className="w-full flex items-center justify-center flex-1">
-            <div className="flex flex-col justify-center text-center w-full max-w-3xl px-3">
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.3 }}>
-                <motion.div className="flex items-center justify-center gap-1 sm:gap-4 flex-wrap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.6 }}>
-
-                </motion.div>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </section>
       {/* --- Keywords Section with Softer Design --- */}
       {/* --- The Philosophy (Text Heavy / Editorial) --- */}
       <section className="py-12 px-8 lg:px-24" style={{ backgroundColor: '#FFFFFF' }}>
