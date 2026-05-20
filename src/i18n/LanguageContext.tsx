@@ -13,16 +13,22 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguageState] = useState<Language>('en-GB');
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load language from localStorage on mount
+  // Load language from localStorage on mount and set document language
   useEffect(() => {
     if (typeof window !== 'undefined') {
       try {
         const savedLanguage = localStorage.getItem('language') as Language | null;
         if (savedLanguage && translations[savedLanguage]) {
           setLanguageState(savedLanguage);
+          // Set HTML lang attribute for accessibility and SEO
+          document.documentElement.lang = savedLanguage.split('-')[0];
+        } else {
+          // Set default language
+          document.documentElement.lang = 'en';
         }
       } catch (error) {
         // localStorage might not be available in some environments
+        document.documentElement.lang = 'en';
       }
     }
     setIsLoaded(true);
@@ -31,7 +37,9 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const setLanguage = (lang: Language) => {
     if (translations[lang]) {
       setLanguageState(lang);
+      // Update HTML lang attribute when language changes
       if (typeof window !== 'undefined') {
+        document.documentElement.lang = lang.split('-')[0];
         try {
           localStorage.setItem('language', lang);
         } catch (error) {
