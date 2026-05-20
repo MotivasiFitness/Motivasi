@@ -600,71 +600,7 @@ export default function HomePage() {
         <div className="relative z-10 w-full max-w-[120rem] mx-auto px-4 md:px-8 lg:px-12 py-6 md:py-8 lg:py-10">
           <div className="flex flex-col items-start justify-center max-w-2xl">
             {/* Left Content */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="flex flex-col justify-center"
-            >
-              <motion.span
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="inline-block py-2 px-4 text-white rounded-full text-xs font-bold tracking-widest uppercase mb-6 w-fit"
-                style={{ backgroundColor: '#58355E' }}
-              >
-                Your Transformation Starts Here
-              </motion.span>
-              
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight"
-              >
-                Sustainable Fitness for Busy Women
-              </motion.h1>
-              
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed font-light max-w-xl"
-              >Personalised online coaching designed for women who want real results without extreme diets or endless cardio sessions.</motion.p>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="flex flex-col sm:flex-row gap-4"
-              >
-                <motion.div
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Link
-                    to="/store"
-                    className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl text-white"
-                    style={{ backgroundColor: '#58355E' }}
-                  >
-                    Start Your Journey
-                    <ArrowRight size={20} />
-                  </Link>
-                </motion.div>
-                
-                <motion.div
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <a
-                    href="mailto:hello@motivasi.co.uk"
-                    className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl border-2 border-white text-white hover:bg-white/10"
-                  >
-                    Book Consultation
-                  </a>
-                </motion.div>
-              </motion.div>
-            </motion.div>
+
           </div>
         </div>
       </section>
