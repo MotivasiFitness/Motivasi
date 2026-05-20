@@ -164,15 +164,15 @@ export default function OnlineTrainingPage() {
               }
             ].map((item, idx) => (
               <div key={idx} className="relative">
-                <div className="bg-soft-white/10 border border-soft-bronze/30 rounded-2xl p-8 text-center h-full flex flex-col justify-between">
+                <div className="bg-white border border-soft-bronze/30 rounded-2xl p-8 text-center h-full flex flex-col justify-between">
                   <div>
                     <div className="w-12 h-12 bg-soft-bronze text-soft-white rounded-full flex items-center justify-center font-heading text-xl font-bold mx-auto mb-6">
                       {item.step}
                     </div>
-                    <h3 className="font-heading text-xl font-bold text-soft-white mb-4">
+                    <h3 className="font-heading text-xl font-bold text-charcoal-black mb-4">
                       {item.title}
                     </h3>
-                    <p className="font-paragraph text-soft-white">
+                    <p className="font-paragraph text-charcoal-black">
                       {item.desc}
                     </p>
                   </div>
