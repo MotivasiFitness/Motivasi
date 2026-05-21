@@ -24,22 +24,25 @@ export default function AboutPage() {
   return (
     <div className="bg-soft-white">
       {/* Hero Section */}
-      <section className="py-24 px-8 lg:px-20" style={{ backgroundColor: '#986A6C' }}>
+      <section className="py-24 px-8 lg:px-20 bg-white">
         <div className="max-w-[100rem] mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 className="font-heading text-6xl font-bold text-white mb-8">
-                {t.about.meetYourCoach}
+              <h1 className="font-heading text-6xl font-bold text-charcoal-black mb-8">
+                Meet Your Coach
               </h1>
-              <div className="space-y-6 font-paragraph text-lg text-white leading-relaxed">
+              <div className="space-y-6 font-paragraph text-lg text-charcoal-black leading-relaxed">
                 <p>
-                  {t.about.passionateAbout}
+                  I'm a mum of two — and like many women, I know first-hand how much life changes after having children. Between sleepless nights, work, family responsibilities, and a body that no longer feels the same, fitness can quickly become confusing, overwhelming, or something that gets pushed to the bottom of the list.
                 </p>
                 <p>
-                  {t.about.specialisedTraining}
+                  After the birth of my children, I experienced injuries from not training correctly and not having the right guidance on how to recover safely. I wanted to feel strong again — but I didn't know how to train my body properly, and there was very little support available. That experience changed everything.
                 </p>
                 <p>
-                  {t.about.approachSimple}
+                  After years working in corporate management, I retrained as a personal trainer so I could truly understand the female body — particularly during pregnancy, postnatal recovery, and later life stages. I wanted to create the kind of support I wish I'd had: informed, reassuring, and built around real life.
+                </p>
+                <p>
+                  Today, I run a women's personal training business dedicated to helping women become stronger, healthier, and more confident at every stage of their journey — whether you're pre or postnatal, navigating menopause, or simply ready to prioritise your health again.
                 </p>
               </div>
             </div>
@@ -113,11 +116,10 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
       {/* Mission Section */}
-      <section className="py-24 px-8 lg:px-20" style={{ backgroundColor: '#986A6C' }}>
-        <div className="max-w-[100rem] mx-auto">
-          <div className="max-w-4xl mx-auto text-center">
+      <section className="py-24 px-8 lg:px-20" style={{ backgroundColor: '#EEC9D2' }}>
+        <div className="max-w-[100rem] mx-auto bg-warm-bronze">
+          <div className="max-w-4xl mx-auto text-center bg-cta-buttons">
             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-6">
               <Heart className="text-emerald-green" size={32} />
             </div>
@@ -202,10 +204,10 @@ export default function AboutPage() {
         </div>
       </section>
       {/* Approach Section */}
-      <section className="py-24 px-8 lg:px-20" style={{ backgroundColor: '#986A6C' }}>
+      <section className="py-24 px-8 lg:px-20" style={{ backgroundColor: '#EEC9D2' }}>
         <div className="max-w-[100rem] mx-auto">
           <div className="text-center mb-16">
-            <h2 className="font-heading text-5xl font-bold text-white mb-6">
+            <h2 className="font-heading text-5xl font-bold text-soft-white mb-6">
               {t.about.myCoachingApproach}
             </h2>
             <p className="font-paragraph text-xl text-white max-w-3xl mx-auto">
@@ -214,36 +216,35 @@ export default function AboutPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-8 border border-white rounded-lg bg-white">
-              <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4">
+            <div className="text-center p-8 border border-white rounded-lg">
+              <h3 className="font-heading text-3xl font-bold text-white mb-4">
                 {t.about.personalised}
               </h3>
-              <p className="font-paragraph text-base text-charcoal-black">
+              <p className="font-paragraph text-base text-white">
                 {t.about.personalisedDesc}
               </p>
             </div>
 
-            <div className="text-center p-8 border border-white rounded-lg bg-white">
-              <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4">
+            <div className="text-center p-8 border border-white rounded-lg">
+              <h3 className="font-heading text-3xl font-bold text-white mb-4">
                 {t.about.evidenceBased}
               </h3>
-              <p className="font-paragraph text-base text-charcoal-black">
+              <p className="font-paragraph text-base text-white">
                 {t.about.evidenceBasedDesc}
               </p>
             </div>
 
-            <div className="text-center p-8 border border-white rounded-lg bg-white">
-              <h3 className="font-heading text-3xl font-bold text-charcoal-black mb-4">
+            <div className="text-center p-8 border border-white rounded-lg">
+              <h3 className="font-heading text-3xl font-bold text-white mb-4">
                 {t.about.supportive}
               </h3>
-              <p className="font-paragraph text-base text-charcoal-black">
+              <p className="font-paragraph text-base text-white">
                 {t.about.supportiveDesc}
               </p>
             </div>
           </div>
         </div>
       </section>
-
       {/* Get In Touch Section */}
       <section id="get-in-touch" className="py-32 px-8 lg:px-20 bg-white">
         <div className="max-w-[100rem] mx-auto">
