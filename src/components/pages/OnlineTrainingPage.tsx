@@ -16,20 +16,20 @@ export default function OnlineTrainingPage() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="py-24 px-8 lg:px-20 bg-warm-cream">
+      <section className="py-24 px-8 lg:px-20" style={{ backgroundColor: '#986A6C' }}>
         <div className="max-w-[100rem] mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <span className="inline-block py-1 px-3 border border-soft-bronze rounded-full text-soft-bronze text-sm tracking-widest uppercase font-medium mb-6">
+              <span className="inline-block py-1 px-3 border border-white rounded-full text-white text-sm tracking-widest uppercase font-medium mb-6">
                 Online Coaching
               </span>
-              <h1 className="font-heading text-6xl font-bold text-charcoal-black mb-6">
+              <h1 className="font-heading text-6xl font-bold text-white mb-6">
                 Transform From Home
               </h1>
-              <p className="font-paragraph text-xl text-charcoal-black mb-6 leading-relaxed">
+              <p className="font-paragraph text-xl text-white mb-6 leading-relaxed">
                 Get personalised coaching, expert guidance, and real results—all from the comfort of your home. No gym required. No excuses needed.
               </p>
-              <p className="font-paragraph text-lg text-warm-grey mb-8 leading-relaxed">
+              <p className="font-paragraph text-lg text-white/90 mb-8 leading-relaxed">
                 Whether you're postpartum, navigating perimenopause, a complete beginner, or juggling a busy schedule—I've got a program designed for you.
               </p>
               <button
