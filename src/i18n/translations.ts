@@ -13,6 +13,12 @@ export interface Translations {
     privacyPolicy: string;
     terms: string;
     bookNow: string;
+    trainerHub: string;
+    myPortal: string;
+    clientPortal: string;
+    signOut: string;
+    quickLinks: string;
+    basedIn: string;
   };
   // Header
   header: {

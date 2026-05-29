@@ -33,16 +33,19 @@ export default function AboutPage() {
               </h1>
               <div className="space-y-6 font-paragraph text-lg text-charcoal-black leading-relaxed">
                 <p>
-                  I'm a mum of two — and like many women, I know first-hand how much life changes after having children. Between sleepless nights, work, family responsibilities, and a body that no longer feels the same, fitness can quickly become confusing, overwhelming, or something that gets pushed to the bottom of the list.
+                  My passion is helping women feel better about themselves — not just in how they look, but in how they feel every day.
                 </p>
                 <p>
-                  After the birth of my children, I experienced injuries from not training correctly and not having the right guidance on how to recover safely. I wanted to feel strong again — but I didn't know how to train my body properly, and there was very little support available. That experience changed everything.
+                  As women, we're always evolving. From girls to teenagers, young adults to women navigating work, motherhood, hormones, and everything in between… we're constantly changing, growing, and adapting.
                 </p>
                 <p>
-                  After years working in corporate management, I retrained as a personal trainer so I could truly understand the female body — particularly during pregnancy, postnatal recovery, and later life stages. I wanted to create the kind of support I wish I'd had: informed, reassuring, and built around real life.
+                  That's why my approach is simple: I meet you where you are.
                 </p>
                 <p>
-                  Today, I run a women's personal training business dedicated to helping women become stronger, healthier, and more confident at every stage of their journey — whether you're pre or postnatal, navigating menopause, or simply ready to prioritise your health again.
+                  Whether you train with me in person or work with me online, I'm here to support you, guide you, and keep you accountable. You'll always have me in your corner — someone who understands, listens, and helps you move forward with confidence.
+                </p>
+                <p>
+                  Because real change happens when you feel seen, supported, and understood.
                 </p>
               </div>
             </div>
