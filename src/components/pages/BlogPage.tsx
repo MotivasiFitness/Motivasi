@@ -82,12 +82,12 @@ export default function FaceToFaceTrainingPage() {
   return (
     <div className="bg-soft-white">
       {/* Hero Section */}
-      <section className="py-24 px-8 lg:px-20 bg-warm-sand-beige">
+      <section className="py-24 px-8 lg:px-20" style={{ backgroundColor: '#986A6C' }}>
         <div className="max-w-[100rem] mx-auto text-center">
-          <h1 className="font-heading text-6xl font-bold text-charcoal-black mb-6">
+          <h1 className="font-heading text-6xl font-bold text-white mb-6">
             {t.blog.faceToFacePersonalTraining}
           </h1>
-          <p className="font-paragraph text-xl text-charcoal-black max-w-3xl mx-auto">
+          <p className="font-paragraph text-xl text-white max-w-3xl mx-auto">
             {t.blog.personalisedOneOnOne}
           </p>
         </div>
