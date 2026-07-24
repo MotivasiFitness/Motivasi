@@ -920,7 +920,7 @@ export default function WomensPARQForm() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-start space-x-3">
+              <div className="flex items-start space-x-3 p-4 rounded-lg border border-warm-sand-beige bg-soft-white">
                 <Checkbox
                   id="declarationAgreed"
                   checked={formData.declarationAgreed}
@@ -928,7 +928,7 @@ export default function WomensPARQForm() {
                   required
                   className="mt-1"
                 />
-                <Label htmlFor="declarationAgreed" className="text-base leading-relaxed cursor-pointer">
+                <Label htmlFor="declarationAgreed" className="text-base font-medium leading-relaxed cursor-pointer text-charcoal-black">
                   I confirm that the information provided is accurate to the best of my knowledge and helps my coach support me safely.
                 </Label>
               </div>
