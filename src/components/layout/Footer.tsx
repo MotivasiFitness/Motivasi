@@ -54,14 +54,7 @@ function Footer() {
       <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-20 py-8 sm:py-10 lg:py-12 pb-4 sm:pb-6 lg:pb-8">
         {/* Main Footer Grid - Top Section - Centered */}
         <div className="flex flex-col items-center text-center mb-16 sm:mb-20 lg:mb-24 relative z-20">
-          {/* Large Background Watermark Text - Brand Name */}
-          <div className="flex items-center justify-center pointer-events-none overflow-hidden mb-4 sm:mb-6 lg:mb-8 w-full">
-            <div className="text-[60px] sm:text-[100px] md:text-[130px] lg:text-[160px] xl:text-[200px] font-heading font-bold leading-none whitespace-nowrap opacity-5 text-primary-text select-none">
-              MOTIVASI
-            </div>
-          </div>
-
-          {/* Brand Section - Centered - Below Large Name */}
+          {/* Brand Section - Centered */}
           <div className="flex flex-col items-center mb-12 sm:mb-16 lg:mb-20">
             <p className="font-paragraph text-sm text-secondary-text mb-8 leading-relaxed max-w-md">
               {t.footer.empoweringBusy}
