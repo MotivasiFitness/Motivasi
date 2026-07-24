@@ -601,7 +601,9 @@ export default function HomePage() {
         <div className="relative z-10 w-full max-w-[120rem] mx-auto px-4 md:px-8 lg:px-12 py-4 sm:py-6 md:py-8 lg:py-10">
           <div className="flex flex-col items-start justify-center max-w-2xl">
             {/* Left Content */}
-
+            <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+              Strength training for Women 35+
+            </h1>
           </div>
         </div>
       </section>
