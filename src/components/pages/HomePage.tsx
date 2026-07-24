@@ -585,7 +585,7 @@ export default function HomePage() {
       />
       {/* --- Hero Section with Background Image --- */}
       <section 
-        className="w-full min-h-[280px] sm:min-h-[400px] md:min-h-[600px] flex items-center justify-center relative overflow-hidden"
+        className="w-full min-h-[320px] sm:min-h-[450px] md:min-h-[650px] flex items-center justify-center relative overflow-hidden"
         style={{
           backgroundImage: 'url(https://static.wixstatic.com/media/93e866_754a46ceee9f4355b3dbe9670c2e820d~mv2.png)',
           backgroundSize: 'cover',
@@ -595,18 +595,118 @@ export default function HomePage() {
         }}
       >
         {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-black/45" />
         
         {/* Content */}
-        <div className="relative z-10 w-full max-w-[120rem] mx-auto px-4 md:px-8 lg:px-12 py-4 sm:py-6 md:py-8 lg:py-10">
-          <div className="flex flex-col items-start justify-center max-w-2xl">
-            {/* Left Content */}
-            <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-3 md:mb-6">
-              Strength training for Women 35+
-            </h1>
-            <p className="font-paragraph text-lg sm:text-xl md:text-2xl text-white leading-relaxed">
-              Fitness that works with your hormones.
-            </p>
+        <div className="relative z-10 w-full max-w-[120rem] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-8 md:py-12 lg:py-16">
+          <div className="flex flex-col items-start justify-center max-w-3xl">
+            {/* Top Label */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="mb-4 sm:mb-6"
+            >
+              <p className="font-paragraph text-xs sm:text-sm md:text-base tracking-widest uppercase font-semibold text-white/90 letter-spacing">
+                HELPING WOMEN BECOME
+              </p>
+            </motion.div>
+
+            {/* Main Heading */}
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-2 sm:mb-4"
+            >
+              the strongest version of
+            </motion.h1>
+
+            {/* Highlighted Word */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="mb-6 sm:mb-8"
+            >
+              <p className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold italic text-[#E8A8C8] leading-tight">
+                themselves.
+              </p>
+            </motion.div>
+
+            {/* Decorative Line */}
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: 60 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="h-1 bg-gradient-to-r from-[#E8A8C8] to-[#E8A8C8] mb-6 sm:mb-8 rounded-full"
+            />
+
+            {/* Subheader */}
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="font-paragraph text-sm sm:text-base md:text-lg tracking-wide uppercase font-semibold text-white/95 mb-8 sm:mb-12"
+            >
+              BESPOKE PERSONAL TRAINING<br className="hidden sm:block" />
+              & ONLINE COACHING
+            </motion.p>
+
+            {/* Feature Icons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="grid grid-cols-3 gap-4 sm:gap-6 md:gap-8 w-full max-w-md"
+            >
+              {/* Build Strength */}
+              <div className="flex flex-col items-center text-center">
+                <div className="mb-3 sm:mb-4">
+                  <Dumbbell className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-[#E8A8C8] stroke-[1.5]" />
+                </div>
+                <p className="font-paragraph text-xs sm:text-sm font-bold uppercase tracking-wider text-white/90">
+                  BUILD<br />STRENGTH
+                </p>
+              </div>
+
+              {/* Boost Confidence */}
+              <div className="flex flex-col items-center text-center">
+                <div className="mb-3 sm:mb-4">
+                  <Heart className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-[#E8A8C8] stroke-[1.5]" />
+                </div>
+                <p className="font-paragraph text-xs sm:text-sm font-bold uppercase tracking-wider text-white/90">
+                  BOOST<br />CONFIDENCE
+                </p>
+              </div>
+
+              {/* Feel Stronger */}
+              <div className="flex flex-col items-center text-center">
+                <div className="mb-3 sm:mb-4">
+                  <Zap className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-[#E8A8C8] stroke-[1.5]" />
+                </div>
+                <p className="font-paragraph text-xs sm:text-sm font-bold uppercase tracking-wider text-white/90">
+                  FEEL<br />STRONGER
+                </p>
+              </div>
+            </motion.div>
+
+            {/* CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              className="mt-8 sm:mt-10 md:mt-12 w-full sm:w-auto"
+            >
+              <motion.button
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full sm:w-auto px-8 sm:px-10 md:px-12 py-3 sm:py-4 md:py-5 rounded-lg font-bold text-sm sm:text-base md:text-lg transition-all duration-300 shadow-lg hover:shadow-xl text-white uppercase tracking-wide"
+                style={{ backgroundColor: '#E8A8C8' }}
+              >
+                STRONGER INSIDE & OUT
+              </motion.button>
+            </motion.div>
           </div>
         </div>
       </section>
