@@ -34,35 +34,49 @@ export default function WomensPARQForm() {
     
     // Section 1: Heart & Circulation
     hasHeartCondition: '',
+    hasHeartConditionDetails: '',
     chestPain: '',
+    chestPainDetails: '',
     toldNotToExercise: '',
+    toldNotToExerciseDetails: '',
     heartDetails: '',
     
     // Section 2: Balance & Neurological
     dizzinessFainting: '',
+    dizzinessFaintingDetails: '',
     balanceIssuesOrFalls: '',
+    balanceIssuesDetails: '',
     neurologicalDetails: '',
     
     // Section 3: Metabolic & Medical
     highBloodPressure: '',
+    highBloodPressureDetails: '',
     diabetes: '',
+    diabetesDetails: '',
     otherMedicalConditions: '',
+    otherMedicalConditionsDetails: '',
     metabolicDetails: '',
     
     // Section 4: Respiratory
     respiratoryCondition: '',
+    respiratoryConditionDetails: '',
     shortnessOfBreath: '',
+    shortnessOfBreathDetails: '',
     respiratoryDetails: '',
     
     // Section 5: Musculoskeletal & Pain
     jointPainOrArthritis: '',
+    jointPainDetails: '',
     pastInjuryOrSurgery: '',
+    surgeryDetails: '',
     musculoskeletalDetails: '',
     
     // Section 6: Women's Health
     menopauseStatus: 'prefer-not-to-say',
     pelvicFloorSymptoms: '',
+    pelvicFloorDetails: '',
     symptomsFluctuate: '',
+    symptomsFluctuateDetails: '',
     womensHealthDetails: '',
     
     // Final confirmation
@@ -118,8 +132,6 @@ export default function WomensPARQForm() {
         email: formData.email,
         phone: formData.phone,
         emergencyContactNumber: formData.emergencyContactNumber,
-        emergencyContactName: formData.emergencyContactName,
-        emergencyContactRelationship: formData.emergencyContactRelationship,
         
         // Map to existing fields
         hasHeartCondition: formData.hasHeartCondition === 'yes',
@@ -135,13 +147,36 @@ export default function WomensPARQForm() {
         pelvicFloorSymptoms: formData.pelvicFloorSymptoms === 'yes',
         periOrPostMenopause: formData.menopauseStatus === 'peri' || formData.menopauseStatus === 'post',
         
-        // Store detailed notes
-        generalHealthDetails: formData.heartDetails,
-        orthoDetails: formData.musculoskeletalDetails,
-        womensHealthDetails: formData.womensHealthDetails,
+        // Store detailed notes - consolidate all detail fields
+        generalHealthDetails: [
+          formData.hasHeartConditionDetails,
+          formData.chestPainDetails,
+          formData.toldNotToExerciseDetails,
+          formData.heartDetails
+        ].filter(Boolean).join('\n'),
+        
+        orthoDetails: [
+          formData.jointPainDetails,
+          formData.surgeryDetails,
+          formData.musculoskeletalDetails
+        ].filter(Boolean).join('\n'),
+        
+        womensHealthDetails: [
+          formData.pelvicFloorDetails,
+          formData.symptomsFluctuateDetails,
+          formData.womensHealthDetails
+        ].filter(Boolean).join('\n'),
+        
         medicalClearanceDetails: [
+          formData.dizzinessFaintingDetails,
+          formData.balanceIssuesDetails,
           formData.neurologicalDetails,
+          formData.highBloodPressureDetails,
+          formData.diabetesDetails,
+          formData.otherMedicalConditionsDetails,
           formData.metabolicDetails,
+          formData.respiratoryConditionDetails,
+          formData.shortnessOfBreathDetails,
           formData.respiratoryDetails
         ].filter(Boolean).join('\n\n'),
         
@@ -150,7 +185,7 @@ export default function WomensPARQForm() {
         signatureDate: formData.signatureDate,
         submissionDateTime: new Date().toISOString(),
         
-        // Risk flags (stored in existing boolean fields)
+        // Risk flags
         toldNeedMedicalClearance: requiresMedicalClearance,
       };
 
@@ -315,6 +350,27 @@ export default function WomensPARQForm() {
                 </RadioGroup>
               </div>
 
+              <AnimatePresence>
+                {formData.hasHeartCondition === 'yes' && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Label htmlFor="hasHeartConditionDetails">Please provide details</Label>
+                    <Textarea
+                      id="hasHeartConditionDetails"
+                      value={formData.hasHeartConditionDetails}
+                      onChange={(e) => handleInputChange('hasHeartConditionDetails', e.target.value)}
+                      placeholder="E.g., 'Diagnosed with arrhythmia' or 'Family history of heart disease'"
+                      className="border-warm-grey mt-2"
+                      rows={2}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <div className="space-y-3">
                 <Label className="text-base font-medium">Do you experience chest pain or pressure during physical activity?</Label>
                 <RadioGroup value={formData.chestPain} onValueChange={(value) => handleInputChange('chestPain', value)}>
@@ -328,6 +384,27 @@ export default function WomensPARQForm() {
                   </div>
                 </RadioGroup>
               </div>
+
+              <AnimatePresence>
+                {formData.chestPain === 'yes' && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Label htmlFor="chestPainDetails">Please provide details</Label>
+                    <Textarea
+                      id="chestPainDetails"
+                      value={formData.chestPainDetails}
+                      onChange={(e) => handleInputChange('chestPainDetails', e.target.value)}
+                      placeholder="Describe the pain, when it occurs, and severity..."
+                      className="border-warm-grey mt-2"
+                      rows={2}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               <div className="space-y-3">
                 <Label className="text-base font-medium">Has a doctor ever advised you to avoid exercise?</Label>
@@ -344,21 +421,21 @@ export default function WomensPARQForm() {
               </div>
 
               <AnimatePresence>
-                {(formData.hasHeartCondition === 'yes' || formData.chestPain === 'yes' || formData.toldNotToExercise === 'yes') && (
+                {formData.toldNotToExercise === 'yes' && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Label htmlFor="heartDetails">Please provide details (optional but helpful)</Label>
+                    <Label htmlFor="toldNotToExerciseDetails">Please provide details</Label>
                     <Textarea
-                      id="heartDetails"
-                      value={formData.heartDetails}
-                      onChange={(e) => handleInputChange('heartDetails', e.target.value)}
-                      placeholder="Any additional information that would help your coach..."
+                      id="toldNotToExerciseDetails"
+                      value={formData.toldNotToExerciseDetails}
+                      onChange={(e) => handleInputChange('toldNotToExerciseDetails', e.target.value)}
+                      placeholder="What was the reason and any restrictions mentioned..."
                       className="border-warm-grey mt-2"
-                      rows={3}
+                      rows={2}
                     />
                   </motion.div>
                 )}
@@ -388,6 +465,27 @@ export default function WomensPARQForm() {
                 </RadioGroup>
               </div>
 
+              <AnimatePresence>
+                {formData.dizzinessFainting === 'yes' && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Label htmlFor="dizzinessFaintingDetails">Please provide details</Label>
+                    <Textarea
+                      id="dizzinessFaintingDetails"
+                      value={formData.dizzinessFaintingDetails}
+                      onChange={(e) => handleInputChange('dizzinessFaintingDetails', e.target.value)}
+                      placeholder="When does this occur and how often..."
+                      className="border-warm-grey mt-2"
+                      rows={2}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <div className="space-y-3">
                 <Label className="text-base font-medium">Do you experience unexplained loss of balance?</Label>
                 <RadioGroup value={formData.balanceIssuesOrFalls} onValueChange={(value) => handleInputChange('balanceIssuesOrFalls', value)}>
@@ -403,21 +501,21 @@ export default function WomensPARQForm() {
               </div>
 
               <AnimatePresence>
-                {(formData.dizzinessFainting === 'yes' || formData.balanceIssuesOrFalls === 'yes') && (
+                {formData.balanceIssuesOrFalls === 'yes' && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Label htmlFor="neurologicalDetails">Please provide details (optional but helpful)</Label>
+                    <Label htmlFor="balanceIssuesDetails">Please provide details</Label>
                     <Textarea
-                      id="neurologicalDetails"
-                      value={formData.neurologicalDetails}
-                      onChange={(e) => handleInputChange('neurologicalDetails', e.target.value)}
-                      placeholder="Any additional information that would help your coach..."
+                      id="balanceIssuesDetails"
+                      value={formData.balanceIssuesDetails}
+                      onChange={(e) => handleInputChange('balanceIssuesDetails', e.target.value)}
+                      placeholder="Describe the balance issues or any falls..."
                       className="border-warm-grey mt-2"
-                      rows={3}
+                      rows={2}
                     />
                   </motion.div>
                 )}
@@ -447,6 +545,27 @@ export default function WomensPARQForm() {
                 </RadioGroup>
               </div>
 
+              <AnimatePresence>
+                {formData.highBloodPressure === 'yes' && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Label htmlFor="highBloodPressureDetails">Please provide details</Label>
+                    <Textarea
+                      id="highBloodPressureDetails"
+                      value={formData.highBloodPressureDetails}
+                      onChange={(e) => handleInputChange('highBloodPressureDetails', e.target.value)}
+                      placeholder="E.g., 'Controlled with medication' or 'Recently diagnosed'"
+                      className="border-warm-grey mt-2"
+                      rows={2}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <div className="space-y-3">
                 <Label className="text-base font-medium">Do you have diabetes?</Label>
                 <RadioGroup value={formData.diabetes} onValueChange={(value) => handleInputChange('diabetes', value)}>
@@ -460,6 +579,27 @@ export default function WomensPARQForm() {
                   </div>
                 </RadioGroup>
               </div>
+
+              <AnimatePresence>
+                {formData.diabetes === 'yes' && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Label htmlFor="diabetesDetails">Please provide details</Label>
+                    <Textarea
+                      id="diabetesDetails"
+                      value={formData.diabetesDetails}
+                      onChange={(e) => handleInputChange('diabetesDetails', e.target.value)}
+                      placeholder="E.g., 'Type 1' or 'Type 2, managed with diet'"
+                      className="border-warm-grey mt-2"
+                      rows={2}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               <div className="space-y-3">
                 <Label className="text-base font-medium">Do you have any other medical conditions we should be aware of?</Label>
@@ -476,19 +616,19 @@ export default function WomensPARQForm() {
               </div>
 
               <AnimatePresence>
-                {(formData.highBloodPressure === 'yes' || formData.diabetes === 'yes' || formData.otherMedicalConditions === 'yes') && (
+                {formData.otherMedicalConditions === 'yes' && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Label htmlFor="metabolicDetails">Please provide details (optional but helpful)</Label>
+                    <Label htmlFor="otherMedicalConditionsDetails">Please provide details</Label>
                     <Textarea
-                      id="metabolicDetails"
-                      value={formData.metabolicDetails}
-                      onChange={(e) => handleInputChange('metabolicDetails', e.target.value)}
-                      placeholder="Any additional information that would help your coach..."
+                      id="otherMedicalConditionsDetails"
+                      value={formData.otherMedicalConditionsDetails}
+                      onChange={(e) => handleInputChange('otherMedicalConditionsDetails', e.target.value)}
+                      placeholder="Please describe the condition(s) and any relevant management..."
                       className="border-warm-grey mt-2"
                       rows={3}
                     />
@@ -520,6 +660,27 @@ export default function WomensPARQForm() {
                 </RadioGroup>
               </div>
 
+              <AnimatePresence>
+                {formData.respiratoryCondition === 'yes' && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Label htmlFor="respiratoryConditionDetails">Please provide details</Label>
+                    <Textarea
+                      id="respiratoryConditionDetails"
+                      value={formData.respiratoryConditionDetails}
+                      onChange={(e) => handleInputChange('respiratoryConditionDetails', e.target.value)}
+                      placeholder="E.g., 'Asthma, controlled with inhaler' or 'Exercise-induced asthma'"
+                      className="border-warm-grey mt-2"
+                      rows={2}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <div className="space-y-3">
                 <Label className="text-base font-medium">Do you experience shortness of breath disproportionate to activity?</Label>
                 <RadioGroup value={formData.shortnessOfBreath} onValueChange={(value) => handleInputChange('shortnessOfBreath', value)}>
@@ -535,21 +696,21 @@ export default function WomensPARQForm() {
               </div>
 
               <AnimatePresence>
-                {(formData.respiratoryCondition === 'yes' || formData.shortnessOfBreath === 'yes') && (
+                {formData.shortnessOfBreath === 'yes' && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Label htmlFor="respiratoryDetails">Please provide details (optional but helpful)</Label>
+                    <Label htmlFor="shortnessOfBreathDetails">Please provide details</Label>
                     <Textarea
-                      id="respiratoryDetails"
-                      value={formData.respiratoryDetails}
-                      onChange={(e) => handleInputChange('respiratoryDetails', e.target.value)}
-                      placeholder="Any additional information that would help your coach..."
+                      id="shortnessOfBreathDetails"
+                      value={formData.shortnessOfBreathDetails}
+                      onChange={(e) => handleInputChange('shortnessOfBreathDetails', e.target.value)}
+                      placeholder="Describe when this occurs and severity..."
                       className="border-warm-grey mt-2"
-                      rows={3}
+                      rows={2}
                     />
                   </motion.div>
                 )}
@@ -579,6 +740,27 @@ export default function WomensPARQForm() {
                 </RadioGroup>
               </div>
 
+              <AnimatePresence>
+                {formData.jointPainOrArthritis === 'yes' && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Label htmlFor="jointPainDetails">Please provide details</Label>
+                    <Textarea
+                      id="jointPainDetails"
+                      value={formData.jointPainDetails}
+                      onChange={(e) => handleInputChange('jointPainDetails', e.target.value)}
+                      placeholder="E.g., 'Left knee pain, moderate severity' or 'Chronic lower back pain'"
+                      className="border-warm-grey mt-2"
+                      rows={2}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <div className="space-y-3">
                 <Label className="text-base font-medium">Have you had surgery in the last 12 months?</Label>
                 <RadioGroup value={formData.pastInjuryOrSurgery} onValueChange={(value) => handleInputChange('pastInjuryOrSurgery', value)}>
@@ -594,21 +776,21 @@ export default function WomensPARQForm() {
               </div>
 
               <AnimatePresence>
-                {(formData.jointPainOrArthritis === 'yes' || formData.pastInjuryOrSurgery === 'yes') && (
+                {formData.pastInjuryOrSurgery === 'yes' && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Label htmlFor="musculoskeletalDetails">Please specify location and severity</Label>
+                    <Label htmlFor="surgeryDetails">Please provide details</Label>
                     <Textarea
-                      id="musculoskeletalDetails"
-                      value={formData.musculoskeletalDetails}
-                      onChange={(e) => handleInputChange('musculoskeletalDetails', e.target.value)}
-                      placeholder="E.g., 'Left knee pain, moderate severity' or 'Hip replacement 6 months ago'"
+                      id="surgeryDetails"
+                      value={formData.surgeryDetails}
+                      onChange={(e) => handleInputChange('surgeryDetails', e.target.value)}
+                      placeholder="Type of surgery, location, and recovery status..."
                       className="border-warm-grey mt-2"
-                      rows={3}
+                      rows={2}
                     />
                   </motion.div>
                 )}
@@ -663,6 +845,27 @@ export default function WomensPARQForm() {
                 </RadioGroup>
               </div>
 
+              <AnimatePresence>
+                {formData.pelvicFloorSymptoms === 'yes' && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Label htmlFor="pelvicFloorDetails">Please provide details</Label>
+                    <Textarea
+                      id="pelvicFloorDetails"
+                      value={formData.pelvicFloorDetails}
+                      onChange={(e) => handleInputChange('pelvicFloorDetails', e.target.value)}
+                      placeholder="E.g., 'Incontinence with high impact' or 'Pelvic pain during certain movements'"
+                      className="border-warm-grey mt-2"
+                      rows={2}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <div className="space-y-3">
                 <Label className="text-base font-medium">Do symptoms (energy, joint pain, recovery) fluctuate monthly?</Label>
                 <RadioGroup value={formData.symptomsFluctuate} onValueChange={(value) => handleInputChange('symptomsFluctuate', value)}>
@@ -678,21 +881,21 @@ export default function WomensPARQForm() {
               </div>
 
               <AnimatePresence>
-                {(formData.pelvicFloorSymptoms === 'yes' || formData.symptomsFluctuate === 'yes') && (
+                {formData.symptomsFluctuate === 'yes' && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Label htmlFor="womensHealthDetails">Please provide details (optional but helpful)</Label>
+                    <Label htmlFor="symptomsFluctuateDetails">Please provide details</Label>
                     <Textarea
-                      id="womensHealthDetails"
-                      value={formData.womensHealthDetails}
-                      onChange={(e) => handleInputChange('womensHealthDetails', e.target.value)}
-                      placeholder="Any additional information that would help your coach..."
+                      id="symptomsFluctuateDetails"
+                      value={formData.symptomsFluctuateDetails}
+                      onChange={(e) => handleInputChange('symptomsFluctuateDetails', e.target.value)}
+                      placeholder="Describe the pattern and which symptoms are affected..."
                       className="border-warm-grey mt-2"
-                      rows={3}
+                      rows={2}
                     />
                   </motion.div>
                 )}
