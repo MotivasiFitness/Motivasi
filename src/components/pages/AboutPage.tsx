@@ -124,7 +124,7 @@ export default function AboutPage() {
         <div className="max-w-[100rem] mx-auto">
           <div className="max-w-4xl mx-auto text-center">
             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-6">
-              <Heart className="text-emerald-green" size={32} />
+              <Heart className="text-primary" size={32} />
             </div>
             <h2 className="font-heading text-5xl font-bold text-white mb-6">
               My Approach
