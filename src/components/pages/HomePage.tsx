@@ -698,14 +698,15 @@ export default function HomePage() {
               transition={{ duration: 0.8, delay: 0.7 }}
               className="mt-8 sm:mt-10 md:mt-12 w-full sm:w-auto"
             >
-              <motion.button
+              <motion.a
+                href="#contact-form"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full sm:w-auto px-8 sm:px-10 md:px-12 py-3 sm:py-4 md:py-5 rounded-lg font-bold text-sm sm:text-base md:text-lg transition-all duration-300 shadow-lg hover:shadow-xl text-white uppercase tracking-wide"
+                className="inline-block w-full sm:w-auto px-8 sm:px-10 md:px-12 py-3 sm:py-4 md:py-5 rounded-lg font-bold text-sm sm:text-base md:text-lg transition-all duration-300 shadow-lg hover:shadow-xl text-white uppercase tracking-wide text-center"
                 style={{ backgroundColor: '#E8A8C8' }}
               >
                 STRONGER INSIDE & OUT
-              </motion.button>
+              </motion.a>
             </motion.div>
           </div>
         </div>
@@ -926,7 +927,7 @@ export default function HomePage() {
         </section>
       )}
       {/* --- Contact Form Section --- */}
-      <section className="py-24 px-8 lg:px-20 bg-white">
+      <section id="contact-form" className="py-24 px-8 lg:px-20 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="font-heading text-4xl font-bold text-charcoal-black mb-4">
