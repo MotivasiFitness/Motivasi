@@ -847,7 +847,7 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <a href="mailto:info@motivasi.com" className="inline-flex items-center gap-2 hover:opacity-90 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-white" style={{ backgroundColor: '#58355E' }}>
+                <a href="#contact-form" className="inline-flex items-center gap-2 hover:opacity-90 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-white" style={{ backgroundColor: '#58355E' }}>
                   Book a Free 15-Minute Consultation <ArrowRight size={20} className="text-white" />
                 </a>
               </div>
