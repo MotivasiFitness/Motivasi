@@ -279,7 +279,7 @@ export default function OnlineTrainingPage() {
           <div className="bg-white border border-soft-white/20 rounded-2xl p-8 md:p-12">
             <div className="grid md:grid-cols-2 gap-8">
               <div className="flex gap-4 items-start">
-                <div className="w-6 h-6 rounded-full bg-slate-blue flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#58355E' }}>
                   <span className="text-white font-heading font-bold text-sm">✓</span>
                 </div>
                 <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
@@ -287,7 +287,7 @@ export default function OnlineTrainingPage() {
                 </p>
               </div>
               <div className="flex gap-4 items-start">
-                <div className="w-6 h-6 rounded-full bg-slate-blue flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#58355E' }}>
                   <span className="text-white font-heading font-bold text-sm">✓</span>
                 </div>
                 <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
@@ -295,7 +295,7 @@ export default function OnlineTrainingPage() {
                 </p>
               </div>
               <div className="flex gap-4 items-start">
-                <div className="w-6 h-6 rounded-full bg-slate-blue flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#58355E' }}>
                   <span className="text-white font-heading font-bold text-sm">✓</span>
                 </div>
                 <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
@@ -303,7 +303,7 @@ export default function OnlineTrainingPage() {
                 </p>
               </div>
               <div className="flex gap-4 items-start">
-                <div className="w-6 h-6 rounded-full bg-slate-blue flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#58355E' }}>
                   <span className="text-white font-heading font-bold text-sm">✓</span>
                 </div>
                 <p className="font-paragraph text-base text-charcoal-black leading-relaxed">
