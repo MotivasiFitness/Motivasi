@@ -75,7 +75,7 @@ export default function AboutPage() {
             <div className="rounded-2xl p-12 md:p-16">
               <ul className="space-y-8">
                 <li className="flex gap-6 items-start">
-                  <div className="w-8 h-8 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-1">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ backgroundColor: '#58355E' }}>
                     <span className="text-soft-white font-heading font-bold text-lg">✓</span>
                   </div>
                   <div>
@@ -85,7 +85,7 @@ export default function AboutPage() {
                   </div>
                 </li>
                 <li className="flex gap-6 items-start">
-                  <div className="w-8 h-8 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-1">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ backgroundColor: '#58355E' }}>
                     <span className="text-soft-white font-heading font-bold text-lg">✓</span>
                   </div>
                   <div>
@@ -95,7 +95,7 @@ export default function AboutPage() {
                   </div>
                 </li>
                 <li className="flex gap-6 items-start">
-                  <div className="w-8 h-8 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-1">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ backgroundColor: '#58355E' }}>
                     <span className="text-soft-white font-heading font-bold text-lg">✓</span>
                   </div>
                   <div>
@@ -105,7 +105,7 @@ export default function AboutPage() {
                   </div>
                 </li>
                 <li className="flex gap-6 items-start">
-                  <div className="w-8 h-8 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 mt-1">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ backgroundColor: '#58355E' }}>
                     <span className="text-soft-white font-heading font-bold text-lg">✓</span>
                   </div>
                   <div>
