@@ -267,7 +267,7 @@ export default function AboutPage() {
                 Get in Touch
               </h2>
               <p className="font-paragraph text-lg text-charcoal-black/70 mb-12 leading-relaxed">
-                Ready to start your fitness journey? Reach out to discuss your goals and book your free 10-minute consultation call.
+                Ready to start your fitness journey? Reach out to discuss your goals and book your free 15-minute consultation call.
               </p>
 
               <div className="space-y-8">
