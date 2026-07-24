@@ -277,17 +277,7 @@ function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) {
                   : 'w-2'
               }`}
               style={{
-                backgroundColor: index === currentIndex ? '#9b6a6c' : 'rgba(155, 106, 108, 0.3)'
-              }}
-              onMouseEnter={(e) => {
-                if (index !== currentIndex) {
-                  e.currentTarget.style.backgroundColor = 'rgba(155, 106, 108, 0.5)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (index !== currentIndex) {
-                  e.currentTarget.style.backgroundColor = 'rgba(155, 106, 108, 0.3)';
-                }
+                backgroundColor: index === currentIndex ? '#58355E' : '#D4C5C9'
               }}
               whileHover={{ scale: 1.2 }}
               aria-label={`Go to testimonial ${index + 1}`}
