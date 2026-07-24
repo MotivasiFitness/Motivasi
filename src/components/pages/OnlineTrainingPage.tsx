@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle, ArrowRight, ChevronDown, Video, Users, Clock, Zap, Heart, Smartphone, AlertCircle } from 'lucide-react';
+import { CheckCircle, ArrowRight, ChevronDown, Video, Users, Clock, Zap, Apple, Smartphone, AlertCircle } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { useLanguage } from '@/i18n/LanguageContext';
 
@@ -84,7 +84,7 @@ export default function OnlineTrainingPage() {
                 desc: "Everything in one place — workouts, nutrition guidance, progress tracking, and direct messaging — so you're never left guessing or searching for answers."
               },
               {
-                icon: <Heart size={32} />,
+                icon: <Apple size={32} />,
                 title: "Practical Nutrition Guidance",
                 desc: "Simple, realistic nutrition support tailored to busy women. No extreme dieting — just strategies that support fat loss, energy, and long-term health."
               },
