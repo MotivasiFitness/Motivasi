@@ -1,13 +1,72 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle, ArrowRight, ChevronDown, Video, Users, Clock, Zap, Apple, Smartphone, AlertCircle } from 'lucide-react';
+import { CheckCircle, ArrowRight, ChevronDown, Video, Users, Clock, Zap, Apple, Smartphone, AlertCircle, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { BaseCrudService } from '@/integrations';
+import { ClientTestimonials } from '@/entities';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function OnlineTrainingPage() {
   const { t } = useLanguage();
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
   const contactFormRef = useRef<HTMLDivElement>(null);
+  const [testimonials, setTestimonials] = useState<ClientTestimonials[]>([]);
+  const [isLoadingTestimonials, setIsLoadingTestimonials] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const [autoPlay, setAutoPlay] = useState(true);
+
+  useEffect(() => {
+    const loadTestimonials = async () => {
+      try {
+        const result = await BaseCrudService.getAll<ClientTestimonials>('clienttestimonials');
+        const featured = result.items.filter(t => t.featuredOnHomepage);
+        setTestimonials(featured.length > 0 ? featured : result.items);
+      } catch (error) {
+        console.error('Error loading testimonials:', error);
+      } finally {
+        setIsLoadingTestimonials(false);
+      }
+    };
+    loadTestimonials();
+  }, []);
+
+  // Auto-play carousel
+  useEffect(() => {
+    if (!autoPlay || testimonials.length === 0) return;
+
+    const interval = setInterval(() => {
+      setDirection(1);
+      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, [autoPlay, testimonials.length]);
+
+  const paginate = (newDirection: number) => {
+    setDirection(newDirection);
+    setCurrentIndex((prev) => (prev + newDirection + testimonials.length) % testimonials.length);
+    setAutoPlay(false);
+    setTimeout(() => setAutoPlay(true), 5000);
+  };
+
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+  };
 
   const scrollToForm = () => {
     contactFormRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -314,25 +373,191 @@ export default function OnlineTrainingPage() {
           </div>
         </div>
       </section>
-      {/* Testimonial Section */}
+      {/* Testimonial Carousel Section */}
       <section className="py-24 px-8 lg:px-20 bg-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-8">
-            Real Results From Real Women
-          </h2>
-          <div className="bg-soft-white rounded-2xl p-12 border border-warm-sand-beige">
-            <div className="flex justify-center gap-1 mb-6">
-              {[...Array(5)].map((_, i) => (
-                <span key={i} className="text-soft-bronze text-2xl font-bold">★</span>
-              ))}
-            </div>
-            <p className="font-paragraph text-xl text-charcoal-black mb-6 leading-relaxed italic">
-              "I was sceptical about online coaching, but it's been a game-changer. I can train at 6am before the kids wake up, and the flexibility is perfect for my busy life. Plus, having weekly check-ins keeps me accountable. I've never felt stronger."
-            </p>
-            <p className="font-heading text-lg font-bold text-charcoal-black">
-              Sarah, 38 • Postpartum Coach Client
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="font-heading text-5xl font-bold text-charcoal-black mb-6">
+              Real Results From Real Women
+            </h2>
+            <p className="font-paragraph text-xl text-charcoal-black">
+              Hear from women who've transformed their lives with online coaching.
             </p>
           </div>
+
+          {isLoadingTestimonials ? (
+            <div className="bg-soft-white rounded-2xl p-12 border border-warm-sand-beige text-center">
+              <p className="font-paragraph text-charcoal-black">Loading testimonials...</p>
+            </div>
+          ) : testimonials.length > 0 ? (
+            <div className="relative">
+              {/* Carousel Container */}
+              <div className="relative overflow-hidden rounded-2xl">
+                <AnimatePresence initial={false} custom={direction} mode="wait">
+                  <motion.div
+                    key={currentIndex}
+                    custom={direction}
+                    variants={slideVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{
+                      x: { type: "spring", stiffness: 300, damping: 30 },
+                      opacity: { duration: 0.5 },
+                    }}
+                    className="w-full"
+                  >
+                    <div className="group relative">
+                      <div className="h-full rounded-2xl p-8 md:p-12 shadow-lg hover:shadow-2xl transition-all duration-500 border-2 backdrop-blur-sm bg-soft-white border-warm-cream hover:border-warm-bronze/60">
+                        {/* Decorative star background */}
+                        <div className="absolute top-6 right-6 opacity-10 transition-opacity group-hover:opacity-20 text-rose-blush">
+                          <Star size={40} fill="currentColor" />
+                        </div>
+
+                        <div className="flex flex-col h-full justify-between relative z-10">
+                          {/* Star Rating */}
+                          <motion.div
+                            className="flex gap-2 mb-6 h-8"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.1 }}
+                          >
+                            {[...Array(5)].map((_, i) => (
+                              <motion.div
+                                key={i}
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{ duration: 0.3, delay: 0.1 + i * 0.05 }}
+                              >
+                                <Star
+                                  size={24}
+                                  className="font-bold text-charcoal-black"
+                                  fill="currentColor"
+                                  strokeWidth={1.5}
+                                />
+                              </motion.div>
+                            ))}
+                          </motion.div>
+
+                          {/* Testimonial Text */}
+                          <motion.p
+                            className="leading-relaxed mb-8 font-light text-lg text-charcoal-black"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                          >
+                            "{testimonials[currentIndex].testimonialText}"
+                          </motion.p>
+
+                          {/* Client Info */}
+                          <motion.div
+                            className="flex items-center gap-4 pt-6 border-t border-rose-blush/30"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.3 }}
+                          >
+                            {testimonials[currentIndex].transformationImage ? (
+                              <motion.div
+                                className="w-12 h-12 rounded-full overflow-hidden border-2 flex-shrink-0 border-rose-blush/40"
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{ duration: 0.4, delay: 0.3 }}
+                              >
+                                <Image
+                                  src={testimonials[currentIndex].transformationImage}
+                                  alt={testimonials[currentIndex].clientName || 'Client'}
+                                  className="w-full h-full object-cover"
+                                  width={48}
+                                />
+                              </motion.div>
+                            ) : (
+                              <motion.div
+                                className="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 border-2 bg-rose-blush/30 text-charcoal-black border-rose-blush/40"
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{ duration: 0.4, delay: 0.3 }}
+                              >
+                                {testimonials[currentIndex].clientName?.charAt(0)}
+                              </motion.div>
+                            )}
+                            <div className="min-w-0">
+                              <h4 className="font-bold text-sm md:text-base text-charcoal-black">
+                                {testimonials[currentIndex].clientName}
+                              </h4>
+                              <div className="flex flex-col sm:flex-row sm:gap-2 text-xs md:text-sm text-charcoal-black/60">
+                                {testimonials[currentIndex].clientAgeRange && (
+                                  <span>{testimonials[currentIndex].clientAgeRange}</span>
+                                )}
+                                {testimonials[currentIndex].keyAchievement && (
+                                  <>
+                                    <span className="hidden sm:inline">•</span>
+                                    <span className="font-medium text-charcoal-black/80">
+                                      {testimonials[currentIndex].keyAchievement}
+                                    </span>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          </motion.div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Navigation Controls */}
+              {testimonials.length > 1 && (
+                <div className="flex items-center justify-between mt-8 gap-4">
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => paginate(-1)}
+                    className="p-3 rounded-full bg-[#58355E] text-white hover:bg-warm-bronze transition-colors"
+                    aria-label="Previous testimonial"
+                  >
+                    <ChevronLeft size={24} />
+                  </motion.button>
+
+                  {/* Dot Indicators */}
+                  <div className="flex gap-2 justify-center flex-1">
+                    {testimonials.map((_, index) => (
+                      <motion.button
+                        key={index}
+                        onClick={() => {
+                          setDirection(index > currentIndex ? 1 : -1);
+                          setCurrentIndex(index);
+                          setAutoPlay(false);
+                        }}
+                        className={`h-2 rounded-full transition-all ${
+                          index === currentIndex ? 'w-8' : 'w-2'
+                        }`}
+                        style={{
+                          backgroundColor: index === currentIndex ? '#58355E' : '#D4C5C9'
+                        }}
+                        whileHover={{ scale: 1.2 }}
+                        aria-label={`Go to testimonial ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => paginate(1)}
+                    className="p-3 rounded-full bg-[#58355E] text-white hover:bg-warm-bronze transition-colors"
+                    aria-label="Next testimonial"
+                  >
+                    <ChevronRight size={24} />
+                  </motion.button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="bg-soft-white rounded-2xl p-12 border border-warm-sand-beige text-center">
+              <p className="font-paragraph text-charcoal-black">No testimonials available at the moment.</p>
+            </div>
+          )}
         </div>
       </section>
       {/* CTA Section */}
