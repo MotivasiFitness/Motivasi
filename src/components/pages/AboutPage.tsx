@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Award, Heart, MapPin } from 'lucide-react';
+import { Award, Heart, MapPin, User, BookOpen, Handshake } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { BaseCrudService } from '@/integrations';
 import { TrainerQualifications } from '@/entities';
@@ -220,6 +220,9 @@ export default function AboutPage() {
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center p-8 border border-white rounded-lg">
+              <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center flex-shrink-0 mx-auto mb-6 shadow-md">
+                <User className="w-8 h-8 text-primary" />
+              </div>
               <h3 className="font-heading text-3xl font-bold text-white mb-4">
                 {t.about.personalised}
               </h3>
@@ -229,6 +232,9 @@ export default function AboutPage() {
             </div>
 
             <div className="text-center p-8 border border-white rounded-lg">
+              <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center flex-shrink-0 mx-auto mb-6 shadow-md">
+                <BookOpen className="w-8 h-8 text-primary" />
+              </div>
               <h3 className="font-heading text-3xl font-bold text-white mb-4">
                 {t.about.evidenceBased}
               </h3>
@@ -238,6 +244,9 @@ export default function AboutPage() {
             </div>
 
             <div className="text-center p-8 border border-white rounded-lg">
+              <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center flex-shrink-0 mx-auto mb-6 shadow-md">
+                <Heart className="w-8 h-8 text-primary fill-primary" />
+              </div>
               <h3 className="font-heading text-3xl font-bold text-white mb-4">
                 {t.about.supportive}
               </h3>
