@@ -741,7 +741,7 @@ export default function HomePage() {
               <div className="flex flex-col gap-8 items-center h-full text-center">
                 <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-primary shadow-md`}>
                   <div className="text-primary">
-                    <Apple className="w-6 h-6 text-primary fill-primary" />
+                    <Apple className="w-9 h-9 sm:w-10 sm:h-10 text-primary fill-primary" />
                   </div>
                 </div>
                 <div>
@@ -760,7 +760,7 @@ export default function HomePage() {
               <div className="flex flex-col gap-8 items-center h-full text-center">
                 <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-primary shadow-md`}>
                   <div className="text-primary">
-                    <Dumbbell className="w-6 h-6 stroke-[2.5] text-primary" />
+                    <Dumbbell className="w-9 h-9 sm:w-10 sm:h-10 stroke-[2.5] text-primary" />
                   </div>
                 </div>
                 <div>
@@ -779,7 +779,7 @@ export default function HomePage() {
               <div className="flex flex-col gap-8 items-center h-full text-center">
                 <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-primary shadow-md`}>
                   <div className="text-primary">
-                    <Leaf className="w-6 h-6 text-primary fill-primary" />
+                    <Leaf className="w-9 h-9 sm:w-10 sm:h-10 text-primary fill-primary" />
                   </div>
                 </div>
                 <div>
