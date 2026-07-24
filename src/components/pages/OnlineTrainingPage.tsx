@@ -679,13 +679,13 @@ export default function OnlineTrainingPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/online-training"
-                className="flex-1 text-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-yellow-700 transition-colors text-center bg-primary"
+                className="flex-1 text-white px-8 py-4 rounded-lg font-medium text-lg hover:opacity-90 transition-opacity text-center bg-primary"
               >
                 Book a Free 15-Minute Consultation
               </Link>
               <Link
                 to="/blog"
-                className="flex-1 border-2 border-charcoal-black px-8 py-4 rounded-lg font-medium text-lg hover:bg-warm-sand-beige/30 transition-colors text-center bg-primary text-primary-foreground"
+                className="flex-1 border-2 border-charcoal-black px-8 py-4 rounded-lg font-medium text-lg hover:bg-charcoal-black/5 transition-colors text-center text-charcoal-black"
               >
                 Book In-Person Training
               </Link>
