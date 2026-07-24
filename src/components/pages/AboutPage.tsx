@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Award, Heart } from 'lucide-react';
+import { Award, Heart, MapPin } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { BaseCrudService } from '@/integrations';
 import { TrainerQualifications } from '@/entities';
@@ -271,12 +271,24 @@ export default function AboutPage() {
 
                 <div>
                   <h3 className="font-heading text-xl font-bold text-charcoal-black mb-2">Location</h3>
-                  <p className="font-paragraph text-base text-charcoal-black/70 mb-3">
+                  <p className="font-paragraph text-base text-charcoal-black/70 mb-4">
                     Available for online coaching worldwide
                   </p>
-                  <p className="font-paragraph text-sm text-charcoal-black/60">
-                    Harpenden, Berkhamsted, Redbourn, Wheathampstead, Studham, Ashridge
+                  <p className="font-paragraph text-sm text-charcoal-black/70 mb-3 font-semibold">
+                    Available for in-person coaching in these areas:
                   </p>
+                  <div className="flex flex-wrap gap-2">
+                    {['Harpenden', 'Berkhamsted', 'Redbourn', 'Wheathampstead', 'Studham', 'Ashridge'].map((location) => (
+                      <div
+                        key={location}
+                        className="inline-flex items-center gap-2 px-3 py-2 rounded-full text-sm font-semibold text-charcoal-black"
+                        style={{ backgroundColor: '#F5F1EA', border: '1px solid #E8E2D8' }}
+                      >
+                        <MapPin size={14} className="flex-shrink-0" style={{ color: '#58355E' }} />
+                        {location}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
