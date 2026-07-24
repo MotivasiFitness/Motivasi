@@ -529,6 +529,9 @@ export default function WomensPARQForm() {
               <CardTitle className="font-heading text-2xl text-charcoal-black">
                 3. Metabolic & Medical Conditions
               </CardTitle>
+              <CardDescription className="text-base">
+                Understanding your metabolic and medical history helps us adjust exercise intensity and monitor your energy levels safely.
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-3">
@@ -644,6 +647,9 @@ export default function WomensPARQForm() {
               <CardTitle className="font-heading text-2xl text-charcoal-black">
                 4. Respiratory Health
               </CardTitle>
+              <CardDescription className="text-base">
+                Knowing your respiratory capacity allows us to tailor breathing techniques and pacing to optimize your performance.
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-3">
@@ -724,6 +730,9 @@ export default function WomensPARQForm() {
               <CardTitle className="font-heading text-2xl text-charcoal-black">
                 5. Musculoskeletal & Pain
               </CardTitle>
+              <CardDescription className="text-base">
+                Identifying past or current injuries helps us select appropriate exercises and modifications to protect your joints and muscles.
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-3">
