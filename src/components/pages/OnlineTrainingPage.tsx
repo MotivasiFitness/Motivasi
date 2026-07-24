@@ -37,7 +37,7 @@ export default function OnlineTrainingPage() {
                 className="inline-flex items-center gap-2 text-white px-10 py-5 rounded-full font-medium text-lg hover:opacity-90 transition-opacity"
                 style={{ backgroundColor: '#58355E' }}
               >
-                Get Started <ArrowRight size={20} />
+                Book a Free 15-Minute Consultation <ArrowRight size={20} />
               </button>
             </div>
 
@@ -349,7 +349,7 @@ export default function OnlineTrainingPage() {
             className="inline-flex items-center gap-2 text-white px-10 py-5 rounded-full font-medium text-lg hover:opacity-90 transition-opacity"
             style={{ backgroundColor: '#58355E' }}
           >
-            Get Started Now <ArrowRight size={20} />
+            Get Started <ArrowRight size={20} />
           </button>
         </div>
       </section>
@@ -456,7 +456,7 @@ export default function OnlineTrainingPage() {
                 to="/online-training"
                 className="flex-1 text-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-yellow-700 transition-colors text-center bg-primary"
               >
-                Book Your Free 10‑Minute Call
+                Book a Free 15-Minute Consultation
               </Link>
               <Link
                 to="/blog"
