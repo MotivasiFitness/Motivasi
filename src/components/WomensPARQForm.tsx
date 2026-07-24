@@ -29,6 +29,8 @@ export default function WomensPARQForm() {
     email: member?.loginEmail || '',
     phone: member?.contact?.phones?.[0] || '',
     emergencyContactNumber: '',
+    emergencyContactName: '',
+    emergencyContactRelationship: '',
     
     // Section 1: Heart & Circulation
     hasHeartCondition: '',
@@ -116,6 +118,8 @@ export default function WomensPARQForm() {
         email: formData.email,
         phone: formData.phone,
         emergencyContactNumber: formData.emergencyContactNumber,
+        emergencyContactName: formData.emergencyContactName,
+        emergencyContactRelationship: formData.emergencyContactRelationship,
         
         // Map to existing fields
         hasHeartCondition: formData.hasHeartCondition === 'yes',
@@ -256,6 +260,29 @@ export default function WomensPARQForm() {
                   type="tel"
                   value={formData.emergencyContactNumber}
                   onChange={(e) => handleInputChange('emergencyContactNumber', e.target.value)}
+                  required
+                  className="border-warm-grey"
+                />
+              </div>
+              <div>
+                <Label htmlFor="emergencyContactName">Emergency Contact Name *</Label>
+                <Input
+                  id="emergencyContactName"
+                  type="text"
+                  value={formData.emergencyContactName}
+                  onChange={(e) => handleInputChange('emergencyContactName', e.target.value)}
+                  required
+                  className="border-warm-grey"
+                />
+              </div>
+              <div>
+                <Label htmlFor="emergencyContactRelationship">Relationship to You *</Label>
+                <Input
+                  id="emergencyContactRelationship"
+                  type="text"
+                  value={formData.emergencyContactRelationship}
+                  onChange={(e) => handleInputChange('emergencyContactRelationship', e.target.value)}
+                  placeholder="e.g., Spouse, Parent, Friend"
                   required
                   className="border-warm-grey"
                 />
