@@ -827,7 +827,7 @@ export default function HomePage() {
             <AnimatedElement>
               <div className="text-charcoal-black">
                 <span className="inline-block py-1 px-3 text-white rounded-full text-xs font-bold tracking-widest uppercase mb-4" style={{ backgroundColor: '#58355E' }}>
-                  Transform your life
+                  TRANSFORM YOUR LIFE
                 </span>
                 <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 text-charcoal-black">
                   Invest in Yourself
