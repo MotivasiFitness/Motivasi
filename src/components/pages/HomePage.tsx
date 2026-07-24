@@ -587,9 +587,9 @@ export default function HomePage() {
       <section 
         className="w-full min-h-[280px] sm:min-h-[400px] md:min-h-[600px] flex items-center justify-center relative overflow-hidden"
         style={{
-          backgroundImage: 'url(https://storage.googleapis.com/naturalsync/Gemini_Generated_Image_gn9t1bgn9t1bgn9t.png)',
+          backgroundImage: 'url(https://static.wixstatic.com/media/93e866_754a46ceee9f4355b3dbe9670c2e820d~mv2.png)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundPosition: 'center right',
           backgroundAttachment: 'scroll',
           backgroundRepeat: 'no-repeat'
         }}
