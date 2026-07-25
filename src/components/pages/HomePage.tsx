@@ -876,8 +876,8 @@ export default function HomePage() {
               transition={{ type: "spring", stiffness: 300, damping: 10 }}
               className="inline-block"
             >
-              <Link
-                to="/store"
+              <a
+                href="#contact-form"
                 className="inline-flex items-center gap-3 px-14 py-6 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-2xl relative overflow-hidden group"
                 style={{ backgroundColor: '#58355E' }}
               >
@@ -891,7 +891,7 @@ export default function HomePage() {
                     <ArrowRight className="w-5 h-5" />
                   </motion.span>
                 </span>
-              </Link>
+              </a>
             </motion.div>
           </AnimatedElement>
         </div>
