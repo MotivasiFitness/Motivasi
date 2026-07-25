@@ -136,9 +136,9 @@ export default function FaceToFaceTrainingPage() {
                 key={idx}
                 className={`rounded-2xl p-8 transition-all duration-300 ${
                   idx === 1
-                    ? 'bg-slate-blue text-soft-white border-2 border-slate-blue shadow-xl'
+                    ? 'bg-primary text-soft-white border-2 border-primary shadow-xl'
                     : package_.featured
-                    ? 'bg-slate-blue text-soft-white border-2 border-soft-bronze shadow-xl'
+                    ? 'bg-primary text-soft-white border-2 border-soft-bronze shadow-xl'
                     : 'bg-soft-white border border-warm-sand-beige hover:border-soft-bronze'
                 }`}
               >
@@ -192,7 +192,7 @@ export default function FaceToFaceTrainingPage() {
         </div>
       </section>
       {/* Locations Section */}
-      <section className="py-24 px-8 lg:px-20 bg-slate-blue">
+      <section className="py-24 px-8 lg:px-20" style={{ backgroundColor: '#9B6A6C' }}>
         <div className="max-w-[100rem] mx-auto">
           <div className="text-center mb-16">
             <h2 className="font-heading text-5xl font-bold text-white mb-6">
@@ -207,10 +207,10 @@ export default function FaceToFaceTrainingPage() {
             {['Harpenden', 'Berkhamsted', 'Redbourn', 'Tring', 'Wheathampstead', 'St Albans'].map((location) => (
               <div
                 key={location}
-                className="bg-soft-white/10 border border-soft-bronze/30 rounded-xl p-6 text-center hover:bg-soft-bronze/10 transition-colors duration-300"
+                className="bg-white/15 border border-white/30 rounded-xl p-6 text-center hover:bg-white/20 transition-colors duration-300"
               >
-                <MapPin className="w-8 h-8 text-soft-bronze mx-auto mb-3" />
-                <h3 className="font-heading text-xl font-bold text-soft-white">
+                <MapPin className="w-8 h-8 text-white mx-auto mb-3" />
+                <h3 className="font-heading text-xl font-bold text-white">
                   {location}
                 </h3>
               </div>
@@ -288,7 +288,7 @@ export default function FaceToFaceTrainingPage() {
         </div>
       </section>
       {/* Contact Section */}
-      <section className="py-24 px-8 lg:px-20 bg-slate-blue">
+      <section className="py-24 px-8 lg:px-20" style={{ backgroundColor: '#9B6A6C' }}>
         <div className="max-w-[100rem] mx-auto">
           <div className="grid md:grid-cols-2 gap-16">
             {/* Contact Info */}
