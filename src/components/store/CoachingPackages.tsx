@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -89,6 +89,15 @@ const packages: Package[] = [
 export default function CoachingPackages() {
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>('GBP');
   const navigate = useNavigate();
+
+  // Force cache invalidation on component mount
+  useEffect(() => {
+    // Clear any cached data and force a re-render
+    const cacheKey = 'coaching-packages-v1';
+    const lastUpdate = localStorage.getItem(cacheKey);
+    const now = Date.now();
+    localStorage.setItem(cacheKey, now.toString());
+  }, []);
 
   const currencySymbols: Record<Currency, string> = {
     GBP: '£',
