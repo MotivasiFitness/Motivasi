@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Clock, Users, CheckCircle, ArrowRight, Mail, AlertCircle } from 'lucide-react';
+import { MapPin, Eye, Heart, TrendingUp, CheckCircle, ArrowRight, Mail, AlertCircle } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { BaseCrudService } from '@/integrations';
@@ -235,12 +235,12 @@ export default function FaceToFaceTrainingPage() {
               <div className="space-y-6">
                 {[
                   {
-                    icon: <Users size={24} />,
+                    icon: <Eye size={24} />,
                     title: t.blog.realTimeFeedback,
                     desc: t.blog.realTimeFeedbackDesc
                   },
                   {
-                    icon: <Clock size={24} />,
+                    icon: <Heart size={24} />,
                     title: t.blog.accountabilityMotivation,
                     desc: t.blog.accountabilityMotivationDesc
                   },
@@ -250,13 +250,13 @@ export default function FaceToFaceTrainingPage() {
                     desc: t.blog.flexibleLocationsDesc
                   },
                   {
-                    icon: <CheckCircle size={24} />,
+                    icon: <TrendingUp size={24} />,
                     title: t.blog.personalisedProgression,
                     desc: t.blog.personalisedProgressionDesc
                   }
                 ].map((item, idx) => (
                   <div key={idx} className="flex gap-4">
-                    <div className="w-12 h-12 rounded-full bg-soft-bronze flex items-center justify-center flex-shrink-0 text-soft-white">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-white" style={{ backgroundColor: '#58355E' }}>
                       {item.icon}
                     </div>
                     <div>
