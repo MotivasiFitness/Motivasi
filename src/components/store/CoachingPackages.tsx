@@ -274,6 +274,54 @@ export default function CoachingPackages() {
           </div>
         </div>
       </div>
+
+      {/* Common Questions Section */}
+      <div className="mt-20">
+        <h3 className="font-heading text-3xl font-bold text-primary-text mb-12 text-center">
+          Common Questions
+        </h3>
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {/* Question 1 */}
+          <div className="p-6 bg-light-contrast border border-secondary-bg rounded-xl hover:border-accent transition-colors duration-300">
+            <h4 className="font-heading text-lg font-bold text-primary-text mb-3">
+              What happens after I book?
+            </h4>
+            <p className="font-paragraph text-sm text-primary-text/70 leading-relaxed">
+              Once you've completed your purchase, you'll receive a welcome email from our team. Shortly after, your personal trainer will call you to discuss your availability, goals, and schedule your first session.
+            </p>
+          </div>
+
+          {/* Question 2 */}
+          <div className="p-6 bg-light-contrast border border-secondary-bg rounded-xl hover:border-accent transition-colors duration-300">
+            <h4 className="font-heading text-lg font-bold text-primary-text mb-3">
+              How does payment work?
+            </h4>
+            <p className="font-paragraph text-sm text-primary-text/70 leading-relaxed">
+              Full payment is required upfront when you book your package. This secures your spot and allows us to reserve your trainer's availability for your sessions.
+            </p>
+          </div>
+
+          {/* Question 3 */}
+          <div className="p-6 bg-light-contrast border border-secondary-bg rounded-xl hover:border-accent transition-colors duration-300">
+            <h4 className="font-heading text-lg font-bold text-primary-text mb-3">
+              What if I need to miss a week?
+            </h4>
+            <p className="font-paragraph text-sm text-primary-text/70 leading-relaxed">
+              No problem! Sessions can be banked and carried forward for when you're able to complete them. We understand that life happens, and we're flexible with rescheduling.
+            </p>
+          </div>
+
+          {/* Question 4 */}
+          <div className="p-6 bg-light-contrast border border-secondary-bg rounded-xl hover:border-accent transition-colors duration-300">
+            <h4 className="font-heading text-lg font-bold text-primary-text mb-3">
+              Need more information?
+            </h4>
+            <p className="font-paragraph text-sm text-primary-text/70 leading-relaxed">
+              Check out our <a href="/online-training" className="text-accent font-semibold hover:underline">FAQ page</a> for more details about our coaching packages and services.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
