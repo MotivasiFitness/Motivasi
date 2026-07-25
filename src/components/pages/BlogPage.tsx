@@ -207,10 +207,10 @@ export default function FaceToFaceTrainingPage() {
             {['Harpenden', 'Berkhamsted', 'Redbourn', 'Tring', 'Wheathampstead', 'St Albans'].map((location) => (
               <div
                 key={location}
-                className="bg-white/15 border border-white/30 rounded-xl p-6 text-center hover:bg-white/20 transition-colors duration-300"
+                className="bg-white/40 border border-white/50 rounded-xl p-6 text-center hover:bg-white/50 transition-colors duration-300"
               >
-                <MapPin className="w-8 h-8 text-white mx-auto mb-3" />
-                <h3 className="font-heading text-xl font-bold text-white">
+                <MapPin className="w-8 h-8 text-charcoal-black mx-auto mb-3" />
+                <h3 className="font-heading text-xl font-bold text-charcoal-black">
                   {location}
                 </h3>
               </div>

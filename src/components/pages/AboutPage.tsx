@@ -291,7 +291,7 @@ export default function AboutPage() {
                       <div
                         key={location}
                         className="inline-flex items-center gap-2 px-3 py-2 rounded-full text-sm font-semibold text-charcoal-black"
-                        style={{ backgroundColor: '#F5F1EA', border: '1px solid #E8E2D8' }}
+                        style={{ backgroundColor: '#FFFFFF', border: '1px solid #D4C5B9' }}
                       >
                         <MapPin size={14} className="flex-shrink-0" style={{ color: '#58355E' }} />
                         {location}
