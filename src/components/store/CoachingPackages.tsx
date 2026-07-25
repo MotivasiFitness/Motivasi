@@ -189,6 +189,16 @@ export default function CoachingPackages() {
               >
                 {pkg.duration}
               </p>
+              {/* Per-session rate for face-to-face packages */}
+              {(pkg.id === 'face-to-face-8' || pkg.id === 'face-to-face-12') && (
+                <p
+                  className={`font-paragraph text-xs mt-2 ${
+                    idx === 0 || pkg.featured ? 'text-white/70' : 'text-secondary-text/80'
+                  }`}
+                >
+                  {currencySymbols[selectedCurrency]}40 per session
+                </p>
+              )}
             </div>
 
             {/* Features */}
@@ -223,6 +233,13 @@ export default function CoachingPackages() {
             </button>
           </div>
         ))}
+      </div>
+
+      {/* Decision Friction Reducer Note */}
+      <div className="mt-12 text-center">
+        <p className="font-paragraph text-sm text-secondary-text italic">
+          Same rate either way — choose the commitment length that fits your goals.
+        </p>
       </div>
 
       {/* Info Section */}
