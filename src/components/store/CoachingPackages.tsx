@@ -47,9 +47,9 @@ const packages: Package[] = [
     description: 'Build momentum with consistent one-on-one training over 8 weeks.',
     duration: '16 sessions',
     prices: {
-      GBP: 640,
-      USD: 853,
-      EUR: 680,
+      GBP: 800,
+      USD: 1066,
+      EUR: 850,
     },
     features: [
       'Progressive training programme',
@@ -67,9 +67,9 @@ const packages: Package[] = [
     description: 'Complete transformation programme with comprehensive support.',
     duration: '24 sessions',
     prices: {
-      GBP: 960,
-      USD: 1280,
-      EUR: 1020,
+      GBP: 1200,
+      USD: 1600,
+      EUR: 1275,
     },
     features: [
       'Progressive training programme',
@@ -196,7 +196,7 @@ export default function CoachingPackages() {
                     idx === 0 || pkg.featured ? 'text-white/70' : 'text-secondary-text/80'
                   }`}
                 >
-                  {currencySymbols[selectedCurrency]}40 per session
+                  {currencySymbols[selectedCurrency]}50 per session
                 </p>
               )}
             </div>
