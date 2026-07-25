@@ -108,7 +108,7 @@ export default function FaceToFaceTrainingPage() {
             {[
               {
                 title: t.blog.eightWeekPackage,
-                price: "£640",
+                price: "£800",
                 duration: t.blog.sixteenSessions,
                 description: t.blog.buildMomentum,
                 features: [
@@ -121,7 +121,7 @@ export default function FaceToFaceTrainingPage() {
               },
               {
                 title: t.blog.twelveWeekTransformation,
-                price: "£960",
+                price: "£1200",
                 duration: t.blog.twentyFourSessions,
                 description: t.blog.completeTransformation,
                 features: [
