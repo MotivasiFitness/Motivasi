@@ -99,7 +99,7 @@ function Footer() {
                   Online
                 </Link>
                 <Link to="/blog" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
-                  Face-to-Face
+                  Pricing
                 </Link>
                 <Link to="/parq" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
                   {t.nav.parqForm}
