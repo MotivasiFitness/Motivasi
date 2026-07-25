@@ -7,6 +7,7 @@ import { Image } from '@/components/ui/image';
 import { BaseCrudService } from '@/integrations';
 import { ClientTestimonials, ContactFormSubmissions, TrainingLocations } from '@/entities';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { sendContactFormNotification } from '@/lib/email-service';
 import MobileOptimizedCTA from '@/components/MobileOptimizedCTA';
 import { UrgencyCTA, QuickActionCTA, BenefitFocusedCTA, LimitedAvailabilityCTA, SocialProofCTA } from '@/components/MobileCTAVariations';
 import MobileContactOptions from '@/components/MobileContactOptions';
@@ -336,6 +337,16 @@ function ContactForm() {
         submittedAt: new Date().toISOString(),
         source: 'homepage',
       });
+
+      // Send email notification to hello@motivasi.co.uk
+      await sendContactFormNotification(
+        formData.fullName,
+        formData.email,
+        formData.message,
+        formData.healthDataConsent,
+        formData.marketingConsent,
+        'Homepage'
+      );
 
       setSubmitStatus('success');
       setFormData({
