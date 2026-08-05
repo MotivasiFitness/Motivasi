@@ -101,6 +101,9 @@ function Footer() {
                 <Link to="/blog" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
                   Pricing
                 </Link>
+                <Link to="/program-quiz" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
+                  Find Your Perfect Programme
+                </Link>
                 <Link to="/parq" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
                   {t.nav.parqForm}
                 </Link>
