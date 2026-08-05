@@ -29,7 +29,7 @@ function Header() {
       <div className={`max-w-[100rem] mx-auto px-3 sm:px-4 md:px-6 lg:px-20 m-0 p-0`}>
         <div className="flex items-center justify-center h-20 sm:h-24 md:h-32 relative">
           {/* Brand Logo - Center */}
-          <div className="h-full flex items-center">
+          <Link to="/" className="h-full flex items-center hover:opacity-80 transition-opacity duration-200">
             <Image
               src="https://static.wixstatic.com/media/93e866_09b0ccd0d04e40cda3d278b62df0355f~mv2.png"
               alt="Brand Logo"
@@ -37,7 +37,7 @@ function Header() {
               width={96}
               loading="eager"
             />
-          </div>
+          </Link>
 
           {/* Left Navigation - Hidden on Mobile */}
           <nav className="hidden md:flex items-center gap-6 lg:gap-8 absolute left-0 h-full pl-4 lg:pl-6">
