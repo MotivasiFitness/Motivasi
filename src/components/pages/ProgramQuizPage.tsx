@@ -21,7 +21,7 @@ const PROGRAMMES = {
     url: 'https://www.everfit.io/postpartum-strength-recovery',
     benefits: [
       'Safe core rebuilding and pelvic floor recovery',
-      'Personalized progression from 0-12+ months postpartum',
+      'Personalised progression from 0-12+ months postpartum',
       'Energy-boosting workouts for busy mums',
       'Confidence and body reconnection',
     ],
@@ -32,7 +32,7 @@ const PROGRAMMES = {
     benefits: [
       'Hormone-aware strength training',
       'Energy and mood management through exercise',
-      'Body composition optimization',
+      'Body composition optimisation',
       'Symptom relief and resilience building',
     ],
   },
@@ -41,7 +41,7 @@ const PROGRAMMES = {
     url: 'https://www.everfit.io/menopause-strength',
     benefits: [
       'Bone health protection and strengthening',
-      'Metabolic optimization for this life stage',
+      'Metabolic optimisation for this life stage',
       'Strength and confidence building',
       'Long-term health and vitality',
     ],
@@ -51,7 +51,7 @@ const PROGRAMMES = {
     url: 'https://www.everfit.io/strength-training-35',
     benefits: [
       'Progressive strength and muscle building',
-      'Customized to your fitness level',
+      'Customised to your fitness level',
       'Flexible training options (gym or home)',
       'Sustainable results and confidence',
     ],
@@ -292,13 +292,13 @@ export default function ProgramQuizPage() {
           recommendationReason = `Based on your postpartum journey and goals, this programme is specifically designed to help you rebuild core strength, regain confidence, and safely return to exercise. It's tailored for your current fitness level and the time you can dedicate to training.`;
         } else if (path === 'perimenopause') {
           recommendedProgram = PROGRAMMES.perimenopause.name;
-          recommendationReason = `This programme is designed specifically for the perimenopause stage, addressing the unique challenges you're facing like energy levels, body composition changes, and hormonal fluctuations. Strength training is proven to help manage perimenopause symptoms while building the resilience you need.`;
+          recommendationReason = `This programme is designed specifically for the perimenopause stage, addressing the unique challenges you're facing like energy levels, body composition changes, and hormonal fluctuations. Strength training is proven to help manage perimenopause symptoms whilst building the resilience you need.`;
         } else if (path === 'menopause') {
           recommendedProgram = PROGRAMMES.menopause.name;
           recommendationReason = `This programme is specifically designed for women in menopause, focusing on maintaining bone health, building strength, and managing body composition changes. It's tailored to your current activity level and fitness goals.`;
         } else if (path === 'strength35') {
           recommendedProgram = PROGRAMMES.strength35.name;
-          recommendationReason = `This comprehensive strength training programme is designed for women 35+ who want to build muscle, increase strength, and feel more confident. It's customized to your fitness level, available training days, and preferred training environment.`;
+          recommendationReason = `This comprehensive strength training programme is designed for women 35+ who want to build muscle, increase strength, and feel more confident. It's customised to your fitness level, available training days, and preferred training environment.`;
         }
 
         return {
@@ -354,7 +354,7 @@ export default function ProgramQuizPage() {
           </h1>
         </motion.div>
         <p className="font-paragraph text-lg text-warm-grey mb-10 max-w-2xl mx-auto leading-relaxed">
-          Discover a fitness programme designed specifically for your life stage, goals, and experience. In just 2 minutes, we'll create a personalized recommendation tailored to you.
+          Discover a fitness programme designed specifically for your life stage, goals, and experience. In just 2 minutes, we'll create a personalised recommendation tailored to you.
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
@@ -375,7 +375,7 @@ export default function ProgramQuizPage() {
             className="bg-white p-6 rounded-xl border border-light-gray"
           >
             <p className="text-3xl mb-3">🎯</p>
-            <p className="font-paragraph text-sm text-charcoal-black font-semibold">Personalized</p>
+            <p className="font-paragraph text-sm text-charcoal-black font-semibold">Personalised</p>
             <p className="font-paragraph text-xs text-warm-grey mt-1">Just for you</p>
           </motion.div>
           <motion.div
