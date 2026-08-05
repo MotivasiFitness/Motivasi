@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
-import { ChevronRight, ArrowLeft } from 'lucide-react';
+import { ChevronRight, ArrowLeft, Check } from 'lucide-react';
 
 type QuizPath = 'postpartum' | 'perimenopause' | 'menopause' | 'strength35' | null;
 type QuizStage = 'intro' | 'questions' | 'conditional' | 'leadCapture' | 'results';
@@ -22,18 +22,42 @@ const PROGRAMMES = {
   postpartum: {
     name: 'Postpartum Strength & Recovery Programme',
     url: 'https://www.everfit.io/postpartum-strength-recovery',
+    benefits: [
+      'Safe core rebuilding and pelvic floor recovery',
+      'Personalized progression from 0-12+ months postpartum',
+      'Energy-boosting workouts for busy mums',
+      'Confidence and body reconnection',
+    ],
   },
   perimenopause: {
     name: 'Perimenopause Strength Programme',
     url: 'https://www.everfit.io/perimenopause-strength',
+    benefits: [
+      'Hormone-aware strength training',
+      'Energy and mood management through exercise',
+      'Body composition optimization',
+      'Symptom relief and resilience building',
+    ],
   },
   menopause: {
     name: 'Menopause Strength Programme',
     url: 'https://www.everfit.io/menopause-strength',
+    benefits: [
+      'Bone health protection and strengthening',
+      'Metabolic optimization for this life stage',
+      'Strength and confidence building',
+      'Long-term health and vitality',
+    ],
   },
   strength35: {
     name: 'Strength Training 35+ Programme',
     url: 'https://www.everfit.io/strength-training-35',
+    benefits: [
+      'Progressive strength and muscle building',
+      'Customized to your fitness level',
+      'Flexible training options (gym or home)',
+      'Sustainable results and confidence',
+    ],
   },
 };
 
@@ -42,11 +66,11 @@ const QUESTIONS = {
     question: 'Which best describes you right now?',
     type: 'single',
     options: [
-      { label: "I'm currently less than 12 months postpartum", value: 'postpartum_recent' },
-      { label: 'I\'m more than 12 months postpartum and rebuilding my fitness', value: 'postpartum_rebuilding' },
-      { label: 'My menstrual cycle has become irregular or changed recently', value: 'perimenopause' },
-      { label: 'My periods have stopped completely for 12+ months', value: 'menopause' },
-      { label: 'None of the above', value: 'none' },
+      { label: "I'm currently less than 12 months postpartum", value: 'postpartum_recent', icon: '🤱' },
+      { label: 'I\'m more than 12 months postpartum and rebuilding my fitness', value: 'postpartum_rebuilding', icon: '🤱' },
+      { label: 'My menstrual cycle has become irregular or changed recently', value: 'perimenopause', icon: '🌸' },
+      { label: 'My periods have stopped completely for 12+ months', value: 'menopause', icon: '☀️' },
+      { label: 'None of the above', value: 'none', icon: '💪' },
     ],
   },
   q2: {
@@ -323,77 +347,149 @@ export default function ProgramQuizPage() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="text-center py-12 px-6"
-    >
-      <h1 className="font-heading text-4xl md:text-5xl font-bold text-charcoal-black mb-4">
-        Find Your Perfect Programme
-      </h1>
-      <p className="font-paragraph text-lg text-warm-grey mb-8 max-w-2xl mx-auto">
-        Answer a few quick questions and we'll recommend the best fitness programme for your current stage of life, goals, and experience.
-      </p>
-      <div className="bg-soft-white p-8 rounded-lg mb-8 max-w-md mx-auto">
-        <p className="text-sm text-warm-grey mb-4">⏱️ Takes less than 2 minutes</p>
-        <p className="text-sm text-warm-grey mb-6">🎯 Personalized recommendations</p>
-        <p className="text-sm text-warm-grey">💪 Designed for women 35+</p>
-      </div>
-      <Button
-        onClick={() => setState((prev) => ({ ...prev, stage: 'questions', currentQuestion: 0 }))}
-        className="bg-cta-purple hover:bg-primary text-white px-8 py-3 rounded-lg font-semibold flex items-center gap-2 mx-auto"
-      >
-        Start Quiz <ChevronRight size={20} />
-      </Button>
-    </motion.div>
-  );
-
-  const renderQuestion = (questionKey: string, questionData: any, isConditional = false) => (
-    <motion.div
-      key={questionKey}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="py-8 px-6"
+      className="text-center py-12 px-6 md:py-16"
     >
       <div className="max-w-2xl mx-auto">
-        <div className="mb-8">
-          <p className="text-sm text-warm-grey mb-2">
-            Question {state.currentQuestion + 1} of {isConditional ? 3 : 5}
-          </p>
-          <div className="w-full bg-light-gray rounded-full h-2">
-            <div
-              className="bg-cta-purple h-2 rounded-full transition-all duration-300"
-              style={{
-                width: `${((state.currentQuestion + 1) / (isConditional ? 3 : 5)) * 100}%`,
-              }}
-            />
-          </div>
+        <motion.div
+          initial={{ scale: 0.95 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.1 }}
+        >
+          <h1 className="font-heading text-5xl md:text-6xl font-bold text-charcoal-black mb-6">
+            Find Your Perfect Programme
+          </h1>
+        </motion.div>
+        <p className="font-paragraph text-lg text-warm-grey mb-10 max-w-2xl mx-auto leading-relaxed">
+          Discover a fitness programme designed specifically for your life stage, goals, and experience. In just 2 minutes, we'll create a personalized recommendation tailored to you.
+        </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-white p-6 rounded-xl border border-light-gray"
+          >
+            <p className="text-3xl mb-3">⏱️</p>
+            <p className="font-paragraph text-sm text-charcoal-black font-semibold">2 Minutes</p>
+            <p className="font-paragraph text-xs text-warm-grey mt-1">Quick & easy</p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-white p-6 rounded-xl border border-light-gray"
+          >
+            <p className="text-3xl mb-3">🎯</p>
+            <p className="font-paragraph text-sm text-charcoal-black font-semibold">Personalized</p>
+            <p className="font-paragraph text-xs text-warm-grey mt-1">Just for you</p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-white p-6 rounded-xl border border-light-gray"
+          >
+            <p className="text-3xl mb-3">💪</p>
+            <p className="font-paragraph text-sm text-charcoal-black font-semibold">For Women 35+</p>
+            <p className="font-paragraph text-xs text-warm-grey mt-1">Designed for you</p>
+          </motion.div>
         </div>
 
-        <h2 className="font-heading text-2xl md:text-3xl font-bold text-charcoal-black mb-6">
-          {questionData.question}
-        </h2>
-
-        <div className="space-y-3">
-          {questionData.options.map((option: any) => (
-            <button
-              key={option.value}
-              onClick={() => {
-                if (isConditional) {
-                  handleConditionalAnswer(questionKey, option.value);
-                } else if (questionKey === 'q1') {
-                  handleQ1Answer(option.value);
-                } else {
-                  handleAnswer(questionKey, option.value);
-                }
-              }}
-              className="w-full p-4 text-left border-2 border-light-gray rounded-lg hover:border-cta-purple hover:bg-soft-white transition-all duration-200 font-paragraph text-charcoal-black"
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          <Button
+            onClick={() => setState((prev) => ({ ...prev, stage: 'questions', currentQuestion: 0 }))}
+            className="bg-cta-purple hover:bg-primary text-white px-10 py-4 rounded-lg font-semibold text-lg flex items-center gap-2 mx-auto transition-all duration-300 hover:shadow-lg"
+          >
+            Start Quiz <ChevronRight size={24} />
+          </Button>
+        </motion.div>
       </div>
     </motion.div>
   );
+
+  const renderQuestion = (questionKey: string, questionData: any, isConditional = false) => {
+    const totalQuestions = isConditional ? 3 : 5;
+    const progressPercentage = ((state.currentQuestion + 1) / totalQuestions) * 100;
+
+    return (
+      <motion.div
+        key={questionKey}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -30 }}
+        transition={{ duration: 0.4 }}
+        className="py-8 px-6 md:py-12"
+      >
+        <div className="max-w-3xl mx-auto">
+          {/* Progress Bar */}
+          <div className="mb-10">
+            <div className="flex justify-between items-center mb-3">
+              <p className="font-paragraph text-sm font-semibold text-charcoal-black">
+                Question {state.currentQuestion + 1} of {totalQuestions}
+              </p>
+              <p className="font-paragraph text-sm font-semibold text-cta-purple">
+                {Math.round(progressPercentage)}%
+              </p>
+            </div>
+            <div className="w-full bg-light-gray rounded-full h-2 overflow-hidden">
+              <motion.div
+                className="bg-gradient-to-r from-cta-purple to-primary h-2 rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: `${progressPercentage}%` }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+              />
+            </div>
+          </div>
+
+          {/* Question */}
+          <h2 className="font-heading text-3xl md:text-4xl font-bold text-charcoal-black mb-10">
+            {questionData.question}
+          </h2>
+
+          {/* Answer Options */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {questionData.options.map((option: any, index: number) => (
+              <motion.button
+                key={option.value}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                onClick={() => {
+                  if (isConditional) {
+                    handleConditionalAnswer(questionKey, option.value);
+                  } else if (questionKey === 'q1') {
+                    handleQ1Answer(option.value);
+                  } else {
+                    handleAnswer(questionKey, option.value);
+                  }
+                }}
+                className="group relative p-6 text-left border-2 border-light-gray rounded-xl bg-white hover:border-cta-purple hover:bg-soft-white transition-all duration-300 hover:shadow-md"
+              >
+                <div className="flex items-start gap-4">
+                  {option.icon && (
+                    <span className="text-2xl flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                      {option.icon}
+                    </span>
+                  )}
+                  <div className="flex-1">
+                    <p className="font-paragraph font-semibold text-charcoal-black group-hover:text-cta-purple transition-colors duration-300">
+                      {option.label}
+                    </p>
+                  </div>
+                  <div className="flex-shrink-0 w-5 h-5 rounded-full border-2 border-light-gray group-hover:border-cta-purple transition-colors duration-300" />
+                </div>
+              </motion.button>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    );
+  };
 
   const renderQuestions = () => {
     const questionKeys = ['q1', 'q2', 'q3', 'q4', 'q5'];
@@ -407,20 +503,20 @@ export default function ProgramQuizPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
-          className="py-8 px-6 text-center"
+          className="py-12 px-6 text-center"
         >
           <div className="max-w-2xl mx-auto">
-            <h2 className="font-heading text-2xl md:text-3xl font-bold text-charcoal-black mb-4">
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-charcoal-black mb-4">
               Almost there!
             </h2>
-            <p className="font-paragraph text-warm-grey mb-8">
+            <p className="font-paragraph text-lg text-warm-grey mb-10">
               Let's move to the next set of questions tailored to your situation.
             </p>
             <Button
               onClick={() => setState((prev) => ({ ...prev, stage: 'conditional', currentQuestion: 0 }))}
-              className="bg-cta-purple hover:bg-primary text-white px-8 py-3 rounded-lg font-semibold"
+              className="bg-cta-purple hover:bg-primary text-white px-10 py-4 rounded-lg font-semibold text-lg inline-flex items-center gap-2 transition-all duration-300 hover:shadow-lg"
             >
-              Continue <ChevronRight size={20} />
+              Continue <ChevronRight size={24} />
             </Button>
           </div>
         </motion.div>
@@ -447,20 +543,20 @@ export default function ProgramQuizPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
-          className="py-8 px-6 text-center"
+          className="py-12 px-6 text-center"
         >
           <div className="max-w-2xl mx-auto">
-            <h2 className="font-heading text-2xl md:text-3xl font-bold text-charcoal-black mb-4">
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-charcoal-black mb-4">
               Perfect! One last step...
             </h2>
-            <p className="font-paragraph text-warm-grey mb-8">
+            <p className="font-paragraph text-lg text-warm-grey mb-10">
               Let us know your details so we can send you your personalized recommendation.
             </p>
             <Button
               onClick={proceedToLeadCapture}
-              className="bg-cta-purple hover:bg-primary text-white px-8 py-3 rounded-lg font-semibold"
+              className="bg-cta-purple hover:bg-primary text-white px-10 py-4 rounded-lg font-semibold text-lg inline-flex items-center gap-2 transition-all duration-300 hover:shadow-lg"
             >
-              Continue <ChevronRight size={20} />
+              Continue <ChevronRight size={24} />
             </Button>
           </div>
         </motion.div>
@@ -492,19 +588,19 @@ export default function ProgramQuizPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className="py-8 px-6"
+        className="py-12 px-6"
       >
         <div className="max-w-md mx-auto">
-          <h2 className="font-heading text-2xl md:text-3xl font-bold text-charcoal-black mb-2 text-center">
+          <h2 className="font-heading text-3xl md:text-4xl font-bold text-charcoal-black mb-3 text-center">
             Get Your Recommendation
           </h2>
-          <p className="font-paragraph text-warm-grey mb-8 text-center">
+          <p className="font-paragraph text-warm-grey mb-10 text-center">
             We'll send your personalized programme recommendation to your email.
           </p>
 
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div>
-              <label className="block font-paragraph text-charcoal-black mb-2">First Name</label>
+              <label className="block font-paragraph font-semibold text-charcoal-black mb-3">First Name</label>
               <Input
                 type="text"
                 placeholder="Your first name"
@@ -513,13 +609,13 @@ export default function ProgramQuizPage() {
                   setFirstName(e.target.value);
                   if (errors.firstName) setErrors((prev) => ({ ...prev, firstName: '' }));
                 }}
-                className="w-full"
+                className="w-full px-4 py-3 rounded-lg border-2 border-light-gray focus:border-cta-purple focus:outline-none transition-colors duration-300"
               />
-              {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
+              {errors.firstName && <p className="text-red-500 text-sm mt-2">{errors.firstName}</p>}
             </div>
 
             <div>
-              <label className="block font-paragraph text-charcoal-black mb-2">Email Address</label>
+              <label className="block font-paragraph font-semibold text-charcoal-black mb-3">Email Address</label>
               <Input
                 type="email"
                 placeholder="your@email.com"
@@ -528,14 +624,14 @@ export default function ProgramQuizPage() {
                   setEmail(e.target.value);
                   if (errors.email) setErrors((prev) => ({ ...prev, email: '' }));
                 }}
-                className="w-full"
+                className="w-full px-4 py-3 rounded-lg border-2 border-light-gray focus:border-cta-purple focus:outline-none transition-colors duration-300"
               />
-              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+              {errors.email && <p className="text-red-500 text-sm mt-2">{errors.email}</p>}
             </div>
 
             <Button
               onClick={handleSubmit}
-              className="w-full bg-cta-purple hover:bg-primary text-white py-3 rounded-lg font-semibold mt-6"
+              className="w-full bg-cta-purple hover:bg-primary text-white py-4 rounded-lg font-semibold text-lg mt-8 transition-all duration-300 hover:shadow-lg"
             >
               See My Recommendation
             </Button>
@@ -550,8 +646,10 @@ export default function ProgramQuizPage() {
       ([_, prog]) => prog.name === state.recommendedProgram
     )?.[0] as keyof typeof PROGRAMMES;
 
+    const programme = PROGRAMMES[programmeKey];
+
     const handleStartProgramme = () => {
-      window.open(PROGRAMMES[programmeKey].url, '_blank');
+      window.open(programme.url, '_blank');
     };
 
     return (
@@ -559,57 +657,108 @@ export default function ProgramQuizPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className="py-8 px-6"
+        className="py-12 px-6 md:py-16"
       >
-        <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-8">
-            <div className="text-5xl mb-4">🎉</div>
-            <h1 className="font-heading text-3xl md:text-4xl font-bold text-charcoal-black mb-2">
+        <div className="max-w-3xl mx-auto">
+          {/* Congratulations Header */}
+          <motion.div
+            initial={{ scale: 0.95 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.1 }}
+            className="text-center mb-12"
+          >
+            <motion.div
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-6xl mb-6"
+            >
+              🎉
+            </motion.div>
+            <h1 className="font-heading text-4xl md:text-5xl font-bold text-charcoal-black mb-3">
               Congratulations, {state.leadInfo.firstName}!
             </h1>
-            <p className="font-paragraph text-warm-grey">
-              Based on your answers, we recommend:
+            <p className="font-paragraph text-lg text-warm-grey">
+              Based on your answers, we've found the perfect programme for you.
             </p>
-          </div>
+          </motion.div>
 
-          <Card className="bg-soft-white p-8 mb-8 border-2 border-cta-purple">
-            <h2 className="font-heading text-2xl md:text-3xl font-bold text-cta-purple mb-4 text-center">
+          {/* Programme Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-gradient-to-br from-soft-white to-white p-8 md:p-12 rounded-2xl border-2 border-cta-purple mb-10 shadow-lg"
+          >
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-cta-purple mb-6 text-center">
               {state.recommendedProgram}
             </h2>
-            <p className="font-paragraph text-charcoal-black text-center leading-relaxed mb-6">
+            <p className="font-paragraph text-lg text-charcoal-black text-center leading-relaxed mb-8">
               {state.recommendationReason}
             </p>
-          </Card>
 
-          <div className="text-center">
-            <Button 
+            {/* Benefits */}
+            <div className="space-y-4">
+              <p className="font-paragraph font-semibold text-charcoal-black mb-4">What you'll get:</p>
+              {programme.benefits.map((benefit, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 + index * 0.1 }}
+                  className="flex items-start gap-4"
+                >
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-cta-purple flex items-center justify-center mt-1">
+                    <Check size={16} className="text-white" />
+                  </div>
+                  <p className="font-paragraph text-charcoal-black">{benefit}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* CTA Button */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="text-center mb-8"
+          >
+            <Button
               onClick={handleStartProgramme}
-              className="bg-cta-purple hover:bg-primary text-white px-8 py-3 rounded-lg font-semibold inline-flex items-center gap-2"
+              className="bg-cta-purple hover:bg-primary text-white px-12 py-5 rounded-lg font-semibold text-lg inline-flex items-center gap-3 transition-all duration-300 hover:shadow-xl"
             >
-              Start My Programme <ChevronRight size={20} />
+              Start My Programme <ChevronRight size={24} />
             </Button>
-          </div>
+          </motion.div>
 
-          <p className="font-paragraph text-sm text-warm-grey text-center mt-8">
-            A confirmation email has been sent to {state.leadInfo.email}
-          </p>
+          {/* Confirmation Email */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            className="font-paragraph text-sm text-warm-grey text-center"
+          >
+            ✓ A confirmation email has been sent to <span className="font-semibold text-charcoal-black">{state.leadInfo.email}</span>
+          </motion.p>
         </div>
       </motion.div>
     );
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-soft-white to-light-gray py-12">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-soft-white via-white to-light-gray py-8 md:py-12">
+      <div className="max-w-4xl mx-auto">
         {/* Back Button */}
         {state.stage !== 'intro' && state.stage !== 'results' && (
-          <button
+          <motion.button
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
             onClick={handleBack}
-            className="flex items-center gap-2 text-cta-purple hover:text-primary mb-6 px-6 font-paragraph"
+            className="flex items-center gap-2 text-cta-purple hover:text-primary mb-8 px-6 font-paragraph font-semibold transition-colors duration-300"
           >
             <ArrowLeft size={20} />
             Back
-          </button>
+          </motion.button>
         )}
 
         {/* Quiz Content */}
