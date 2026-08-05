@@ -34,6 +34,7 @@ const TermsPage = lazy(() => import('@/components/pages/TermsPage'));
 const DisclaimerPage = lazy(() => import('@/components/pages/DisclaimerPage'));
 const AccessibilityPage = lazy(() => import('@/components/pages/AccessibilityPage'));
 const CoachingPackages = lazy(() => import('@/components/store/CoachingPackages'));
+const ProgramQuizPage = lazy(() => import('@/components/pages/ProgramQuizPage'));
 
 // Client Portal Pages
 const ClientPortalLayout = lazy(() => import('@/components/pages/ClientPortal/ClientPortalLayout'));
@@ -175,6 +176,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
             <AccessibilityPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "program-quiz",
+        element: (
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+            <ProgramQuizPage />
           </Suspense>
         ),
       },
