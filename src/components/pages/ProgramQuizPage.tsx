@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card } from '@/components/ui/card';
 import { ChevronRight, ArrowLeft, Check } from 'lucide-react';
 
 type QuizPath = 'postpartum' | 'perimenopause' | 'menopause' | 'strength35' | null;
-type QuizStage = 'intro' | 'questions' | 'conditional' | 'leadCapture' | 'results';
+type QuizStage = 'intro' | 'questions' | 'conditional' | 'results';
 
 interface QuizState {
   stage: QuizStage;
@@ -15,7 +13,6 @@ interface QuizState {
   path: QuizPath;
   recommendedProgram: string;
   recommendationReason: string;
-  leadInfo: { firstName: string; email: string };
 }
 
 const PROGRAMMES = {
@@ -250,7 +247,6 @@ export default function ProgramQuizPage() {
     path: null,
     recommendedProgram: '',
     recommendationReason: '',
-    leadInfo: { firstName: '', email: '' },
   });
 
   const handleQ1Answer = (value: string) => {
@@ -282,55 +278,53 @@ export default function ProgramQuizPage() {
   };
 
   const handleConditionalAnswer = (questionKey: string, value: string) => {
-    setState((prev) => ({
-      ...prev,
-      answers: { ...prev.answers, [questionKey]: value },
-      currentQuestion: prev.currentQuestion + 1,
-    }));
-  };
+    setState((prev) => {
+      const nextQuestion = prev.currentQuestion + 1;
+      
+      // After the 3rd conditional question, show results
+      if (nextQuestion >= 3) {
+        const { path } = prev;
+        let recommendedProgram = '';
+        let recommendationReason = '';
 
-  const proceedToLeadCapture = () => {
-    setState((prev) => ({
-      ...prev,
-      stage: 'leadCapture',
-    }));
-  };
+        if (path === 'postpartum') {
+          recommendedProgram = PROGRAMMES.postpartum.name;
+          recommendationReason = `Based on your postpartum journey and goals, this programme is specifically designed to help you rebuild core strength, regain confidence, and safely return to exercise. It's tailored for your current fitness level and the time you can dedicate to training.`;
+        } else if (path === 'perimenopause') {
+          recommendedProgram = PROGRAMMES.perimenopause.name;
+          recommendationReason = `This programme is designed specifically for the perimenopause stage, addressing the unique challenges you're facing like energy levels, body composition changes, and hormonal fluctuations. Strength training is proven to help manage perimenopause symptoms while building the resilience you need.`;
+        } else if (path === 'menopause') {
+          recommendedProgram = PROGRAMMES.menopause.name;
+          recommendationReason = `This programme is specifically designed for women in menopause, focusing on maintaining bone health, building strength, and managing body composition changes. It's tailored to your current activity level and fitness goals.`;
+        } else if (path === 'strength35') {
+          recommendedProgram = PROGRAMMES.strength35.name;
+          recommendationReason = `This comprehensive strength training programme is designed for women 35+ who want to build muscle, increase strength, and feel more confident. It's customized to your fitness level, available training days, and preferred training environment.`;
+        }
 
-  const handleLeadCapture = (firstName: string, email: string) => {
-    const { path, answers } = state;
-    let recommendedProgram = '';
-    let recommendationReason = '';
+        return {
+          ...prev,
+          answers: { ...prev.answers, [questionKey]: value },
+          stage: 'results',
+          recommendedProgram,
+          recommendationReason,
+        };
+      }
 
-    if (path === 'postpartum') {
-      recommendedProgram = PROGRAMMES.postpartum.name;
-      recommendationReason = `Based on your postpartum journey and goals, this programme is specifically designed to help you rebuild core strength, regain confidence, and safely return to exercise. It's tailored for your current fitness level and the time you can dedicate to training.`;
-    } else if (path === 'perimenopause') {
-      recommendedProgram = PROGRAMMES.perimenopause.name;
-      recommendationReason = `This programme is designed specifically for the perimenopause stage, addressing the unique challenges you're facing like energy levels, body composition changes, and hormonal fluctuations. Strength training is proven to help manage perimenopause symptoms while building the resilience you need.`;
-    } else if (path === 'menopause') {
-      recommendedProgram = PROGRAMMES.menopause.name;
-      recommendationReason = `This programme is specifically designed for women in menopause, focusing on maintaining bone health, building strength, and managing body composition changes. It's tailored to your current activity level and fitness goals.`;
-    } else if (path === 'strength35') {
-      recommendedProgram = PROGRAMMES.strength35.name;
-      recommendationReason = `This comprehensive strength training programme is designed for women 35+ who want to build muscle, increase strength, and feel more confident. It's customized to your fitness level, available training days, and preferred training environment.`;
-    }
-
-    setState((prev) => ({
-      ...prev,
-      stage: 'results',
-      leadInfo: { firstName, email },
-      recommendedProgram,
-      recommendationReason,
-    }));
+      return {
+        ...prev,
+        answers: { ...prev.answers, [questionKey]: value },
+        currentQuestion: nextQuestion,
+      };
+    });
   };
 
   const handleBack = () => {
     setState((prev) => {
-      if (prev.stage === 'leadCapture') {
-        return { ...prev, stage: 'conditional' };
-      }
-      if (prev.stage === 'conditional' && prev.currentQuestion === 1) {
+      if (prev.stage === 'conditional' && prev.currentQuestion === 0) {
         return { ...prev, stage: 'questions', currentQuestion: 4 };
+      }
+      if (prev.stage === 'conditional') {
+        return { ...prev, currentQuestion: Math.max(0, prev.currentQuestion - 1) };
       }
       if (prev.stage === 'questions') {
         return { ...prev, currentQuestion: Math.max(0, prev.currentQuestion - 1) };
@@ -537,108 +531,9 @@ export default function ProgramQuizPage() {
         conditionalQuestions[currentKey as keyof typeof conditionalQuestions],
         true
       );
-    } else {
-      return (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          className="py-12 px-6 text-center"
-        >
-          <div className="max-w-2xl mx-auto">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-charcoal-black mb-4">
-              Perfect! One last step...
-            </h2>
-            <p className="font-paragraph text-lg text-warm-grey mb-10">
-              Let us know your details so we can send you your personalized recommendation.
-            </p>
-            <Button
-              onClick={proceedToLeadCapture}
-              className="bg-cta-purple hover:bg-primary text-white px-10 py-4 rounded-lg font-semibold text-lg inline-flex items-center gap-2 transition-all duration-300 hover:shadow-lg"
-            >
-              Continue <ChevronRight size={24} />
-            </Button>
-          </div>
-        </motion.div>
-      );
     }
-  };
-
-  const renderLeadCapture = () => {
-    const [firstName, setFirstName] = useState('');
-    const [email, setEmail] = useState('');
-    const [errors, setErrors] = useState<Record<string, string>>({});
-
-    const handleSubmit = () => {
-      const newErrors: Record<string, string> = {};
-      if (!firstName.trim()) newErrors.firstName = 'First name is required';
-      if (!email.trim()) newErrors.email = 'Email is required';
-      if (email && !email.includes('@')) newErrors.email = 'Please enter a valid email';
-
-      if (Object.keys(newErrors).length > 0) {
-        setErrors(newErrors);
-        return;
-      }
-
-      handleLeadCapture(firstName, email);
-    };
-
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        className="py-12 px-6"
-      >
-        <div className="max-w-md mx-auto">
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-charcoal-black mb-3 text-center">
-            Get Your Recommendation
-          </h2>
-          <p className="font-paragraph text-warm-grey mb-10 text-center">
-            We'll send your personalized programme recommendation to your email.
-          </p>
-
-          <div className="space-y-5">
-            <div>
-              <label className="block font-paragraph font-semibold text-charcoal-black mb-3">First Name</label>
-              <Input
-                type="text"
-                placeholder="Your first name"
-                value={firstName}
-                onChange={(e) => {
-                  setFirstName(e.target.value);
-                  if (errors.firstName) setErrors((prev) => ({ ...prev, firstName: '' }));
-                }}
-                className="w-full px-4 py-3 rounded-lg border-2 border-light-gray focus:border-cta-purple focus:outline-none transition-colors duration-300"
-              />
-              {errors.firstName && <p className="text-red-500 text-sm mt-2">{errors.firstName}</p>}
-            </div>
-
-            <div>
-              <label className="block font-paragraph font-semibold text-charcoal-black mb-3">Email Address</label>
-              <Input
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (errors.email) setErrors((prev) => ({ ...prev, email: '' }));
-                }}
-                className="w-full px-4 py-3 rounded-lg border-2 border-light-gray focus:border-cta-purple focus:outline-none transition-colors duration-300"
-              />
-              {errors.email && <p className="text-red-500 text-sm mt-2">{errors.email}</p>}
-            </div>
-
-            <Button
-              onClick={handleSubmit}
-              className="w-full bg-cta-purple hover:bg-primary text-white py-4 rounded-lg font-semibold text-lg mt-8 transition-all duration-300 hover:shadow-lg"
-            >
-              See My Recommendation
-            </Button>
-          </div>
-        </div>
-      </motion.div>
-    );
+    
+    return null;
   };
 
   const renderResults = () => {
@@ -675,7 +570,7 @@ export default function ProgramQuizPage() {
               🎉
             </motion.div>
             <h1 className="font-heading text-4xl md:text-5xl font-bold text-charcoal-black mb-3">
-              Congratulations, {state.leadInfo.firstName}!
+              Congratulations!
             </h1>
             <p className="font-paragraph text-lg text-warm-grey">
               Based on your answers, we've found the perfect programme for you.
@@ -721,7 +616,7 @@ export default function ProgramQuizPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="text-center mb-8"
+            className="text-center"
           >
             <Button
               onClick={handleStartProgramme}
@@ -730,16 +625,6 @@ export default function ProgramQuizPage() {
               Start My Programme <ChevronRight size={24} />
             </Button>
           </motion.div>
-
-          {/* Confirmation Email */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7 }}
-            className="font-paragraph text-sm text-warm-grey text-center"
-          >
-            ✓ A confirmation email has been sent to <span className="font-semibold text-charcoal-black">{state.leadInfo.email}</span>
-          </motion.p>
         </div>
       </motion.div>
     );
@@ -766,7 +651,6 @@ export default function ProgramQuizPage() {
           {state.stage === 'intro' && renderIntro()}
           {state.stage === 'questions' && renderQuestions()}
           {state.stage === 'conditional' && renderConditional()}
-          {state.stage === 'leadCapture' && renderLeadCapture()}
           {state.stage === 'results' && renderResults()}
         </AnimatePresence>
       </div>
