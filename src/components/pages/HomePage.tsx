@@ -876,10 +876,10 @@ export default function HomePage() {
         <div className="relative z-10 max-w-[100rem] mx-auto text-center">
           <AnimatedElement>
             <h2 className="font-heading text-4xl md:text-5xl font-bold text-white mb-6">
-              Ready to get started?
+              Find Your Perfect Programme
             </h2>
             <p className="text-lg text-white/90 mb-10 max-w-2xl mx-auto font-light">
-              Join my coaching program and transform your fitness journey. Limited spaces available.
+              Discover the coaching programme that's right for you. Take our quick quiz to get personalised recommendations tailored to your goals.
             </p>
             <motion.div
               whileHover={{ scale: 1.08, y: -4 }}
@@ -887,14 +887,14 @@ export default function HomePage() {
               transition={{ type: "spring", stiffness: 300, damping: 10 }}
               className="inline-block"
             >
-              <a
-                href="#contact-form"
+              <Link
+                to="/program-quiz"
                 className="inline-flex items-center gap-3 px-14 py-6 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-2xl relative overflow-hidden group"
                 style={{ backgroundColor: '#58355E' }}
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-500 -skew-x-12"></span>
                 <span className="relative flex items-center gap-3 text-white">
-                  Book a Free 15-Minute Consultation
+                  Take the Quiz
                   <motion.span
                     animate={{ x: [0, 4, 0] }}
                     transition={{ duration: 1.5, repeat: Infinity }}
@@ -902,7 +902,7 @@ export default function HomePage() {
                     <ArrowRight className="w-5 h-5" />
                   </motion.span>
                 </span>
-              </a>
+              </Link>
             </motion.div>
           </AnimatedElement>
         </div>
