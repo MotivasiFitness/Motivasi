@@ -21,19 +21,19 @@ interface QuizState {
 const PROGRAMMES = {
   postpartum: {
     name: 'Postpartum Strength & Recovery Programme',
-    url: '/store/postpartum-strength-recovery',
+    url: 'https://www.everfit.io/postpartum-strength-recovery',
   },
   perimenopause: {
     name: 'Perimenopause Strength Programme',
-    url: '/store/perimenopause-strength',
+    url: 'https://www.everfit.io/perimenopause-strength',
   },
   menopause: {
     name: 'Menopause Strength Programme',
-    url: '/store/menopause-strength',
+    url: 'https://www.everfit.io/menopause-strength',
   },
   strength35: {
     name: 'Strength Training 35+ Programme',
-    url: '/store/strength-training-35',
+    url: 'https://www.everfit.io/strength-training-35',
   },
 };
 
@@ -550,6 +550,10 @@ export default function ProgramQuizPage() {
       ([_, prog]) => prog.name === state.recommendedProgram
     )?.[0] as keyof typeof PROGRAMMES;
 
+    const handleStartProgramme = () => {
+      window.open(PROGRAMMES[programmeKey].url, '_blank');
+    };
+
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -578,11 +582,12 @@ export default function ProgramQuizPage() {
           </Card>
 
           <div className="text-center">
-            <a href={PROGRAMMES[programmeKey].url}>
-              <Button className="bg-cta-purple hover:bg-primary text-white px-8 py-3 rounded-lg font-semibold inline-flex items-center gap-2">
-                View Programme <ChevronRight size={20} />
-              </Button>
-            </a>
+            <Button 
+              onClick={handleStartProgramme}
+              className="bg-cta-purple hover:bg-primary text-white px-8 py-3 rounded-lg font-semibold inline-flex items-center gap-2"
+            >
+              Start My Programme <ChevronRight size={20} />
+            </Button>
           </div>
 
           <p className="font-paragraph text-sm text-warm-grey text-center mt-8">
