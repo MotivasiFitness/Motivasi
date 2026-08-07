@@ -462,7 +462,7 @@ export default function ProgramQuizPage() {
                     handleAnswer(questionKey, option.value);
                   }
                 }}
-                className="group relative p-6 text-left border-2 border-light-gray rounded-xl bg-white hover:border-cta-purple hover:bg-soft-white transition-all duration-300 hover:shadow-md"
+                className="group relative p-6 text-left border-2 border-charcoal-black rounded-xl bg-white hover:border-cta-purple hover:bg-white transition-all duration-300 hover:shadow-md"
               >
                 <div className="flex items-start gap-4">
                   {option.icon && (
