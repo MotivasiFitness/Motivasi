@@ -425,7 +425,7 @@ export default function InstagramLandingPage() {
                   label: 'Listen · Recover · Rebuild',
                   accentColor: 'from-rose-blush/40 to-rose-blush/10',
                   borderColor: 'border-rose-blush/30',
-                  textAccent: 'text-rose-blush'
+                  textAccent: 'text-destructive'
                 },
                 {
                   phase: 'Follicular',
@@ -530,7 +530,7 @@ export default function InstagramLandingPage() {
                 label: 'Listen · Recover · Rebuild',
                 accentColor: 'from-rose-blush/40 to-rose-blush/10',
                 borderColor: 'border-rose-blush/30',
-                textAccent: 'text-rose-blush'
+                textAccent: 'text-destructive'
               },
               {
                 phase: 'Follicular',
