@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, Check, MessageCircle, Calendar, Zap, Heart } from 'lucide-react';
+import { ChevronDown, Check, MessageCircle, Calendar, Zap, Heart, Dumbbell, Users, TrendingUp, Clock, Flame, Target } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 
 export default function InstagramLandingPage() {
