@@ -49,12 +49,12 @@ export default function InstagramLandingPage() {
                   </p>
                 </motion.div>
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-warm-cream/70 backdrop-blur-sm rounded-3xl p-6 border border-warm-sand-beige/40">
-                  {[ { icon: '🏋️', title: '3 Coached Sessions', desc: 'Every week' }, { icon: '👥', title: 'Coach Access', desc: 'Direct messaging' }, { icon: '🥗', title: 'Cycle-Synced Nutrition', desc: 'Personalized guidance' } ].map((feature, idx) => (
+                  {[ { icon: '🏋️', title: '3 personalised training sessions per week', desc: 'via our easy-to-use app' }, { icon: '💬', title: 'Direct chat with your qualified coach', desc: '' }, { icon: '🔄', title: 'Cycle-synced training for every phase', desc: '' }, { icon: '🍎', title: 'Level 4 nutrition guidance that fits your life', desc: '' } ].map((feature, idx) => (
                     <div key={idx} className="flex gap-4 items-start">
                       <div className="text-3xl flex-shrink-0 bg-primary/10 rounded-full p-2">{feature.icon}</div>
                       <div className="flex-1">
                         <p className="font-paragraph font-semibold text-base text-primary-text">{feature.title}</p>
-                        <p className="font-paragraph text-sm text-secondary-text">{feature.desc}</p>
+                        {feature.desc && <p className="font-paragraph text-sm text-secondary-text">{feature.desc}</p>}
                       </div>
                     </div>
                   ))}
