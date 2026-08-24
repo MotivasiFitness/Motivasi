@@ -324,6 +324,107 @@ export default function InstagramLandingPage() {
         </div>
       </section>
 
+      {/* Differentiation Section */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
+        <div className="max-w-[100rem] mx-auto">
+          {/* Headline */}
+          <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-16">
+            <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl text-primary leading-tight mb-6">
+              Your body isn't a problem to solve.<br />Your training should be able to adapt.
+            </h2>
+            <p className="font-paragraph text-lg sm:text-xl text-secondary-text max-w-3xl mx-auto leading-relaxed">
+              Most online training programmes give you a plan and expect you to fit yourself around it.
+              <br className="hidden sm:block" />
+              <br className="hidden sm:block" />
+              This works differently.
+              <br className="hidden sm:block" />
+              <br className="hidden sm:block" />
+              Your training responds to your energy, recovery, symptoms, cycle and stage of life — while your coach helps you make the right adjustments.
+            </p>
+          </motion.div>
+
+          {/* Comparison Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-12 sm:mb-16">
+            {/* Left Column - Traditional */}
+            <motion.div
+              {...fadeInUp}
+              transition={{ ...fadeInUp.transition, delay: 0.1 }}
+              className="bg-white p-8 sm:p-10 rounded-2xl border border-warm-sand-beige/30"
+            >
+              <h3 className="font-heading text-2xl sm:text-3xl text-primary mb-8">
+                Traditional online training
+              </h3>
+              <ul className="space-y-5">
+                {[
+                  'Fixed programme',
+                  'Same intensity every week',
+                  'Workout-first approach',
+                  'Limited personal support',
+                  'One-size-fits-all progression'
+                ].map((item, idx) => (
+                  <li key={idx} className="flex gap-4 items-start">
+                    <div className="flex-shrink-0 mt-1 w-5 h-5 rounded-full bg-warm-sand-beige/40 flex items-center justify-center">
+                      <span className="text-secondary-text text-xs">−</span>
+                    </div>
+                    <span className="font-paragraph text-base sm:text-lg text-secondary-text">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Right Column - This Approach (Stronger Visual) */}
+            <motion.div
+              {...fadeInUp}
+              transition={{ ...fadeInUp.transition, delay: 0.2 }}
+              className="relative"
+            >
+              {/* Accent background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-warm-sand-beige/10 rounded-2xl" />
+              
+              {/* Content */}
+              <div className="relative bg-white/80 backdrop-blur-sm p-8 sm:p-10 rounded-2xl border-2 border-primary/20">
+                <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/5 rounded-full blur-2xl" />
+                
+                <h3 className="font-heading text-2xl sm:text-3xl text-primary mb-8 relative z-10">
+                  This approach
+                </h3>
+                
+                <ul className="space-y-5 relative z-10">
+                  {[
+                    'Training that adapts',
+                    'Intensity that can change',
+                    'Strength + recovery',
+                    'Direct coach communication',
+                    'Women\'s health and life-stage awareness',
+                    'Nutrition support'
+                  ].map((item, idx) => (
+                    <li key={idx} className="flex gap-4 items-start">
+                      <div className="flex-shrink-0 mt-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                        <span className="text-white text-xs font-bold">✓</span>
+                      </div>
+                      <span className="font-paragraph text-base sm:text-lg text-primary-text font-medium">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Science Statement */}
+          <motion.div
+            {...fadeInUp}
+            transition={{ ...fadeInUp.transition, delay: 0.3 }}
+            className="max-w-3xl mx-auto"
+          >
+            <div className="bg-warm-sand-beige/20 border border-warm-sand-beige/40 rounded-xl p-6 sm:p-8">
+              <p className="font-paragraph text-sm sm:text-base text-secondary-text leading-relaxed italic">
+                <span className="font-semibold text-primary-text">Science is still evolving around cycle-related performance.</span> We don't believe women should be forced into rigid hormonal rules. We use the cycle as a framework — and your real-world symptoms, energy and recovery as feedback.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Why Different */}
       <section id="why-different" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-off-white">
         <div className="max-w-[100rem] mx-auto">
