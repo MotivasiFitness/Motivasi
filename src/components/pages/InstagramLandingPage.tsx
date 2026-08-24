@@ -295,12 +295,15 @@ export default function InstagramLandingPage() {
       {/* SECTION 2: Why This Is Different - Problem/Solution */}
       <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
         <div className="max-w-[100rem] mx-auto">
-          {/* Headline */}
-          <motion.div {...fadeInUp} className="text-center mb-8 sm:mb-12">
-            <h2 className="font-heading text-2xl sm:text-4xl lg:text-5xl text-primary leading-tight mb-4 sm:mb-6">
-              Your body isn't a problem to solve.<br />Your training should adapt.
+          {/* Headline - Left Aligned */}
+          <motion.div {...fadeInUp} className="mb-12 sm:mb-16 max-w-2xl">
+            <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl text-primary leading-tight mb-4 sm:mb-6">
+              Your body isn't a problem to solve.
             </h2>
-            <p className="font-paragraph text-sm sm:text-base text-secondary-text max-w-3xl mx-auto leading-relaxed">
+            <p className="font-heading text-xl sm:text-2xl text-primary italic font-light mb-6 sm:mb-8">
+              Your training should be able to adapt.
+            </p>
+            <p className="font-paragraph text-sm sm:text-base text-secondary-text leading-relaxed">
               Most online training programmes give you a plan and expect you to fit yourself around it. This works differently. Your training responds to your energy, recovery, symptoms, cycle and stage of life — while your coach helps you make the right adjustments.
             </p>
           </motion.div>
