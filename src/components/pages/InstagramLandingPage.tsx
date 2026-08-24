@@ -786,64 +786,96 @@ export default function InstagramLandingPage() {
           </motion.div>
         </div>
       </section>
-      {/* How the App Works */}
+      {/* How It Works - Premium Editorial Layout */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-off-white">
         <div className="max-w-[100rem] mx-auto">
-          <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-16">
-            <h2 className="font-heading text-4xl sm:text-5xl text-primary mb-4">How It Works</h2>
-            <p className="font-paragraph text-lg text-secondary-text max-w-2xl mx-auto">
-              Three coached sessions per week, delivered through our app. Simple, flexible, powerful.
+          <motion.div {...fadeInUp} className="mb-12 sm:mb-16">
+            <div className="inline-block mb-4">
+              <span className="font-paragraph text-xs sm:text-sm uppercase tracking-widest text-primary font-semibold">THE PROGRAM</span>
+            </div>
+            <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl text-primary mb-4 leading-tight">Everything you need.<br />All in one place.</h2>
+            <p className="font-paragraph text-base sm:text-lg text-secondary-text max-w-2xl">
+              A complete training and nutrition experience – built for women, by a woman who gets it.
             </p>
           </motion.div>
 
-          <div className="space-y-8 sm:space-y-12">
+          {/* Features Grid - 2x3 Layout */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 mb-12">
             {[
               {
-                number: '1',
-                title: 'Three Coached Sessions Per Week',
-                description: 'Strength training, conditioning, and mobility work tailored to your cycle phase and energy levels.',
-                image: 'https://static.wixstatic.com/media/93e866_bac8b2788ea14bff96e1affde4f0fc30~mv2.png?originWidth=384&originHeight=384'
+                icon: Dumbbell,
+                title: '3 Training Sessions',
+                subtitle: 'Each Week',
+                description: 'Personalized strength, conditioning, and mobility work tailored to your cycle phase and energy levels.'
               },
               {
-                number: '2',
-                title: 'Direct Access to Your Coach',
-                description: 'Message anytime. Ask questions. Get form checks. Adjust your plan. Real support, not an algorithm.',
-                image: 'https://static.wixstatic.com/media/12d367_4f26ccd17f8f4e3a8958306ea08c2332~mv2.png'
+                icon: MessageCircle,
+                title: 'Direct Coach',
+                subtitle: 'Support',
+                description: 'Message anytime. Ask questions. Get form checks. Adjust your plan. Real support, not an algorithm.'
               },
               {
-                number: '3',
-                title: 'Track Progress, Recovery & Wellbeing',
-                description: 'Log your workouts, energy levels, sleep, and how you feel. We use this data to keep optimising your plan.',
-                image: 'https://static.wixstatic.com/media/93e866_d56acc22de8d4a4c905143ebbc350b6a~mv2.png?originWidth=384&originHeight=384'
+                icon: Calendar,
+                title: 'Cycle-Synced',
+                subtitle: 'Training',
+                description: 'Workouts adapt to your cycle. Customize each phase for better results and how you feel.'
+              },
+              {
+                icon: Heart,
+                title: 'For Every Stage',
+                subtitle: '',
+                description: 'Pre & post partum, perimenopause, or simply want to understand your cycle better – we support you.'
+              },
+              {
+                icon: Zap,
+                title: 'Level 1 Nutrition',
+                subtitle: 'Guidance',
+                description: 'Simple, effective nutrition strategies that work for your body and your life.'
+              },
+              {
+                icon: TrendingUp,
+                title: 'All In One',
+                subtitle: 'Platform',
+                description: 'Workouts, tracking, recipes, check-ins and coaching – all in your pocket.'
               }
-            ].map((item, idx) => (
-              <motion.div
-                key={idx}
-                {...fadeInUp}
-                transition={{ ...fadeInUp.transition, delay: idx * 0.1 }}
-                className={`flex flex-col ${idx % 2 === 0 ? 'sm:flex-row' : 'sm:flex-row-reverse'} gap-8 items-center`}
-              >
-                <div className="flex-1">
-                  <div className="inline-block bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center font-heading text-2xl mb-4">
-                    {item.number}
+            ].map((item, idx) => {
+              const IconComponent = item.icon;
+              return (
+                <motion.div
+                  key={idx}
+                  {...fadeInUp}
+                  transition={{ ...fadeInUp.transition, delay: idx * 0.08 }}
+                  className="flex flex-col"
+                >
+                  <div className="mb-4">
+                    <IconComponent className="w-8 h-8 text-primary" strokeWidth={1.5} />
                   </div>
-                  <h3 className="font-heading text-3xl text-primary mb-4">{item.title}</h3>
-                  <p className="font-paragraph text-lg text-secondary-text">{item.description}</p>
-                </div>
-                <div className="flex-1">
-                  <div className="rounded-2xl overflow-hidden bg-warm-sand-beige/30 aspect-square">
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      width={400}
-                      height={400}
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="flex-1">
+                    <h3 className="font-heading text-xl sm:text-2xl text-primary mb-1">
+                      {item.title}
+                    </h3>
+                    {item.subtitle && (
+                      <p className="font-paragraph text-sm text-secondary-text mb-3">{item.subtitle}</p>
+                    )}
+                    <p className="font-paragraph text-sm sm:text-base text-secondary-text leading-relaxed">
+                      {item.description}
+                    </p>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
+
+          {/* CTA Button */}
+          <motion.div
+            {...fadeInUp}
+            transition={{ ...fadeInUp.transition, delay: 0.5 }}
+            className="flex justify-start"
+          >
+            <button className="bg-primary text-white px-8 py-3 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-sm sm:text-base h-11 sm:h-12 flex items-center justify-center">
+              Explore the program
+            </button>
+          </motion.div>
         </div>
       </section>
       {/* Life-Stage Support */}
