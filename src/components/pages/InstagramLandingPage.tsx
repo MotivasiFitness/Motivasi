@@ -468,64 +468,133 @@ export default function InstagramLandingPage() {
         </div>
       </section>
 
-      {/* Four Cycle Phases */}
+      {/* Four Cycle Phases - Premium Section */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
         <div className="max-w-[100rem] mx-auto">
-          <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-16">
-            <h2 className="font-heading text-4xl sm:text-5xl text-primary mb-4">The Four Phases</h2>
-            <p className="font-paragraph text-lg text-secondary-text max-w-2xl mx-auto">
-              Understanding your cycle is understanding your body. We use this framework to help you train smarter.
+          {/* Headline and Supporting Text */}
+          <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-20">
+            <h2 className="font-heading text-5xl sm:text-6xl lg:text-7xl text-primary leading-tight mb-6">
+              Four phases.<br />One body.<br />A smarter way to train.
+            </h2>
+            <p className="font-paragraph text-lg sm:text-xl text-secondary-text max-w-3xl mx-auto leading-relaxed">
+              Your training doesn't have to look the same every week. We use the four phases of the cycle as a flexible framework for adjusting training, recovery and nutrition.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Four Phase Cards - Desktop Grid / Mobile Scroll */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-12 sm:mb-16">
             {[
               {
                 phase: 'Menstrual',
-                color: 'bg-rose-blush',
-                accent: 'border-rose-blush',
-                description: 'Rest and recovery focus. Shorter, lower-intensity sessions. Listen to your body.',
-                icon: '🌙'
+                tagline: 'Move & Rebuild',
+                description: 'Lower the intensity. Focus on mobility, movement, recovery and rebuilding.',
+                label: 'Listen · Recover · Rebuild',
+                accentColor: 'from-rose-blush/40 to-rose-blush/10',
+                borderColor: 'border-rose-blush/30',
+                textAccent: 'text-rose-blush'
               },
               {
                 phase: 'Follicular',
-                color: 'bg-sage-green',
-                accent: 'border-sage-green',
-                description: 'Energy rises. Build strength and power. Push harder. This is your time.',
-                icon: '🌱'
+                tagline: 'Build & Ramp Up',
+                description: 'Energy and motivation may rise. Build strength, increase training demand and create momentum.',
+                label: 'Build · Progress · Strengthen',
+                accentColor: 'from-emerald-green/40 to-emerald-green/10',
+                borderColor: 'border-emerald-green/30',
+                textAccent: 'text-emerald-green'
               },
               {
-                phase: 'Ovulation',
-                color: 'bg-warm-cream',
-                accent: 'border-warm-cream',
-                description: 'Peak energy and confidence. Challenge yourself. Competitive training works well.',
-                icon: '✨'
+                phase: 'Ovulatory',
+                tagline: 'Peak Performance',
+                description: 'A potential window to push harder when you feel strong and recovered.',
+                label: 'Challenge · Perform · Progress',
+                accentColor: 'from-gold/40 to-gold/10',
+                borderColor: 'border-gold/30',
+                textAccent: 'text-gold'
               },
               {
                 phase: 'Luteal',
-                color: 'bg-warm-sand-beige',
-                accent: 'border-warm-sand-beige',
-                description: 'Energy dips. Focus on strength maintenance and recovery. Honour your needs.',
-                icon: '🍂'
+                tagline: 'Taper & Recover',
+                description: 'Deliberately reduce training volume and support recovery as your next period approaches.',
+                label: 'Maintain · Recover · Reset',
+                accentColor: 'from-warm-bronze/40 to-warm-bronze/10',
+                borderColor: 'border-warm-bronze/30',
+                textAccent: 'text-warm-bronze'
               }
             ].map((item, idx) => (
               <motion.div
                 key={idx}
                 {...fadeInUp}
-                transition={{ ...fadeInUp.transition, delay: idx * 0.1 }}
-                className={`${item.color} p-8 rounded-2xl border-2 ${item.accent}`}
+                transition={{ ...fadeInUp.transition, delay: idx * 0.08 }}
+                className={`relative overflow-hidden rounded-2xl border ${item.borderColor} bg-white p-8 sm:p-10 hover:border-primary/20 transition-all duration-300 group`}
               >
-                <div className="text-4xl mb-4">{item.icon}</div>
-                <h3 className="font-heading text-2xl text-primary mb-3">{item.phase}</h3>
-                <p className="font-paragraph text-secondary-text text-sm">{item.description}</p>
+                {/* Gradient accent background */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${item.accentColor} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                
+                {/* Content */}
+                <div className="relative z-10 space-y-4">
+                  {/* Phase name with accent */}
+                  <div className="space-y-2">
+                    <p className={`font-paragraph text-xs font-semibold uppercase tracking-wider ${item.textAccent}`}>
+                      {item.phase}
+                    </p>
+                    <h3 className="font-heading text-2xl sm:text-3xl text-primary leading-tight">
+                      {item.tagline}
+                    </h3>
+                  </div>
+
+                  {/* Description */}
+                  <p className="font-paragraph text-base text-secondary-text leading-relaxed pt-2">
+                    {item.description}
+                  </p>
+
+                  {/* Small label */}
+                  <div className="pt-4 border-t border-warm-sand-beige/20">
+                    <p className="font-paragraph text-xs text-secondary-text font-medium tracking-wide">
+                      {item.label}
+                    </p>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
 
-          <motion.div {...fadeInUp} className="mt-12 sm:mt-16 bg-white p-8 rounded-2xl border border-warm-sand-beige/30">
-            <p className="font-paragraph text-secondary-text text-center">
-              <span className="text-primary font-semibold">Important:</span> This is a flexible framework, not a rigid rule. Your body provides feedback. We adapt. Irregular cycles, perimenopause, or postpartum? The method still works—we just listen to your symptoms instead of a calendar.
+          {/* Cycle Unpredictable Section */}
+          <motion.div
+            {...fadeInUp}
+            transition={{ ...fadeInUp.transition, delay: 0.4 }}
+            className="bg-white border border-warm-sand-beige/30 rounded-2xl p-8 sm:p-12 mb-12 sm:mb-16"
+          >
+            <div className="max-w-3xl mx-auto">
+              <h3 className="font-heading text-2xl sm:text-3xl text-primary mb-4">
+                Cycle unpredictable?
+              </h3>
+              <p className="font-paragraph text-lg text-secondary-text leading-relaxed">
+                That's okay. Perimenopause, irregular cycles and changing symptoms don't disqualify you. Your body feedback becomes part of the plan.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Important Note */}
+          <motion.div
+            {...fadeInUp}
+            transition={{ ...fadeInUp.transition, delay: 0.5 }}
+            className="bg-warm-sand-beige/10 border border-warm-sand-beige/30 rounded-xl p-6 sm:p-8 mb-12 sm:mb-16"
+          >
+            <p className="font-paragraph text-sm sm:text-base text-secondary-text leading-relaxed italic text-center">
+              <span className="font-semibold text-primary-text">These phases are a framework, not a guarantee.</span> We use language like "may", "typically", and "when you feel ready" because every body is different. For many women, these patterns show up. For others, they don't. Your symptoms and energy levels are what matter most.
             </p>
+          </motion.div>
+
+          {/* CTA */}
+          <motion.div
+            {...fadeInUp}
+            transition={{ ...fadeInUp.transition, delay: 0.6 }}
+            className="text-center"
+          >
+            <button className="inline-flex items-center gap-2 font-paragraph font-semibold text-primary hover:text-primary/80 transition text-lg group">
+              See how cycle-responsive training works
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
+            </button>
           </motion.div>
         </div>
       </section>
