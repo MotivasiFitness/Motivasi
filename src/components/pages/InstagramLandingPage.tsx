@@ -847,19 +847,21 @@ export default function InstagramLandingPage() {
                   transition={{ ...fadeInUp.transition, delay: idx * 0.08 }}
                   className="flex flex-col"
                 >
-                  <div className="mb-4">
-                    <IconComponent className="w-8 h-8 text-primary" strokeWidth={1.5} />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-heading text-xl sm:text-2xl text-primary mb-1">
-                      {item.title}
-                    </h3>
-                    {item.subtitle && (
-                      <p className="font-paragraph text-sm text-secondary-text mb-3">{item.subtitle}</p>
-                    )}
-                    <p className="font-paragraph text-sm sm:text-base text-secondary-text leading-relaxed">
-                      {item.description}
-                    </p>
+                  <div className="bg-white rounded-2xl p-8 sm:p-10 h-full flex flex-col shadow-sm hover:shadow-md transition-shadow duration-300 border border-white/80">
+                    <div className="mb-6">
+                      <IconComponent className="w-10 h-10 text-primary" strokeWidth={1.5} />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-heading text-xl sm:text-2xl text-primary mb-2">
+                        {item.title}
+                      </h3>
+                      {item.subtitle && (
+                        <p className="font-paragraph text-sm text-secondary-text mb-4 font-medium">{item.subtitle}</p>
+                      )}
+                      <p className="font-paragraph text-sm sm:text-base text-secondary-text leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
                   </div>
                 </motion.div>
               );
