@@ -926,70 +926,126 @@ export default function InstagramLandingPage() {
         </div>
       </section>
       {/* Training + Nutrition */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-warm-sand-beige">
         <div className="max-w-[100rem] mx-auto">
-          <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-16">
-            <h2 className="font-heading text-4xl sm:text-5xl text-primary mb-4">Training + Nutrition</h2>
-            <p className="font-paragraph text-lg text-secondary-text max-w-2xl mx-auto">
-              Strength training without nutrition guidance is incomplete. We provide both.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
-            <motion.div {...fadeInUp} className="bg-white p-8 sm:p-12 rounded-2xl border border-warm-sand-beige/30">
-              <h3 className="font-heading text-3xl text-primary mb-6">Your Training Plan</h3>
-              <ul className="space-y-4 font-paragraph text-secondary-text">
-                <li className="flex gap-3">
-                  <span className="text-primary font-semibold">•</span>
-                  <span>Strength-focused programming</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-primary font-semibold">•</span>
-                  <span>Cycle-synced intensity and volume</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-primary font-semibold">•</span>
-                  <span>Progressive overload built in</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-primary font-semibold">•</span>
-                  <span>Recovery weeks planned</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-primary font-semibold">•</span>
-                  <span>Adjustable based on your feedback</span>
-                </li>
-              </ul>
+          {/* Training Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center mb-20 sm:mb-32">
+            {/* Training Image */}
+            <motion.div
+              {...fadeInUp}
+              className="order-2 lg:order-1"
+            >
+              <div className="rounded-2xl overflow-hidden bg-warm-sand-beige aspect-square shadow-md">
+                <Image
+                  src="https://static.wixstatic.com/media/93e866_b05395a90da34d39bcad54830cf9d0aa~mv2.png?originWidth=448&originHeight=448"
+                  alt="Strength training for women - Fitness program"
+                  width={500}
+                  height={500}
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </motion.div>
 
+            {/* Training Content */}
             <motion.div
               {...fadeInUp}
               transition={{ ...fadeInUp.transition, delay: 0.1 }}
-              className="bg-white p-8 sm:p-12 rounded-2xl border border-warm-sand-beige/30"
+              className="order-1 lg:order-2"
             >
-              <h3 className="font-heading text-3xl text-primary mb-6">Your Nutrition Guidance</h3>
-              <ul className="space-y-4 font-paragraph text-secondary-text">
-                <li className="flex gap-3">
-                  <span className="text-primary font-semibold">•</span>
-                  <span>Level 4 qualified nutrition coach</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-primary font-semibold">•</span>
-                  <span>Personalised to your goals and preferences</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-primary font-semibold">•</span>
-                  <span>Cycle-responsive nutrition strategies</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-primary font-semibold">•</span>
-                  <span>No restrictive dieting</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-primary font-semibold">•</span>
-                  <span>Sustainable, real-world approach</span>
-                </li>
-              </ul>
+              <div className="space-y-6">
+                <div>
+                  <p className="font-paragraph text-sm uppercase tracking-widest text-primary mb-3">Strength Training</p>
+                  <h2 className="font-heading text-4xl sm:text-5xl text-primary leading-tight mb-4">
+                    Built for your body
+                  </h2>
+                  <p className="font-paragraph text-lg text-secondary-text leading-relaxed">
+                    Strength-focused programming designed specifically for women, with cycle-synced intensity and progressive overload built in.
+                  </p>
+                </div>
+
+                <ul className="space-y-3 pt-4">
+                  <li className="flex gap-3 items-start">
+                    <span className="text-primary text-xl leading-none mt-1">✓</span>
+                    <span className="font-paragraph text-secondary-text">Strength-focused programming</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                    <span className="text-primary text-xl leading-none mt-1">✓</span>
+                    <span className="font-paragraph text-secondary-text">Cycle-synced intensity and volume</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                    <span className="text-primary text-xl leading-none mt-1">✓</span>
+                    <span className="font-paragraph text-secondary-text">Progressive overload built in</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                    <span className="text-primary text-xl leading-none mt-1">✓</span>
+                    <span className="font-paragraph text-secondary-text">Recovery weeks planned</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                    <span className="text-primary text-xl leading-none mt-1">✓</span>
+                    <span className="font-paragraph text-secondary-text">Adjustable based on your feedback</span>
+                  </li>
+                </ul>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Nutrition Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
+            {/* Nutrition Content */}
+            <motion.div
+              {...fadeInUp}
+              transition={{ ...fadeInUp.transition, delay: 0.2 }}
+            >
+              <div className="space-y-6">
+                <div>
+                  <p className="font-paragraph text-sm uppercase tracking-widest text-primary mb-3">Nutrition Guidance</p>
+                  <h2 className="font-heading text-4xl sm:text-5xl text-primary leading-tight mb-4">
+                    Fuel your performance
+                  </h2>
+                  <p className="font-paragraph text-lg text-secondary-text leading-relaxed">
+                    Personalized nutrition strategies from a Level 4 qualified coach, designed to support your goals without restrictive dieting.
+                  </p>
+                </div>
+
+                <ul className="space-y-3 pt-4">
+                  <li className="flex gap-3 items-start">
+                    <span className="text-primary text-xl leading-none mt-1">✓</span>
+                    <span className="font-paragraph text-secondary-text">Level 4 qualified nutrition coach</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                    <span className="text-primary text-xl leading-none mt-1">✓</span>
+                    <span className="font-paragraph text-secondary-text">Personalised to your goals and preferences</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                    <span className="text-primary text-xl leading-none mt-1">✓</span>
+                    <span className="font-paragraph text-secondary-text">Cycle-responsive nutrition strategies</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                    <span className="text-primary text-xl leading-none mt-1">✓</span>
+                    <span className="font-paragraph text-secondary-text">No restrictive dieting</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                    <span className="text-primary text-xl leading-none mt-1">✓</span>
+                    <span className="font-paragraph text-secondary-text">Sustainable, real-world approach</span>
+                  </li>
+                </ul>
+              </div>
+            </motion.div>
+
+            {/* Nutrition Image */}
+            <motion.div
+              {...fadeInUp}
+              transition={{ ...fadeInUp.transition, delay: 0.3 }}
+            >
+              <div className="rounded-2xl overflow-hidden bg-warm-sand-beige aspect-square shadow-md">
+                <Image
+                  src="https://static.wixstatic.com/media/93e866_e10338cb6ee9437cb6af87daeec16f0b~mv2.png?originWidth=448&originHeight=448"
+                  alt="Healthy nutrition - Balanced meal planning"
+                  width={500}
+                  height={500}
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </motion.div>
           </div>
         </div>
