@@ -33,7 +33,7 @@ export default function InstagramLandingPage() {
 
       </nav>
       {/* Hero Section - Mobile First */}
-      <section className="pt-20 pb-12 sm:pt-32 sm:pb-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-warm-cream via-warm-cream to-warm-sand-beige">
+      <section className="pt-20 pb-12 sm:pt-32 sm:pb-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-[100rem] mx-auto">
           {/* Mobile Layout - Stacked Vertically */}
           <div className="lg:hidden space-y-6 flex flex-col">
