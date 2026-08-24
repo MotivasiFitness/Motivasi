@@ -43,63 +43,55 @@ export default function InstagramLandingPage() {
       <section className="pt-20 pb-8 sm:pt-32 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-warm-cream">
         <div className="max-w-[100rem] mx-auto">
           {/* Mobile Layout - Stacked Vertically */}
-          <div className="lg:hidden space-y-6">
+          <div className="lg:hidden space-y-6 flex flex-col">
             {/* Headline - IMMEDIATELY VISIBLE */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <h1 className="font-heading text-4xl sm:text-5xl text-primary leading-tight mb-3">
-                Train with your body.<br />Not against it.
+              <h1 className="font-heading text-4xl sm:text-5xl text-primary leading-tight mb-2">
+                Train in sync.
               </h1>
+              <p className="font-paragraph text-lg sm:text-xl text-primary italic font-light mb-4">
+                Feel your strongest.
+              </p>
               <p className="font-paragraph text-sm sm:text-base text-secondary-text leading-relaxed">
-                Personalised online training for women — built around your cycle, your symptoms and your stage of life.
+                A woman's training and nutrition program that adapts to your cycle, your symptoms and your stage of life.
               </p>
             </motion.div>
 
-            {/* Benefits - Compact */}
+            {/* Features with Icons - Compact */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="space-y-2"
+              className="space-y-3 bg-white rounded-2xl p-4 border border-warm-sand-beige/30"
             >
               {[
-                '3 personalised training sessions every week',
-                'Direct access to your qualified coach',
-                'Cycle-responsive strength training',
-                'Nutrition guidance designed for women'
-              ].map((benefit, idx) => (
-                <div key={idx} className="flex gap-2 items-start">
-                  <div className="flex-shrink-0 mt-0.5 w-4 h-4 rounded-full bg-primary flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">✓</span>
+                { icon: '🏋️', title: '3 Coached Sessions', desc: 'Every week' },
+                { icon: '👥', title: 'Coach Access', desc: 'Direct messaging' },
+                { icon: '🥗', title: 'Cycle-Synced Nutrition', desc: 'Personalized guidance' }
+              ].map((feature, idx) => (
+                <div key={idx} className="flex gap-3 items-start">
+                  <div className="text-2xl flex-shrink-0">{feature.icon}</div>
+                  <div className="flex-1">
+                    <p className="font-paragraph font-semibold text-sm text-primary-text">{feature.title}</p>
+                    <p className="font-paragraph text-xs text-secondary-text">{feature.desc}</p>
                   </div>
-                  <p className="font-paragraph text-xs sm:text-sm text-primary-text">{benefit}</p>
                 </div>
               ))}
-            </motion.div>
-
-            {/* Life Stage Support - Compact */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <p className="font-paragraph text-xs text-secondary-text">
-                <span className="font-semibold text-primary">Support for:</span> Pre & postnatal · Perimenopause · Menopause
-              </p>
             </motion.div>
 
             {/* Primary CTA - FULL WIDTH, 44px+ */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
               className="pt-2"
             >
               <button className="w-full bg-primary text-white px-6 py-3.5 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-sm sm:text-base h-11 sm:h-12 flex items-center justify-center">
-                Start Your Training Journey
+                Start Your Journey
               </button>
             </motion.div>
 
@@ -107,7 +99,7 @@ export default function InstagramLandingPage() {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.35 }}
+              transition={{ duration: 0.5, delay: 0.25 }}
             >
               <button
                 onClick={() => setShowChatModal(true)}
@@ -115,17 +107,6 @@ export default function InstagramLandingPage() {
               >
                 Book a Free Chat
               </button>
-            </motion.div>
-
-            {/* Trust Statement */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              <p className="font-paragraph text-xs text-secondary-text text-center">
-                Training + coaching + nutrition, all in one app.
-              </p>
             </motion.div>
 
             {/* Mobile App Mockup - LARGE & READABLE */}
@@ -187,58 +168,57 @@ export default function InstagramLandingPage() {
             </motion.div>
           </div>
 
-          {/* Desktop Layout - Side by Side */}
-          <div className="hidden lg:grid grid-cols-2 gap-12 items-center">
-            {/* Left: Content */}
+          {/* Desktop Layout - Asymmetrical with Image Right */}
+          <div className="hidden lg:grid grid-cols-3 gap-8 items-start">
+            {/* Left: Content (2 columns) */}
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="space-y-8"
+              className="col-span-2 space-y-8"
             >
-              {/* Headline */}
-              <div>
-                <h1 className="font-heading text-7xl xl:text-8xl text-primary leading-tight mb-6">
-                  Train with your body.<br />Not against it.
-                </h1>
+              {/* Headline with Badge */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <h1 className="font-heading text-6xl xl:text-7xl text-primary leading-tight">
+                    Train in sync.
+                  </h1>
+                  <div className="w-20 h-20 rounded-full border-4 border-primary/20 flex items-center justify-center flex-shrink-0">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center text-2xl">
+                      🔄
+                    </div>
+                  </div>
+                </div>
+                <p className="font-paragraph text-2xl text-primary italic font-light">
+                  Feel your strongest.
+                </p>
                 <p className="font-paragraph text-lg text-secondary-text leading-relaxed max-w-lg">
-                  Personalised online training for women — built around your cycle, your symptoms and your stage of life.
+                  A woman's training and nutrition program that adapts to your cycle, your symptoms and your stage of life.
                 </p>
               </div>
 
-              {/* Benefits */}
-              <div className="space-y-4">
+              {/* Features Grid */}
+              <div className="grid grid-cols-1 gap-4">
                 {[
-                  '3 personalised training sessions every week',
-                  'Direct access to your qualified coach',
-                  'Cycle-responsive strength training',
-                  'Nutrition guidance designed for women'
-                ].map((benefit, idx) => (
+                  { icon: '🏋️', title: '3 Coached Sessions', desc: 'Every week, tailored to your cycle' },
+                  { icon: '👥', title: 'Coach Access', desc: 'Direct messaging and form checks' },
+                  { icon: '🥗', title: 'Cycle-Synced Nutrition', desc: 'Personalized guidance for every phase' }
+                ].map((feature, idx) => (
                   <motion.div
                     key={idx}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: 0.1 + idx * 0.05 }}
-                    className="flex gap-3 items-start"
+                    className="flex gap-4 items-start bg-white rounded-xl p-4 border border-warm-sand-beige/30"
                   >
-                    <div className="flex-shrink-0 mt-1 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
-                      <span className="text-white text-sm font-bold">✓</span>
+                    <div className="text-3xl flex-shrink-0">{feature.icon}</div>
+                    <div className="flex-1">
+                      <p className="font-paragraph font-semibold text-base text-primary-text">{feature.title}</p>
+                      <p className="font-paragraph text-sm text-secondary-text">{feature.desc}</p>
                     </div>
-                    <p className="font-paragraph text-lg text-primary-text">{benefit}</p>
                   </motion.div>
                 ))}
               </div>
-
-              {/* Life Stage Support */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                <p className="font-paragraph text-base text-secondary-text">
-                  <span className="font-semibold text-primary">Support for:</span> Pre & postnatal · Perimenopause · Menopause
-                </p>
-              </motion.div>
 
               {/* CTAs */}
               <motion.div
@@ -248,7 +228,7 @@ export default function InstagramLandingPage() {
                 className="flex gap-4 pt-4"
               >
                 <button className="bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-lg">
-                  Start Your Training Journey
+                  Start Your Journey
                 </button>
                 <button
                   onClick={() => setShowChatModal(true)}
@@ -257,85 +237,54 @@ export default function InstagramLandingPage() {
                   Book a Free Chat
                 </button>
               </motion.div>
-
-              {/* Trust Statement */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-              >
-                <p className="font-paragraph text-sm text-secondary-text">
-                  Training + coaching + nutrition, all in one app.
-                </p>
-              </motion.div>
             </motion.div>
 
-            {/* Right: Hero Image + App Mockup */}
+            {/* Right: Hero Image + Side Card (1 column) */}
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative"
+              className="relative space-y-4"
             >
               {/* Hero Image */}
-              <div className="rounded-3xl overflow-hidden bg-warm-sand-beige/30 aspect-square mb-8">
+              <div className="rounded-2xl overflow-hidden bg-warm-sand-beige/30 aspect-square">
                 <Image
                   src="https://static.wixstatic.com/media/93e866_95263f3d8ac746e1a81e9e9674336a9c~mv2.png?originWidth=1152&originHeight=640"
-                  alt="Strong woman training in light-filled environment"
-                  width={600}
-                  height={600}
+                  alt="Strong woman training with confidence"
+                  width={400}
+                  height={400}
                   className="w-full h-full object-cover"
                 />
               </div>
 
-              {/* App Mockup - Overlapping */}
-              <div className="absolute -bottom-12 -right-8 w-72 h-auto">
-                <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-gray-900">
-                  {/* Phone Status Bar */}
-                  <div className="bg-gray-900 text-white px-4 py-2 text-xs flex justify-between items-center">
-                    <span>9:41</span>
-                    <div className="flex gap-1">
-                      <span>📶</span>
-                      <span>🔋</span>
-                    </div>
-                  </div>
-
-                  {/* App Content */}
-                  <div className="bg-gradient-to-b from-primary/10 to-white p-5 space-y-4">
-                    {/* Cycle Phase */}
-                    <div className="bg-white rounded-2xl p-4 border border-warm-sand-beige/30">
-                      <p className="font-paragraph text-xs text-secondary-text mb-1">Today's Phase</p>
-                      <p className="font-heading text-lg text-primary">Ovulation</p>
-                      <p className="font-paragraph text-xs text-secondary-text">Peak energy day</p>
-                    </div>
-
-                    {/* Today's Workout */}
-                    <div className="bg-primary/5 rounded-2xl p-4 border border-primary/20">
-                      <p className="font-paragraph text-xs text-secondary-text mb-2">Today's Workout</p>
-                      <p className="font-heading text-base text-primary mb-1">Strength: Lower Body</p>
-                      <p className="font-paragraph text-xs text-secondary-text">45 minutes</p>
-                    </div>
-
-                    {/* Check-in */}
-                    <div className="bg-white rounded-2xl p-4 border border-warm-sand-beige/30">
-                      <p className="font-paragraph text-xs text-secondary-text mb-2">How are you feeling?</p>
-                      <div className="flex gap-2 justify-between">
-                        {['😴', '😐', '💪'].map((emoji, idx) => (
-                          <button key={idx} className="flex-1 py-2 rounded-lg hover:bg-warm-sand-beige/20 transition text-lg">
-                            {emoji}
-                          </button>
-                        ))}
+              {/* Side Info Card */}
+              <div className="bg-white rounded-2xl p-5 border border-warm-sand-beige/30 space-y-4">
+                <div className="space-y-2">
+                  <p className="font-paragraph text-xs uppercase tracking-wider text-primary font-semibold">Follicle Phase</p>
+                  <p className="font-heading text-lg text-primary">Cycle Synced</p>
+                  <p className="font-paragraph text-sm text-secondary-text">Your body. Your strength.</p>
+                </div>
+                
+                {/* Cycle Indicators */}
+                <div className="space-y-3 pt-2">
+                  {[
+                    { label: 'Energy', value: 85 },
+                    { label: 'Strength', value: 90 },
+                    { label: 'Recovery', value: 70 }
+                  ].map((indicator, idx) => (
+                    <div key={idx} className="space-y-1">
+                      <div className="flex justify-between items-center">
+                        <p className="font-paragraph text-xs text-secondary-text">{indicator.label}</p>
+                        <p className="font-paragraph text-xs font-semibold text-primary">{indicator.value}%</p>
+                      </div>
+                      <div className="w-full bg-warm-sand-beige/20 rounded-full h-2">
+                        <div 
+                          className="bg-primary rounded-full h-2 transition-all" 
+                          style={{ width: `${indicator.value}%` }}
+                        />
                       </div>
                     </div>
-
-                    {/* Coach Message */}
-                    <div className="bg-primary/10 rounded-2xl p-3 border-l-4 border-primary">
-                      <p className="font-paragraph text-xs text-secondary-text mb-1">Coach Message</p>
-                      <p className="font-paragraph text-xs text-primary-text leading-relaxed">
-                        "Great energy today! Push hard on these lifts. 💪"
-                      </p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </motion.div>
