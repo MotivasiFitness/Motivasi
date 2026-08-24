@@ -33,274 +33,165 @@ export default function InstagramLandingPage() {
 
       </nav>
       {/* Hero Section - Mobile First */}
-      <section className="pt-20 pb-12 sm:pt-32 sm:pb-24 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-[100rem] mx-auto">
-          {/* Mobile Layout - Stacked Vertically */}
-          <div className="lg:hidden space-y-6 flex flex-col">
-            {/* Headline - IMMEDIATELY VISIBLE */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <h1 className="font-heading text-4xl sm:text-5xl text-primary leading-tight mb-2">
-                Train in sync.
-              </h1>
-              <p className="font-paragraph text-lg sm:text-xl text-primary italic font-light mb-4">
-                Feel your strongest.
-              </p>
-              <p className="font-paragraph text-sm sm:text-base text-secondary-text leading-relaxed">
-                A woman's training and nutrition program that adapts to your cycle, your symptoms and your stage of life.
-              </p>
-            </motion.div>
-
-            {/* Features with Icons - Compact */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="space-y-3 bg-warm-cream rounded-2xl p-4 border border-warm-sand-beige/30"
-            >
-              {[
-                { icon: '🏋️', title: '3 Coached Sessions', desc: 'Every week' },
-                { icon: '👥', title: 'Coach Access', desc: 'Direct messaging' },
-                { icon: '🥗', title: 'Cycle-Synced Nutrition', desc: 'Personalized guidance' }
-              ].map((feature, idx) => (
-                <div key={idx} className="flex gap-3 items-start">
-                  <div className="text-2xl flex-shrink-0">{feature.icon}</div>
-                  <div className="flex-1">
-                    <p className="font-paragraph font-semibold text-sm text-primary-text">{feature.title}</p>
-                    <p className="font-paragraph text-xs text-secondary-text">{feature.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-
-            {/* Primary CTA - FULL WIDTH, 44px+ */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="pt-2"
-            >
-              <button className="w-full bg-primary text-white px-6 py-3.5 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-sm sm:text-base h-11 sm:h-12 flex items-center justify-center">
-                Start Your Journey
-              </button>
-            </motion.div>
-
-            {/* Secondary CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.25 }}
-            >
-              <button
-                onClick={() => setShowChatModal(true)}
-                className="w-full border-2 border-primary text-primary px-6 py-3 rounded-full font-paragraph font-semibold hover:bg-primary/5 transition text-sm sm:text-base h-11 flex items-center justify-center"
-              >
-                Book a Free Chat
-              </button>
-            </motion.div>
-
-            {/* Mobile App Mockup - LARGE & READABLE */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.45 }}
-              className="pt-2"
-            >
-              <div className="mx-auto w-72 h-auto">
-                <div className="bg-white rounded-3xl shadow-lg overflow-hidden border-8 border-gray-900">
-                  {/* Phone Status Bar */}
-                  <div className="bg-gray-900 text-white px-4 py-2 text-xs flex justify-between items-center">
-                    <span>9:41</span>
-                    <div className="flex gap-1">
-                      <span>📶</span>
-                      <span>🔋</span>
-                    </div>
-                  </div>
-
-                  {/* App Content */}
-                  <div className="bg-gradient-to-b from-primary/10 to-white p-4 space-y-4">
-                    {/* Cycle Phase */}
-                    <div className="bg-warm-cream rounded-2xl p-4 border border-warm-sand-beige/30">
-                      <p className="font-paragraph text-xs text-secondary-text mb-1">Today's Phase</p>
-                      <p className="font-heading text-lg text-primary">Ovulation</p>
-                      <p className="font-paragraph text-xs text-secondary-text">Peak energy day</p>
-                    </div>
-
-                    {/* Today's Workout */}
-                    <div className="bg-primary/5 rounded-2xl p-4 border border-primary/20">
-                      <p className="font-paragraph text-xs text-secondary-text mb-2">Today's Workout</p>
-                      <p className="font-heading text-base text-primary mb-1">Strength: Lower Body</p>
-                      <p className="font-paragraph text-xs text-secondary-text">45 minutes</p>
-                    </div>
-
-                    {/* Check-in */}
-                    <div className="bg-warm-cream rounded-2xl p-4 border border-warm-sand-beige/30">
-                      <p className="font-paragraph text-xs text-secondary-text mb-2">How are you feeling?</p>
-                      <div className="flex gap-2 justify-between">
-                        {['😴', '😐', '💪'].map((emoji, idx) => (
-                          <button key={idx} className="flex-1 py-2 rounded-lg hover:bg-warm-sand-beige/20 transition text-lg">
-                            {emoji}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Coach Message */}
-                    <div className="bg-primary/10 rounded-2xl p-3 border-l-4 border-primary">
-                      <p className="font-paragraph text-xs text-secondary-text mb-1">Coach Message</p>
-                      <p className="font-paragraph text-xs text-primary-text leading-relaxed">
-                        "Great energy today! Push hard on these lifts. 💪"
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Desktop Layout - Two Column with Image Right */}
-          <div className="hidden lg:grid grid-cols-2 gap-12 items-center">
-            {/* Left: Content */}
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="space-y-8"
-            >
-              {/* Headline with Badge */}
-              <div className="space-y-4">
-                <div className="flex items-start gap-6">
-                  <h1 className="font-heading text-6xl xl:text-7xl text-primary leading-tight">
+      <section className="pt-24 pb-12 sm:pt-32 sm:pb-24 px-6 md:px-12 bg-gradient-to-br from-warm-sand-beige/30 to-white relative overflow-hidden">
+            <div className="absolute inset-0 z-0 opacity-20 overflow-hidden"><div className="absolute -top-1/4 -left-1/4 w-96 h-96 bg-primary/10 rounded-full mix-blend-multiply filter blur-3xl animate-blob" /><div className="absolute top-1/2 right-0 w-80 h-80 bg-warm-bronze/10 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000" /><div className="absolute bottom-0 left-1/2 w-72 h-72 bg-emerald-green/10 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000" /></div>
+            <div className="max-w-[100rem] mx-auto relative z-10">
+              <div className="lg:hidden flex flex-col space-y-8">
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+                  <h1 className="font-heading text-5xl sm:text-6xl text-primary leading-tight mb-3">
                     Train in sync.
                   </h1>
-
-                </div>
-                <p className="font-paragraph text-2xl text-primary italic font-light">
-                  Feel your strongest.
-                </p>
-                <p className="font-paragraph text-lg text-secondary-text leading-relaxed max-w-lg">
-                  A woman's training and nutrition program that adapts to your cycle, your symptoms and your stage of life.
-                </p>
-              </div>
-
-              {/* Features Grid - 2x2 */}
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { icon: '🏋️', title: "Personalised Sessions", desc: '3 per week, tailored to your cycle' },
-                  { icon: '👥', title: "Coach Access", desc: 'Direct messaging & form checks' },
-                  { icon: '🥗', title: "Nutrition Guidance", desc: "Cycle-synced strategies" },
-                  { icon: '📱', title: "All-in-One App", desc: 'Workouts, tracking, coaching' }
-                ].map((feature, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.1 + idx * 0.05 }}
-                    className="flex gap-3 items-start bg-warm-cream rounded-xl p-4 border border-warm-sand-beige/30 hover:border-primary/20 transition"
-                  >
-                    <div className="text-3xl flex-shrink-0">{feature.icon}</div>
-                    <div className="flex-1">
-                      <p className="font-paragraph font-semibold text-sm text-primary-text">{feature.title}</p>
-                      <p className="font-paragraph text-xs text-secondary-text">{feature.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* CTAs */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.4 }}
-                className="flex gap-4 pt-4"
-              >
-                <button className="bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-lg h-12 flex items-center justify-center">
-                  Start Your Journey
-                </button>
-                <button
-                  onClick={() => setShowChatModal(true)}
-                  className="border-2 border-primary text-primary px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/5 transition text-lg h-12 flex items-center justify-center"
-                >
-                  Book a Free Chat
-                </button>
-              </motion.div>
-            </motion.div>
-
-            {/* Right: Hero Image + Phone Mockup */}
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative"
-            >
-              {/* Hero Image - Woman */}
-              <div className="rounded-3xl overflow-hidden bg-warm-sand-beige/30 aspect-square mb-6 shadow-lg">
-                <Image
-                  src="https://static.wixstatic.com/media/93e866_95263f3d8ac746e1a81e9e9674336a9c~mv2.png?originWidth=1152&originHeight=640"
-                  alt="Strong woman training with confidence"
-                  width={500}
-                  height={500}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* Phone Mockup - Positioned Overlay */}
-              <div className="absolute -bottom-12 -right-8 w-56 h-auto">
-                <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-gray-900">
-                  {/* Phone Status Bar */}
-                  <div className="bg-gray-900 text-white px-3 py-1.5 text-xs flex justify-between items-center">
-                    <span>9:41</span>
-                    <div className="flex gap-0.5">
-                      <span>📶</span>
-                      <span>🔋</span>
-                    </div>
-                  </div>
-
-                  {/* App Content */}
-                  <div className="bg-gradient-to-b from-primary/10 to-white p-3 space-y-3">
-                    {/* Cycle Phase */}
-                    <div className="bg-white rounded-xl p-3 border border-warm-sand-beige/30">
-                      <p className="font-paragraph text-xs text-secondary-text mb-0.5">Today's Phase</p>
-                      <p className="font-heading text-sm text-primary">Ovulation</p>
-                      <p className="font-paragraph text-xs text-secondary-text">Peak energy day</p>
-                    </div>
-
-                    {/* Today's Workout */}
-                    <div className="bg-primary/5 rounded-xl p-3 border border-primary/20">
-                      <p className="font-paragraph text-xs text-secondary-text mb-1">Today's Workout</p>
-                      <p className="font-heading text-sm text-primary mb-0.5">Strength: Lower Body</p>
-                      <p className="font-paragraph text-xs text-secondary-text">45 minutes</p>
-                    </div>
-
-                    {/* Check-in */}
-                    <div className="bg-white rounded-xl p-3 border border-warm-sand-beige/30">
-                      <p className="font-paragraph text-xs text-secondary-text mb-1.5">How are you feeling?</p>
-                      <div className="flex gap-1.5 justify-between">
-                        {['😴', '😐', '💪'].map((emoji, idx) => (
-                          <button key={idx} className="flex-1 py-1.5 rounded-lg hover:bg-warm-sand-beige/20 transition text-base">
-                            {emoji}
-                          </button>
-                        ))}
+                  <p className="font-paragraph text-xl sm:text-2xl text-primary italic font-light mb-5">
+                    Feel your strongest.
+                  </p>
+                  <p className="font-paragraph text-base sm:text-lg text-secondary-text leading-relaxed">
+                    A woman's training and nutrition program that adapts to your cycle, your symptoms and your stage of life.
+                  </p>
+                </motion.div>
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-warm-cream/70 backdrop-blur-sm rounded-3xl p-6 border border-warm-sand-beige/40">
+                  {[ { icon: '🏋️', title: '3 Coached Sessions', desc: 'Every week' }, { icon: '👥', title: 'Coach Access', desc: 'Direct messaging' }, { icon: '🥗', title: 'Cycle-Synced Nutrition', desc: 'Personalized guidance' } ].map((feature, idx) => (
+                    <div key={idx} className="flex gap-4 items-start">
+                      <div className="text-3xl flex-shrink-0 bg-primary/10 rounded-full p-2">{feature.icon}</div>
+                      <div className="flex-1">
+                        <p className="font-paragraph font-semibold text-base text-primary-text">{feature.title}</p>
+                        <p className="font-paragraph text-sm text-secondary-text">{feature.desc}</p>
                       </div>
                     </div>
-
-                    {/* Coach Message */}
-                    <div className="bg-primary/10 rounded-xl p-2.5 border-l-4 border-primary">
-                      <p className="font-paragraph text-xs text-secondary-text mb-0.5">Coach Message</p>
-                      <p className="font-paragraph text-xs text-primary-text leading-relaxed">
-                        "Great energy! Push hard. 💪"
-                      </p>
+                  ))}
+                </motion.div>
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="pt-4 flex flex-col sm:flex-row gap-4">
+                  <button className="flex-1 bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-base sm:text-lg h-12 flex items-center justify-center shadow-lg hover:shadow-xl">
+                    Start Your Journey
+                  </button>
+                  <button onClick={() => setShowChatModal(true)} className="flex-1 border-2 border-primary text-primary px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/5 transition text-base sm:text-lg h-12 flex items-center justify-center">
+                    Book a Free Chat
+                  </button>
+                </motion.div>
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.45 }} className="pt-6">
+                  <div className="mx-auto w-full max-w-sm">
+                    <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-gray-900 transform rotate-3 scale-95">
+                      <div className="bg-gray-900 text-white px-4 py-2 text-xs flex justify-between items-center">
+                        <span>9:41</span>
+                        <div className="flex gap-1">
+                          <span>📶</span>
+                          <span>🔋</span>
+                        </div>
+                      </div>
+                      <div className="bg-gradient-to-b from-primary/10 to-white p-4 space-y-4">
+                        <div className="bg-warm-cream rounded-2xl p-4 border border-warm-sand-beige/30">
+                          <p className="font-paragraph text-xs text-secondary-text mb-1">Today's Phase</p>
+                          <p className="font-heading text-lg text-primary">Ovulation</p>
+                          <p className="font-paragraph text-xs text-secondary-text">Peak energy day</p>
+                        </div>
+                        <div className="bg-primary/5 rounded-2xl p-4 border border-primary/20">
+                          <p className="font-paragraph text-xs text-secondary-text mb-2">Today's Workout</p>
+                          <p className="font-heading text-base text-primary mb-1">Strength: Lower Body</p>
+                          <p className="font-paragraph text-xs text-secondary-text">45 minutes</p>
+                        </div>
+                        <div className="bg-warm-cream rounded-2xl p-4 border border-warm-sand-beige/30">
+                          <p className="font-paragraph text-xs text-secondary-text mb-2">How are you feeling?</p>
+                          <div className="flex gap-2 justify-between">
+                            {[ '😴', '😐', '💪' ].map((emoji, idx) => (
+                              <button key={idx} className="flex-1 py-2 rounded-lg hover:bg-warm-sand-beige/20 transition text-lg">
+                                {emoji}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="bg-primary/10 rounded-2xl p-3 border-l-4 border-primary">
+                          <p className="font-paragraph text-xs text-secondary-text mb-1">Coach Message</p>
+                          <p className="font-paragraph text-xs text-primary-text leading-relaxed">
+                            "Great energy today! Push hard on these lifts. 💪"
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+              <div className="hidden lg:grid grid-cols-12 gap-10 items-center">
+                <motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="col-span-6 space-y-8 pr-8">
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-6">
+                      <h1 className="font-heading text-6xl xl:text-7xl text-primary leading-tight">
+                        Train in sync.
+                      </h1>
+                    </div>
+                    <p className="font-paragraph text-2xl text-primary italic font-light">
+                      Feel your strongest.
+                    </p>
+                    <p className="font-paragraph text-lg text-secondary-text leading-relaxed max-w-lg">
+                      A woman's training and nutrition program that adapts to your cycle, your symptoms and your stage of life.
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-6">
+                    {[ { icon: '🏋️', title: "Personalised Sessions", desc: '3 per week, tailored to your cycle' }, { icon: '👥', title: "Coach Access", desc: 'Direct messaging & form checks' }, { icon: '🥗', title: "Nutrition Guidance", desc: "Cycle-synced strategies" }, { icon: '📱', title: "All-in-One App", desc: 'Workouts, tracking, coaching' } ].map((feature, idx) => (
+                      <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 + idx * 0.05 }} className="flex gap-4 items-start bg-warm-cream/70 backdrop-blur-sm rounded-xl p-5 border border-warm-sand-beige/40 hover:border-primary/20 transition group">
+                        <div className="text-3xl flex-shrink-0 bg-primary/10 rounded-full p-2 group-hover:scale-110 transition-transform duration-300">{feature.icon}</div>
+                        <div className="flex-1">
+                          <p className="font-paragraph font-semibold text-base text-primary-text">{feature.title}</p>
+                          <p className="font-paragraph text-sm text-secondary-text">{feature.desc}</p>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.4 }} className="flex gap-4 pt-4">
+                    <button className="bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-lg h-12 flex items-center justify-center shadow-lg hover:shadow-xl">
+                      Start Your Journey
+                    </button>
+                    <button onClick={() => setShowChatModal(true)} className="border-2 border-primary text-primary px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/5 transition text-lg h-12 flex items-center justify-center">
+                      Book a Free Chat
+                    </button>
+                  </motion.div>
+                </motion.div>
+                <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="col-span-6 relative flex justify-center items-center h-[600px] xl:h-[700px]">
+                  <div className="absolute inset-0 bg-warm-sand-beige/50 rounded-full blur-3xl opacity-60" />
+                  <div className="absolute w-full h-full rounded-3xl overflow-hidden shadow-2xl rotate-[-5deg] translate-x-4 translate-y-4 bg-warm-sand-beige/30 transition-transform duration-500 hover:rotate-0 hover:translate-x-0 hover:translate-y-0">
+
+                  </div>
+                  <div className="absolute -bottom-10 -left-10 w-64 h-auto z-20">
+                    <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-gray-900 transform rotate-[10deg] scale-105 transition-transform duration-500 hover:rotate-0 hover:scale-100">
+                      <div className="bg-gray-900 text-white px-3 py-1.5 text-xs flex justify-between items-center">
+                        <span>9:41</span>
+                        <div className="flex gap-0.5">
+                          <span>📶</span>
+                          <span>🔋</span>
+                        </div>
+                      </div>
+                      <div className="bg-gradient-to-b from-primary/10 to-white p-3 space-y-3">
+                        <div className="bg-white rounded-xl p-3 border border-warm-sand-beige/30">
+                          <p className="font-paragraph text-xs text-secondary-text mb-0.5">Today's Phase</p>
+                          <p className="font-heading text-sm text-primary">Ovulation</p>
+                          <p className="font-paragraph text-xs text-secondary-text">Peak energy day</p>
+                        </div>
+                        <div className="bg-primary/5 rounded-xl p-3 border border-primary/20">
+                          <p className="font-paragraph text-xs text-secondary-text mb-1">Today's Workout</p>
+                          <p className="font-heading text-sm text-primary mb-0.5">Strength: Lower Body</p>
+                          <p className="font-paragraph text-xs text-secondary-text">45 minutes</p>
+                        </div>
+                        <div className="bg-white rounded-xl p-3 border border-warm-sand-beige/30">
+                          <p className="font-paragraph text-xs text-secondary-text mb-1.5">How are you feeling?</p>
+                          <div className="flex gap-1.5 justify-between">
+                            {[ '😴', '😐', '💪' ].map((emoji, idx) => (
+                              <button key={idx} className="flex-1 py-1.5 rounded-lg hover:bg-warm-sand-beige/20 transition text-base">
+                                {emoji}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="bg-primary/10 rounded-xl p-2.5 border-l-4 border-primary">
+                          <p className="font-paragraph text-xs text-secondary-text mb-0.5">Coach Message</p>
+                          <p className="font-paragraph text-xs text-primary-text leading-relaxed">
+                            "Great energy! Push hard. 💪"
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </section>
       {/* SECTION 2: Why This Is Different - Problem/Solution */}
       <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-[100rem] mx-auto">
@@ -739,7 +630,6 @@ export default function InstagramLandingPage() {
         </div>
       </section>
       {/* How It Works - Premium Editorial Layout */}
-
       {/* Life-Stage Support */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-off-white">
         <div className="max-w-[100rem] mx-auto">
