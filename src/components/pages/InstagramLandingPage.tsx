@@ -980,7 +980,7 @@ export default function InstagramLandingPage() {
             >
               <div className="rounded-3xl overflow-hidden bg-warm-sand-beige/30 aspect-square shadow-lg">
                 <Image
-                  src="https://static.wixstatic.com/media/93e866_1877ca55f0044548b3d25015011e811a~mv2.png?originWidth=448&originHeight=448"
+                  src="https://static.wixstatic.com/media/93e866_76f00dd13fe8436fafb689ddae881504~mv2.png"
                   alt="Women's Health Coach - Professional portrait"
                   width={600}
                   height={600}
