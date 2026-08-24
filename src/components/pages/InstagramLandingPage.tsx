@@ -302,7 +302,7 @@ export default function InstagramLandingPage() {
         </div>
       </section>
       {/* SECTION 2: Why This Is Different - Problem/Solution */}
-      <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
+      <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-[100rem] mx-auto">
           {/* Headline - Left Aligned */}
           <motion.div {...fadeInUp} className="mb-12 sm:mb-16 max-w-2xl">
@@ -397,7 +397,7 @@ export default function InstagramLandingPage() {
         </div>
       </section>
       {/* Four Cycle Phases - Premium Section - Mobile Optimized */}
-      <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
+      <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-[100rem] mx-auto">
           {/* Headline and Supporting Text */}
           <motion.div {...fadeInUp} className="text-center mb-8 sm:mb-16">
@@ -638,7 +638,7 @@ export default function InstagramLandingPage() {
         </div>
       </section>
       {/* Train. Recover. Fuel. Section */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-[100rem] mx-auto">
           {/* Headline and Supporting Text */}
           <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-20">
@@ -1052,7 +1052,7 @@ export default function InstagramLandingPage() {
         </div>
       </section>
       {/* Premium Founder/Coach Section */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-[100rem] mx-auto">
           {/* Headline */}
           <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-16">
@@ -1148,7 +1148,7 @@ export default function InstagramLandingPage() {
         </div>
       </section>
       {/* Social Proof */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-[100rem] mx-auto">
           <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-16">
             <h2 className="font-heading text-4xl sm:text-5xl text-primary mb-4">What Women Are Saying</h2>
