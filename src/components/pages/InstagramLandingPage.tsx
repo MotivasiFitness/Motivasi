@@ -1002,9 +1002,7 @@ export default function InstagramLandingPage() {
                   <h2 className="font-heading text-4xl sm:text-5xl text-primary leading-tight mb-4">
                     Fuel your performance
                   </h2>
-                  <p className="font-paragraph text-lg text-secondary-text leading-relaxed">
-                    Personalized nutrition strategies from a Level 4 qualified coach, designed to support your goals without restrictive dieting.
-                  </p>
+                  <p className="font-paragraph text-lg text-secondary-text leading-relaxed">Personalised nutrition guidance from a Level 4 qualified coach, designed to support your goals.</p>
                 </div>
 
                 <ul className="space-y-3 pt-4">
