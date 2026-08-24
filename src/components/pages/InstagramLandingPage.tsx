@@ -1282,104 +1282,27 @@ export default function InstagramLandingPage() {
           </div>
         </div>
       </section>
-      {/* Premium Editorial CTA Section */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-[#8B5A6E] to-[#9B6A7E] text-white overflow-hidden">
-        <div className="max-w-[100rem] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Left Content */}
-            <motion.div {...fadeInUp} className="space-y-6 lg:space-y-8">
-              {/* Tagline */}
-              <div className="space-y-2">
-                <p className="font-paragraph text-sm sm:text-base tracking-widest uppercase opacity-90">Your cycle. Your strength.</p>
-                <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl leading-tight">
-                  Your time.
-                </h2>
-              </div>
-
-              {/* Description */}
-              <p className="font-paragraph text-base sm:text-lg opacity-95 max-w-xl leading-relaxed">
-                Train in sync with your body. Get the support every phase deserves.
-              </p>
-
-              {/* Features Grid */}
-              <div className="grid grid-cols-2 gap-6 sm:gap-8 pt-4">
-                {[
-                  { icon: Dumbbell, label: 'Train with purpose' },
-                  { icon: Heart, label: 'Feel your strength' },
-                  { icon: Calendar, label: 'Support every phase' },
-                  { icon: Zap, label: 'Become your strongest self' }
-                ].map((feature, idx) => {
-                  const IconComponent = feature.icon;
-                  return (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, y: 8 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: idx * 0.1 }}
-                      viewport={{ once: true }}
-                      className="flex flex-col items-start gap-3"
-                    >
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 flex items-center justify-center">
-                        <IconComponent className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                      </div>
-                      <p className="font-paragraph text-xs sm:text-sm font-medium leading-snug">
-                        {feature.label}
-                      </p>
-                    </motion.div>
-                  );
-                })}
-              </div>
-
-              {/* CTA Button */}
-              <div className="pt-4">
-                <button className="bg-white text-[#8B5A6E] px-6 sm:px-8 py-3 sm:py-4 rounded-full font-paragraph font-semibold hover:bg-warm-cream transition duration-300 text-sm sm:text-base inline-flex items-center gap-2">
-                  Edit Your Journey
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-            </motion.div>
-
-            {/* Right Image - Mobile Phone Mockup */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, ease: 'easeOut' }}
-              viewport={{ once: true }}
-              className="relative flex justify-center lg:justify-end"
-            >
-              {/* Phone Frame */}
-              <div className="relative w-full max-w-xs">
-                {/* Decorative Background Circle */}
-                <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-
-                {/* Phone Mockup */}
-                <div className="relative bg-black rounded-3xl p-2 shadow-2xl">
-                  {/* Notch */}
-                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-b-2xl z-20"></div>
-
-                  {/* Screen */}
-                  <div className="bg-white rounded-2xl overflow-hidden aspect-[9/19.5]">
-                    <Image
-                      src="https://static.wixstatic.com/media/93e866_9419c80a623a460e8a14e931f4008fde~mv2.png?originWidth=256&originHeight=576"
-                      alt="Cycle Synced App Interface"
-                      width={300}
-                      height={600}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
-
-                {/* Decorative Arrow */}
-                <motion.div
-                  animate={{ y: [0, 8, 0] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                  className="absolute -top-12 -right-6 text-white opacity-60"
-                >
-                  <ChevronDown className="w-6 h-6 rotate-180" />
-                </motion.div>
-              </div>
-            </motion.div>
-          </div>
+      {/* Premium Final CTA Section - Deep Burgundy */}
+      {/* Final CTA */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-primary text-white">
+        <div className="max-w-[100rem] mx-auto text-center">
+          <motion.div {...fadeInUp}>
+            <h2 className="font-heading text-4xl sm:text-5xl mb-6">Ready to Train With Your Body?</h2>
+            <p className="font-paragraph text-lg mb-8 max-w-2xl mx-auto opacity-95">
+              Start your training journey today. Get stronger, feel better, and finally understand how your body works.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button className="bg-white text-primary px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-off-white transition text-base sm:text-lg">
+                Start Your Training Journey
+              </button>
+              <button
+                onClick={() => setShowChatModal(true)}
+                className="border-2 border-white text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-white/10 transition text-base sm:text-lg"
+              >
+                Book a Free Chat
+              </button>
+            </div>
+          </motion.div>
         </div>
       </section>
       {/* Footer */}
