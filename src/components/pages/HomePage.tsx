@@ -866,47 +866,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      {/* --- Early CTA Section (Reduced Friction) --- */}
-      <section className="relative py-24 px-8 lg:px-24 overflow-hidden" style={{ background: 'linear-gradient(to right, #986A6C 95%, #986A6C)' }}>
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-80 h-80 bg-rose-blush rounded-full blur-3xl" />
-        </div>
-        
-        <div className="relative z-10 max-w-[100rem] mx-auto text-center">
-          <AnimatedElement>
-            <h2 className="font-heading text-4xl md:text-5xl font-bold text-white mb-6">
-              Find Your Perfect Programme
-            </h2>
-            <p className="text-lg text-white/90 mb-10 max-w-2xl mx-auto font-light">
-              Discover the coaching programme that's right for you. Take our quick quiz to get personalised recommendations tailored to your goals.
-            </p>
-            <motion.div
-              whileHover={{ scale: 1.08, y: -4 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 300, damping: 10 }}
-              className="inline-block"
-            >
-              <Link
-                to="/program-quiz"
-                className="inline-flex items-center gap-3 px-14 py-6 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-2xl relative overflow-hidden group"
-                style={{ backgroundColor: '#58355E' }}
-              >
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-500 -skew-x-12"></span>
-                <span className="relative flex items-center gap-3 text-white">
-                  Take the Quiz
-                  <motion.span
-                    animate={{ x: [0, 4, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  >
-                    <ArrowRight className="w-5 h-5" />
-                  </motion.span>
-                </span>
-              </Link>
-            </motion.div>
-          </AnimatedElement>
-        </div>
-      </section>
       {/* --- Testimonials Carousel Section --- */}
       {testimonials.length > 0 && (
         <section className="py-20 overflow-hidden bg-white">
