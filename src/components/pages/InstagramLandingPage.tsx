@@ -33,12 +33,10 @@ export default function InstagramLandingPage() {
         <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center">
           <div className="font-heading text-xl sm:text-2xl text-primary font-semibold">Cycle Synced</div>
           <div className="hidden sm:flex gap-8 text-sm font-paragraph text-primary-text">
-            <a href="#included" className="hover:text-primary transition">What's Included</a>
             <a href="#faq" className="hover:text-primary transition">FAQ</a>
           </div>
         </div>
       </nav>
-
       {/* Hero Section - Mobile First */}
       <section className="pt-20 pb-8 sm:pt-32 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-warm-cream">
         <div className="max-w-[100rem] mx-auto">
@@ -291,7 +289,6 @@ export default function InstagramLandingPage() {
           </div>
         </div>
       </section>
-
       {/* SECTION 2: Why This Is Different - Problem/Solution */}
       <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
         <div className="max-w-[100rem] mx-auto">
@@ -392,7 +389,6 @@ export default function InstagramLandingPage() {
           </motion.div>
         </div>
       </section>
-
       {/* Four Cycle Phases - Premium Section - Mobile Optimized */}
       <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
         <div className="max-w-[100rem] mx-auto">
@@ -634,7 +630,6 @@ export default function InstagramLandingPage() {
           </motion.div>
         </div>
       </section>
-
       {/* Train. Recover. Fuel. Section */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
         <div className="max-w-[100rem] mx-auto">
@@ -791,7 +786,6 @@ export default function InstagramLandingPage() {
           </motion.div>
         </div>
       </section>
-
       {/* How the App Works */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-off-white">
         <div className="max-w-[100rem] mx-auto">
@@ -852,48 +846,6 @@ export default function InstagramLandingPage() {
           </div>
         </div>
       </section>
-
-      {/* What's Included */}
-      <section id="included" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
-        <div className="max-w-[100rem] mx-auto">
-          <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-16">
-            <h2 className="font-heading text-4xl sm:text-5xl text-primary mb-4">What's Included</h2>
-            <p className="font-paragraph text-lg text-secondary-text max-w-2xl mx-auto">
-              Everything you need to get stronger, feel better, and understand your body.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-            {[
-              '3 coached training sessions per week',
-              'Cycle-synced training adjustments',
-              'Direct messaging with your coach',
-              'Level 4 nutrition guidance',
-              'Progress tracking dashboard',
-              'Recovery & wellbeing monitoring',
-              'Form check videos',
-              'Postpartum-specific programming',
-              'Perimenopause & menopause support',
-              'Ongoing plan adjustments',
-              'Community access',
-              'Monthly check-ins'
-            ].map((item, idx) => (
-              <motion.div
-                key={idx}
-                {...fadeInUp}
-                transition={{ ...fadeInUp.transition, delay: (idx % 6) * 0.05 }}
-                className="flex gap-4 items-start"
-              >
-                <div className="flex-shrink-0 mt-1">
-                  <Check className="w-6 h-6 text-emerald-green" />
-                </div>
-                <p className="font-paragraph text-lg text-primary-text">{item}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Life-Stage Support */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-off-white">
         <div className="max-w-[100rem] mx-auto">
@@ -939,7 +891,6 @@ export default function InstagramLandingPage() {
           </div>
         </div>
       </section>
-
       {/* Training + Nutrition */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
         <div className="max-w-[100rem] mx-auto">
@@ -1009,7 +960,6 @@ export default function InstagramLandingPage() {
           </div>
         </div>
       </section>
-
       {/* Premium Founder/Coach Section */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
         <div className="max-w-[100rem] mx-auto">
@@ -1106,7 +1056,6 @@ export default function InstagramLandingPage() {
           </motion.div>
         </div>
       </section>
-
       {/* Social Proof */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
         <div className="max-w-[100rem] mx-auto">
@@ -1163,7 +1112,6 @@ export default function InstagramLandingPage() {
           </div>
         </div>
       </section>
-
       {/* FAQ */}
       <section id="faq" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-off-white">
         <div className="max-w-[100rem] mx-auto">
@@ -1248,7 +1196,6 @@ export default function InstagramLandingPage() {
           </div>
         </div>
       </section>
-
       {/* Premium Final CTA Section - Deep Burgundy */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/95 via-primary to-primary/90 relative overflow-hidden">
         {/* Subtle background accent */}
@@ -1269,11 +1216,7 @@ export default function InstagramLandingPage() {
             >
               {/* Headline */}
               <div className="space-y-4">
-                <h2 className="font-heading text-5xl sm:text-6xl lg:text-7xl text-white leading-tight">
-                  Your cycle.<br />
-                  Your strength.<br />
-                  Your time.
-                </h2>
+
               </div>
 
               {/* Supporting Copy */}
@@ -1348,13 +1291,7 @@ export default function InstagramLandingPage() {
             >
               {/* Main Image */}
               <div className="rounded-3xl overflow-hidden bg-white/10 backdrop-blur-sm aspect-square shadow-2xl border border-white/20">
-                <Image
-                  src="https://static.wixstatic.com/media/93e866_95263f3d8ac746e1a81e9e9674336a9c~mv2.png?originWidth=1152&originHeight=640"
-                  alt="Confident woman training with strength and purpose"
-                  width={600}
-                  height={600}
-                  className="w-full h-full object-cover"
-                />
+
               </div>
 
               {/* Floating App Card */}
@@ -1404,7 +1341,6 @@ export default function InstagramLandingPage() {
           </div>
         </div>
       </section>
-
       {/* Final CTA */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-primary text-white">
         <div className="max-w-[100rem] mx-auto text-center">
@@ -1427,7 +1363,6 @@ export default function InstagramLandingPage() {
           </motion.div>
         </div>
       </section>
-
       {/* Footer */}
       <footer className="bg-charcoal-black text-white py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-[100rem] mx-auto">
@@ -1442,7 +1377,6 @@ export default function InstagramLandingPage() {
               <h4 className="font-paragraph font-semibold mb-4">Quick Links</h4>
               <ul className="space-y-2 font-paragraph text-sm text-gray-400">
                 <li><a href="#why-different" className="hover:text-white transition">Why Different</a></li>
-                <li><a href="#included" className="hover:text-white transition">What's Included</a></li>
                 <li><a href="#faq" className="hover:text-white transition">FAQ</a></li>
               </ul>
             </div>
@@ -1460,7 +1394,6 @@ export default function InstagramLandingPage() {
           </div>
         </div>
       </footer>
-
       {/* Sticky Mobile CTA - Premium Mobile App Experience */}
       <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-white border-t border-warm-sand-beige/30 p-3 z-40 space-y-2">
         <button className="w-full bg-primary text-white px-6 py-3 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-sm h-11 flex items-center justify-center">
@@ -1473,10 +1406,8 @@ export default function InstagramLandingPage() {
           Book a Free Chat
         </button>
       </div>
-      
       {/* Spacer for sticky CTA */}
       <div className="sm:hidden h-28" />
-
       {/* Chat Modal */}
       {showChatModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center p-4">
