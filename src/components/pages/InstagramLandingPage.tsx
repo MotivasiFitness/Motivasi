@@ -1268,48 +1268,63 @@ export default function InstagramLandingPage() {
       <section id="faq" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-off-white">
         <div className="max-w-[100rem] mx-auto">
           <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-16">
-            <h2 className="font-heading text-4xl sm:text-5xl text-primary mb-4">Frequently Asked Questions</h2>
+            <h2 className="font-heading text-4xl sm:text-5xl text-primary mb-4">Questions before you start?</h2>
+            <p className="font-paragraph text-lg text-secondary-text max-w-2xl mx-auto">
+              We've answered the most common questions to help you feel confident about your decision.
+            </p>
           </motion.div>
 
           <div className="max-w-3xl mx-auto space-y-4">
             {[
               {
-                q: 'Do I need to have a regular cycle for this to work?',
-                a: 'No. The method is flexible. If your cycle is irregular, we focus on your symptoms and energy levels instead of calendar dates. Perimenopause? We adapt. Postpartum? We adapt. The framework works because we listen to your body, not a rigid schedule.'
+                q: 'Do I need gym equipment?',
+                a: 'Most sessions use basic equipment like dumbbells and resistance bands. We can modify everything for home or gym. We\'ll discuss your setup during your free chat so we can tailor the programme to what you have available.'
               },
               {
-                q: 'How much time do I need to commit?',
-                a: 'Three coached sessions per week, typically 45-60 minutes each. That\'s it. No extra "homework" workouts. Quality over quantity. We focus on strength training that actually moves the needle.'
+                q: 'How long are the workouts?',
+                a: 'Three coached sessions per week, typically 45-60 minutes each. That\'s it. No extra "homework" workouts. We focus on quality strength training that actually moves the needle.'
               },
               {
-                q: 'Can I do this if I\'m postpartum?',
-                a: 'Yes. We have specific postpartum programming that respects your recovery, addresses pelvic floor health, and gradually rebuilds strength. We work with you, not against your body.'
+                q: 'How many sessions do I do each week?',
+                a: 'Three coached sessions per week. Each one is designed, coached, and adjustable. We prioritise consistency and sustainability over volume.'
               },
               {
-                q: 'What if I\'m in perimenopause or menopause?',
-                a: 'This is exactly when cycle-synced training becomes even more valuable. Your body is changing. We help you adapt your training to manage symptoms, maintain bone health, and stay strong.'
+                q: 'What if my cycle is irregular?',
+                a: 'That\'s completely okay. We focus on your symptoms and energy levels instead of calendar dates. Irregular cycles don\'t disqualify you—your body feedback becomes part of the plan.'
               },
               {
-                q: 'Do I need equipment?',
-                a: 'Most sessions use basic equipment (dumbbells, resistance bands). We can modify for home or gym. We\'ll discuss your setup during your free chat.'
+                q: 'Can I use the programme during perimenopause?',
+                a: 'Yes. This is exactly when cycle-synced training becomes even more valuable. Your body is changing. We help you adapt your training to manage symptoms, maintain bone health, and stay strong.'
               },
               {
-                q: 'How quickly will I see results?',
-                a: 'Strength gains typically appear within 4-6 weeks. But the real benefit is how you feel: more energy, better recovery, less frustration with your training. That often happens faster.'
+                q: 'Is this suitable for postpartum women?',
+                a: 'Yes. We have specific postpartum programming that respects your recovery, addresses pelvic floor health, and gradually rebuilds strength. We work with you, not against your body. Please discuss your timeline with your coach.'
               },
               {
-                q: 'What if I have an injury or limitation?',
-                a: 'Tell your coach. We modify. That\'s the whole point of having a real person coaching you. Your plan adapts to your body, not the other way around.'
+                q: 'Can I message my coach?',
+                a: 'Yes. Direct coach communication is part of the programme. Message anytime with questions, form checks, or adjustments. You\'re not training alone.'
               },
               {
-                q: 'Can I cancel anytime?',
-                a: 'Yes. No long-term contracts. Month-to-month flexibility. We want you here because you\'re getting value, not because you\'re locked in.'
+                q: 'Is nutrition included?',
+                a: 'Yes. You get Level 4 nutrition guidance integrated with your training plan. It\'s personalised, cycle-responsive, and designed to support your goals—not restrictive.'
+              },
+              {
+                q: 'What happens if I miss a session?',
+                a: 'Life happens. Your coach will help you catch up or adjust your plan. Missing one session doesn\'t derail your progress. We focus on consistency over perfection.'
+              },
+              {
+                q: 'Do I need to be fit before I start?',
+                a: 'No. We work with all fitness levels. Your coach will assess where you are and build from there. Strength training is for everyone, regardless of starting point.'
+              },
+              {
+                q: 'Is this medical advice?',
+                a: 'No. We provide training and nutrition guidance, not medical advice. If you have specific health concerns or medical conditions, please discuss them with your coach and healthcare provider. We\'ll work within any limitations you have.'
               }
             ].map((item, idx) => (
               <motion.div
                 key={idx}
                 {...fadeInUp}
-                transition={{ ...fadeInUp.transition, delay: (idx % 4) * 0.05 }}
+                transition={{ ...fadeInUp.transition, delay: (idx % 6) * 0.05 }}
                 className="bg-white rounded-2xl border border-warm-sand-beige/30 overflow-hidden"
               >
                 <button
@@ -1325,7 +1340,7 @@ export default function InstagramLandingPage() {
                 </button>
                 {expandedFaq === idx && (
                   <div className="px-8 pb-6 border-t border-warm-sand-beige/30">
-                    <p className="font-paragraph text-secondary-text">{item.a}</p>
+                    <p className="font-paragraph text-secondary-text leading-relaxed">{item.a}</p>
                   </div>
                 )}
               </motion.div>
