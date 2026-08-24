@@ -38,7 +38,7 @@ export default function InstagramLandingPage() {
         </div>
       </nav>
       {/* Hero Section - Mobile First */}
-      <section className="pt-20 pb-8 sm:pt-32 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-warm-cream">
+      <section className="pt-20 pb-12 sm:pt-32 sm:pb-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-warm-cream via-warm-cream to-warm-sand-beige">
         <div className="max-w-[100rem] mx-auto">
           {/* Mobile Layout - Stacked Vertically */}
           <div className="lg:hidden space-y-6 flex flex-col">
@@ -166,23 +166,23 @@ export default function InstagramLandingPage() {
             </motion.div>
           </div>
 
-          {/* Desktop Layout - Asymmetrical with Image Right */}
-          <div className="hidden lg:grid grid-cols-3 gap-8 items-start">
-            {/* Left: Content (2 columns) */}
+          {/* Desktop Layout - Two Column with Image Right */}
+          <div className="hidden lg:grid grid-cols-2 gap-12 items-center">
+            {/* Left: Content */}
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="col-span-2 space-y-8"
+              className="space-y-8"
             >
               {/* Headline with Badge */}
               <div className="space-y-4">
-                <div className="flex items-center gap-4">
+                <div className="flex items-start gap-6">
                   <h1 className="font-heading text-6xl xl:text-7xl text-primary leading-tight">
                     Train in sync.
                   </h1>
-                  <div className="w-20 h-20 rounded-full border-4 border-primary/20 flex items-center justify-center flex-shrink-0">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center text-2xl">
+                  <div className="w-24 h-24 rounded-full border-4 border-primary/20 flex items-center justify-center flex-shrink-0 mt-2">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center text-3xl">
                       🔄
                     </div>
                   </div>
@@ -195,24 +195,25 @@ export default function InstagramLandingPage() {
                 </p>
               </div>
 
-              {/* Features Grid */}
-              <div className="grid grid-cols-1 gap-4">
+              {/* Features Grid - 2x2 */}
+              <div className="grid grid-cols-2 gap-4">
                 {[
-                  { icon: '🏋️', title: "3 Personalised online program Sessions per a week", desc: 'Every week, tailored to your cycle' },
-                  { icon: '👥', title: "Coach Access via a dedicated app", desc: 'Direct messaging and form checks' },
-                  { icon: '🥗', title: "Cycle-Synced Nutrition guidance", desc: "Personalised guidance for every phase" }
+                  { icon: '🏋️', title: "Personalised Sessions", desc: '3 per week, tailored to your cycle' },
+                  { icon: '👥', title: "Coach Access", desc: 'Direct messaging & form checks' },
+                  { icon: '🥗', title: "Nutrition Guidance", desc: "Cycle-synced strategies" },
+                  { icon: '📱', title: "All-in-One App", desc: 'Workouts, tracking, coaching' }
                 ].map((feature, idx) => (
                   <motion.div
                     key={idx}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.1 + idx * 0.05 }}
-                    className="flex gap-4 items-start bg-white rounded-xl p-4 border border-warm-sand-beige/30"
+                    className="flex gap-3 items-start bg-white rounded-xl p-4 border border-warm-sand-beige/30 hover:border-primary/20 transition"
                   >
                     <div className="text-3xl flex-shrink-0">{feature.icon}</div>
                     <div className="flex-1">
-                      <p className="font-paragraph font-semibold text-base text-primary-text">{feature.title}</p>
-                      <p className="font-paragraph text-sm text-secondary-text">{feature.desc}</p>
+                      <p className="font-paragraph font-semibold text-sm text-primary-text">{feature.title}</p>
+                      <p className="font-paragraph text-xs text-secondary-text">{feature.desc}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -225,64 +226,84 @@ export default function InstagramLandingPage() {
                 transition={{ duration: 0.7, delay: 0.4 }}
                 className="flex gap-4 pt-4"
               >
-                <button className="bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-lg">
+                <button className="bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-lg h-12 flex items-center justify-center">
                   Start Your Journey
                 </button>
                 <button
                   onClick={() => setShowChatModal(true)}
-                  className="border-2 border-primary text-primary px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/5 transition text-lg"
+                  className="border-2 border-primary text-primary px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/5 transition text-lg h-12 flex items-center justify-center"
                 >
                   Book a Free Chat
                 </button>
               </motion.div>
             </motion.div>
 
-            {/* Right: Hero Image + Side Card (1 column) */}
+            {/* Right: Hero Image + Phone Mockup */}
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative space-y-4"
+              className="relative"
             >
-              {/* Hero Image */}
-              <div className="rounded-2xl overflow-hidden bg-warm-sand-beige/30 aspect-square">
+              {/* Hero Image - Woman */}
+              <div className="rounded-3xl overflow-hidden bg-warm-sand-beige/30 aspect-square mb-6 shadow-lg">
                 <Image
                   src="https://static.wixstatic.com/media/93e866_95263f3d8ac746e1a81e9e9674336a9c~mv2.png?originWidth=1152&originHeight=640"
                   alt="Strong woman training with confidence"
-                  width={400}
-                  height={400}
+                  width={500}
+                  height={500}
                   className="w-full h-full object-cover"
                 />
               </div>
 
-              {/* Side Info Card */}
-              <div className="bg-white rounded-2xl p-5 border border-warm-sand-beige/30 space-y-4">
-                <div className="space-y-2">
-                  <p className="font-paragraph text-xs uppercase tracking-wider text-primary font-semibold">Follicle Phase</p>
-                  <p className="font-heading text-lg text-primary">Cycle Synced</p>
-                  <p className="font-paragraph text-sm text-secondary-text">Your body. Your strength.</p>
-                </div>
-                
-                {/* Cycle Indicators */}
-                <div className="space-y-3 pt-2">
-                  {[
-                    { label: 'Energy', value: 85 },
-                    { label: 'Strength', value: 90 },
-                    { label: 'Recovery', value: 70 }
-                  ].map((indicator, idx) => (
-                    <div key={idx} className="space-y-1">
-                      <div className="flex justify-between items-center">
-                        <p className="font-paragraph text-xs text-secondary-text">{indicator.label}</p>
-                        <p className="font-paragraph text-xs font-semibold text-primary">{indicator.value}%</p>
-                      </div>
-                      <div className="w-full bg-warm-sand-beige/20 rounded-full h-2">
-                        <div 
-                          className="bg-primary rounded-full h-2 transition-all" 
-                          style={{ width: `${indicator.value}%` }}
-                        />
+              {/* Phone Mockup - Positioned Overlay */}
+              <div className="absolute -bottom-12 -right-8 w-56 h-auto">
+                <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-gray-900">
+                  {/* Phone Status Bar */}
+                  <div className="bg-gray-900 text-white px-3 py-1.5 text-xs flex justify-between items-center">
+                    <span>9:41</span>
+                    <div className="flex gap-0.5">
+                      <span>📶</span>
+                      <span>🔋</span>
+                    </div>
+                  </div>
+
+                  {/* App Content */}
+                  <div className="bg-gradient-to-b from-primary/10 to-white p-3 space-y-3">
+                    {/* Cycle Phase */}
+                    <div className="bg-white rounded-xl p-3 border border-warm-sand-beige/30">
+                      <p className="font-paragraph text-xs text-secondary-text mb-0.5">Today's Phase</p>
+                      <p className="font-heading text-sm text-primary">Ovulation</p>
+                      <p className="font-paragraph text-xs text-secondary-text">Peak energy day</p>
+                    </div>
+
+                    {/* Today's Workout */}
+                    <div className="bg-primary/5 rounded-xl p-3 border border-primary/20">
+                      <p className="font-paragraph text-xs text-secondary-text mb-1">Today's Workout</p>
+                      <p className="font-heading text-sm text-primary mb-0.5">Strength: Lower Body</p>
+                      <p className="font-paragraph text-xs text-secondary-text">45 minutes</p>
+                    </div>
+
+                    {/* Check-in */}
+                    <div className="bg-white rounded-xl p-3 border border-warm-sand-beige/30">
+                      <p className="font-paragraph text-xs text-secondary-text mb-1.5">How are you feeling?</p>
+                      <div className="flex gap-1.5 justify-between">
+                        {['😴', '😐', '💪'].map((emoji, idx) => (
+                          <button key={idx} className="flex-1 py-1.5 rounded-lg hover:bg-warm-sand-beige/20 transition text-base">
+                            {emoji}
+                          </button>
+                        ))}
                       </div>
                     </div>
-                  ))}
+
+                    {/* Coach Message */}
+                    <div className="bg-primary/10 rounded-xl p-2.5 border-l-4 border-primary">
+                      <p className="font-paragraph text-xs text-secondary-text mb-0.5">Coach Message</p>
+                      <p className="font-paragraph text-xs text-primary-text leading-relaxed">
+                        "Great energy! Push hard. 💪"
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
