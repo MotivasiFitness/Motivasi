@@ -72,6 +72,7 @@ const AdminDashboard = lazy(() => import('@/components/pages/AdminDashboard'));
 const ExerciseVideoReviewPage = lazy(() => import('@/components/pages/ExerciseVideoReviewPage'));
 const TrainerAssignmentMigration = lazy(() => import('@/components/pages/TrainerAssignmentMigration'));
 const WomensPARQForm = lazy(() => import('@/components/WomensPARQForm'));
+const InstagramLandingPage = lazy(() => import('@/components/pages/InstagramLandingPage'));
 
 // Main Layout with Header and Footer
 function SiteLayout() {
@@ -539,6 +540,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
             <WomensPARQForm />
+          </Suspense>
+        ),
+      },
+      {
+        path: "instagram-landing",
+        element: (
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+            <InstagramLandingPage />
           </Suspense>
         ),
       },
