@@ -680,8 +680,7 @@ export default function InstagramLandingPage() {
                 className={`relative overflow-hidden rounded-2xl border ${section.borderColor} bg-white p-8 sm:p-10 hover:border-primary/30 transition-all duration-300`}
               >
                 {/* Gradient accent background */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${section.accentColor} opacity-0 hover:opacity-100 transition-opacity duration-300`} />
-                
+
                 {/* Content */}
                 <div className="relative z-10 space-y-6">
                   {/* Title */}
