@@ -1077,21 +1077,7 @@ export default function InstagramLandingPage() {
             </motion.div>
           </div>
 
-          {/* Direct Communication Statement */}
-          <motion.div
-            {...fadeInUp}
-            transition={{ ...fadeInUp.transition, delay: 0.3 }}
-            className="max-w-3xl mx-auto"
-          >
-            <div className="bg-white border-2 border-primary/20 rounded-2xl p-8 sm:p-10 text-center">
-              <p className="font-paragraph text-lg sm:text-xl text-primary-text leading-relaxed">
-                <span className="font-semibold text-primary">Direct coach communication is part of the programme.</span>
-                <br className="hidden sm:block" />
-                <br className="hidden sm:block" />
-                Message anytime. Ask questions. Get support. You're not training alone.
-              </p>
-            </div>
-          </motion.div>
+
         </div>
       </section>
       {/* Social Proof */}
