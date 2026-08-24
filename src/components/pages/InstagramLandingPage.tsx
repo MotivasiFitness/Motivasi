@@ -10,9 +10,9 @@ export default function InstagramLandingPage() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
+    initial: { opacity: 0, y: 12 },
     whileInView: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 },
+    transition: { duration: 0.7, ease: 'easeOut' },
     viewport: { once: true, margin: '0px 0px -100px 0px' }
   };
 
