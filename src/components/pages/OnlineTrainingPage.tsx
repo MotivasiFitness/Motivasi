@@ -408,7 +408,7 @@ export default function OnlineTrainingPage() {
                     className="w-full"
                   >
                     <div className="group relative">
-                      <div className="h-full rounded-2xl p-8 md:p-12 shadow-lg hover:shadow-2xl transition-all duration-500 border-2 backdrop-blur-sm bg-soft-white border-warm-cream hover:border-warm-bronze/60">
+                      <div className="h-full rounded-2xl p-8 md:p-12 shadow-lg hover:shadow-2xl transition-all duration-500 border-2 backdrop-blur-sm bg-soft-white border-charcoal-black hover:border-charcoal-black/80">
                         {/* Decorative star background */}
                         <div className="absolute top-6 right-6 opacity-10 transition-opacity group-hover:opacity-20 text-rose-blush">
                           <Star size={40} fill="currentColor" />
