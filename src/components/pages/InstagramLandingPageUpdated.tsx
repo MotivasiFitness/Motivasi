@@ -501,64 +501,6 @@ export default function InstagramLandingPageUpdated() {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-24 px-6 lg:px-12 bg-gradient-to-br from-primary/95 via-primary to-primary/90 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl" />
-        </div>
-
-        <div className="max-w-[120rem] mx-auto relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="space-y-10"
-            >
-              <h2 className="font-heading text-7xl lg:text-8xl text-white leading-tight font-light">
-                Your cycle.<br />Your strength.<br />Your time.
-              </h2>
-
-              <p className="font-paragraph text-xl text-white/90 leading-relaxed max-w-lg font-light">
-                Stop forcing your body to fit the programme. Start training in a way that listens, adapts and supports you.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-6 pt-6">
-                <button className="bg-white text-primary px-10 py-4 rounded-full font-paragraph font-semibold hover:bg-off-white transition text-lg">
-                  Start Your Training Journey
-                </button>
-                <button
-                  onClick={() => setShowChatModal(true)}
-                  className="border-2 border-white text-white px-10 py-4 rounded-full font-paragraph font-semibold hover:bg-white/10 transition text-lg"
-                >
-                  Book a Free Chat
-                </button>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="rounded-3xl overflow-hidden bg-white/10 backdrop-blur-sm aspect-square shadow-2xl border border-white/20">
-                <Image
-                  src="https://static.wixstatic.com/media/93e866_95263f3d8ac746e1a81e9e9674336a9c~mv2.png?originWidth=1152&originHeight=640"
-                  alt="Confident woman training"
-                  width={700}
-                  height={700}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
       <footer className="bg-charcoal-black text-white py-16 px-6 lg:px-12">
         <div className="max-w-[120rem] mx-auto">
