@@ -30,12 +30,7 @@ export default function InstagramLandingPage() {
     <div className="min-h-screen bg-soft-white">
       {/* Navigation - Mobile Optimized */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-soft-white/98 backdrop-blur-sm border-b border-warm-sand-beige/20">
-        <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center">
-          <div className="font-heading text-xl sm:text-2xl text-primary font-semibold">Cycle Synced</div>
-          <div className="hidden sm:flex gap-8 text-sm font-paragraph text-primary-text">
-            <a href="#faq" className="hover:text-primary transition">FAQ</a>
-          </div>
-        </div>
+
       </nav>
       {/* Hero Section - Mobile First */}
       <section className="pt-20 pb-12 sm:pt-32 sm:pb-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-warm-cream via-warm-cream to-warm-sand-beige">
@@ -181,11 +176,7 @@ export default function InstagramLandingPage() {
                   <h1 className="font-heading text-6xl xl:text-7xl text-primary leading-tight">
                     Train in sync.
                   </h1>
-                  <div className="w-24 h-24 rounded-full border-4 border-primary/20 flex items-center justify-center flex-shrink-0 mt-2">
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center text-3xl">
-                      🔄
-                    </div>
-                  </div>
+
                 </div>
                 <p className="font-paragraph text-2xl text-primary italic font-light">
                   Feel your strongest.
@@ -334,12 +325,7 @@ export default function InstagramLandingPage() {
               transition={{ ...fadeInUp.transition, delay: 0.1 }}
               className="bg-white p-6 sm:p-8 rounded-2xl border border-warm-sand-beige/30"
             >
-              <div className="mb-6 sm:mb-8">
-                <p className="font-paragraph text-xs uppercase tracking-wider text-secondary-text font-semibold mb-2">Traditional Approach</p>
-                <h3 className="font-heading text-lg sm:text-xl text-primary">
-                  Fixed programming
-                </h3>
-              </div>
+
               <ul className="space-y-4">
                 {[
                   'Fixed programme',
@@ -656,9 +642,7 @@ export default function InstagramLandingPage() {
         <div className="max-w-[100rem] mx-auto">
           {/* Headline and Supporting Text */}
           <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-20">
-            <h2 className="font-heading text-5xl sm:text-6xl lg:text-7xl text-primary leading-tight mb-6">
-              Train. Recover. Fuel.
-            </h2>
+            <h2 className="font-heading text-5xl sm:text-6xl lg:text-7xl text-primary leading-tight mb-6">Move. Fuel. Recover</h2>
             <p className="font-paragraph text-lg sm:text-xl text-secondary-text max-w-3xl mx-auto leading-relaxed">
               Your training doesn't happen in isolation. We help you understand how movement, recovery and nutrition can work together.
             </p>
