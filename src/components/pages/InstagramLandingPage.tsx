@@ -29,50 +29,298 @@ export default function InstagramLandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-16 sm:pt-40 sm:pb-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-soft-white via-soft-white to-off-white">
+      <section className="pt-24 pb-12 sm:pt-32 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-warm-cream">
         <div className="max-w-[100rem] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
-          >
-            <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl text-primary mb-6 leading-tight">
-              Train With Your Body,<br />Not Against It
-            </h1>
-            <p className="font-paragraph text-lg sm:text-xl text-secondary-text max-w-2xl mx-auto mb-8">
-              Personalised online training for women that adapts to your cycle, your life stage, and your body's unique needs.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-base sm:text-lg">
+          {/* Mobile Layout - Stacked Vertically */}
+          <div className="lg:hidden space-y-8">
+            {/* Headline */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+            >
+              <h1 className="font-heading text-5xl sm:text-6xl text-primary leading-tight mb-4">
+                Train with your body.<br />Not against it.
+              </h1>
+              <p className="font-paragraph text-base sm:text-lg text-secondary-text leading-relaxed">
+                Personalised online training for women — built around your cycle, your symptoms and your stage of life.
+              </p>
+            </motion.div>
+
+            {/* Benefits */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="space-y-3"
+            >
+              {[
+                '3 personalised training sessions every week',
+                'Direct access to your qualified coach',
+                'Cycle-responsive strength training',
+                'Nutrition guidance designed for women'
+              ].map((benefit, idx) => (
+                <div key={idx} className="flex gap-3 items-start">
+                  <div className="flex-shrink-0 mt-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                    <span className="text-white text-xs font-bold">✓</span>
+                  </div>
+                  <p className="font-paragraph text-base text-primary-text">{benefit}</p>
+                </div>
+              ))}
+            </motion.div>
+
+            {/* Life Stage Support */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+            >
+              <p className="font-paragraph text-sm text-secondary-text">
+                <span className="font-semibold text-primary">Support for:</span> Pre & postnatal · Perimenopause · Menopause
+              </p>
+            </motion.div>
+
+            {/* CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="flex flex-col gap-3 pt-2"
+            >
+              <button className="w-full bg-primary text-white px-6 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-base">
                 Start Your Training Journey
               </button>
               <button
                 onClick={() => setShowChatModal(true)}
-                className="border-2 border-primary text-primary px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/5 transition text-base sm:text-lg"
+                className="w-full border-2 border-primary text-primary px-6 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/5 transition text-base"
               >
                 Book a Free Chat
               </button>
-            </div>
-          </motion.div>
+            </motion.div>
 
-          {/* Hero Image */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="mt-16 sm:mt-20"
-          >
-            <div className="rounded-3xl overflow-hidden bg-warm-sand-beige/30 aspect-video">
-              <Image
-                src="https://static.wixstatic.com/media/93e866_95263f3d8ac746e1a81e9e9674336a9c~mv2.png?originWidth=1152&originHeight=640"
-                alt="Women's online training program"
-                width={1200}
-                height={675}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </motion.div>
+            {/* Trust Statement */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.4 }}
+            >
+              <p className="font-paragraph text-xs text-secondary-text text-center">
+                Training + coaching + nutrition, all in one app.
+              </p>
+            </motion.div>
+
+            {/* Mobile App Mockup */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="pt-4"
+            >
+              <div className="mx-auto w-64 h-auto">
+                <div className="bg-white rounded-3xl shadow-lg overflow-hidden border-8 border-gray-900">
+                  {/* Phone Status Bar */}
+                  <div className="bg-gray-900 text-white px-4 py-2 text-xs flex justify-between items-center">
+                    <span>9:41</span>
+                    <div className="flex gap-1">
+                      <span>📶</span>
+                      <span>🔋</span>
+                    </div>
+                  </div>
+
+                  {/* App Content */}
+                  <div className="bg-gradient-to-b from-primary/10 to-white p-4 space-y-4">
+                    {/* Cycle Phase */}
+                    <div className="bg-white rounded-2xl p-4 border border-warm-sand-beige/30">
+                      <p className="font-paragraph text-xs text-secondary-text mb-1">Today's Phase</p>
+                      <p className="font-heading text-lg text-primary">Ovulation</p>
+                      <p className="font-paragraph text-xs text-secondary-text">Peak energy day</p>
+                    </div>
+
+                    {/* Today's Workout */}
+                    <div className="bg-primary/5 rounded-2xl p-4 border border-primary/20">
+                      <p className="font-paragraph text-xs text-secondary-text mb-2">Today's Workout</p>
+                      <p className="font-heading text-base text-primary mb-1">Strength: Lower Body</p>
+                      <p className="font-paragraph text-xs text-secondary-text">45 minutes</p>
+                    </div>
+
+                    {/* Check-in */}
+                    <div className="bg-white rounded-2xl p-4 border border-warm-sand-beige/30">
+                      <p className="font-paragraph text-xs text-secondary-text mb-2">How are you feeling?</p>
+                      <div className="flex gap-2 justify-between">
+                        {['😴', '😐', '💪'].map((emoji, idx) => (
+                          <button key={idx} className="flex-1 py-2 rounded-lg hover:bg-warm-sand-beige/20 transition text-lg">
+                            {emoji}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Coach Message */}
+                    <div className="bg-primary/10 rounded-2xl p-3 border-l-4 border-primary">
+                      <p className="font-paragraph text-xs text-secondary-text mb-1">Coach Message</p>
+                      <p className="font-paragraph text-xs text-primary-text leading-relaxed">
+                        "Great energy today! Push hard on these lifts. 💪"
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Desktop Layout - Side by Side */}
+          <div className="hidden lg:grid grid-cols-2 gap-12 items-center">
+            {/* Left: Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="space-y-8"
+            >
+              {/* Headline */}
+              <div>
+                <h1 className="font-heading text-7xl xl:text-8xl text-primary leading-tight mb-6">
+                  Train with your body.<br />Not against it.
+                </h1>
+                <p className="font-paragraph text-lg text-secondary-text leading-relaxed max-w-lg">
+                  Personalised online training for women — built around your cycle, your symptoms and your stage of life.
+                </p>
+              </div>
+
+              {/* Benefits */}
+              <div className="space-y-4">
+                {[
+                  '3 personalised training sessions every week',
+                  'Direct access to your qualified coach',
+                  'Cycle-responsive strength training',
+                  'Nutrition guidance designed for women'
+                ].map((benefit, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, delay: 0.1 + idx * 0.05 }}
+                    className="flex gap-3 items-start"
+                  >
+                    <div className="flex-shrink-0 mt-1 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
+                      <span className="text-white text-sm font-bold">✓</span>
+                    </div>
+                    <p className="font-paragraph text-lg text-primary-text">{benefit}</p>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Life Stage Support */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
+                <p className="font-paragraph text-base text-secondary-text">
+                  <span className="font-semibold text-primary">Support for:</span> Pre & postnatal · Perimenopause · Menopause
+                </p>
+              </motion.div>
+
+              {/* CTAs */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.4 }}
+                className="flex gap-4 pt-4"
+              >
+                <button className="bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-lg">
+                  Start Your Training Journey
+                </button>
+                <button
+                  onClick={() => setShowChatModal(true)}
+                  className="border-2 border-primary text-primary px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/5 transition text-lg"
+                >
+                  Book a Free Chat
+                </button>
+              </motion.div>
+
+              {/* Trust Statement */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+              >
+                <p className="font-paragraph text-sm text-secondary-text">
+                  Training + coaching + nutrition, all in one app.
+                </p>
+              </motion.div>
+            </motion.div>
+
+            {/* Right: Hero Image + App Mockup */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative"
+            >
+              {/* Hero Image */}
+              <div className="rounded-3xl overflow-hidden bg-warm-sand-beige/30 aspect-square mb-8">
+                <Image
+                  src="https://static.wixstatic.com/media/93e866_95263f3d8ac746e1a81e9e9674336a9c~mv2.png?originWidth=1152&originHeight=640"
+                  alt="Strong woman training in light-filled environment"
+                  width={600}
+                  height={600}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* App Mockup - Overlapping */}
+              <div className="absolute -bottom-12 -right-8 w-72 h-auto">
+                <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-gray-900">
+                  {/* Phone Status Bar */}
+                  <div className="bg-gray-900 text-white px-4 py-2 text-xs flex justify-between items-center">
+                    <span>9:41</span>
+                    <div className="flex gap-1">
+                      <span>📶</span>
+                      <span>🔋</span>
+                    </div>
+                  </div>
+
+                  {/* App Content */}
+                  <div className="bg-gradient-to-b from-primary/10 to-white p-5 space-y-4">
+                    {/* Cycle Phase */}
+                    <div className="bg-white rounded-2xl p-4 border border-warm-sand-beige/30">
+                      <p className="font-paragraph text-xs text-secondary-text mb-1">Today's Phase</p>
+                      <p className="font-heading text-lg text-primary">Ovulation</p>
+                      <p className="font-paragraph text-xs text-secondary-text">Peak energy day</p>
+                    </div>
+
+                    {/* Today's Workout */}
+                    <div className="bg-primary/5 rounded-2xl p-4 border border-primary/20">
+                      <p className="font-paragraph text-xs text-secondary-text mb-2">Today's Workout</p>
+                      <p className="font-heading text-base text-primary mb-1">Strength: Lower Body</p>
+                      <p className="font-paragraph text-xs text-secondary-text">45 minutes</p>
+                    </div>
+
+                    {/* Check-in */}
+                    <div className="bg-white rounded-2xl p-4 border border-warm-sand-beige/30">
+                      <p className="font-paragraph text-xs text-secondary-text mb-2">How are you feeling?</p>
+                      <div className="flex gap-2 justify-between">
+                        {['😴', '😐', '💪'].map((emoji, idx) => (
+                          <button key={idx} className="flex-1 py-2 rounded-lg hover:bg-warm-sand-beige/20 transition text-lg">
+                            {emoji}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Coach Message */}
+                    <div className="bg-primary/10 rounded-2xl p-3 border-l-4 border-primary">
+                      <p className="font-paragraph text-xs text-secondary-text mb-1">Coach Message</p>
+                      <p className="font-paragraph text-xs text-primary-text leading-relaxed">
+                        "Great energy today! Push hard on these lifts. 💪"
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
