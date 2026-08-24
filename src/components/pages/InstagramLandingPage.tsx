@@ -27,7 +27,7 @@ export default function InstagramLandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-soft-white">
+    <div className="min-h-screen bg-white">
       {/* Navigation - Mobile Optimized */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-soft-white/98 backdrop-blur-sm border-b border-warm-sand-beige/20">
 
@@ -59,7 +59,7 @@ export default function InstagramLandingPage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="space-y-3 bg-white rounded-2xl p-4 border border-warm-sand-beige/30"
+              className="space-y-3 bg-warm-cream rounded-2xl p-4 border border-warm-sand-beige/30"
             >
               {[
                 { icon: '🏋️', title: '3 Coached Sessions', desc: 'Every week' },
@@ -123,7 +123,7 @@ export default function InstagramLandingPage() {
                   {/* App Content */}
                   <div className="bg-gradient-to-b from-primary/10 to-white p-4 space-y-4">
                     {/* Cycle Phase */}
-                    <div className="bg-white rounded-2xl p-4 border border-warm-sand-beige/30">
+                    <div className="bg-warm-cream rounded-2xl p-4 border border-warm-sand-beige/30">
                       <p className="font-paragraph text-xs text-secondary-text mb-1">Today's Phase</p>
                       <p className="font-heading text-lg text-primary">Ovulation</p>
                       <p className="font-paragraph text-xs text-secondary-text">Peak energy day</p>
@@ -137,7 +137,7 @@ export default function InstagramLandingPage() {
                     </div>
 
                     {/* Check-in */}
-                    <div className="bg-white rounded-2xl p-4 border border-warm-sand-beige/30">
+                    <div className="bg-warm-cream rounded-2xl p-4 border border-warm-sand-beige/30">
                       <p className="font-paragraph text-xs text-secondary-text mb-2">How are you feeling?</p>
                       <div className="flex gap-2 justify-between">
                         {['😴', '😐', '💪'].map((emoji, idx) => (
@@ -199,7 +199,7 @@ export default function InstagramLandingPage() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.1 + idx * 0.05 }}
-                    className="flex gap-3 items-start bg-white rounded-xl p-4 border border-warm-sand-beige/30 hover:border-primary/20 transition"
+                    className="flex gap-3 items-start bg-warm-cream rounded-xl p-4 border border-warm-sand-beige/30 hover:border-primary/20 transition"
                   >
                     <div className="text-3xl flex-shrink-0">{feature.icon}</div>
                     <div className="flex-1">
@@ -323,7 +323,7 @@ export default function InstagramLandingPage() {
             <motion.div
               {...fadeInUp}
               transition={{ ...fadeInUp.transition, delay: 0.1 }}
-              className="bg-white p-6 sm:p-8 rounded-2xl border border-warm-sand-beige/30"
+              className="bg-warm-cream p-6 sm:p-8 rounded-2xl border border-warm-sand-beige/30"
             >
 
               <ul className="space-y-4">
@@ -354,7 +354,7 @@ export default function InstagramLandingPage() {
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-warm-sand-beige/10 rounded-2xl" />
               
               {/* Content */}
-              <div className="relative bg-white/80 backdrop-blur-sm p-8 sm:p-10 rounded-2xl border-2 border-primary/20">
+              <div className="relative bg-warm-cream/80 backdrop-blur-sm p-8 sm:p-10 rounded-2xl border-2 border-primary/20">
                 <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/5 rounded-full blur-2xl" />
                 
                 <h3 className="font-heading text-2xl sm:text-3xl text-primary mb-8 relative z-10">
@@ -463,7 +463,7 @@ export default function InstagramLandingPage() {
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 0.5 }}
-                    className={`relative overflow-hidden rounded-2xl border ${item.borderColor} bg-white p-6 h-full`}
+                    className={`relative overflow-hidden rounded-2xl border ${item.borderColor} bg-warm-cream p-6 h-full`}
                   >
                     {/* Gradient accent background */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${item.accentColor}`} />
@@ -564,7 +564,7 @@ export default function InstagramLandingPage() {
                 key={idx}
                 {...fadeInUp}
                 transition={{ ...fadeInUp.transition, delay: idx * 0.08 }}
-                className={`relative overflow-hidden rounded-2xl border ${item.borderColor} bg-white p-8 sm:p-10 hover:border-primary/20 transition-all duration-300 group`}
+                className={`relative overflow-hidden rounded-2xl border ${item.borderColor} bg-warm-cream p-8 sm:p-10 hover:border-primary/20 transition-all duration-300 group`}
               >
                 {/* Gradient accent background */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${item.accentColor} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
