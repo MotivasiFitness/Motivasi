@@ -648,59 +648,7 @@ export default function InstagramLandingPage() {
             </p>
           </motion.div>
 
-          {/* Three-Part Flow */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-20">
-            {[
-              {
-                title: 'TRAIN',
-                items: ['Strength', 'Mobility', 'Conditioning', 'Progression'],
-                accentColor: 'from-primary/10 to-primary/5',
-                borderColor: 'border-primary/20',
-                textColor: 'text-primary'
-              },
-              {
-                title: 'RECOVER',
-                items: ['Sleep', 'Stress', 'Symptoms', 'Recovery'],
-                accentColor: 'from-emerald-green/10 to-emerald-green/5',
-                borderColor: 'border-emerald-green/20',
-                textColor: 'text-emerald-green'
-              },
-              {
-                title: 'FUEL',
-                items: ['Protein', 'Fibre', 'Energy', 'Nutrients'],
-                accentColor: 'from-gold/10 to-gold/5',
-                borderColor: 'border-gold/20',
-                textColor: 'text-gold'
-              }
-            ].map((section, idx) => (
-              <motion.div
-                key={idx}
-                {...fadeInUp}
-                transition={{ ...fadeInUp.transition, delay: idx * 0.1 }}
-                className={`relative overflow-hidden rounded-2xl border ${section.borderColor} bg-white p-8 sm:p-10 hover:border-primary/30 transition-all duration-300`}
-              >
-                {/* Gradient accent background */}
 
-                {/* Content */}
-                <div className="relative z-10 space-y-6">
-                  {/* Title */}
-                  <h3 className={`font-heading text-3xl sm:text-4xl ${section.textColor} leading-tight`}>
-                    {section.title}
-                  </h3>
-
-                  {/* Items List */}
-                  <ul className="space-y-3">
-                    {section.items.map((item, itemIdx) => (
-                      <li key={itemIdx} className="flex gap-3 items-start">
-                        <div className={`flex-shrink-0 mt-1 w-5 h-5 rounded-full ${section.textColor} bg-current opacity-20 flex items-center justify-center`} />
-                        <span className="font-paragraph text-base text-primary-text">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </motion.div>
-            ))}
-          </div>
 
           {/* Four Phase Examples */}
           <motion.div
