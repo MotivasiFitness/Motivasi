@@ -343,7 +343,7 @@ export default function InstagramLandingPage() {
         </div>
       </section>
 
-      {/* Differentiation Section - Mobile Optimized */}
+      {/* SECTION 2: Why This Is Different - Problem/Solution */}
       <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
         <div className="max-w-[100rem] mx-auto">
           {/* Headline */}
@@ -434,132 +434,6 @@ export default function InstagramLandingPage() {
                 <span className="font-semibold text-primary-text">Science is still evolving around cycle-related performance.</span> We don't believe women should be forced into rigid hormonal rules. We use the cycle as a framework — and your real-world symptoms, energy and recovery as feedback.
               </p>
             </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Why Different */}
-      <section id="why-different" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-off-white">
-        <div className="max-w-[100rem] mx-auto">
-          <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-16">
-            <h2 className="font-heading text-4xl sm:text-5xl text-primary mb-4">Why This Is Different</h2>
-            <p className="font-paragraph text-lg text-secondary-text max-w-2xl mx-auto">
-              Most online training treats all women the same. We don't.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-            {[
-              {
-                title: 'Cycle-Responsive Training',
-                description: 'Your training adapts to your energy, recovery, and readiness—not a rigid calendar.'
-              },
-              {
-                title: 'Real Human Coaching',
-                description: 'Message your coach directly. Get feedback, adjustments, and support whenever you need it.'
-              },
-              {
-                title: 'Symptom-Focused',
-                description: 'We respond to how you actually feel, not just theory. Irregular cycles? Perimenopause? We adapt.'
-              },
-              {
-                title: 'Nutrition + Training',
-                description: 'Level 4 nutrition guidance integrated with your training plan for complete support.'
-              }
-            ].map((item, idx) => (
-              <motion.div
-                key={idx}
-                {...fadeInUp}
-                transition={{ ...fadeInUp.transition, delay: idx * 0.1 }}
-                className="bg-white p-8 rounded-2xl border border-warm-sand-beige/30 hover:border-primary/20 transition"
-              >
-                <h3 className="font-heading text-2xl text-primary mb-3">{item.title}</h3>
-                <p className="font-paragraph text-secondary-text">{item.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Built for Women Through Every Stage */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
-        <div className="max-w-[100rem] mx-auto">
-          {/* Main Headline */}
-          <motion.div {...fadeInUp} className="text-center mb-8 sm:mb-12">
-            <h2 className="font-heading text-5xl sm:text-6xl lg:text-7xl text-primary leading-tight mb-6">
-              Built for women<br />through every stage.
-            </h2>
-            <p className="font-paragraph text-lg sm:text-xl text-secondary-text max-w-3xl mx-auto leading-relaxed">
-              Your body changes. Your training should be able to change with it.
-            </p>
-          </motion.div>
-
-          {/* Four Premium Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-12 sm:mb-16">
-            {[
-              {
-                title: 'Pre & Postpartum',
-                description: 'Support your return to movement and strength with training that respects recovery and the demands of motherhood.',
-                image: 'https://static.wixstatic.com/media/93e866_1823bf72bef6439194e736878522534e~mv2.png?originWidth=576&originHeight=384'
-              },
-              {
-                title: 'Perimenopause',
-                description: 'When energy, recovery, symptoms and cycles become less predictable, your training needs more flexibility — not less.',
-                image: 'https://static.wixstatic.com/media/93e866_95263f3d8ac746e1a81e9e9674336a9c~mv2.png?originWidth=1152&originHeight=640'
-              },
-              {
-                title: 'Menopause',
-                description: 'Build and maintain strength with training and nutrition guidance designed around your current stage.',
-                image: 'https://static.wixstatic.com/media/93e866_1877ca55f0044548b3d25015011e811a~mv2.png?originWidth=448&originHeight=448'
-              },
-              {
-                title: 'Cycle-Synced Training',
-                description: 'For women with a predictable cycle, use phase awareness to understand when to build, push, maintain or recover.',
-                image: 'https://static.wixstatic.com/media/93e866_bac8b2788ea14bff96e1affde4f0fc30~mv2.png?originWidth=384&originHeight=384'
-              }
-            ].map((card, idx) => (
-              <motion.div
-                key={idx}
-                {...fadeInUp}
-                transition={{ ...fadeInUp.transition, delay: idx * 0.08 }}
-                className="group relative overflow-hidden rounded-2xl bg-white border border-warm-sand-beige/30 hover:border-primary/20 transition-all duration-300"
-              >
-                {/* Image Container */}
-                <div className="relative h-64 sm:h-72 overflow-hidden bg-warm-sand-beige/20">
-                  <Image
-                    src={card.image}
-                    alt={card.title}
-                    width={600}
-                    height={400}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  {/* Overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                </div>
-
-                {/* Content */}
-                <div className="p-8 sm:p-10">
-                  <h3 className="font-heading text-2xl sm:text-3xl text-primary mb-4">
-                    {card.title}
-                  </h3>
-                  <p className="font-paragraph text-base sm:text-lg text-secondary-text leading-relaxed">
-                    {card.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Closing Statement */}
-          <motion.div
-            {...fadeInUp}
-            transition={{ ...fadeInUp.transition, delay: 0.4 }}
-            className="max-w-3xl mx-auto text-center"
-          >
-            <p className="font-heading text-3xl sm:text-4xl lg:text-5xl text-primary leading-tight">
-              You don't need to fit a perfect cycle.<br />
-              <span className="text-secondary-text">You need a programme that can meet you where you are.</span>
-            </p>
           </motion.div>
         </div>
       </section>
