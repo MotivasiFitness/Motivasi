@@ -682,6 +682,163 @@ export default function InstagramLandingPage() {
         </div>
       </section>
 
+      {/* Train. Recover. Fuel. Section */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
+        <div className="max-w-[100rem] mx-auto">
+          {/* Headline and Supporting Text */}
+          <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-20">
+            <h2 className="font-heading text-5xl sm:text-6xl lg:text-7xl text-primary leading-tight mb-6">
+              Train. Recover. Fuel.
+            </h2>
+            <p className="font-paragraph text-lg sm:text-xl text-secondary-text max-w-3xl mx-auto leading-relaxed">
+              Your training doesn't happen in isolation. We help you understand how movement, recovery and nutrition can work together.
+            </p>
+          </motion.div>
+
+          {/* Three-Part Flow */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-20">
+            {[
+              {
+                title: 'TRAIN',
+                items: ['Strength', 'Mobility', 'Conditioning', 'Progression'],
+                accentColor: 'from-primary/10 to-primary/5',
+                borderColor: 'border-primary/20',
+                textColor: 'text-primary'
+              },
+              {
+                title: 'RECOVER',
+                items: ['Sleep', 'Stress', 'Symptoms', 'Recovery'],
+                accentColor: 'from-emerald-green/10 to-emerald-green/5',
+                borderColor: 'border-emerald-green/20',
+                textColor: 'text-emerald-green'
+              },
+              {
+                title: 'FUEL',
+                items: ['Protein', 'Fibre', 'Energy', 'Nutrients'],
+                accentColor: 'from-gold/10 to-gold/5',
+                borderColor: 'border-gold/20',
+                textColor: 'text-gold'
+              }
+            ].map((section, idx) => (
+              <motion.div
+                key={idx}
+                {...fadeInUp}
+                transition={{ ...fadeInUp.transition, delay: idx * 0.1 }}
+                className={`relative overflow-hidden rounded-2xl border ${section.borderColor} bg-white p-8 sm:p-10 hover:border-primary/30 transition-all duration-300`}
+              >
+                {/* Gradient accent background */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${section.accentColor} opacity-0 hover:opacity-100 transition-opacity duration-300`} />
+                
+                {/* Content */}
+                <div className="relative z-10 space-y-6">
+                  {/* Title */}
+                  <h3 className={`font-heading text-3xl sm:text-4xl ${section.textColor} leading-tight`}>
+                    {section.title}
+                  </h3>
+
+                  {/* Items List */}
+                  <ul className="space-y-3">
+                    {section.items.map((item, itemIdx) => (
+                      <li key={itemIdx} className="flex gap-3 items-start">
+                        <div className={`flex-shrink-0 mt-1 w-5 h-5 rounded-full ${section.textColor} bg-current opacity-20 flex items-center justify-center`} />
+                        <span className="font-paragraph text-base text-primary-text">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Four Phase Examples */}
+          <motion.div
+            {...fadeInUp}
+            transition={{ ...fadeInUp.transition, delay: 0.3 }}
+            className="mb-12 sm:mb-16"
+          >
+            <h3 className="font-heading text-3xl sm:text-4xl text-primary text-center mb-8 sm:mb-12">
+              Nutrition Through Your Cycle
+            </h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+              {[
+                {
+                  phase: 'MENSTRUAL',
+                  tagline: 'Rebuild + nourish',
+                  description: 'Focus on nutrient-dense, protein-anchored meals and iron-rich foods.',
+                  accentColor: 'from-rose-blush/40 to-rose-blush/10',
+                  borderColor: 'border-rose-blush/30',
+                  textAccent: 'text-rose-blush'
+                },
+                {
+                  phase: 'FOLLICULAR',
+                  tagline: 'Fuel the build',
+                  description: 'Support increasing training demand with balanced meals and complex carbohydrates.',
+                  accentColor: 'from-emerald-green/40 to-emerald-green/10',
+                  borderColor: 'border-emerald-green/30',
+                  textAccent: 'text-emerald-green'
+                },
+                {
+                  phase: 'OVULATORY',
+                  tagline: 'Support performance',
+                  description: 'Prioritise hydration and nutrient-dense recovery foods.',
+                  accentColor: 'from-gold/40 to-gold/10',
+                  borderColor: 'border-gold/30',
+                  textAccent: 'text-gold'
+                },
+                {
+                  phase: 'LUTEAL',
+                  tagline: 'Support recovery',
+                  description: 'Focus on protein, fibre, balanced meals and magnesium-rich foods.',
+                  accentColor: 'from-warm-bronze/40 to-warm-bronze/10',
+                  borderColor: 'border-warm-bronze/30',
+                  textAccent: 'text-warm-bronze'
+                }
+              ].map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  {...fadeInUp}
+                  transition={{ ...fadeInUp.transition, delay: 0.4 + idx * 0.08 }}
+                  className={`relative overflow-hidden rounded-2xl border ${item.borderColor} bg-white p-6 sm:p-8 hover:border-primary/20 transition-all duration-300 group`}
+                >
+                  {/* Gradient accent background */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${item.accentColor} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                  
+                  {/* Content */}
+                  <div className="relative z-10 space-y-3">
+                    {/* Phase name with accent */}
+                    <p className={`font-paragraph text-xs font-semibold uppercase tracking-wider ${item.textAccent}`}>
+                      {item.phase}
+                    </p>
+                    
+                    {/* Tagline */}
+                    <h4 className="font-heading text-xl sm:text-2xl text-primary leading-tight">
+                      {item.tagline}
+                    </h4>
+
+                    {/* Description */}
+                    <p className="font-paragraph text-sm sm:text-base text-secondary-text leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Disclaimer */}
+          <motion.div
+            {...fadeInUp}
+            transition={{ ...fadeInUp.transition, delay: 0.6 }}
+            className="bg-warm-sand-beige/10 border border-warm-sand-beige/30 rounded-xl p-6 sm:p-8 max-w-3xl mx-auto"
+          >
+            <p className="font-paragraph text-sm sm:text-base text-secondary-text leading-relaxed text-center italic">
+              <span className="font-semibold text-primary-text">Nutrition guidance is educational and personalised to your circumstances;</span> it does not replace medical or dietetic care.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* How the App Works */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-off-white">
         <div className="max-w-[100rem] mx-auto">
