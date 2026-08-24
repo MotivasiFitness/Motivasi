@@ -198,9 +198,9 @@ export default function InstagramLandingPage() {
               {/* Features Grid */}
               <div className="grid grid-cols-1 gap-4">
                 {[
-                  { icon: '🏋️', title: '3 Coached Sessions', desc: 'Every week, tailored to your cycle' },
-                  { icon: '👥', title: 'Coach Access', desc: 'Direct messaging and form checks' },
-                  { icon: '🥗', title: 'Cycle-Synced Nutrition', desc: 'Personalized guidance for every phase' }
+                  { icon: '🏋️', title: "3 Personalised online program Sessions per a week", desc: 'Every week, tailored to your cycle' },
+                  { icon: '👥', title: "Coach Access via a dedicated app", desc: 'Direct messaging and form checks' },
+                  { icon: '🥗', title: "Cycle-Synced Nutrition guidance", desc: "Personalised guidance for every phase" }
                 ].map((feature, idx) => (
                   <motion.div
                     key={idx}
@@ -1197,150 +1197,6 @@ export default function InstagramLandingPage() {
         </div>
       </section>
       {/* Premium Final CTA Section - Deep Burgundy */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/95 via-primary to-primary/90 relative overflow-hidden">
-        {/* Subtle background accent */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-80 h-80 bg-white rounded-full blur-3xl" />
-        </div>
-
-        <div className="max-w-[100rem] mx-auto relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left: Content */}
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7 }}
-              viewport={{ once: true, margin: '0px 0px -100px 0px' }}
-              className="space-y-8"
-            >
-              {/* Headline */}
-              <div className="space-y-4">
-
-              </div>
-
-              {/* Supporting Copy */}
-              <p className="font-paragraph text-lg sm:text-xl text-white/90 leading-relaxed max-w-lg">
-                Stop forcing your body to fit the programme.
-                <br />
-                <br />
-                Start training in a way that listens, adapts and supports you.
-              </p>
-
-              {/* Three Benefits */}
-              <div className="space-y-4 pt-4">
-                {[
-                  '3 coached sessions every week',
-                  'Direct access to your coach',
-                  'Training built around your body'
-                ].map((benefit, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1 + idx * 0.05 }}
-                    viewport={{ once: true }}
-                    className="flex gap-3 items-start"
-                  >
-                    <div className="flex-shrink-0 mt-1 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center border border-white/40">
-                      <span className="text-white text-sm font-bold">✓</span>
-                    </div>
-                    <p className="font-paragraph text-base sm:text-lg text-white/95">{benefit}</p>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* CTAs */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                viewport={{ once: true }}
-                className="flex flex-col sm:flex-row gap-4 pt-6"
-              >
-                <button className="bg-white text-primary px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-off-white transition text-base sm:text-lg shadow-lg hover:shadow-xl">
-                  Start Your Training Journey
-                </button>
-                <button
-                  onClick={() => setShowChatModal(true)}
-                  className="border-2 border-white text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-white/10 transition text-base sm:text-lg"
-                >
-                  Book a Free Chat
-                </button>
-              </motion.div>
-
-              {/* Reassurance */}
-              <motion.p
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                viewport={{ once: true }}
-                className="font-paragraph text-sm text-white/75 italic pt-2"
-              >
-                Not sure where to start? Talk to your coach before joining.
-              </motion.p>
-            </motion.div>
-
-            {/* Right: Image */}
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              viewport={{ once: true, margin: '0px 0px -100px 0px' }}
-              className="relative"
-            >
-              {/* Main Image */}
-              <div className="rounded-3xl overflow-hidden bg-white/10 backdrop-blur-sm aspect-square shadow-2xl border border-white/20">
-
-              </div>
-
-              {/* Floating App Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                viewport={{ once: true }}
-                className="absolute -bottom-8 -left-8 w-56 h-auto"
-              >
-                <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border-6 border-white/20 backdrop-blur-sm">
-                  {/* Phone Status Bar */}
-                  <div className="bg-gray-900 text-white px-4 py-2 text-xs flex justify-between items-center">
-                    <span>9:41</span>
-                    <div className="flex gap-1">
-                      <span>📶</span>
-                      <span>🔋</span>
-                    </div>
-                  </div>
-
-                  {/* App Content */}
-                  <div className="bg-gradient-to-b from-primary/5 to-white p-4 space-y-3">
-                    {/* Quick Stats */}
-                    <div className="bg-white rounded-xl p-3 border border-warm-sand-beige/30">
-                      <p className="font-paragraph text-xs text-secondary-text mb-1">This Week</p>
-                      <p className="font-heading text-sm text-primary">3/3 Sessions Done</p>
-                    </div>
-
-                    {/* Progress Ring */}
-                    <div className="bg-primary/5 rounded-xl p-3 border border-primary/20">
-                      <p className="font-paragraph text-xs text-secondary-text mb-2">Cycle Progress</p>
-                      <div className="w-full bg-white rounded-full h-2">
-                        <div className="bg-primary h-2 rounded-full" style={{ width: '65%' }} />
-                      </div>
-                    </div>
-
-                    {/* Coach Message */}
-                    <div className="bg-primary/10 rounded-xl p-3 border-l-4 border-primary">
-                      <p className="font-paragraph text-xs text-primary-text leading-relaxed">
-                        "Great week! You're getting stronger. 💪"
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
       {/* Final CTA */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-primary text-white">
         <div className="max-w-[100rem] mx-auto text-center">
@@ -1364,36 +1220,6 @@ export default function InstagramLandingPage() {
         </div>
       </section>
       {/* Footer */}
-      <footer className="bg-charcoal-black text-white py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-[100rem] mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
-            <div>
-              <h3 className="font-heading text-xl mb-4">Cycle Synced</h3>
-              <p className="font-paragraph text-sm text-gray-400">
-                Personalised online training for women. Train with your body, not against it.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-paragraph font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2 font-paragraph text-sm text-gray-400">
-                <li><a href="#why-different" className="hover:text-white transition">Why Different</a></li>
-                <li><a href="#faq" className="hover:text-white transition">FAQ</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-paragraph font-semibold mb-4">Contact</h4>
-              <p className="font-paragraph text-sm text-gray-400">
-                Questions? <button onClick={() => setShowChatModal(true)} className="text-white hover:underline">Book a free chat</button>
-              </p>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 pt-8">
-            <p className="font-paragraph text-sm text-gray-400 text-center">
-              © 2024 Cycle Synced. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
       {/* Sticky Mobile CTA - Premium Mobile App Experience */}
       <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-white border-t border-warm-sand-beige/30 p-3 z-40 space-y-2">
         <button className="w-full bg-primary text-white px-6 py-3 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-sm h-11 flex items-center justify-center">
