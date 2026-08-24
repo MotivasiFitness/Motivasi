@@ -1278,59 +1278,6 @@ export default function InstagramLandingPage() {
         </div>
       </section>
 
-      {/* Coach Section */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-off-white">
-        <div className="max-w-[100rem] mx-auto">
-          <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-16">
-            <h2 className="font-heading text-4xl sm:text-5xl text-primary mb-4">Meet Your Coach</h2>
-            <p className="font-paragraph text-lg text-secondary-text max-w-2xl mx-auto">
-              You're not training with an algorithm. You're training with a real person who cares about your progress.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12 items-center">
-            <motion.div {...fadeInUp}>
-              <div className="rounded-2xl overflow-hidden bg-warm-sand-beige/30 aspect-square">
-                <Image
-                  src="https://static.wixstatic.com/media/93e866_1877ca55f0044548b3d25015011e811a~mv2.png?originWidth=448&originHeight=448"
-                  alt="Your coach"
-                  width={500}
-                  height={500}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </motion.div>
-
-            <motion.div
-              {...fadeInUp}
-              transition={{ ...fadeInUp.transition, delay: 0.1 }}
-            >
-              <h3 className="font-heading text-3xl text-primary mb-6">Qualified. Experienced. Real.</h3>
-              <div className="space-y-6 font-paragraph text-secondary-text">
-                <p>
-                  Your coach is a Level 3 Personal Trainer with specialisation in women's health and cycle syncing. She's trained hundreds of women and understands the unique challenges you face.
-                </p>
-                <p>
-                  She's not just delivering workouts. She's coaching you. She's learning how your body responds. She's adjusting your plan based on your feedback. She's here when you need support.
-                </p>
-                <p>
-                  Most importantly: she gets it. She trains with her own cycle. She understands postpartum recovery. She knows what perimenopause feels like. She's not just reading from a textbook.
-                </p>
-              </div>
-              <div className="mt-8 pt-8 border-t border-warm-sand-beige/30">
-                <p className="font-paragraph text-sm text-secondary-text mb-4">Qualifications:</p>
-                <ul className="space-y-2 font-paragraph text-secondary-text">
-                  <li>• Level 3 Personal Trainer</li>
-                  <li>• Women's Health Specialisation</li>
-                  <li>• Cycle Syncing Certification</li>
-                  <li>• Level 4 Nutrition Coach</li>
-                </ul>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
       {/* Social Proof */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
         <div className="max-w-[100rem] mx-auto">
