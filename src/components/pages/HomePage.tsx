@@ -737,16 +737,14 @@ export default function HomePage() {
 
           {/* Three Feature Cards in a Single Row */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Feature card 1 */}
-            <AnimatedElement className={`group bg-soft-white p-12 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border-2 border-warm-cream/60 hover:border-warm-cream`}>
-              <div className="flex flex-col gap-8 items-center h-full text-center">
-                <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-primary shadow-md`}>
-                  <div className="text-primary">
-                    <Apple className="w-9 h-9 sm:w-10 sm:h-10 text-primary fill-primary" />
-                  </div>
+            {/* Feature card 1 - Nutrition */}
+            <AnimatedElement className={`group bg-gradient-to-br from-soft-white to-soft-white/80 p-10 rounded-2xl transition-all duration-500 border border-warm-cream/40 hover:border-warm-cream/80 hover:shadow-xl`}>
+              <div className="flex flex-col gap-6 items-center h-full text-center">
+                <div className={`w-24 h-24 rounded-full bg-gradient-to-br from-[#E8A8C8]/20 to-[#E8A8C8]/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border border-[#E8A8C8]/30`}>
+                  <Apple className="w-12 h-12 text-[#E8A8C8]" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-3 group-hover:text-sage-green transition-colors">
+                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-3 group-hover:text-[#E8A8C8] transition-colors duration-300">
                     {t.home.noExtremeDiets}
                   </h3>
                   <p className="text-charcoal-black/70 text-base leading-relaxed font-light">
@@ -756,16 +754,14 @@ export default function HomePage() {
               </div>
             </AnimatedElement>
 
-            {/* Feature card 2 */}
-            <AnimatedElement className={`group bg-soft-white p-12 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border-2 border-warm-cream/60 hover:border-warm-cream`}>
-              <div className="flex flex-col gap-8 items-center h-full text-center">
-                <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-primary shadow-md`}>
-                  <div className="text-primary">
-                    <Dumbbell className="w-9 h-9 sm:w-10 sm:h-10 stroke-[2.5] text-primary" />
-                  </div>
+            {/* Feature card 2 - Strength */}
+            <AnimatedElement className={`group bg-gradient-to-br from-soft-white to-soft-white/80 p-10 rounded-2xl transition-all duration-500 border border-warm-cream/40 hover:border-warm-cream/80 hover:shadow-xl`}>
+              <div className="flex flex-col gap-6 items-center h-full text-center">
+                <div className={`w-24 h-24 rounded-full bg-gradient-to-br from-[#10B981]/20 to-[#10B981]/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border border-[#10B981]/30`}>
+                  <Dumbbell className="w-12 h-12 text-[#10B981]" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-3 group-hover:text-sage-green transition-colors">
+                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-3 group-hover:text-[#10B981] transition-colors duration-300">
                     {t.home.buildRealStrength}
                   </h3>
                   <p className="text-charcoal-black/70 text-base leading-relaxed font-light">
@@ -775,16 +771,14 @@ export default function HomePage() {
               </div>
             </AnimatedElement>
 
-            {/* Feature card 3 */}
-            <AnimatedElement className={`group bg-soft-white p-12 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 border-2 border-warm-cream/60 hover:border-warm-cream`}>
-              <div className="flex flex-col gap-8 items-center h-full text-center">
-                <div className={`w-20 h-20 rounded-full bg-rose-blush flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border-2 border-primary shadow-md`}>
-                  <div className="text-primary">
-                    <Leaf className="w-9 h-9 sm:w-10 sm:h-10 text-primary fill-primary" />
-                  </div>
+            {/* Feature card 3 - Sustainability */}
+            <AnimatedElement className={`group bg-gradient-to-br from-soft-white to-soft-white/80 p-10 rounded-2xl transition-all duration-500 border border-warm-cream/40 hover:border-warm-cream/80 hover:shadow-xl`}>
+              <div className="flex flex-col gap-6 items-center h-full text-center">
+                <div className={`w-24 h-24 rounded-full bg-gradient-to-br from-[#D4AF37]/20 to-[#D4AF37]/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border border-[#D4AF37]/30`}>
+                  <Leaf className="w-12 h-12 text-[#D4AF37]" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-3 group-hover:text-sage-green transition-colors">
+                  <h3 className="font-heading text-2xl font-bold text-charcoal-black mb-3 group-hover:text-[#D4AF37] transition-colors duration-300">
                     {t.home.sustainableResults}
                   </h3>
                   <p className="text-charcoal-black/70 text-base leading-relaxed font-light">
