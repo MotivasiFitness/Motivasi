@@ -1057,6 +1057,103 @@ export default function InstagramLandingPage() {
         </div>
       </section>
 
+      {/* Premium Founder/Coach Section */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
+        <div className="max-w-[100rem] mx-auto">
+          {/* Headline */}
+          <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-16">
+            <h2 className="font-heading text-5xl sm:text-6xl lg:text-7xl text-primary leading-tight">
+              There's a real person<br />behind your programme.
+            </h2>
+          </motion.div>
+
+          {/* Main Content - Desktop: Side by Side, Mobile: Stacked */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center mb-12 sm:mb-16">
+            {/* Left: Coach Portrait */}
+            <motion.div
+              {...fadeInUp}
+              transition={{ ...fadeInUp.transition, delay: 0.1 }}
+              className="order-2 lg:order-1"
+            >
+              <div className="rounded-3xl overflow-hidden bg-warm-sand-beige/30 aspect-square shadow-lg">
+                <Image
+                  src="https://static.wixstatic.com/media/93e866_1877ca55f0044548b3d25015011e811a~mv2.png?originWidth=448&originHeight=448"
+                  alt="Women's Health Coach - Professional portrait"
+                  width={600}
+                  height={600}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </motion.div>
+
+            {/* Right: Coach Story & Credentials */}
+            <motion.div
+              {...fadeInUp}
+              transition={{ ...fadeInUp.transition, delay: 0.2 }}
+              className="order-1 lg:order-2 space-y-8"
+            >
+              {/* Credentials */}
+              <div className="space-y-2">
+                <p className="font-paragraph text-sm font-semibold uppercase tracking-wider text-primary">
+                  Your Coach
+                </p>
+                <h3 className="font-heading text-3xl sm:text-4xl text-primary leading-tight">
+                  Women's Health Coach
+                </h3>
+                <p className="font-paragraph text-lg text-secondary-text">
+                  Level 4 Qualified<br />
+                  Additional training in nutrition and menopause fitness
+                </p>
+              </div>
+
+              {/* Personal Story */}
+              <div className="space-y-4 border-l-4 border-primary pl-6">
+                <p className="font-paragraph text-lg text-secondary-text leading-relaxed">
+                  I built this approach because I know what it feels like when your body starts behaving differently and the usual fitness advice stops making sense.
+                </p>
+                <p className="font-paragraph text-lg text-secondary-text leading-relaxed">
+                  My own experience with women's health symptoms led me to look beyond generic training plans and build an approach that listens to the woman, not just the calendar.
+                </p>
+              </div>
+
+              {/* Core Philosophy */}
+              <div className="bg-primary/5 rounded-2xl p-6 sm:p-8 border border-primary/10">
+                <p className="font-heading text-2xl sm:text-3xl text-primary leading-tight mb-4">
+                  My role isn't to tell you that your body should behave a certain way.
+                </p>
+                <p className="font-paragraph text-lg text-secondary-text leading-relaxed">
+                  It's to help you understand it, train it, fuel it and become stronger in it.
+                </p>
+              </div>
+
+              {/* CTA Button */}
+              <div className="pt-4">
+                <button className="inline-flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-lg group">
+                  Meet Your Coach
+                  <span className="group-hover:translate-x-1 transition-transform">→</span>
+                </button>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Direct Communication Statement */}
+          <motion.div
+            {...fadeInUp}
+            transition={{ ...fadeInUp.transition, delay: 0.3 }}
+            className="max-w-3xl mx-auto"
+          >
+            <div className="bg-white border-2 border-primary/20 rounded-2xl p-8 sm:p-10 text-center">
+              <p className="font-paragraph text-lg sm:text-xl text-primary-text leading-relaxed">
+                <span className="font-semibold text-primary">Direct coach communication is part of the programme.</span>
+                <br className="hidden sm:block" />
+                <br className="hidden sm:block" />
+                Message anytime. Ask questions. Get support. You're not training alone.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Coach Section */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-off-white">
         <div className="max-w-[100rem] mx-auto">
