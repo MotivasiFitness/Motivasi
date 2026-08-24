@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, Check, MessageCircle, Calendar, Zap, Heart, Dumbbell, Users, TrendingUp, Clock, Flame, Target } from 'lucide-react';
+import { ChevronDown, Check, MessageCircle, Calendar, Zap, Heart, Dumbbell, Users, TrendingUp, Clock, Flame, Target, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 
 export default function InstagramLandingPage() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [showChatModal, setShowChatModal] = useState(false);
+  const [currentPhaseIndex, setCurrentPhaseIndex] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -14,12 +16,22 @@ export default function InstagramLandingPage() {
     viewport: { once: true, margin: '0px 0px -100px 0px' }
   };
 
+  const handlePhaseScroll = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = scrollContainerRef.current.offsetWidth;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'right' ? scrollAmount : -scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-soft-white">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-soft-white/95 backdrop-blur-sm border-b border-warm-sand-beige/20">
-        <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="font-heading text-2xl text-primary font-semibold">Cycle Synced</div>
+      {/* Navigation - Mobile Optimized */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-soft-white/98 backdrop-blur-sm border-b border-warm-sand-beige/20">
+        <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center">
+          <div className="font-heading text-xl sm:text-2xl text-primary font-semibold">Cycle Synced</div>
           <div className="hidden sm:flex gap-8 text-sm font-paragraph text-primary-text">
             <a href="#why-different" className="hover:text-primary transition">Why Different</a>
             <a href="#included" className="hover:text-primary transition">What's Included</a>
@@ -28,31 +40,31 @@ export default function InstagramLandingPage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="pt-24 pb-12 sm:pt-32 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-warm-cream">
+      {/* Hero Section - Mobile First */}
+      <section className="pt-20 pb-8 sm:pt-32 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-warm-cream">
         <div className="max-w-[100rem] mx-auto">
           {/* Mobile Layout - Stacked Vertically */}
-          <div className="lg:hidden space-y-8">
-            {/* Headline */}
+          <div className="lg:hidden space-y-6">
+            {/* Headline - IMMEDIATELY VISIBLE */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
+              transition={{ duration: 0.5 }}
             >
-              <h1 className="font-heading text-5xl sm:text-6xl text-primary leading-tight mb-4">
+              <h1 className="font-heading text-4xl sm:text-5xl text-primary leading-tight mb-3">
                 Train with your body.<br />Not against it.
               </h1>
-              <p className="font-paragraph text-base sm:text-lg text-secondary-text leading-relaxed">
+              <p className="font-paragraph text-sm sm:text-base text-secondary-text leading-relaxed">
                 Personalised online training for women — built around your cycle, your symptoms and your stage of life.
               </p>
             </motion.div>
 
-            {/* Benefits */}
+            {/* Benefits - Compact */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              className="space-y-3"
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="space-y-2"
             >
               {[
                 '3 personalised training sessions every week',
@@ -60,39 +72,47 @@ export default function InstagramLandingPage() {
                 'Cycle-responsive strength training',
                 'Nutrition guidance designed for women'
               ].map((benefit, idx) => (
-                <div key={idx} className="flex gap-3 items-start">
-                  <div className="flex-shrink-0 mt-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                <div key={idx} className="flex gap-2 items-start">
+                  <div className="flex-shrink-0 mt-0.5 w-4 h-4 rounded-full bg-primary flex items-center justify-center">
                     <span className="text-white text-xs font-bold">✓</span>
                   </div>
-                  <p className="font-paragraph text-base text-primary-text">{benefit}</p>
+                  <p className="font-paragraph text-xs sm:text-sm text-primary-text">{benefit}</p>
                 </div>
               ))}
             </motion.div>
 
-            {/* Life Stage Support */}
+            {/* Life Stage Support - Compact */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <p className="font-paragraph text-sm text-secondary-text">
+              <p className="font-paragraph text-xs text-secondary-text">
                 <span className="font-semibold text-primary">Support for:</span> Pre & postnatal · Perimenopause · Menopause
               </p>
             </motion.div>
 
-            {/* CTAs */}
+            {/* Primary CTA - FULL WIDTH, 44px+ */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="flex flex-col gap-3 pt-2"
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="pt-2"
             >
-              <button className="w-full bg-primary text-white px-6 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-base">
+              <button className="w-full bg-primary text-white px-6 py-3.5 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-sm sm:text-base h-11 sm:h-12 flex items-center justify-center">
                 Start Your Training Journey
               </button>
+            </motion.div>
+
+            {/* Secondary CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.35 }}
+            >
               <button
                 onClick={() => setShowChatModal(true)}
-                className="w-full border-2 border-primary text-primary px-6 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/5 transition text-base"
+                className="w-full border-2 border-primary text-primary px-6 py-3 rounded-full font-paragraph font-semibold hover:bg-primary/5 transition text-sm sm:text-base h-11 flex items-center justify-center"
               >
                 Book a Free Chat
               </button>
@@ -100,23 +120,23 @@ export default function InstagramLandingPage() {
 
             {/* Trust Statement */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.4 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
             >
               <p className="font-paragraph text-xs text-secondary-text text-center">
                 Training + coaching + nutrition, all in one app.
               </p>
             </motion.div>
 
-            {/* Mobile App Mockup */}
+            {/* Mobile App Mockup - LARGE & READABLE */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="pt-4"
+              transition={{ duration: 0.6, delay: 0.45 }}
+              className="pt-2"
             >
-              <div className="mx-auto w-64 h-auto">
+              <div className="mx-auto w-72 h-auto">
                 <div className="bg-white rounded-3xl shadow-lg overflow-hidden border-8 border-gray-900">
                   {/* Phone Status Bar */}
                   <div className="bg-gray-900 text-white px-4 py-2 text-xs flex justify-between items-center">
@@ -324,37 +344,31 @@ export default function InstagramLandingPage() {
         </div>
       </section>
 
-      {/* Differentiation Section */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
+      {/* Differentiation Section - Mobile Optimized */}
+      <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
         <div className="max-w-[100rem] mx-auto">
           {/* Headline */}
-          <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-16">
-            <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl text-primary leading-tight mb-6">
-              Your body isn't a problem to solve.<br />Your training should be able to adapt.
+          <motion.div {...fadeInUp} className="text-center mb-8 sm:mb-12">
+            <h2 className="font-heading text-2xl sm:text-4xl lg:text-5xl text-primary leading-tight mb-4 sm:mb-6">
+              Your body isn't a problem to solve.<br />Your training should adapt.
             </h2>
-            <p className="font-paragraph text-lg sm:text-xl text-secondary-text max-w-3xl mx-auto leading-relaxed">
-              Most online training programmes give you a plan and expect you to fit yourself around it.
-              <br className="hidden sm:block" />
-              <br className="hidden sm:block" />
-              This works differently.
-              <br className="hidden sm:block" />
-              <br className="hidden sm:block" />
-              Your training responds to your energy, recovery, symptoms, cycle and stage of life — while your coach helps you make the right adjustments.
+            <p className="font-paragraph text-sm sm:text-base text-secondary-text max-w-3xl mx-auto leading-relaxed">
+              Most online training programmes give you a plan and expect you to fit yourself around it. This works differently. Your training responds to your energy, recovery, symptoms, cycle and stage of life — while your coach helps you make the right adjustments.
             </p>
           </motion.div>
 
-          {/* Comparison Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-12 sm:mb-16">
+          {/* Comparison Layout - Stacked on Mobile */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
             {/* Left Column - Traditional */}
             <motion.div
               {...fadeInUp}
               transition={{ ...fadeInUp.transition, delay: 0.1 }}
-              className="bg-white p-8 sm:p-10 rounded-2xl border border-warm-sand-beige/30"
+              className="bg-white p-6 sm:p-8 rounded-2xl border border-warm-sand-beige/30"
             >
-              <h3 className="font-heading text-2xl sm:text-3xl text-primary mb-8">
+              <h3 className="font-heading text-lg sm:text-2xl text-primary mb-6">
                 Traditional online training
               </h3>
-              <ul className="space-y-5">
+              <ul className="space-y-3">
                 {[
                   'Fixed programme',
                   'Same intensity every week',
@@ -362,11 +376,11 @@ export default function InstagramLandingPage() {
                   'Limited personal support',
                   'One-size-fits-all progression'
                 ].map((item, idx) => (
-                  <li key={idx} className="flex gap-4 items-start">
-                    <div className="flex-shrink-0 mt-1 w-5 h-5 rounded-full bg-warm-sand-beige/40 flex items-center justify-center">
+                  <li key={idx} className="flex gap-3 items-start">
+                    <div className="flex-shrink-0 mt-0.5 w-4 h-4 rounded-full bg-warm-sand-beige/40 flex items-center justify-center">
                       <span className="text-secondary-text text-xs">−</span>
                     </div>
-                    <span className="font-paragraph text-base sm:text-lg text-secondary-text">{item}</span>
+                    <span className="font-paragraph text-sm sm:text-base text-secondary-text">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -551,21 +565,132 @@ export default function InstagramLandingPage() {
         </div>
       </section>
 
-      {/* Four Cycle Phases - Premium Section */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
+      {/* Four Cycle Phases - Premium Section - Mobile Optimized */}
+      <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-soft-white">
         <div className="max-w-[100rem] mx-auto">
           {/* Headline and Supporting Text */}
-          <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-20">
-            <h2 className="font-heading text-5xl sm:text-6xl lg:text-7xl text-primary leading-tight mb-6">
+          <motion.div {...fadeInUp} className="text-center mb-8 sm:mb-16">
+            <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl text-primary leading-tight mb-4 sm:mb-6">
               Four phases.<br />One body.<br />A smarter way to train.
             </h2>
-            <p className="font-paragraph text-lg sm:text-xl text-secondary-text max-w-3xl mx-auto leading-relaxed">
+            <p className="font-paragraph text-sm sm:text-lg text-secondary-text max-w-3xl mx-auto leading-relaxed">
               Your training doesn't have to look the same every week. We use the four phases of the cycle as a flexible framework for adjusting training, recovery and nutrition.
             </p>
           </motion.div>
 
-          {/* Four Phase Cards - Desktop Grid / Mobile Scroll */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-12 sm:mb-16">
+          {/* Mobile: Swipeable Carousel / Desktop: Grid */}
+          <div className="lg:hidden mb-8 sm:mb-12">
+            {/* Swipe Container */}
+            <div
+              ref={scrollContainerRef}
+              className="flex overflow-x-auto gap-4 pb-4 scroll-smooth snap-x snap-mandatory"
+              style={{ scrollBehavior: 'smooth' }}
+            >
+              {[
+                {
+                  phase: 'Menstrual',
+                  tagline: 'Move & Rebuild',
+                  description: 'Lower the intensity. Focus on mobility, movement, recovery and rebuilding.',
+                  label: 'Listen · Recover · Rebuild',
+                  accentColor: 'from-rose-blush/40 to-rose-blush/10',
+                  borderColor: 'border-rose-blush/30',
+                  textAccent: 'text-rose-blush'
+                },
+                {
+                  phase: 'Follicular',
+                  tagline: 'Build & Ramp Up',
+                  description: 'Energy and motivation may rise. Build strength, increase training demand and create momentum.',
+                  label: 'Build · Progress · Strengthen',
+                  accentColor: 'from-emerald-green/40 to-emerald-green/10',
+                  borderColor: 'border-emerald-green/30',
+                  textAccent: 'text-emerald-green'
+                },
+                {
+                  phase: 'Ovulatory',
+                  tagline: 'Peak Performance',
+                  description: 'A potential window to push harder when you feel strong and recovered.',
+                  label: 'Challenge · Perform · Progress',
+                  accentColor: 'from-gold/40 to-gold/10',
+                  borderColor: 'border-gold/30',
+                  textAccent: 'text-gold'
+                },
+                {
+                  phase: 'Luteal',
+                  tagline: 'Taper & Recover',
+                  description: 'Deliberately reduce training volume and support recovery as your next period approaches.',
+                  label: 'Maintain · Recover · Reset',
+                  accentColor: 'from-warm-bronze/40 to-warm-bronze/10',
+                  borderColor: 'border-warm-bronze/30',
+                  textAccent: 'text-warm-bronze'
+                }
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className={`flex-shrink-0 w-full sm:w-80 snap-start`}
+                >
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className={`relative overflow-hidden rounded-2xl border ${item.borderColor} bg-white p-6 h-full`}
+                  >
+                    {/* Gradient accent background */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${item.accentColor}`} />
+                    
+                    {/* Content */}
+                    <div className="relative z-10 space-y-3">
+                      {/* Phase name with accent */}
+                      <div className="space-y-1">
+                        <p className={`font-paragraph text-xs font-semibold uppercase tracking-wider ${item.textAccent}`}>
+                          {item.phase}
+                        </p>
+                        <h3 className="font-heading text-xl sm:text-2xl text-primary leading-tight">
+                          {item.tagline}
+                        </h3>
+                      </div>
+
+                      {/* Description */}
+                      <p className="font-paragraph text-sm text-secondary-text leading-relaxed pt-1">
+                        {item.description}
+                      </p>
+
+                      {/* Small label */}
+                      <div className="pt-3 border-t border-warm-sand-beige/20">
+                        <p className="font-paragraph text-xs text-secondary-text font-medium tracking-wide">
+                          {item.label}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              ))}
+            </div>
+            
+            {/* Scroll Indicators */}
+            <div className="flex justify-center gap-2 mt-4">
+              {[0, 1, 2, 3].map((idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    setCurrentPhaseIndex(idx);
+                    if (scrollContainerRef.current) {
+                      const scrollAmount = scrollContainerRef.current.offsetWidth;
+                      scrollContainerRef.current.scrollTo({
+                        left: scrollAmount * idx,
+                        behavior: 'smooth'
+                      });
+                    }
+                  }}
+                  className={`w-2 h-2 rounded-full transition ${
+                    currentPhaseIndex === idx ? 'bg-primary' : 'bg-warm-sand-beige/40'
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop: Grid Layout */}
+          <div className="hidden lg:grid grid-cols-4 gap-6 sm:gap-8 mb-12 sm:mb-16">
             {[
               {
                 phase: 'Menstrual',
@@ -645,13 +770,13 @@ export default function InstagramLandingPage() {
           <motion.div
             {...fadeInUp}
             transition={{ ...fadeInUp.transition, delay: 0.4 }}
-            className="bg-white border border-warm-sand-beige/30 rounded-2xl p-8 sm:p-12 mb-12 sm:mb-16"
+            className="bg-white border border-warm-sand-beige/30 rounded-2xl p-6 sm:p-10 mb-8 sm:mb-12"
           >
             <div className="max-w-3xl mx-auto">
-              <h3 className="font-heading text-2xl sm:text-3xl text-primary mb-4">
+              <h3 className="font-heading text-xl sm:text-2xl text-primary mb-3">
                 Cycle unpredictable?
               </h3>
-              <p className="font-paragraph text-lg text-secondary-text leading-relaxed">
+              <p className="font-paragraph text-sm sm:text-base text-secondary-text leading-relaxed">
                 That's okay. Perimenopause, irregular cycles and changing symptoms don't disqualify you. Your body feedback becomes part of the plan.
               </p>
             </div>
@@ -661,9 +786,9 @@ export default function InstagramLandingPage() {
           <motion.div
             {...fadeInUp}
             transition={{ ...fadeInUp.transition, delay: 0.5 }}
-            className="bg-warm-sand-beige/10 border border-warm-sand-beige/30 rounded-xl p-6 sm:p-8 mb-12 sm:mb-16"
+            className="bg-warm-sand-beige/10 border border-warm-sand-beige/30 rounded-xl p-5 sm:p-7 mb-8 sm:mb-12"
           >
-            <p className="font-paragraph text-sm sm:text-base text-secondary-text leading-relaxed italic text-center">
+            <p className="font-paragraph text-xs sm:text-sm text-secondary-text leading-relaxed italic text-center">
               <span className="font-semibold text-primary-text">These phases are a framework, not a guarantee.</span> We use language like "may", "typically", and "when you feel ready" because every body is different. For many women, these patterns show up. For others, they don't. Your symptoms and energy levels are what matter most.
             </p>
           </motion.div>
@@ -1561,12 +1686,21 @@ export default function InstagramLandingPage() {
         </div>
       </footer>
 
-      {/* Sticky Mobile CTA */}
-      <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-white border-t border-warm-sand-beige/30 p-4 z-40">
-        <button className="w-full bg-primary text-white px-6 py-3 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-base">
+      {/* Sticky Mobile CTA - Premium Mobile App Experience */}
+      <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-white border-t border-warm-sand-beige/30 p-3 z-40 space-y-2">
+        <button className="w-full bg-primary text-white px-6 py-3 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-sm h-11 flex items-center justify-center">
           Start Your Training Journey
         </button>
+        <button
+          onClick={() => setShowChatModal(true)}
+          className="w-full text-primary font-paragraph font-semibold text-xs hover:text-primary/80 transition"
+        >
+          Book a Free Chat
+        </button>
       </div>
+      
+      {/* Spacer for sticky CTA */}
+      <div className="sm:hidden h-28" />
 
       {/* Chat Modal */}
       {showChatModal && (
