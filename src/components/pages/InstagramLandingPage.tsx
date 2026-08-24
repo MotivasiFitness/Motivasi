@@ -316,10 +316,13 @@ export default function InstagramLandingPage() {
               transition={{ ...fadeInUp.transition, delay: 0.1 }}
               className="bg-white p-6 sm:p-8 rounded-2xl border border-warm-sand-beige/30"
             >
-              <h3 className="font-heading text-lg sm:text-2xl text-primary mb-6">
-                Traditional online training
-              </h3>
-              <ul className="space-y-3">
+              <div className="mb-6 sm:mb-8">
+                <p className="font-paragraph text-xs uppercase tracking-wider text-secondary-text font-semibold mb-2">Traditional Approach</p>
+                <h3 className="font-heading text-lg sm:text-xl text-primary">
+                  Fixed programming
+                </h3>
+              </div>
+              <ul className="space-y-4">
                 {[
                   'Fixed programme',
                   'Same intensity every week',
@@ -328,8 +331,8 @@ export default function InstagramLandingPage() {
                   'One-size-fits-all progression'
                 ].map((item, idx) => (
                   <li key={idx} className="flex gap-3 items-start">
-                    <div className="flex-shrink-0 mt-0.5 w-4 h-4 rounded-full bg-warm-sand-beige/40 flex items-center justify-center">
-                      <span className="text-secondary-text text-xs">−</span>
+                    <div className="flex-shrink-0 mt-1 w-5 h-5 rounded-full border-2 border-warm-sand-beige/40 flex items-center justify-center flex-shrink-0">
+                      <span className="text-warm-sand-beige text-xs">−</span>
                     </div>
                     <span className="font-paragraph text-sm sm:text-base text-secondary-text">{item}</span>
                   </li>
