@@ -833,7 +833,7 @@ export default function InstagramLandingPage() {
                 key={idx}
                 {...fadeInUp}
                 transition={{ ...fadeInUp.transition, delay: (idx % 3) * 0.1 }}
-                className="bg-white p-8 rounded-2xl border border-warm-sand-beige/30"
+                className="bg-white p-8 rounded-2xl border-2 border-black"
               >
                 <p className="font-paragraph text-secondary-text mb-6 italic">"{item.quote}"</p>
                 <div>
