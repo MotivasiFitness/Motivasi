@@ -1022,6 +1022,8 @@ export default function InstagramLandingPage() {
           </div>
         </div>
       </section>
+      {/* Pricing Section */}
+      <PricingSection />
       {/* FAQ */}
       <section id="faq" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-off-white">
         <div className="max-w-[100rem] mx-auto">
