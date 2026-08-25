@@ -195,8 +195,8 @@ export default function InstagramLandingPage() {
       {/* SECTION 2: Why This Is Different - Problem/Solution */}
       <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-[100rem] mx-auto">
-          {/* Headline - Left Aligned */}
-          <motion.div {...fadeInUp} className="mb-12 sm:mb-16 max-w-2xl">
+          {/* Headline - Center Aligned */}
+          <motion.div {...fadeInUp} className="mb-12 sm:mb-16 max-w-3xl mx-auto text-center">
             <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl text-primary leading-tight mb-4 sm:mb-6">
               Your body isn't a problem to solve.
             </h2>
