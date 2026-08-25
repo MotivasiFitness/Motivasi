@@ -74,7 +74,7 @@ export default function InstagramLandingPage() {
                 </motion.div>
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.45 }} className="pt-6">
                   <div className="mx-auto w-full max-w-sm">
-                    <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-gray-900 transform rotate-3 scale-95">
+                    <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-gray-900 transform scale-95">
                       <div className="bg-gray-900 text-white px-4 py-2 text-xs flex justify-between items-center">
                         <span>9:41</span>
                         <div className="flex gap-1">
