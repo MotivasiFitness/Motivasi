@@ -1089,7 +1089,9 @@ export default function InstagramLandingPage() {
               >
                 <button
                   onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
-                  className="w-full px-8 py-6 flex justify-between items-center hover:bg-off-white transition"
+                  className={`w-full px-8 py-6 flex justify-between items-center transition ${
+                    expandedFaq === idx ? 'bg-secondary' : 'hover:bg-secondary'
+                  }`}
                 >
                   <h3 className="font-paragraph font-semibold text-primary-text text-left">{item.q}</h3>
                   <ChevronDown
