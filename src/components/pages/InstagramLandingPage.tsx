@@ -1110,26 +1110,7 @@ export default function InstagramLandingPage() {
       </section>
       {/* Premium Final CTA Section - Deep Burgundy */}
       {/* Final CTA */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-primary text-white">
-        <div className="max-w-[100rem] mx-auto text-center">
-          <motion.div {...fadeInUp}>
-            <p className="font-paragraph text-lg mb-8 max-w-2xl mx-auto opacity-95">
-              Start your training journey today. Get stronger, feel better, and finally understand how your body works.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-primary px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-off-white transition text-base sm:text-lg">
-                Start Your Training Journey
-              </button>
-              <button
-                onClick={() => setShowChatModal(true)}
-                className="border-2 border-white text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-white/10 transition text-base sm:text-lg"
-              >
-                Book a Free Chat
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+
       {/* Footer */}
       {/* Sticky Mobile CTA - Premium Mobile App Experience */}
       <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-white border-t border-warm-sand-beige/30 p-3 z-40 space-y-2">
