@@ -328,6 +328,7 @@ function ContactForm() {
     setSubmitStatus('idle');
 
     try {
+      // Save to database first
       await BaseCrudService.create('contactformsubmissions', {
         _id: crypto.randomUUID(),
         fullName: formData.fullName,
@@ -339,15 +340,17 @@ function ContactForm() {
         source: 'homepage',
       });
 
-      // Send email notification to hello@motivasi.co.uk
-      await sendContactFormNotification(
+      // Try to send email notification (non-blocking - don't fail if email fails)
+      sendContactFormNotification(
         formData.fullName,
         formData.email,
         formData.message,
         formData.healthDataConsent,
         formData.marketingConsent,
         'Homepage'
-      );
+      ).catch(err => {
+        console.warn('Email notification failed (non-blocking):', err);
+      });
 
       setSubmitStatus('success');
       setFormData({
