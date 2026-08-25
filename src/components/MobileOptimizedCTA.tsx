@@ -62,22 +62,22 @@ export default function MobileOptimizedCTA({
       <AnimatePresence>
         {isVisible && (
           <motion.div
-            initial={{ opacity: 0, y: 100, scale: 0.8 }}
+            initial={{ opacity: 0, y: -100, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 100, scale: 0.8 }}
+            exit={{ opacity: 0, y: -100, scale: 0.8 }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed bottom-20 right-4 left-4 z-40 max-w-sm mx-auto"
+            className="fixed top-20 right-4 z-40 max-w-sm"
           >
             <div className="relative">
               {/* Pulse animation for attention */}
               <motion.div
-                className="absolute inset-0 bg-yellow-500/20 rounded-2xl"
+                className="absolute inset-0 bg-white/20 rounded-2xl"
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
 
               {/* Main CTA Card */}
-              <div className="relative bg-gradient-to-r from-charcoal-black to-charcoal-black/90 rounded-2xl p-4 shadow-2xl border border-yellow-500/30 backdrop-blur-sm">
+              <div className="relative bg-gradient-to-r from-charcoal-black to-charcoal-black/90 rounded-2xl p-4 shadow-2xl border-2 border-white backdrop-blur-sm">
                 {/* Close button - top right */}
                 <button
                   onClick={() => setIsDismissed(true)}
@@ -89,8 +89,8 @@ export default function MobileOptimizedCTA({
 
                 {/* Limited Availability Badge - Mobile Optimized */}
                 <div className="flex items-center gap-2 mb-3 pr-8">
-                  <AlertCircle size={16} className="text-yellow-500 flex-shrink-0" />
-                  <span className="text-xs font-bold text-yellow-500 uppercase tracking-wider">
+                  <AlertCircle size={16} className="text-white flex-shrink-0" />
+                  <span className="text-xs font-bold text-white uppercase tracking-wider">
                     Only 2 spots left
                   </span>
                 </div>
@@ -99,7 +99,7 @@ export default function MobileOptimizedCTA({
                 <h3 className="text-white font-bold text-sm mb-2 leading-tight">
                   Ready to transform?
                 </h3>
-                <p className="text-white/80 text-xs mb-4 leading-relaxed">
+                <p className="text-white text-xs mb-4 leading-relaxed">
                   Chat with me about your goals. Free 15-min consultation.
                 </p>
 
@@ -155,7 +155,7 @@ export default function MobileOptimizedCTA({
                       {/* Book consultation */}
                       <Link
                         to="/store"
-                        className="flex items-center gap-2 text-yellow-500 hover:text-yellow-400 text-xs py-2 transition-colors font-semibold"
+                        className="flex items-center gap-2 text-white hover:text-white/80 text-xs py-2 transition-colors font-semibold"
                       >
                         <Clock size={16} className="flex-shrink-0" />
                         <span>Book consultation</span>
