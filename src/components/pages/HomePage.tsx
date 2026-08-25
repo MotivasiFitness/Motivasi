@@ -598,17 +598,27 @@ export default function HomePage() {
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-black/45" />
         
+        {/* Mobile Device Display - Right Side (Desktop Only) */}
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 hidden lg:flex items-center justify-center z-5 w-1/3 pr-8">
+          <Image
+            src="https://static.wixstatic.com/media/93e866_87a68893437e4b7989fcf53fb4e3eb9b~mv2.png?originWidth=256&originHeight=448"
+            alt="Mobile app preview"
+            className="w-full h-auto object-contain"
+            width={300}
+          />
+        </div>
+        
         {/* Content */}
         <div className="relative z-10 w-full max-w-[120rem] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-8 md:py-12 lg:py-16">
           <div className="flex flex-col items-start justify-center max-w-3xl">
-            {/* Top Label */}
+            {/* Top Label - Pill Bar */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="mb-4 sm:mb-6"
+              className="mb-4 sm:mb-6 inline-block px-4 sm:px-6 py-2 sm:py-3 rounded-full border-2 border-white"
             >
-              <p className="font-paragraph text-xs sm:text-sm md:text-base tracking-widest uppercase font-semibold text-white/90 letter-spacing">
+              <p className="font-paragraph text-xs sm:text-sm md:text-base tracking-widest uppercase font-semibold text-white letter-spacing">
                 HELPING WOMEN BECOME
               </p>
             </motion.div>
