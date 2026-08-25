@@ -191,14 +191,12 @@ export default function InstagramLandingPage() {
           </motion.div>
 
           {/* Comparison Layout - Stacked on Mobile */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
-            {/* Left Column - Traditional */}
-
-            {/* Right Column - This Approach (Stronger Visual) */}
+          <div className="flex justify-center mb-8 sm:mb-12">
+            {/* This Approach Card - Centered on Desktop */}
             <motion.div
               {...fadeInUp}
               transition={{ ...fadeInUp.transition, delay: 0.2 }}
-              className="relative"
+              className="relative w-full max-w-2xl"
             >
               {/* Accent background */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-warm-sand-beige/10 rounded-2xl" />
