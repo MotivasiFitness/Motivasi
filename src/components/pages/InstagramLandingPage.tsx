@@ -521,7 +521,7 @@ export default function InstagramLandingPage() {
                     </p>
                     
                     {/* Tagline */}
-                    <h4 className="font-heading text-xl sm:text-2xl text-primary leading-tight">
+                    <h4 className="font-heading text-xl sm:text-2xl text-primary leading-tight group-hover:text-red-600 transition-colors duration-300">
                       {item.tagline}
                     </h4>
 
