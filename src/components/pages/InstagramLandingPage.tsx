@@ -103,7 +103,7 @@ export default function InstagramLandingPage() {
                   </div>
                   <div className="grid grid-cols-2 gap-6">
                     {[ { icon: '🏋️', title: "Personalised Sessions", desc: '3 per week, tailored to your cycle' }, { icon: '👥', title: "Coach Access", desc: 'Direct messaging & form checks' }, { icon: '🥗', title: "Nutrition Guidance", desc: "Cycle-synced strategies" }, { icon: '📱', title: "All-in-One App", desc: 'Workouts, tracking, coaching' } ].map((feature, idx) => (
-                      <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 + idx * 0.05 }} className="flex gap-4 items-start bg-warm-cream/70 backdrop-blur-sm rounded-xl p-5 border border-warm-sand-beige/40 hover:border-primary/20 transition group">
+                      <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 + idx * 0.05 }} className="flex gap-4 items-start backdrop-blur-sm rounded-xl p-5 border border-warm-sand-beige/40 hover:border-primary/20 transition group bg-primary-foreground">
                         <div className="text-3xl flex-shrink-0 bg-primary/10 rounded-full p-2 group-hover:scale-110 transition-transform duration-300">{feature.icon}</div>
                         <div className="flex-1">
                           <p className="font-paragraph font-semibold text-base text-primary-text">{feature.title}</p>
@@ -121,47 +121,7 @@ export default function InstagramLandingPage() {
                     </button>
                   </motion.div>
                 </motion.div>
-                <div className="col-span-6 relative flex justify-center items-center h-[600px] xl:h-[700px]">
-                  <div className="absolute -bottom-10 -left-10 w-64 h-auto z-20">
-                    <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-gray-900 transform rotate-[10deg] scale-105 transition-transform duration-500 hover:rotate-0 hover:scale-100">
-                      <div className="bg-gray-900 text-white px-3 py-1.5 text-xs flex justify-between items-center">
-                        <span>9:41</span>
-                        <div className="flex gap-0.5">
-                          <span>📶</span>
-                          <span>🔋</span>
-                        </div>
-                      </div>
-                      <div className="bg-gradient-to-b from-primary/10 to-white p-3 space-y-3">
-                        <div className="bg-white rounded-xl p-3 border border-warm-sand-beige/30">
-                          <p className="font-paragraph text-xs text-secondary-text mb-0.5">Today's Phase</p>
-                          <p className="font-heading text-sm text-primary">Ovulation</p>
-                          <p className="font-paragraph text-xs text-secondary-text">Peak energy day</p>
-                        </div>
-                        <div className="bg-primary/5 rounded-xl p-3 border border-primary/20">
-                          <p className="font-paragraph text-xs text-secondary-text mb-1">Today's Workout</p>
-                          <p className="font-heading text-sm text-primary mb-0.5">Strength: Lower Body</p>
-                          <p className="font-paragraph text-xs text-secondary-text">45 minutes</p>
-                        </div>
-                        <div className="bg-white rounded-xl p-3 border border-warm-sand-beige/30">
-                          <p className="font-paragraph text-xs text-secondary-text mb-1.5">How are you feeling?</p>
-                          <div className="flex gap-1.5 justify-between">
-                            {[ '😴', '😐', '💪' ].map((emoji, idx) => (
-                              <button key={idx} className="flex-1 py-1.5 rounded-lg hover:bg-warm-sand-beige/20 transition text-base">
-                                {emoji}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                        <div className="bg-primary/10 rounded-xl p-2.5 border-l-4 border-primary">
-                          <p className="font-paragraph text-xs text-secondary-text mb-0.5">Coach Message</p>
-                          <p className="font-paragraph text-xs text-primary-text leading-relaxed">
-                            "Great energy! Push hard. 💪"
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
               </div>
             </div>
           </section>
@@ -184,29 +144,6 @@ export default function InstagramLandingPage() {
           {/* Comparison Layout - Stacked on Mobile */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
             {/* Left Column - Traditional */}
-            <motion.div
-              {...fadeInUp}
-              transition={{ ...fadeInUp.transition, delay: 0.1 }}
-              className="bg-warm-cream p-6 sm:p-8 rounded-2xl border border-warm-sand-beige/30"
-            >
-
-              <ul className="space-y-4">
-                {[
-                  'Fixed programme',
-                  'Same intensity every week',
-                  'Workout-first approach',
-                  'Limited personal support',
-                  'One-size-fits-all progression'
-                ].map((item, idx) => (
-                  <li key={idx} className="flex gap-3 items-start">
-                    <div className="flex-shrink-0 mt-1 w-5 h-5 rounded-full border-2 border-warm-sand-beige/40 flex items-center justify-center flex-shrink-0">
-                      <span className="text-warm-sand-beige text-xs">−</span>
-                    </div>
-                    <span className="font-paragraph text-sm sm:text-base text-secondary-text">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
 
             {/* Right Column - This Approach (Stronger Visual) */}
             <motion.div
@@ -218,12 +155,10 @@ export default function InstagramLandingPage() {
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-warm-sand-beige/10 rounded-2xl" />
               
               {/* Content */}
-              <div className="relative bg-warm-cream/80 backdrop-blur-sm p-8 sm:p-10 rounded-2xl border-2 border-primary/20">
+              <div className="relative bg-warm-cream/80 backdrop-blur-sm p-8 sm:p-10 rounded-2xl border-2 border-primary/20 mx-auto">
                 <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/5 rounded-full blur-2xl" />
                 
-                <h3 className="font-heading text-2xl sm:text-3xl text-primary mb-8 relative z-10">
-                  This approach
-                </h3>
+                <h3 className="font-heading text-2xl sm:text-3xl text-primary mb-8 relative z-10">This approach</h3>
                 
                 <ul className="space-y-5 relative z-10">
                   {[
