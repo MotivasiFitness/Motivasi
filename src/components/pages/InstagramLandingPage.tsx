@@ -359,44 +359,51 @@ export default function InstagramLandingPage() {
                 borderColor: 'border-warm-bronze/30',
                 textAccent: 'text-warm-bronze'
               }
-            ].map((item, idx) => (
+            ].map((item, idx) => {
+              const isMenustrual = idx === 0;
+              return (
               <motion.div
                 key={idx}
                 {...fadeInUp}
                 transition={{ ...fadeInUp.transition, delay: idx * 0.08 }}
-                className={`relative overflow-hidden rounded-2xl border ${item.borderColor} bg-warm-cream p-8 sm:p-10 hover:border-primary/20 transition-all duration-300 group ${
-                 idx === 0 ? 'hover:shadow-[0_0_30px_rgba(220,38,38,0.4)]' : ''
-               }`}
+                className={`relative overflow-hidden rounded-2xl transition-all duration-300 group p-8 sm:p-10 ${
+                  isMenustrual 
+                    ? 'border border-rose-blush/30 bg-warm-cream hover:bg-red-600 hover:border-red-600 hover:shadow-[0_0_30px_rgba(220,38,38,0.4)]'
+                    : `border ${item.borderColor} bg-warm-cream hover:border-primary/20`
+                }`}
               >
-                {/* Gradient accent background */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${item.accentColor} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                {/* Gradient accent background - only for non-menstrual cards */}
+                {!isMenustrual && (
+                  <div className={`absolute inset-0 bg-gradient-to-br ${item.accentColor} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                )}
                 
                 {/* Content */}
-                <div className="relative z-10 space-y-4">
+                <div className={`relative z-10 space-y-4 ${isMenustrual ? 'group-hover:text-white transition-colors duration-300' : ''}`}>
                   {/* Phase name with accent */}
                   <div className="space-y-2">
-                    <p className={`font-paragraph text-xs font-semibold uppercase tracking-wider ${item.textAccent}`}>
+                    <p className={`font-paragraph text-xs font-semibold uppercase tracking-wider ${isMenustrual ? 'group-hover:text-white/90' : item.textAccent} transition-colors duration-300`}>
                       {item.phase}
                     </p>
-                    <h3 className="font-heading text-2xl sm:text-3xl text-primary leading-tight">
+                    <h3 className={`font-heading text-2xl sm:text-3xl leading-tight ${isMenustrual ? 'text-primary group-hover:text-white' : 'text-primary'} transition-colors duration-300`}>
                       {item.tagline}
                     </h3>
                   </div>
 
                   {/* Description */}
-                  <p className="font-paragraph text-base text-secondary-text leading-relaxed pt-2">
+                  <p className={`font-paragraph text-base leading-relaxed pt-2 ${isMenustrual ? 'text-secondary-text group-hover:text-white/90' : 'text-secondary-text'} transition-colors duration-300`}>
                     {item.description}
                   </p>
 
                   {/* Small label */}
-                  <div className="pt-4 border-t border-warm-sand-beige/20">
-                    <p className="font-paragraph text-xs text-secondary-text font-medium tracking-wide">
+                  <div className={`pt-4 border-t ${isMenustrual ? 'border-white/20 group-hover:border-white/30' : 'border-warm-sand-beige/20'} transition-colors duration-300`}>
+                    <p className={`font-paragraph text-xs font-medium tracking-wide ${isMenustrual ? 'text-secondary-text group-hover:text-white/80' : 'text-secondary-text'} transition-colors duration-300`}>
                       {item.label}
                     </p>
                   </div>
                 </div>
               </motion.div>
-            ))}
+            );
+            })}
           </div>
 
           {/* Cycle Unpredictable Section */}
