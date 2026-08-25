@@ -82,33 +82,14 @@ export default function InstagramLandingPage() {
                           <span>🔋</span>
                         </div>
                       </div>
-                      <div className="bg-gradient-to-b from-primary/10 to-white p-4 space-y-4">
-                        <div className="bg-warm-cream rounded-2xl p-4 border border-warm-sand-beige/30">
-                          <p className="font-paragraph text-xs text-secondary-text mb-1">Today's Phase</p>
-                          <p className="font-heading text-lg text-primary">Ovulation</p>
-                          <p className="font-paragraph text-xs text-secondary-text">Peak energy day</p>
-                        </div>
-                        <div className="bg-primary/5 rounded-2xl p-4 border border-primary/20">
-                          <p className="font-paragraph text-xs text-secondary-text mb-2">Today's Workout</p>
-                          <p className="font-heading text-base text-primary mb-1">Strength: Lower Body</p>
-                          <p className="font-paragraph text-xs text-secondary-text">45 minutes</p>
-                        </div>
-                        <div className="bg-warm-cream rounded-2xl p-4 border border-warm-sand-beige/30">
-                          <p className="font-paragraph text-xs text-secondary-text mb-2">How are you feeling?</p>
-                          <div className="flex gap-2 justify-between">
-                            {[ '😴', '😐', '💪' ].map((emoji, idx) => (
-                              <button key={idx} className="flex-1 py-2 rounded-lg hover:bg-warm-sand-beige/20 transition text-lg">
-                                {emoji}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                        <div className="bg-primary/10 rounded-2xl p-3 border-l-4 border-primary">
-                          <p className="font-paragraph text-xs text-secondary-text mb-1">Coach Message</p>
-                          <p className="font-paragraph text-xs text-primary-text leading-relaxed">
-                            "Great energy today! Push hard on these lifts. 💪"
-                          </p>
-                        </div>
+                      <div className="bg-white p-0 overflow-hidden">
+                        <Image
+                          src="https://static.wixstatic.com/media/93e866_b2652507624a4db8b64b423fdd50032d~mv2.png"
+                          alt="Mobile app display showing workout superset"
+                          width={400}
+                          height={600}
+                          className="w-full h-auto"
+                        />
                       </div>
                     </div>
                   </div>
