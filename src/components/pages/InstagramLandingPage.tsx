@@ -68,13 +68,13 @@ export default function InstagramLandingPage() {
                   <button className="flex-1 bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-base sm:text-lg h-12 flex items-center justify-center shadow-lg hover:shadow-xl border-2 border-white">
                     Start Your Journey
                   </button>
-                  <button onClick={() => setShowChatModal(true)} className="flex-1 border-2 border-white text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-white/10 transition text-base sm:text-lg h-12 flex items-center justify-center">
+                  <button onClick={() => setShowChatModal(true)} className="flex-1 border-2 border-white text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-white/10 transition text-base sm:text-lg h-12 flex items-center justify-center whitespace-nowrap">
                     Book a Free Chat
                   </button>
                 </motion.div>
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.45 }} className="pt-6">
                   <div className="mx-auto w-full max-w-sm">
-                    <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-gray-900 transform scale-95">
+                    <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-gray-900">
                       <div className="bg-gray-900 text-white px-4 py-2 text-xs flex justify-between items-center">
                         <span>9:41</span>
                         <div className="flex gap-1">
@@ -84,7 +84,7 @@ export default function InstagramLandingPage() {
                       </div>
                       <div className="bg-white p-0 overflow-hidden">
                         <Image
-                          src="https://static.wixstatic.com/media/93e866_b2652507624a4db8b64b423fdd50032d~mv2.png"
+                          src="https://static.wixstatic.com/media/93e866_d59211e062b34215b8e4c17a30ebe9a7~mv2.png"
                           alt="Mobile app display showing workout superset"
                           width={400}
                           height={600}
@@ -125,7 +125,7 @@ export default function InstagramLandingPage() {
                     <button className="bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-lg h-12 flex items-center justify-center shadow-lg hover:shadow-xl border-2 border-white">
                       Start Your Journey
                     </button>
-                    <button onClick={() => setShowChatModal(true)} className="border-2 border-white text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-white/10 transition text-lg h-12 flex items-center justify-center">
+                    <button onClick={() => setShowChatModal(true)} className="border-2 border-white text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-white/10 transition text-lg h-12 flex items-center justify-center whitespace-nowrap">
                       Book a Free Chat
                     </button>
                   </motion.div>
