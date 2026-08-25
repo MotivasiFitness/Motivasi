@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Check, MessageCircle, Calendar, Zap, Heart, Dumbbell, Users, TrendingUp, Clock, Flame, Target, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { Image } from '@/components/ui/image';
+import PricingSection from '@/components/PricingSection';
 
 export default function InstagramLandingPage() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);

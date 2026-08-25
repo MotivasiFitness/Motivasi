@@ -11,7 +11,7 @@ import { sendContactFormNotification } from '@/lib/email-service';
 import MobileOptimizedCTA from '@/components/MobileOptimizedCTA';
 import { UrgencyCTA, QuickActionCTA, BenefitFocusedCTA, LimitedAvailabilityCTA, SocialProofCTA } from '@/components/MobileCTAVariations';
 import MobileContactOptions from '@/components/MobileContactOptions';
-import PricingSection from '@/components/PricingSection';
+
 
 // --- Utility Components ---
 
