@@ -205,7 +205,7 @@ export default function InstagramLandingPage() {
               <div className="relative bg-warm-cream/80 backdrop-blur-sm p-8 sm:p-10 rounded-2xl border-2 border-primary/20 mx-auto">
                 <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/5 rounded-full blur-2xl" />
                 
-                <h3 className="font-heading text-2xl sm:text-3xl text-primary mb-8 relative z-10">This approach</h3>
+                <h3 className="font-heading text-2xl sm:text-3xl text-primary mb-8 relative z-10">The Natural Sync approach</h3>
                 
                 <ul className="space-y-5 relative z-10">
                   {[
@@ -1110,7 +1110,6 @@ export default function InstagramLandingPage() {
       </section>
       {/* Premium Final CTA Section - Deep Burgundy */}
       {/* Final CTA */}
-
       {/* Footer */}
       {/* Sticky Mobile CTA - Premium Mobile App Experience */}
       <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-white border-t border-warm-sand-beige/30 p-3 z-40 space-y-2">
