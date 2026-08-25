@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { ChevronDown, Check, MessageCircle, Calendar, Zap, Heart, Dumbbell, Users, TrendingUp, Clock, Flame, Target, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, Check, MessageCircle, Calendar, Zap, Heart, Dumbbell, Users, TrendingUp, Clock, Flame, Target, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 
 export default function InstagramLandingPage() {
@@ -8,6 +8,8 @@ export default function InstagramLandingPage() {
   const [showChatModal, setShowChatModal] = useState(false);
   const [currentPhaseIndex, setCurrentPhaseIndex] = useState(0);
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
+  const [testimonialDirection, setTestimonialDirection] = useState(0);
+  const [testimonialAutoPlay, setTestimonialAutoPlay] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const testimonialScrollRef = useRef<HTMLDivElement>(null);
 
@@ -28,15 +30,60 @@ export default function InstagramLandingPage() {
     }
   };
 
-  const handleTestimonialScroll = (direction: 'left' | 'right') => {
-    if (testimonialScrollRef.current) {
-      const scrollAmount = testimonialScrollRef.current.offsetWidth;
-      testimonialScrollRef.current.scrollBy({
-        left: direction === 'right' ? scrollAmount : -scrollAmount,
-        behavior: 'smooth'
-      });
-    }
+  // Testimonial carousel pagination
+  const testimonialPaginate = (newDirection: number) => {
+    setTestimonialDirection(newDirection);
+    setCurrentTestimonialIndex((prev) => (prev + newDirection + 6) % 6);
+    setTestimonialAutoPlay(false);
   };
+
+  // Auto-play testimonial carousel
+  useEffect(() => {
+    if (!testimonialAutoPlay) {
+      const timer = setTimeout(() => setTestimonialAutoPlay(true), 5000);
+      return () => clearTimeout(timer);
+    }
+
+    const interval = setInterval(() => {
+      setTestimonialDirection(1);
+      setCurrentTestimonialIndex((prev) => (prev + 1) % 6);
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, [testimonialAutoPlay]);
+
+  const testimonials = [
+    {
+      quote: "I finally understand my body. Training doesn't feel like fighting against myself anymore.",
+      author: 'Sarah, 32',
+      detail: 'Postpartum client'
+    },
+    {
+      quote: "Having a real coach who actually responds to my messages has changed everything. I feel supported.",
+      author: 'Emma, 28',
+      detail: 'Strength training client'
+    },
+    {
+      quote: "The nutrition guidance alongside training is exactly what I needed. No more guessing.",
+      author: 'Jessica, 45',
+      detail: 'Perimenopause client'
+    },
+    {
+      quote: "I'm stronger than I've ever been, and I'm not exhausted all the time. This actually works.",
+      author: 'Rachel, 35',
+      detail: 'Cycle-synced training client'
+    },
+    {
+      quote: "Worth every penny. I feel like I finally have someone in my corner.",
+      author: 'Laura, 38',
+      detail: 'Menopause support client'
+    },
+    {
+      quote: "The flexibility is incredible. My plan adapts to my life, not the other way around.",
+      author: 'Sophie, 31',
+      detail: 'Busy professional'
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-white">
@@ -457,8 +504,6 @@ export default function InstagramLandingPage() {
             </p>
           </motion.div>
 
-
-
           {/* Four Phase Examples */}
           <motion.div
             {...fadeInUp}
@@ -749,61 +794,227 @@ export default function InstagramLandingPage() {
               </div>
             </motion.div>
           </div>
-
-
         </div>
       </section>
-      {/* Social Proof */}
+      {/* Social Proof - Testimonials with Side Scroll */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-[100rem] mx-auto">
           <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-16">
             <h2 className="font-heading text-4xl sm:text-5xl text-primary mb-4">What Women Are Saying</h2>
           </motion.div>
 
+          {/* Mobile/Tablet: Swipeable Carousel */}
+          <div className="lg:hidden">
+            <div className="relative h-full overflow-hidden rounded-2xl mb-8">
+              <AnimatePresence initial={false} custom={testimonialDirection} mode="wait">
+                <motion.div
+                  key={currentTestimonialIndex}
+                  custom={testimonialDirection}
+                  variants={{
+                    enter: (direction: number) => ({
+                      x: direction > 0 ? 1000 : -1000,
+                      opacity: 0,
+                    }),
+                    center: {
+                      zIndex: 1,
+                      x: 0,
+                      opacity: 1,
+                    },
+                    exit: (direction: number) => ({
+                      zIndex: 0,
+                      x: direction < 0 ? 1000 : -1000,
+                      opacity: 0,
+                    }),
+                  }}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    x: { type: "spring", stiffness: 300, damping: 30 },
+                    opacity: { duration: 0.5 },
+                  }}
+                  drag="x"
+                  dragElastic={1}
+                  dragConstraints={{ left: 0, right: 0 }}
+                  onDragEnd={(e, { offset, velocity }) => {
+                    const swipe = Math.abs(offset.x) * velocity.x;
+                    if (swipe < -10000) {
+                      testimonialPaginate(1);
+                    } else if (swipe > 10000) {
+                      testimonialPaginate(-1);
+                    }
+                  }}
+                  className="w-full"
+                >
+                  {/* Testimonial Card */}
+                  <div className="group relative">
+                    <div className="h-full rounded-2xl p-8 md:p-10 shadow-lg hover:shadow-2xl transition-all duration-500 border-2 backdrop-blur-sm bg-white border-warm-cream hover:border-warm-bronze/60">
+                      {/* Decorative star background */}
+                      <div className="absolute top-6 right-6 opacity-10 transition-opacity group-hover:opacity-20 text-rose-blush">
+                        <Star size={40} fill="currentColor" />
+                      </div>
+
+                      <div className="flex flex-col h-full justify-between relative z-10">
+                        {/* Star Rating */}
+                        <motion.div
+                          className="flex gap-2 mb-6 h-8"
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: 0.1 }}
+                        >
+                          {[...Array(5)].map((_, i) => (
+                            <motion.div
+                              key={i}
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ duration: 0.3, delay: 0.1 + i * 0.05 }}
+                            >
+                              <Star
+                                size={24}
+                                className="font-bold text-charcoal-black"
+                                fill="currentColor"
+                                strokeWidth={1.5}
+                              />
+                            </motion.div>
+                          ))}
+                        </motion.div>
+
+                        {/* Testimonial Text */}
+                        <motion.p
+                          className="leading-relaxed mb-8 font-light text-lg text-charcoal-black"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: 0.2 }}
+                        >
+                          "{testimonials[currentTestimonialIndex].quote}"
+                        </motion.p>
+
+                        {/* Client Info */}
+                        <motion.div
+                          className="flex items-center gap-4 pt-6 border-t border-rose-blush/30"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: 0.3 }}
+                        >
+                          <motion.div
+                            className="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 border-2 bg-rose-blush/30 text-charcoal-black border-rose-blush/40"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ duration: 0.4, delay: 0.3 }}
+                          >
+                            {testimonials[currentTestimonialIndex].author.charAt(0)}
+                          </motion.div>
+                          <div className="min-w-0">
+                            <h4 className="font-bold text-sm md:text-base text-charcoal-black">
+                              {testimonials[currentTestimonialIndex].author}
+                            </h4>
+                            <p className="text-xs md:text-sm text-charcoal-black/60">
+                              {testimonials[currentTestimonialIndex].detail}
+                            </p>
+                          </div>
+                        </motion.div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Navigation Buttons */}
+            <div className="flex items-center justify-between gap-4">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => testimonialPaginate(-1)}
+                className="p-3 rounded-full bg-primary text-white hover:bg-warm-bronze transition-colors"
+                aria-label="Previous testimonial"
+              >
+                <ChevronLeft size={24} />
+              </motion.button>
+
+              {/* Dot Indicators */}
+              <div className="flex gap-2 justify-center flex-1">
+                {testimonials.map((_, index) => (
+                  <motion.button
+                    key={index}
+                    onClick={() => {
+                      setTestimonialDirection(index > currentTestimonialIndex ? 1 : -1);
+                      setCurrentTestimonialIndex(index);
+                      setTestimonialAutoPlay(false);
+                    }}
+                    className={`h-2 rounded-full transition-all ${
+                      index === currentTestimonialIndex ? 'w-8' : 'w-2'
+                    }`}
+                    style={{
+                      backgroundColor: index === currentTestimonialIndex ? '#58355E' : '#D4C5C9'
+                    }}
+                    whileHover={{ scale: 1.2 }}
+                    aria-label={`Go to testimonial ${index + 1}`}
+                  />
+                ))}
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => testimonialPaginate(1)}
+                className="p-3 rounded-full bg-primary text-white hover:bg-warm-bronze transition-colors"
+                aria-label="Next testimonial"
+              >
+                <ChevronRight size={24} />
+              </motion.button>
+            </div>
+          </div>
+
           {/* Desktop Grid Layout */}
           <div className="hidden lg:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {[
-              {
-                quote: "I finally understand my body. Training doesn't feel like fighting against myself anymore.",
-                author: 'Sarah, 32',
-                detail: 'Postpartum client'
-              },
-              {
-                quote: "Having a real coach who actually responds to my messages has changed everything. I feel supported.",
-                author: 'Emma, 28',
-                detail: 'Strength training client'
-              },
-              {
-                quote: "The nutrition guidance alongside training is exactly what I needed. No more guessing.",
-                author: 'Jessica, 45',
-                detail: 'Perimenopause client'
-              },
-              {
-                quote: "I'm stronger than I've ever been, and I'm not exhausted all the time. This actually works.",
-                author: 'Rachel, 35',
-                detail: 'Cycle-synced training client'
-              },
-              {
-                quote: "Worth every penny. I feel like I finally have someone in my corner.",
-                author: 'Laura, 38',
-                detail: 'Menopause support client'
-              },
-              {
-                quote: "The flexibility is incredible. My plan adapts to my life, not the other way around.",
-                author: 'Sophie, 31',
-                detail: 'Busy professional'
-              }
-            ].map((item, idx) => (
+            {testimonials.map((item, idx) => (
               <motion.div
                 key={idx}
                 {...fadeInUp}
                 transition={{ ...fadeInUp.transition, delay: (idx % 3) * 0.1 }}
-                className="bg-white p-8 rounded-2xl border-2 border-black"
+                className="group relative"
               >
-                <p className="font-paragraph text-secondary-text mb-6 italic">"{item.quote}"</p>
-                <div>
-                  <p className="font-paragraph font-semibold text-primary-text">{item.author}</p>
-                  <p className="font-paragraph text-sm text-secondary-text">{item.detail}</p>
+                <div className="h-full rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border-2 backdrop-blur-sm bg-white border-warm-cream hover:border-warm-bronze/60">
+                  {/* Decorative star background */}
+                  <div className="absolute top-6 right-6 opacity-10 transition-opacity group-hover:opacity-20 text-rose-blush">
+                    <Star size={40} fill="currentColor" />
+                  </div>
+
+                  <div className="flex flex-col h-full justify-between relative z-10">
+                    {/* Star Rating */}
+                    <div className="flex gap-2 mb-6 h-8">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          size={24}
+                          className="font-bold text-charcoal-black"
+                          fill="currentColor"
+                          strokeWidth={1.5}
+                        />
+                      ))}
+                    </div>
+
+                    {/* Testimonial Text */}
+                    <p className="leading-relaxed mb-8 font-light text-lg text-charcoal-black">
+                      "{item.quote}"
+                    </p>
+
+                    {/* Client Info */}
+                    <div className="flex items-center gap-4 pt-6 border-t border-rose-blush/30">
+                      <div className="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 border-2 bg-rose-blush/30 text-charcoal-black border-rose-blush/40">
+                        {item.author.charAt(0)}
+                      </div>
+                      <div className="min-w-0">
+                        <h4 className="font-bold text-sm md:text-base text-charcoal-black">
+                          {item.author}
+                        </h4>
+                        <p className="text-xs md:text-sm text-charcoal-black/60">
+                          {item.detail}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             ))}
