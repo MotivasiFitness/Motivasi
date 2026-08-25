@@ -1113,7 +1113,6 @@ export default function InstagramLandingPage() {
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-primary text-white">
         <div className="max-w-[100rem] mx-auto text-center">
           <motion.div {...fadeInUp}>
-            <h2 className="font-heading text-4xl sm:text-5xl mb-6">Ready to Train With Your Body?</h2>
             <p className="font-paragraph text-lg mb-8 max-w-2xl mx-auto opacity-95">
               Start your training journey today. Get stronger, feel better, and finally understand how your body works.
             </p>
