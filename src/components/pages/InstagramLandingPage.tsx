@@ -152,9 +152,9 @@ export default function InstagramLandingPage() {
                   </div>
                   <div className="grid grid-cols-2 gap-6">
                     {[ { icon: '🏋️', title: "Personalised Sessions", desc: '3 per week, tailored to your cycle' }, { icon: '👥', title: "Coach Access", desc: 'Direct messaging & form checks' }, { icon: '🥗', title: "Nutrition Guidance", desc: "Cycle-synced strategies" }, { icon: '📱', title: "All-in-One App", desc: 'Workouts, tracking, coaching' } ].map((feature, idx) => (
-                      <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 + idx * 0.05 }} className="flex gap-4 items-start backdrop-blur-sm rounded-xl p-5 border border-warm-sand-beige/40 hover:border-primary/20 transition group bg-primary-foreground">
+                      <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 + idx * 0.05 }} className="flex gap-4 items-center backdrop-blur-sm rounded-xl p-5 border border-warm-sand-beige/40 hover:border-primary/20 transition group bg-primary-foreground">
                         <div className="text-3xl flex-shrink-0 bg-primary/10 rounded-full p-2 group-hover:scale-110 transition-transform duration-300">{feature.icon}</div>
-                        <div className="flex-1">
+                        <div className="flex-1 text-center">
                           <p className="font-paragraph font-semibold text-base text-primary-text">{feature.title}</p>
                           <p className="font-paragraph text-sm text-secondary-text">{feature.desc}</p>
                         </div>
