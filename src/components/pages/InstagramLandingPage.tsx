@@ -33,18 +33,24 @@ export default function InstagramLandingPage() {
 
       </nav>
       {/* Hero Section - Mobile First */}
-      <section className="pt-24 pb-12 sm:pt-32 sm:pb-24 px-6 md:px-12 bg-gradient-to-br from-warm-sand-beige/30 to-white relative overflow-hidden">
-            <div className="absolute inset-0 z-0 opacity-20 overflow-hidden"><div className="absolute -top-1/4 -left-1/4 w-96 h-96 bg-primary/10 rounded-full mix-blend-multiply filter blur-3xl animate-blob" /><div className="absolute top-1/2 right-0 w-80 h-80 bg-warm-bronze/10 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000" /><div className="absolute bottom-0 left-1/2 w-72 h-72 bg-emerald-green/10 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000" /></div>
-            <div className="max-w-[100rem] mx-auto relative z-10">
+      <section className="pt-24 pb-12 sm:pt-32 sm:pb-24 px-6 md:px-12 relative overflow-hidden min-h-screen flex items-center" style={{
+        backgroundImage: 'url(https://static.wixstatic.com/media/93e866_cadc437246bc4357bfefba591a09448b~mv2.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}>
+            {/* Overlay for text readability */}
+            <div className="absolute inset-0 bg-black/40 z-0" />
+            <div className="max-w-[100rem] mx-auto relative z-10 w-full">
               <div className="lg:hidden flex flex-col space-y-8">
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                  <h1 className="font-heading text-5xl sm:text-6xl text-primary leading-tight mb-3">
+                  <h1 className="font-heading text-5xl sm:text-6xl text-white leading-tight mb-3">
                     Train in sync.
                   </h1>
-                  <p className="font-paragraph text-xl sm:text-2xl text-primary italic font-light mb-5">
+                  <p className="font-paragraph text-xl sm:text-2xl text-white italic font-light mb-5">
                     Feel your strongest.
                   </p>
-                  <p className="font-paragraph text-base sm:text-lg text-secondary-text leading-relaxed">
+                  <p className="font-paragraph text-base sm:text-lg text-white/90 leading-relaxed">
                     A woman's training and nutrition program that adapts to your cycle, your symptoms and your stage of life.
                   </p>
                 </motion.div>
@@ -113,14 +119,14 @@ export default function InstagramLandingPage() {
                 <motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="col-span-6 space-y-8 pr-8">
                   <div className="space-y-4">
                     <div className="flex items-start gap-6">
-                      <h1 className="font-heading text-6xl xl:text-7xl text-primary leading-tight">
+                      <h1 className="font-heading text-6xl xl:text-7xl text-white leading-tight">
                         Train in sync.
                       </h1>
                     </div>
-                    <p className="font-paragraph text-2xl text-primary italic font-light">
+                    <p className="font-paragraph text-2xl text-white italic font-light">
                       Feel your strongest.
                     </p>
-                    <p className="font-paragraph text-lg text-secondary-text leading-relaxed max-w-lg">
+                    <p className="font-paragraph text-lg text-white/90 leading-relaxed max-w-lg">
                       A woman's training and nutrition program that adapts to your cycle, your symptoms and your stage of life.
                     </p>
                   </div>
@@ -144,11 +150,7 @@ export default function InstagramLandingPage() {
                     </button>
                   </motion.div>
                 </motion.div>
-                <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="col-span-6 relative flex justify-center items-center h-[600px] xl:h-[700px]">
-                  <div className="absolute inset-0 bg-warm-sand-beige/50 rounded-full blur-3xl opacity-60" />
-                  <div className="absolute w-full h-full rounded-3xl overflow-hidden shadow-2xl rotate-[-5deg] translate-x-4 translate-y-4 bg-warm-sand-beige/30 transition-transform duration-500 hover:rotate-0 hover:translate-x-0 hover:translate-y-0">
-
-                  </div>
+                <div className="col-span-6 relative flex justify-center items-center h-[600px] xl:h-[700px]">
                   <div className="absolute -bottom-10 -left-10 w-64 h-auto z-20">
                     <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-gray-900 transform rotate-[10deg] scale-105 transition-transform duration-500 hover:rotate-0 hover:scale-100">
                       <div className="bg-gray-900 text-white px-3 py-1.5 text-xs flex justify-between items-center">
@@ -188,7 +190,7 @@ export default function InstagramLandingPage() {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               </div>
             </div>
           </section>
