@@ -11,6 +11,7 @@ import { sendContactFormNotification } from '@/lib/email-service';
 import MobileOptimizedCTA from '@/components/MobileOptimizedCTA';
 import { UrgencyCTA, QuickActionCTA, BenefitFocusedCTA, LimitedAvailabilityCTA, SocialProofCTA } from '@/components/MobileCTAVariations';
 import MobileContactOptions from '@/components/MobileContactOptions';
+import PricingSection from '@/components/PricingSection';
 
 // --- Utility Components ---
 
@@ -880,6 +881,8 @@ export default function HomePage() {
           </div>
         </section>
       )}
+      {/* --- Pricing Section --- */}
+      <PricingSection />
       {/* --- Contact Form Section --- */}
       <section id="contact-form" className="py-24 px-8 lg:px-20 bg-white">
         <div className="max-w-4xl mx-auto">
