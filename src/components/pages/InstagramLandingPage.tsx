@@ -688,8 +688,8 @@ export default function InstagramLandingPage() {
             >
               <div className="rounded-2xl overflow-hidden bg-warm-sand-beige aspect-square shadow-md">
                 <Image
-                  src="https://static.wixstatic.com/media/93e866_8ec260dbf3ff453981f8af30d13db038~mv2.png?originWidth=448&originHeight=448"
-                  alt="Healthy nutrition and wellness - Premium nutrition guidance"
+                  src="https://static.wixstatic.com/media/93e866_3d4b88c1dc7b4a49a1cf59c257066084~mv2.png"
+                  alt="Strength training - Built for your body"
                   width={500}
                   height={500}
                   className="w-full h-full object-cover"
