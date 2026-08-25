@@ -548,51 +548,6 @@ export default function InstagramLandingPage() {
         </div>
       </section>
       {/* How It Works - Premium Editorial Layout */}
-      {/* Life-Stage Support */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-off-white">
-        <div className="max-w-[100rem] mx-auto">
-          <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-16">
-            <h2 className="font-heading text-4xl sm:text-5xl text-primary mb-4">Support for Every Life Stage</h2>
-            <p className="font-paragraph text-lg text-secondary-text max-w-2xl mx-auto">
-              Whether you're navigating postpartum recovery, perimenopause, or simply want to understand your cycle better—we've got you.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
-            {[
-              {
-                title: 'Postpartum Recovery',
-                description: 'Gentle, progressive strength training designed for postpartum bodies. We understand pelvic floor health, diastasis recti, and the unique challenges of training while managing a new baby.',
-                icon: Heart
-              },
-              {
-                title: 'Perimenopause',
-                description: 'Your body is changing. Energy fluctuates. Sleep suffers. We adapt your training to manage symptoms and maintain strength through this transition.',
-                icon: Zap
-              },
-              {
-                title: 'Menopause',
-                description: 'Strength training becomes even more important. We focus on bone health, metabolic support, and training that feels good in your changing body.',
-                icon: Calendar
-              }
-            ].map((item, idx) => {
-              const IconComponent = item.icon;
-              return (
-                <motion.div
-                  key={idx}
-                  {...fadeInUp}
-                  transition={{ ...fadeInUp.transition, delay: idx * 0.1 }}
-                  className="bg-white p-8 rounded-2xl border border-warm-sand-beige/30"
-                >
-                  <IconComponent className="w-12 h-12 text-primary mb-4" />
-                  <h3 className="font-heading text-2xl text-primary mb-3">{item.title}</h3>
-                  <p className="font-paragraph text-secondary-text">{item.description}</p>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
       {/* Training + Nutrition */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-warm-sand-beige">
         <div className="max-w-[100rem] mx-auto">
