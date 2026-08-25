@@ -68,7 +68,7 @@ export default function InstagramLandingPage() {
                   <button className="flex-1 bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-base sm:text-lg h-12 flex items-center justify-center shadow-lg hover:shadow-xl">
                     Start Your Journey
                   </button>
-                  <button onClick={() => setShowChatModal(true)} className="flex-1 border-2 border-primary text-primary px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/5 transition text-base sm:text-lg h-12 flex items-center justify-center">
+                  <button onClick={() => setShowChatModal(true)} className="flex-1 border-2 border-white text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-white/10 transition text-base sm:text-lg h-12 flex items-center justify-center">
                     Book a Free Chat
                   </button>
                 </motion.div>
@@ -144,7 +144,7 @@ export default function InstagramLandingPage() {
                     <button className="bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-lg h-12 flex items-center justify-center shadow-lg hover:shadow-xl">
                       Start Your Journey
                     </button>
-                    <button onClick={() => setShowChatModal(true)} className="border-2 border-primary text-primary px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/5 transition text-lg h-12 flex items-center justify-center">
+                    <button onClick={() => setShowChatModal(true)} className="border-2 border-white text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-white/10 transition text-lg h-12 flex items-center justify-center">
                       Book a Free Chat
                     </button>
                   </motion.div>
