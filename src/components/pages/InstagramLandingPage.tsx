@@ -53,7 +53,7 @@ export default function InstagramLandingPage() {
                     A woman's training and nutrition program that adapts to your cycle, your symptoms and your stage of life.
                   </p>
                 </motion.div>
-                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-warm-cream/70 backdrop-blur-sm rounded-3xl p-6 border border-warm-sand-beige/40">
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white backdrop-blur-sm rounded-3xl p-6 border border-warm-sand-beige/40">
                   {[ { icon: '🏋️', title: '3 personalised training sessions per week', desc: 'via our easy-to-use app' }, { icon: '💬', title: 'Direct chat with your qualified coach', desc: '' }, { icon: '🔄', title: 'Cycle-synced training for every phase', desc: '' }, { icon: '🍎', title: 'Level 4 nutrition guidance that fits your life', desc: '' } ].map((feature, idx) => (
                     <div key={idx} className="flex gap-4 items-start">
                       <div className="text-3xl flex-shrink-0 bg-primary/10 rounded-full p-2">{feature.icon}</div>
