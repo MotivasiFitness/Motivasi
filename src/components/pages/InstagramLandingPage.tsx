@@ -45,10 +45,11 @@ export default function InstagramLandingPage() {
 
       </nav>
       {/* Hero Section - Mobile First */}
-      <section className="pt-24 pb-12 sm:pt-32 sm:pb-24 px-6 md:px-12 relative overflow-hidden min-h-screen flex items-center bg-cover bg-center bg-no-repeat" style={{
+      <section className="pt-24 pb-12 sm:pt-32 sm:pb-24 px-4 sm:px-6 md:px-12 relative overflow-hidden min-h-screen flex items-center bg-cover bg-center bg-no-repeat" style={{
         backgroundImage: 'url(https://static.wixstatic.com/media/93e866_cadc437246bc4357bfefba591a09448b~mv2.png)',
         backgroundSize: 'cover',
-        backgroundPosition: 'center'
+        backgroundPosition: 'center',
+        backgroundAttachment: 'scroll'
       }}>
             {/* Overlay for text readability */}
             <div className="absolute inset-0 bg-black/50 z-0" />
