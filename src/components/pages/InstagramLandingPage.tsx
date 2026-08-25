@@ -7,7 +7,9 @@ export default function InstagramLandingPage() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [showChatModal, setShowChatModal] = useState(false);
   const [currentPhaseIndex, setCurrentPhaseIndex] = useState(0);
+  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const testimonialScrollRef = useRef<HTMLDivElement>(null);
 
   const fadeInUp = {
     initial: { opacity: 0, y: 12 },
@@ -20,6 +22,16 @@ export default function InstagramLandingPage() {
     if (scrollContainerRef.current) {
       const scrollAmount = scrollContainerRef.current.offsetWidth;
       scrollContainerRef.current.scrollBy({
+        left: direction === 'right' ? scrollAmount : -scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleTestimonialScroll = (direction: 'left' | 'right') => {
+    if (testimonialScrollRef.current) {
+      const scrollAmount = testimonialScrollRef.current.offsetWidth;
+      testimonialScrollRef.current.scrollBy({
         left: direction === 'right' ? scrollAmount : -scrollAmount,
         behavior: 'smooth'
       });
@@ -72,28 +84,7 @@ export default function InstagramLandingPage() {
                     Book a Free Chat
                   </button>
                 </motion.div>
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.45 }} className="pt-6">
-                  <div className="mx-auto w-full max-w-sm">
-                    <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-gray-900">
-                      <div className="bg-gray-900 text-white px-4 py-2 text-xs flex justify-between items-center">
-                        <span>9:41</span>
-                        <div className="flex gap-1">
-                          <span>📶</span>
-                          <span>🔋</span>
-                        </div>
-                      </div>
-                      <div className="bg-white p-0 overflow-hidden">
-                        <Image
-                          src="https://static.wixstatic.com/media/93e866_d59211e062b34215b8e4c17a30ebe9a7~mv2.png"
-                          alt="Mobile app display showing workout superset"
-                          width={400}
-                          height={600}
-                          className="w-full h-auto"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
+
               </div>
               <div className="hidden lg:grid grid-cols-12 gap-10 items-center">
                 <motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="col-span-6 space-y-8 pr-8">
