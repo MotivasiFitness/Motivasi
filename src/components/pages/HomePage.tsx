@@ -598,16 +598,6 @@ export default function HomePage() {
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-black/45" />
         
-        {/* Mobile Device Display - Right Side (Desktop Only) */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 hidden lg:flex items-center justify-center z-5 w-1/3 pr-8">
-          <Image
-            src="https://static.wixstatic.com/media/93e866_87a68893437e4b7989fcf53fb4e3eb9b~mv2.png?originWidth=256&originHeight=448"
-            alt="Mobile app preview"
-            className="w-full h-auto object-contain"
-            width={300}
-          />
-        </div>
-        
         {/* Content */}
         <div className="relative z-10 w-full max-w-[120rem] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-8 md:py-12 lg:py-16">
           <div className="flex flex-col items-start justify-center max-w-3xl">
