@@ -364,7 +364,9 @@ export default function InstagramLandingPage() {
                 key={idx}
                 {...fadeInUp}
                 transition={{ ...fadeInUp.transition, delay: idx * 0.08 }}
-                className={`relative overflow-hidden rounded-2xl border ${item.borderColor} bg-warm-cream p-8 sm:p-10 hover:border-primary/20 transition-all duration-300 group`}
+                className={`relative overflow-hidden rounded-2xl border ${item.borderColor} bg-warm-cream p-8 sm:p-10 hover:border-primary/20 transition-all duration-300 group ${
+                 idx === 0 ? 'hover:shadow-[0_0_30px_rgba(220,38,38,0.4)]' : ''
+               }`}
               >
                 {/* Gradient accent background */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${item.accentColor} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
