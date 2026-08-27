@@ -105,7 +105,7 @@ export default function InstagramLandingPage() {
               <div className="lg:hidden flex flex-col space-y-8">
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
                   <h1 className="font-heading text-5xl sm:text-6xl text-white leading-tight mb-3">
-                    Train in sync.
+                    Sync.
                   </h1>
                   <p className="font-paragraph text-xl sm:text-2xl text-white italic font-light mb-5">
                     Feel your strongest.
@@ -140,7 +140,7 @@ export default function InstagramLandingPage() {
                   <div className="space-y-4">
                     <div className="flex items-start gap-6">
                       <h1 className="font-heading text-6xl xl:text-7xl text-white leading-tight">
-                        Train in sync.
+                        Sync.
                       </h1>
                     </div>
                     <p className="font-paragraph text-2xl text-white italic font-light">
