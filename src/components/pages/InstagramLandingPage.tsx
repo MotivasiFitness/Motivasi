@@ -485,10 +485,7 @@ export default function InstagramLandingPage() {
             transition={{ ...fadeInUp.transition, delay: 0.6 }}
             className="text-center"
           >
-            <button className="inline-flex items-center gap-2 font-paragraph font-semibold text-primary hover:text-primary/80 transition text-lg group">
-              See how cycle-responsive training works
-              <span className="group-hover:translate-x-1 transition-transform">→</span>
-            </button>
+
           </motion.div>
         </div>
       </section>
@@ -752,9 +749,7 @@ export default function InstagramLandingPage() {
             >
               {/* Credentials */}
               <div className="space-y-2">
-                <p className="font-paragraph text-sm font-semibold uppercase tracking-wider text-primary">
-                  Your Coach
-                </p>
+
                 <h3 className="font-heading text-3xl sm:text-4xl text-primary leading-tight text-left">
                   Women's Health Coach
                 </h3>
