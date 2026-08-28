@@ -560,17 +560,17 @@ export default function InstagramLandingPage() {
                   {/* Content */}
                   <div className="relative z-10 space-y-3">
                     {/* Phase name with accent */}
-                    <p className={`font-paragraph text-xs font-semibold uppercase tracking-wider text-black`}>
+                    <p className={`font-paragraph text-xs font-semibold uppercase tracking-wider text-black text-center`}>
                       {item.phase}
                     </p>
                     
                     {/* Tagline */}
-                    <h4 className="font-heading text-xl sm:text-2xl text-primary leading-tight group-hover:text-red-600 transition-colors duration-300">
+                    <h4 className="font-heading text-xl sm:text-2xl text-primary leading-tight group-hover:text-red-600 transition-colors duration-300 text-center">
                       {item.tagline}
                     </h4>
 
                     {/* Description */}
-                    <p className="font-paragraph text-sm sm:text-base text-secondary-text leading-relaxed">
+                    <p className="font-paragraph text-sm sm:text-base text-secondary-text leading-relaxed text-center">
                       {item.description}
                     </p>
                   </div>
