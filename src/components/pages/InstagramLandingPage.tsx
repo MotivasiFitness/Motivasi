@@ -317,7 +317,7 @@ export default function InstagramLandingPage() {
                     {/* Content */}
                     <div className="relative z-10 space-y-3">
                       {/* Phase name with accent */}
-                      <div className="space-y-1">
+                      <div className="space-y-1 text-center">
                         <p className={`font-paragraph text-xs font-semibold uppercase tracking-wider ${item.textAccent}`}>
                           {item.phase}
                         </p>
@@ -426,7 +426,7 @@ export default function InstagramLandingPage() {
                 {/* Content */}
                 <div className={`relative z-10 space-y-4 ${isMenustrual ? 'group-hover:text-white transition-colors duration-300' : ''}`}>
                   {/* Phase name with accent */}
-                  <div className="space-y-2">
+                  <div className="space-y-2 text-center">
                     <p className={`font-paragraph text-xs font-semibold uppercase tracking-wider ${isMenustrual ? 'group-hover:text-white/90' : item.textAccent} transition-colors duration-300`}>
                       {item.phase}
                     </p>
