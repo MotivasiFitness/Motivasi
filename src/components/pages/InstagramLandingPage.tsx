@@ -165,9 +165,9 @@ export default function InstagramLandingPage() {
                     <a href="https://client.everfit.io/signup/i/0LY5HVTMCT" className="bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-lg h-12 flex items-center justify-center shadow-lg hover:shadow-xl border-2 border-white">
                       Start Your Journey
                     </a>
-                    <a href="mailto:hello@motivasi.co.uk" className="border-2 border-white text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-white/10 transition text-lg h-12 flex items-center justify-center whitespace-nowrap">
+                    <button onClick={() => { setShowChatModal(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="border-2 border-white text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-white/10 transition text-lg h-12 flex items-center justify-center whitespace-nowrap">
                       Book a Free Chat
-                    </a>
+                    </button>
                   </motion.div>
                 </motion.div>
 
