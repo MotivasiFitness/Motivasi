@@ -179,7 +179,7 @@ export default function InstagramLandingPage() {
         <div className="max-w-[100rem] mx-auto">
           {/* Headline - Center Aligned */}
           <motion.div {...fadeInUp} className="mb-12 sm:mb-16 max-w-3xl mx-auto text-center">
-            <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl bg-gradient-to-r from-[#a8b8a8] to-[#d4a8a8] bg-clip-text text-transparent leading-tight mb-4 sm:mb-6">
+            <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl bg-gradient-to-r from-[#6b8a6b] to-[#a87878] bg-clip-text text-transparent leading-tight mb-4 sm:mb-6">
               Your body isn't a problem to solve.
             </h2>
             <p className="font-heading text-xl sm:text-2xl text-primary italic font-light mb-6 sm:mb-8">
@@ -247,7 +247,7 @@ export default function InstagramLandingPage() {
         <div className="max-w-[100rem] mx-auto">
           {/* Headline and Supporting Text */}
           <motion.div {...fadeInUp} className="text-center mb-8 sm:mb-16">
-            <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl bg-gradient-to-r from-[#a8b8a8] to-[#d4a8a8] bg-clip-text text-transparent leading-tight mb-4 sm:mb-6">
+            <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl bg-gradient-to-r from-[#6b8a6b] to-[#a87878] bg-clip-text text-transparent leading-tight mb-4 sm:mb-6">
               Four phases.<br />One body.<br />A smarter way to train.
             </h2>
             <p className="font-paragraph text-sm sm:text-lg text-secondary-text max-w-3xl mx-auto leading-relaxed">
@@ -720,7 +720,7 @@ export default function InstagramLandingPage() {
         <div className="max-w-[100rem] mx-auto">
           {/* Headline */}
           <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-16">
-            <h2 className="font-heading text-5xl sm:text-6xl lg:text-7xl bg-gradient-to-r from-[#a8b8a8] to-[#d4a8a8] bg-clip-text text-transparent leading-tight">
+            <h2 className="font-heading text-5xl sm:text-6xl lg:text-7xl bg-gradient-to-r from-[#6b8a6b] to-[#a87878] bg-clip-text text-transparent leading-tight">
               There's a real person<br />behind your programme.
             </h2>
           </motion.div>
