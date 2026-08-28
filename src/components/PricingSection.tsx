@@ -45,9 +45,7 @@ export default function PricingSection() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true, margin: '-100px' }}
           >
-            <p className="font-paragraph text-xs sm:text-sm md:text-base tracking-widest uppercase font-semibold text-warm-bronze mb-4">
-              YOUR STRONGEST SELF STARTS HERE
-            </p>
+
             <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold text-charcoal-black mb-6 leading-tight">
               Your <span className="italic">strongest self</span> starts here.
             </h2>
