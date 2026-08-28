@@ -46,7 +46,7 @@ export default function PricingSection() {
             viewport={{ once: true, margin: '-100px' }}
           >
 
-            <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold text-charcoal-black mb-6 leading-tight">
+            <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-[#6b8a6b] to-[#a87878] bg-clip-text text-transparent mb-6 leading-tight">
               Your <span className="italic">strongest self</span> starts here.
             </h2>
             <p className="font-paragraph text-base sm:text-lg md:text-xl text-charcoal-black/70 max-w-2xl mx-auto leading-relaxed">
