@@ -560,7 +560,7 @@ export default function InstagramLandingPage() {
                   {/* Content */}
                   <div className="relative z-10 space-y-3">
                     {/* Phase name with accent */}
-                    <p className={`font-paragraph text-xs font-semibold uppercase tracking-wider ${item.textAccent}`}>
+                    <p className={`font-paragraph text-xs font-semibold uppercase tracking-wider text-black`}>
                       {item.phase}
                     </p>
                     
