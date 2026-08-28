@@ -781,10 +781,10 @@ export default function InstagramLandingPage() {
 
               {/* CTA Button */}
               <div className="pt-4">
-                <button className="inline-flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-lg group">
-                  Meet Your Coach
+                <a href="https://client.everfit.io/signup/i/0LY5HVTMCT" className="inline-flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-lg group">
+                  Sign up to your programme
                   <span className="group-hover:translate-x-1 transition-transform">→</span>
-                </button>
+                </a>
               </div>
             </motion.div>
           </div>
