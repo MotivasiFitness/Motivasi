@@ -544,7 +544,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "instagram-landing",
+        path: "sync",
         element: (
           <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
             <InstagramLandingPage />
