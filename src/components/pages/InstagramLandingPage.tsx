@@ -126,9 +126,9 @@ export default function InstagramLandingPage() {
                   ))}
                 </motion.div>
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="pt-4 flex flex-col sm:flex-row gap-4">
-                  <button className="flex-1 bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-base sm:text-lg h-12 flex items-center justify-center shadow-lg hover:shadow-xl border-2 border-white">
+                  <a href="https://client.everfit.io/signup/i/0LY5HVTMCT" className="flex-1 bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-base sm:text-lg h-12 flex items-center justify-center shadow-lg hover:shadow-xl border-2 border-white">
                     Start Your Journey
-                  </button>
+                  </a>
                   <button onClick={() => setShowChatModal(true)} className="flex-1 border-2 border-white text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-white/10 transition text-base sm:text-lg h-12 flex items-center justify-center whitespace-nowrap">
                     Book a Free Chat
                   </button>
@@ -162,9 +162,9 @@ export default function InstagramLandingPage() {
                     ))}
                   </div>
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.4 }} className="flex gap-4 pt-4">
-                    <button className="bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-lg h-12 flex items-center justify-center shadow-lg hover:shadow-xl border-2 border-white">
+                    <a href="https://client.everfit.io/signup/i/0LY5HVTMCT" className="bg-primary text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-lg h-12 flex items-center justify-center shadow-lg hover:shadow-xl border-2 border-white">
                       Start Your Journey
-                    </button>
+                    </a>
                     <button onClick={() => setShowChatModal(true)} className="border-2 border-white text-white px-8 py-4 rounded-full font-paragraph font-semibold hover:bg-white/10 transition text-lg h-12 flex items-center justify-center whitespace-nowrap">
                       Book a Free Chat
                     </button>
@@ -1108,9 +1108,9 @@ export default function InstagramLandingPage() {
       {/* Footer */}
       {/* Sticky Mobile CTA - Premium Mobile App Experience */}
       <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-white border-t border-warm-sand-beige/30 p-3 z-40 space-y-2">
-        <button className="w-full bg-primary text-white px-6 py-3 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-sm h-11 flex items-center justify-center">
+        <a href="https://client.everfit.io/signup/i/0LY5HVTMCT" className="w-full bg-primary text-white px-6 py-3 rounded-full font-paragraph font-semibold hover:bg-primary/90 transition text-sm h-11 flex items-center justify-center">
           Start Your Training Journey
-        </button>
+        </a>
         <button
           onClick={() => setShowChatModal(true)}
           className="w-full text-primary font-paragraph font-semibold text-xs hover:text-primary/80 transition"
