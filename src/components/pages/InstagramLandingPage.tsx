@@ -509,7 +509,7 @@ export default function InstagramLandingPage() {
             transition={{ ...fadeInUp.transition, delay: 0.3 }}
             className="mb-12 sm:mb-16"
           >
-            <h3 className="font-heading text-3xl sm:text-4xl text-primary text-center mb-8 sm:mb-12">
+            <h3 className="font-heading text-3xl sm:text-4xl text-primary text-center mb-8 sm:mb-12 font-bold">
               Nutrition Through Your Cycle
             </h3>
 
