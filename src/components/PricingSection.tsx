@@ -212,7 +212,7 @@ export default function PricingSection() {
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.9 }}
                 viewport={{ once: true }}
-                href="#contact-form"
+                href="mailto:hello@motivasi.co.uk"
                 className="inline-flex items-center justify-center gap-2 w-full text-warm-bronze font-semibold text-sm sm:text-base hover:text-warm-bronze/80 transition-colors duration-300 group/link"
               >
                 Have questions? Book a free chat
