@@ -179,19 +179,21 @@ export default function PricingSection() {
               </motion.div>
 
               {/* Primary Button */}
-              <motion.button
+              <motion.a
+                href="https://client.everfit.io/signup/i/0LY5HVTMCT"
+                target="_blank"
+                rel="noopener noreferrer"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.8 }}
                 viewport={{ once: true }}
                 whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
-                className="w-full py-4 sm:py-5 md:py-6 rounded-xl font-bold text-base sm:text-lg md:text-xl transition-all duration-300 shadow-lg hover:shadow-xl text-white uppercase tracking-wide mb-6"
+                className="inline-flex items-center justify-center w-full py-4 sm:py-5 md:py-6 rounded-xl font-bold text-base sm:text-lg md:text-xl transition-all duration-300 shadow-lg hover:shadow-xl text-white uppercase tracking-wide mb-6"
                 style={{ backgroundColor: '#58355E' }}
               >
                 Start Your Training Journey
-              </motion.button>
+              </motion.a>
 
               {/* Price confirmation under button */}
               <motion.p
