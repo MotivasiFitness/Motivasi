@@ -748,7 +748,7 @@ export default function InstagramLandingPage() {
               className="order-1 lg:order-2 space-y-8"
             >
               {/* Credentials */}
-              <div className="space-y-2">
+              <div className="space-y-2 pt-12 sm:pt-16 lg:pt-0">
 
                 <h3 className="font-heading text-3xl sm:text-4xl text-primary leading-tight text-left">
                   Women's Health Coach
