@@ -107,8 +107,8 @@ function Footer() {
                 <Link to="/parq" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
                   {t.nav.parqForm}
                 </Link>
-                <Link to="/instagram-landing" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
-                  Instagram
+                <Link to="/sync" className="font-paragraph text-sm text-secondary-text hover:text-accent transition-colors">
+                  Sync
                 </Link>
               </nav>
             </div>
