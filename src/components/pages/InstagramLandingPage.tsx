@@ -497,7 +497,7 @@ export default function InstagramLandingPage() {
         <div className="max-w-[100rem] mx-auto">
           {/* Headline and Supporting Text */}
           <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-20">
-            <h2 className="font-heading text-5xl sm:text-6xl lg:text-7xl text-primary leading-tight mb-6">Move. Fuel. Recover</h2>
+            <h2 className="font-heading text-5xl sm:text-6xl lg:text-7xl leading-tight mb-6 bg-gradient-to-r from-[#a8b8a8] to-[#d4a8a8] bg-clip-text text-transparent">Move. Fuel. Recover</h2>
             <p className="font-paragraph text-lg sm:text-xl text-secondary-text max-w-3xl mx-auto leading-relaxed">
               Your training doesn't happen in isolation. We help you understand how movement, recovery and nutrition can work together.
             </p>
