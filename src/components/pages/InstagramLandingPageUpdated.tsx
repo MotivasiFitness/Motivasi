@@ -320,7 +320,7 @@ export default function InstagramLandingPageUpdated() {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <motion.div
               {...fadeInUp}
               transition={{ ...fadeInUp.transition, delay: 0.1 }}
