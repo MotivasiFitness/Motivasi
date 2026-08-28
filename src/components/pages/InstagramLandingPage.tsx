@@ -755,7 +755,7 @@ export default function InstagramLandingPage() {
                 <p className="font-paragraph text-sm font-semibold uppercase tracking-wider text-primary">
                   Your Coach
                 </p>
-                <h3 className="font-heading text-3xl sm:text-4xl text-primary leading-tight">
+                <h3 className="font-heading text-3xl sm:text-4xl text-primary leading-tight text-left">
                   Women's Health Coach
                 </h3>
                 <p className="font-paragraph text-lg text-secondary-text">
