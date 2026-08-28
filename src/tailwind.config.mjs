@@ -19,9 +19,24 @@ export default {
                 '9xl': ['8rem', { lineHeight: '1', letterSpacing: '-0.025em', fontWeight: '700' }],
             },
             fontFamily: {
-                heading: "cormorantgaramond",
-                paragraph: "sora-light",
-                sans: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif"
+                heading: ["cormorantgaramond"],
+                paragraph: ["sora-light"],
+
+                sans: [
+                    "-apple-system",
+                    "BlinkMacSystemFont",
+                    "'Segoe UI'",
+                    "'Roboto'",
+                    "'Oxygen'",
+                    "'Ubuntu'",
+                    "'Cantarell'",
+                    "'Fira Sans'",
+                    "'Droid Sans'",
+                    "'Helvetica Neue'",
+                    "sans-serif"
+                ],
+
+                "helvetica-neue-bold": ["helvetica neue bold", "sans-serif"]
             },
             colors: {
                 primary: "#58355E",
