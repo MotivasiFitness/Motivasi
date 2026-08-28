@@ -518,7 +518,7 @@ export default function InstagramLandingPage() {
                   description: 'Focus on nutrient-dense, protein-anchored meals and iron-rich foods.',
                   accentColor: 'from-rose-blush/40 to-rose-blush/10',
                   borderColor: 'border-rose-blush/30',
-                  textAccent: 'text-rose-blush'
+                  textAccent: 'text-red-700'
                 },
                 {
                   phase: 'FOLLICULAR',
@@ -544,35 +544,44 @@ export default function InstagramLandingPage() {
                   borderColor: 'border-warm-bronze/30',
                   textAccent: 'text-warm-bronze'
                 }
-              ].map((item, idx) => (
+              ].map((item, idx) => {
+                const isMenustrual = idx === 0;
+                return (
                 <motion.div
                   key={idx}
                   {...fadeInUp}
                   transition={{ ...fadeInUp.transition, delay: 0.4 + idx * 0.08 }}
-                  className={`relative overflow-hidden rounded-2xl border border-black bg-white p-6 sm:p-8 hover:border-primary/20 transition-all duration-300 group`}
+                  className={`relative overflow-hidden rounded-2xl transition-all duration-300 group p-8 sm:p-10 ${
+                    isMenustrual 
+                      ? 'border border-rose-blush/30 bg-warm-cream hover:bg-red-600 hover:border-red-600 hover:shadow-[0_0_30px_rgba(220,38,38,0.4)]'
+                      : `border ${item.borderColor} bg-warm-cream hover:border-primary/20`
+                  }`}
                 >
-                  {/* Gradient accent background */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${item.accentColor} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                  {/* Gradient accent background - only for non-menstrual cards */}
+                  {!isMenustrual && (
+                    <div className={`absolute inset-0 bg-gradient-to-br ${item.accentColor} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                  )}
                   
                   {/* Content */}
-                  <div className="relative z-10 space-y-3">
+                  <div className={`relative z-10 space-y-4 ${isMenustrual ? 'group-hover:text-white transition-colors duration-300' : ''}`}>
                     {/* Phase name with accent */}
-                    <p className={`font-paragraph text-xs font-semibold uppercase tracking-wider text-black text-center`}>
-                      {item.phase}
-                    </p>
-                    
-                    {/* Tagline */}
-                    <h4 className="font-heading text-xl sm:text-2xl text-primary leading-tight group-hover:text-red-600 transition-colors duration-300 text-center">
-                      {item.tagline}
-                    </h4>
+                    <div className="space-y-2 text-center">
+                      <p className={`font-paragraph text-xs font-semibold uppercase tracking-wider ${isMenustrual ? 'group-hover:text-white/90' : item.textAccent} transition-colors duration-300`}>
+                        {item.phase}
+                      </p>
+                      <h4 className={`font-heading text-2xl sm:text-3xl leading-tight ${isMenustrual ? 'text-primary group-hover:text-white' : 'text-primary'} transition-colors duration-300`}>
+                        {item.tagline}
+                      </h4>
+                    </div>
 
                     {/* Description */}
-                    <p className="font-paragraph text-sm sm:text-base text-secondary-text leading-relaxed text-center">
+                    <p className={`font-paragraph text-base leading-relaxed pt-2 ${isMenustrual ? 'text-secondary-text group-hover:text-white/90' : 'text-secondary-text'} transition-colors duration-300`}>
                       {item.description}
                     </p>
                   </div>
                 </motion.div>
-              ))}
+              );
+              })}
             </div>
           </motion.div>
 
