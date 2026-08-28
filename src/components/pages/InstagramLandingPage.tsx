@@ -771,7 +771,7 @@ export default function InstagramLandingPage() {
 
               {/* Core Philosophy */}
               <div className="bg-primary/5 rounded-2xl p-6 sm:p-8 border border-primary/10">
-                <p className="font-heading text-2xl sm:text-3xl text-primary leading-tight mb-4">
+                <p className="font-heading text-2xl sm:text-3xl text-primary leading-tight mb-2">
                   My role isn't to tell you that your body should behave a certain way.
                 </p>
                 <p className="font-paragraph text-lg text-secondary-text leading-relaxed">
